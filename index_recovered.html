@@ -1,0 +1,4165 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>도전! 퍼펙트 리코더!</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+  margin: 0;
+  font-family: "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  background: radial-gradient(circle at top left, #ffffff 0%, #dff3ff 42%, #cdeeff 100%);
+  color: #1f3147;
+}
+
+    .wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px 16px 44px;
+}
+
+    .heroCard {
+      margin-bottom: 18px;
+      padding: 18px 20px;
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,252,255,0.92) 100%);
+      border: 2px solid rgba(219, 238, 253, 0.95);
+      box-shadow:
+        0 14px 30px rgba(77, 168, 255, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .pageTitle {
+      margin: 0 0 8px;
+      font-size: 38px;
+      font-weight: 1000;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      background: linear-gradient(180deg, #7a2400 0%, #c45d00 24%, #0d2f73 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.18),
+        0 6px 14px rgba(13, 47, 115, 0.12);
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+    }
+
+    .pageDesc {
+      margin: 0 0 18px;
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fcff 100%);
+  border: 2px solid #dbeefd;
+  border-radius: 28px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 24px rgba(77, 168, 255, 0.12);
+}
+
+    .hidden { display: none; }
+
+    .cardTitle {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #666;
+      font-weight: 700;
+    }
+
+    input, select, button {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid #d8dce7;
+      font-size: 15px;
+    }
+
+    input, select {
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+button {
+  padding: 13px 16px;
+  background: linear-gradient(180deg, #59b6ff 0%, #2f80ed 100%);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 8px 18px rgba(77, 168, 255, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+button:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #329cf4 0%, #145fcf 100%);
+  box-shadow: 0 10px 20px rgba(41, 120, 227, 0.42);
+  filter: brightness(1.01);
+}
+
+button:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #238ee9 0%, #0f56be 100%);
+  box-shadow: 0 5px 12px rgba(15, 86, 190, 0.34);
+}
+
+    button.sub {
+  background: linear-gradient(180deg, #fff4b8 0%, #ffd86f 100%);
+  color: #7a5200;
+  box-shadow: 0 8px 18px rgba(255, 216, 111, 0.28);
+}
+
+    button.sub:hover {
+  background: linear-gradient(180deg, #ffd98f 0%, #ffb347 100%);
+  box-shadow: 0 10px 20px rgba(255, 179, 71, 0.34);
+}
+
+    button.sub:active {
+  background: linear-gradient(180deg, #ffc96d 0%, #ff962f 100%);
+  box-shadow: 0 5px 12px rgba(255, 150, 47, 0.3);
+}
+
+button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    button .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .btnRow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btnRow3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .basicNoteScroller {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 4px 2px 8px;
+      margin-top: 12px;
+    }
+
+    .basicNoteBtn {
+      width: 100%;
+      min-height: 62px;
+      border-radius: 18px;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(77, 168, 255, 0.18);
+      white-space: normal;
+      line-height: 1.2;
+      padding: 10px 6px;
+    }
+
+    .basicNoteBtn.note1 { background: linear-gradient(180deg, #7fd3ff 0%, #57b8ff 100%); }
+    .basicNoteBtn.note2 { background: linear-gradient(180deg, #72cbff 0%, #4caefb 100%); }
+    .basicNoteBtn.note3 { background: linear-gradient(180deg, #67c3ff 0%, #429ef6 100%); }
+    .basicNoteBtn.note4 { background: linear-gradient(180deg, #5cbcff 0%, #388ff0 100%); }
+    .basicNoteBtn.note5 { background: linear-gradient(180deg, #54b3ff 0%, #2f80ed 100%); }
+    .basicNoteBtn.note6 { background: linear-gradient(180deg, #4aa7fb 0%, #2a73e2 100%); }
+    .basicNoteBtn.note7 { background: linear-gradient(180deg, #429af3 0%, #2467d6 100%); }
+    .basicNoteBtn.note8 { background: linear-gradient(180deg, #398de9 0%, #1f5bcb 100%); }
+    .basicNoteBtn.note9 { background: linear-gradient(180deg, #2f7fdd 0%, #184ebc 100%); }
+    .basicNoteBtn.note10 { background: linear-gradient(180deg, #286fd0 0%, #123eaa 100%); }
+
+    .status {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
+  border: 2px solid #dceefb;
+  font-size: 14px;
+  color: #34506d;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+    .pill {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff3b7 0%, #ffd96d 100%);
+  border: 1px solid #ffd25a;
+  font-size: 12px;
+  font-weight: 900;
+  color: #845400;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 14px rgba(255, 217, 109, 0.24);
+}
+
+    .songBox, .practiceInfoBox {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5fbff 100%);
+  border: 2px solid #dfeffc;
+}
+
+    .songButtonGrid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .gradeButtonGrid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .gradeChoiceBtn {
+      min-height: 150px;
+      border-radius: 28px;
+      border: 3px solid #d8ebff;
+      padding: 18px 12px;
+      text-align: center;
+      background: linear-gradient(180deg, #ffffff 0%, #ebf6ff 100%);
+      box-shadow:
+        0 14px 26px rgba(77, 168, 255, 0.14),
+        inset 0 3px 0 rgba(255,255,255,0.78),
+        inset 0 -4px 0 rgba(31,49,71,0.06);
+    }
+
+    .gradeChoiceBtn:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow:
+        0 18px 30px rgba(77, 168, 255, 0.18),
+        inset 0 3px 0 rgba(255,255,255,0.82),
+        inset 0 -4px 0 rgba(31,49,71,0.06);
+      filter: none;
+    }
+
+    .gradeChoiceBtn:active {
+      transform: translateY(1px);
+    }
+
+    .gradeChoiceEmoji {
+      display: block;
+      font-size: 42px;
+      margin-bottom: 10px;
+      white-space: pre-line;
+      line-height: 1;
+      position: relative;
+      min-height: 54px;
+    }
+
+    .gradeChoiceEmoji.growth-blossom {
+      font-size: 0;
+    }
+
+    .gradeChoiceEmoji.growth-blossom::before {
+      content: "🌼";
+      font-size: 40px;
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      transform: translateX(-50%);
+    }
+
+    .gradeChoiceEmoji.growth-blossom::after {
+      content: "✨";
+      font-size: 26px;
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      transform: translateX(-50%);
+    }
+
+    .gradeChoiceEmoji.growth-rainbow {
+      font-size: 0;
+      overflow: visible;
+    }
+
+    .gradeChoiceEmoji.growth-rainbow::before {
+      content: "🌼";
+      font-size: 40px;
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .gradeChoiceEmoji.growth-rainbow::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      width: 56px;
+      height: 30px;
+      border-radius: 56px 56px 0 0;
+      background:
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,0.65) 0 46%, transparent 47%),
+        linear-gradient(180deg,
+          rgba(255, 92, 92, 0.45) 0%,
+          rgba(255, 163, 64, 0.42) 20%,
+          rgba(255, 221, 87, 0.4) 40%,
+          rgba(107, 214, 119, 0.38) 60%,
+          rgba(88, 188, 255, 0.36) 80%,
+          rgba(164, 126, 255, 0.34) 100%);
+      box-shadow:
+        0 0 12px rgba(255,255,255,0.55),
+        0 0 20px rgba(146, 211, 255, 0.24);
+      opacity: 0.78;
+      transform: translateX(-50%);
+      z-index: 0;
+      filter: saturate(1.05);
+    }
+
+    .gradeChoiceEmoji.growth-rainbow .gradeFlowerAccent {
+      position: absolute;
+      left: 50%;
+      top: 7px;
+      transform: translateX(-50%);
+      font-size: 20px;
+      line-height: 1;
+      z-index: 3;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.45);
+    }
+
+    .gradeChoiceEmoji.growth-rainbow .gradeFlowerAccent::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: -8px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 0 8px rgba(255,255,255,0.9);
+      animation: sparkleBlink 1.8s ease-in-out infinite;
+    }
+
+    .gradeChoiceTitle {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      color: #1b4777;
+      margin-bottom: 6px;
+    }
+
+    .gradeChoiceSub {
+      display: block;
+      font-size: 13px;
+      color: #5f7691;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+
+    .gradeTheme-3 {
+      background: linear-gradient(180deg, #fff6f3 0%, #ffd3c9 100%);
+      border-color: #ffaaa1;
+    }
+
+    .gradeTheme-4 {
+      background: linear-gradient(180deg, #fffaf1 0%, #ffe0ae 100%);
+      border-color: #ffbe66;
+    }
+
+    .gradeTheme-5 {
+      background: linear-gradient(180deg, #fffef3 0%, #fff0aa 100%);
+      border-color: #e8cb56;
+    }
+
+    .gradeTheme-6 {
+      background: linear-gradient(180deg, #f5fff1 0%, #c9efb6 100%);
+      border-color: #87ce6d;
+    }
+
+    .textbookSongPanel {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      border: 2px solid #dcecfb;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+    }
+
+    .textbookSongPanel.hidden {
+      display: none;
+    }
+
+    .textbookSongPanelTitle {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 900;
+      color: #234c79;
+    }
+
+    .textbookSongButtons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .textbookSongBtn {
+      width: auto;
+      min-width: 120px;
+      min-height: 52px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      border: 2px solid #cfe4f7;
+      background: linear-gradient(180deg, #ffffff 0%, #edf7ff 100%);
+      color: #1f4d7c;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 8px 16px rgba(77, 168, 255, 0.12);
+    }
+
+    .textbookSongBtn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #f8fcff 0%, #dcebff 100%);
+      border-color: #97caff;
+      filter: none;
+    }
+
+    .textbookSongBtn.selected {
+      background: linear-gradient(180deg, #5bb3ff 0%, #2f80ed 100%);
+      border-color: #2f80ed;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(47, 128, 237, 0.22);
+    }
+
+    .textbookSongPanel.grade-3 .textbookSongBtn {
+      background: linear-gradient(180deg, #fff8f5 0%, #ffe1da 100%);
+      border-color: #f6b4aa;
+      color: #9b4d42;
+      box-shadow: 0 8px 16px rgba(255, 170, 161, 0.18);
+    }
+
+    .textbookSongPanel.grade-3 .textbookSongBtn:hover {
+      background: linear-gradient(180deg, #fffaf8 0%, #ffd5cd 100%);
+      border-color: #ef988c;
+    }
+
+    .textbookSongPanel.grade-3 .textbookSongBtn.selected {
+      background: linear-gradient(180deg, #ffb9ad 0%, #f78d7e 100%);
+      border-color: #ef7e6d;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(247, 141, 126, 0.24);
+    }
+
+    .textbookSongPanel.grade-4 .textbookSongBtn {
+      background: linear-gradient(180deg, #fffaf2 0%, #ffe8c8 100%);
+      border-color: #f2c37d;
+      color: #9b6522;
+      box-shadow: 0 8px 16px rgba(255, 190, 102, 0.18);
+    }
+
+    .textbookSongPanel.grade-4 .textbookSongBtn:hover {
+      background: linear-gradient(180deg, #fffdf7 0%, #ffe0b1 100%);
+      border-color: #e8ac57;
+    }
+
+    .textbookSongPanel.grade-4 .textbookSongBtn.selected {
+      background: linear-gradient(180deg, #ffc86d 0%, #f0a43c 100%);
+      border-color: #e89828;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(240, 164, 60, 0.24);
+    }
+
+    .textbookSongPanel.grade-5 .textbookSongBtn {
+      background: linear-gradient(180deg, #fffdf4 0%, #fff2bc 100%);
+      border-color: #e5cf73;
+      color: #8f7418;
+      box-shadow: 0 8px 16px rgba(232, 203, 86, 0.18);
+    }
+
+    .textbookSongPanel.grade-5 .textbookSongBtn:hover {
+      background: linear-gradient(180deg, #fffef9 0%, #ffec9f 100%);
+      border-color: #d7bc47;
+    }
+
+    .textbookSongPanel.grade-5 .textbookSongBtn.selected {
+      background: linear-gradient(180deg, #f4da63 0%, #d9b92f 100%);
+      border-color: #caa81c;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(217, 185, 47, 0.24);
+    }
+
+    .textbookSongPanel.grade-6 .textbookSongBtn {
+      background: linear-gradient(180deg, #f8fff4 0%, #daf2cc 100%);
+      border-color: #9fd48b;
+      color: #3f7d32;
+      box-shadow: 0 8px 16px rgba(135, 206, 109, 0.18);
+    }
+
+    .textbookSongPanel.grade-6 .textbookSongBtn:hover {
+      background: linear-gradient(180deg, #fbfff8 0%, #cdecba 100%);
+      border-color: #79c560;
+    }
+
+    .textbookSongPanel.grade-6 .textbookSongBtn.selected {
+      background: linear-gradient(180deg, #9ce07c 0%, #64bf52 100%);
+      border-color: #54ae43;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(100, 191, 82, 0.24);
+    }
+
+    .songChoiceBtn {
+      position: relative;
+      text-align: left;
+      overflow: hidden;
+      padding: 18px 18px 16px;
+      min-height: 198px;
+      border-radius: 28px;
+      border: 3px solid #d6e9fb;
+      background: linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
+      color: #1f3147;
+      box-shadow:
+        0 14px 28px rgba(77, 168, 255, 0.16),
+        inset 0 3px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -5px 0 rgba(31, 49, 71, 0.06);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      isolation: isolate;
+    }
+
+    .songChoiceBtn:hover {
+      transform: translateY(-3px) scale(1.01);
+      background: linear-gradient(180deg, #f7fcff 0%, #dcedff 100%);
+      border-color: #8fc6ff;
+      box-shadow:
+        0 18px 30px rgba(47, 128, 237, 0.22),
+        inset 0 3px 0 rgba(255, 255, 255, 0.76),
+        inset 0 -5px 0 rgba(31, 49, 71, 0.06);
+      filter: none;
+    }
+
+    .songChoiceBtn:active {
+      transform: translateY(1px);
+      background: linear-gradient(180deg, #ddf0ff 0%, #c6e3ff 100%);
+      box-shadow:
+        0 8px 16px rgba(47, 128, 237, 0.16),
+        inset 0 2px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -3px 0 rgba(31, 49, 71, 0.06);
+    }
+
+    .songChoiceBtn.selected {
+      border-color: #2f80ed;
+      background: linear-gradient(180deg, #fffdf8 0%, #e2f0ff 100%);
+      box-shadow:
+        0 18px 32px rgba(47, 128, 237, 0.24),
+        0 0 0 4px rgba(110, 185, 255, 0.22),
+        inset 0 3px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -5px 0 rgba(31, 49, 71, 0.06);
+      animation: songCardPulse 2.4s ease-in-out infinite;
+    }
+
+    .songChoiceBtn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.75) 0 16%, transparent 17%),
+        radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.5) 0 12%, transparent 13%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .songChoicePattern {
+      position: absolute;
+      right: -6px;
+      bottom: -8px;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: 10px;
+      white-space: pre-line;
+      opacity: 0.18;
+      transform: rotate(-10deg);
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+    }
+
+    .songTitleRow {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .songSuccessStamp {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.92);
+      color: #7a4a00;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.96) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fff9d7 0%, #ffd86b 45%, #ffb235 100%);
+      font-size: 18px;
+      font-weight: 900;
+      box-shadow:
+        0 8px 16px rgba(255, 166, 47, 0.28),
+        0 0 0 3px rgba(255, 215, 102, 0.18),
+        inset 0 2px 0 rgba(255,255,255,0.75),
+        inset 0 -3px 0 rgba(168, 75, 0, 0.14);
+      animation: stampCelebrate 1.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .songSuccessStamp::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      width: 10px;
+      height: 16px;
+      border-radius: 0 0 8px 8px;
+      background: inherit;
+      transform: translateX(-8px);
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.08);
+    }
+
+    .songSuccessStamp::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      width: 10px;
+      height: 16px;
+      border-radius: 0 0 8px 8px;
+      background: inherit;
+      transform: translateX(0px);
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.08);
+    }
+
+    .songSuccessStampInner {
+      position: relative;
+      z-index: 1;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    .songSuccessStamp.gold {
+      color: #8b5300;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.96) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fff8c9 0%, #ffd44f 48%, #f0a400 100%);
+    }
+
+    .songSuccessStamp.silver {
+      color: #586879;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.96) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fcfdff 0%, #d7e1ea 48%, #9aa7b5 100%);
+      box-shadow:
+        0 8px 16px rgba(121, 136, 152, 0.24),
+        0 0 0 3px rgba(212, 222, 233, 0.2),
+        inset 0 2px 0 rgba(255,255,255,0.75),
+        inset 0 -3px 0 rgba(88, 104, 121, 0.14);
+    }
+
+    .songSuccessStamp.bronze {
+      color: #7c4820;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.96) 0 18%, transparent 19%),
+        linear-gradient(180deg, #ffe3c8 0%, #d99862 48%, #a95b2b 100%);
+      box-shadow:
+        0 8px 16px rgba(169, 91, 43, 0.24),
+        0 0 0 3px rgba(217, 152, 98, 0.2),
+        inset 0 2px 0 rgba(255,255,255,0.75),
+        inset 0 -3px 0 rgba(124, 72, 32, 0.14);
+    }
+
+    .songChoiceBtn::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -35%;
+      width: 46%;
+      height: 150%;
+      transform: rotate(18deg);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.18) 35%,
+        rgba(255, 255, 255, 0.56) 50%,
+        rgba(255, 255, 255, 0.18) 65%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .songChoiceBtn:hover::after,
+    .songChoiceBtn.selected::after {
+      animation: songCardShine 2.8s ease-in-out infinite;
+      opacity: 1;
+    }
+
+    .songChoiceTop {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      z-index: 1;
+    }
+
+    .songChoiceArt {
+      width: 84px;
+      height: 84px;
+      flex: 0 0 84px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.88);
+      box-shadow:
+        inset 0 3px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.08),
+        0 10px 18px rgba(31, 49, 71, 0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.72) 100%);
+      animation: songIconFloat 3.6s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    .songChoiceArt::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: 20px;
+      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.3) 34%, rgba(255,255,255,0) 35%);
+      opacity: 0.95;
+    }
+
+    .songChoiceArt::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+      animation: sparkleBlink 1.8s ease-in-out infinite;
+    }
+
+    .songChoiceEmoji {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      text-shadow: 0 6px 10px rgba(31, 49, 71, 0.12);
+      filter: saturate(1.05);
+    }
+
+    .songChoiceBadgeCol {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+      min-width: 0;
+      z-index: 1;
+    }
+
+    .songChoiceTitle {
+      display: block;
+      font-size: 20px;
+      font-weight: 900;
+      color: #15406e;
+      letter-spacing: -0.02em;
+    }
+
+    .songChoiceMeta {
+      display: block;
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      color: #4f6480;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .songChoiceDesc {
+      display: block;
+      position: relative;
+      z-index: 1;
+      font-size: 12px;
+      color: #6b7d92;
+      line-height: 1.45;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    .songChoiceClear {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 62px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fff3b7 0%, #ffd96d 100%);
+      border: 1px solid #ffd25a;
+      color: #845400;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      box-shadow: 0 5px 12px rgba(255, 217, 109, 0.24);
+    }
+
+    .songChoiceClear.pending {
+      display: none;
+    }
+
+    @keyframes songCardShine {
+      0% {
+        left: -35%;
+      }
+      45% {
+        left: 115%;
+      }
+      100% {
+        left: 115%;
+      }
+    }
+
+    @keyframes songCardPulse {
+      0%, 100% {
+        box-shadow:
+          0 18px 32px rgba(47, 128, 237, 0.24),
+          0 0 0 4px rgba(110, 185, 255, 0.18),
+          inset 0 3px 0 rgba(255, 255, 255, 0.8),
+          inset 0 -5px 0 rgba(31, 49, 71, 0.06);
+      }
+      50% {
+        box-shadow:
+          0 22px 38px rgba(47, 128, 237, 0.28),
+          0 0 0 7px rgba(110, 185, 255, 0.28),
+          inset 0 3px 0 rgba(255, 255, 255, 0.84),
+          inset 0 -5px 0 rgba(31, 49, 71, 0.06);
+      }
+    }
+
+    @keyframes songIconFloat {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @keyframes sparkleBlink {
+      0%, 100% {
+        opacity: 0.45;
+        transform: scale(0.9);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.12);
+      }
+    }
+
+    @keyframes stampCelebrate {
+      0%, 100% {
+        transform: rotate(-7deg) scale(1);
+      }
+      50% {
+        transform: rotate(-4deg) scale(1.06);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .songChoiceBtn.selected,
+      .songChoiceBtn:hover::after,
+      .songChoiceBtn.selected::after,
+      .songChoiceArt,
+      .songChoiceArt::after {
+        animation: none;
+      }
+    }
+
+    .songTheme-butterfly {
+      background: linear-gradient(180deg, #fff3f1 0%, #ffc9c2 55%, #ff9f97 100%);
+      border-color: #ff8f85;
+    }
+
+    .songTheme-airplane {
+      background: linear-gradient(180deg, #fff8ef 0%, #ffd9aa 55%, #ffb867 100%);
+      border-color: #ffad4d;
+    }
+
+    .songTheme-bell {
+      background: linear-gradient(180deg, #fffef2 0%, #fff0a8 52%, #ffd85c 100%);
+      border-color: #efc43d;
+    }
+
+    .songTheme-star {
+      background: linear-gradient(180deg, #f4fff0 0%, #c8f3a9 52%, #87db71 100%);
+      border-color: #67c65b;
+    }
+
+    .songTheme-butterfly .songChoiceArt {
+      background:
+        radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fffdfd 0%, #ffd7d1 100%);
+    }
+
+    .songTheme-airplane .songChoiceArt {
+      background:
+        radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fffdfa 0%, #ffe3b4 100%);
+    }
+
+    .songTheme-bell .songChoiceArt {
+      background:
+        radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fffef9 0%, #ffefb1 100%);
+    }
+
+    .songTheme-star .songChoiceArt {
+      background:
+        radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
+        linear-gradient(180deg, #fcfff8 0%, #c9efb9 100%);
+    }
+
+    .songTheme-butterfly .songChoiceEmoji {
+      background: linear-gradient(180deg, #fff4f2 0%, #ffd9d1 100%);
+    }
+
+    .songTheme-airplane .songChoiceEmoji {
+      background: linear-gradient(180deg, #fff8ef 0%, #ffe6c2 100%);
+    }
+
+    .songTheme-bell .songChoiceEmoji {
+      background: linear-gradient(180deg, #fffdf0 0%, #fff0b8 100%);
+    }
+
+    .songTheme-star .songChoiceEmoji {
+      background: linear-gradient(180deg, #f7fff2 0%, #d8f2c8 100%);
+    }
+
+    .muted {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .mutedLg {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .ok {
+      color: #0a7;
+      font-weight: 800;
+    }
+
+    .bad {
+      color: #c00;
+      font-weight: 800;
+    }
+
+    .practiceTop {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .practiceBadge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f4f6fb;
+      border: 1px solid #e4e7f0;
+      font-size: 13px;
+      font-weight: 800;
+      color: #555;
+    }
+
+    .canvasWrap {
+      border: 1px solid #e7e9f0;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .practiceControlPanel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.9fr);
+      gap: 14px;
+      margin-top: 14px;
+      align-items: stretch;
+    }
+
+    .practiceInfoCompact {
+      min-height: 0;
+      padding: 12px 14px;
+      border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(77, 168, 255, 0.12);
+    }
+
+    .practiceInfoCompact #practiceInfo {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .practiceActionStack {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .practiceMiniBtn {
+      min-height: 112px;
+      padding: 14px 10px;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .practiceMiniBtn .icon {
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .practiceMiniBtn .label {
+      display: block;
+      margin: 0;
+      font-size: 13px;
+      color: inherit;
+      font-weight: 900;
+    }
+
+    .bottomBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .leftGroup {
+      display: flex;
+      gap: 10px;
+      flex: 1 1 320px;
+    }
+
+    .leftGroup > button {
+      flex: 1 1 0;
+    }
+
+    .rightGroupBox {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 6px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+      flex: 0 1 auto;
+    }
+
+    .rightGroup {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .practiceNavBtn {
+      min-height: 72px;
+      padding: 10px 12px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .practiceNavBtn .icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .rightGroup .button {
+      width: auto;
+      min-width: 92px;
+      min-height: 60px;
+      background: transparent;
+      color: #444;
+      border: none;
+      box-shadow: none;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-radius: 14px;
+    }
+
+    .rightGroup .button:hover {
+      background: #e5e7eb;
+      transform: none;
+      filter: none;
+      box-shadow: none;
+    }
+
+    .rightGroup .button:active {
+      background: #dbe1e8;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .practiceStatusStack {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+    }
+
+    .practiceMeta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .metaCard {
+      border: 1px solid #eceef5;
+      background: #fafbff;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .metaLabel {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .metaValue {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .basicRecorderStage {
+      position: relative;
+      width: 100%;
+      max-width: 1230px;
+      margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f8fbff;
+      border: 1px solid #dfeffc;
+      aspect-ratio: 3 / 5;
+    }
+
+    .basicPanelCard {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 16px;
+      border: 2px solid #dfeffc;
+      background: #ffffff;
+    }
+
+    .basicPanelCard::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    .basicPanelCard > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .basicPanelRecorder {
+      background: linear-gradient(180deg, #eef8ff 0%, #bfe4ff 100%);
+      border-color: #8ecbff;
+      box-shadow:
+        0 14px 26px rgba(77, 168, 255, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.85);
+    }
+
+    .basicPanelRecorder::before {
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255,255,255,0.85) 0 10%, transparent 11%),
+        radial-gradient(circle at 84% 20%, rgba(255,255,255,0.65) 0 9%, transparent 10%),
+        linear-gradient(180deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+    }
+
+    .basicPanelStaff {
+      background: linear-gradient(180deg, #fffde9 0%, #d9f7c9 100%);
+      border-color: #9ddc7b;
+      box-shadow:
+        0 14px 26px rgba(120, 191, 82, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.88);
+    }
+
+    .basicPanelStaff::before {
+      background:
+        radial-gradient(circle at 18% 16%, rgba(255,255,255,0.82) 0 10%, transparent 11%),
+        radial-gradient(circle at 86% 18%, rgba(255,255,255,0.62) 0 9%, transparent 10%),
+        linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 52%);
+    }
+
+    .basicRecorderImageWrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 100%;
+      transform: translate(-50%, -50%);
+    }
+
+    .basicRecorderStage img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: block;
+      width: auto;
+      height: 218%;
+      max-width: none;
+      transform: translate(-50%, -50%);
+    }
+
+    .basicStaffPanel {
+      display: grid;
+      grid-template-rows: 260px auto;
+      gap: 0;
+      height: 100%;
+      overflow: hidden;
+      align-content: start;
+    }
+
+    .basicStaffButtons {
+      padding: 8px 10px 10px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #eeffe8 0%, #baf0aa 100%);
+      border: 2px solid #79cb66;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+      margin-top: -8px;
+    }
+
+    .basicPracticePanel {
+      margin-top: 24px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fbfef5 0%, #eef8df 100%);
+      border: 1px solid #cfe4b5;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .basicPracticeTitle {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: #5a7443;
+      margin-bottom: 12px;
+    }
+
+    .basicPracticeSteps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .basicPracticeStep {
+      text-align: center;
+    }
+
+    .basicPracticeStep .icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+      opacity: 0.9;
+    }
+
+    .basicPracticeStep .label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #5f7550;
+      line-height: 1.35;
+    }
+
+    .basicTypeIntro {
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .fingering-select-wrap {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: stretch;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .fingering-card {
+      width: 230px;
+      min-height: 240px;
+      padding: 22px 18px 20px;
+      border-radius: 26px;
+      border: 3px solid rgba(255,255,255,0.75);
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+      box-shadow:
+        0 14px 24px rgba(31, 49, 71, 0.14),
+        inset 0 3px 0 rgba(255,255,255,0.35),
+        inset 0 -4px 0 rgba(0,0,0,0.08);
+      transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        filter 0.16s ease;
+    }
+
+    .fingering-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow:
+        0 18px 28px rgba(31, 49, 71, 0.18),
+        inset 0 3px 0 rgba(255,255,255,0.4),
+        inset 0 -4px 0 rgba(0,0,0,0.08);
+      filter: brightness(1.02);
+    }
+
+    .fingering-card:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow:
+        0 8px 16px rgba(31, 49, 71, 0.14),
+        inset 0 2px 0 rgba(255,255,255,0.28),
+        inset 0 -2px 0 rgba(0,0,0,0.06);
+    }
+
+    .fingering-card.german {
+      background: linear-gradient(180deg, #74c7ff 0%, #45a9ff 55%, #2f80ed 100%);
+      color: #ffffff;
+    }
+
+    .fingering-card.baroque {
+      background: linear-gradient(180deg, #8be7a8 0%, #48cd79 55%, #24a85a 100%);
+      color: #ffffff;
+    }
+
+    .fingering-card .title {
+      font-size: 30px;
+      font-weight: 1000;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.14);
+    }
+
+    .fingering-card .desc {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+      opacity: 0.96;
+      padding: 6px 8px;
+      width: 100%;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .fingering-card .desc + .desc {
+      margin-top: 6px;
+    }
+
+    .basic-practice-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .basic-practice-btn {
+      width: auto;
+      min-width: 230px;
+      min-height: auto;
+      font-size: 22px;
+      font-weight: 900;
+      padding: 16px 28px;
+      border-radius: 18px;
+      border: none;
+      background: linear-gradient(180deg, #ffe27a 0%, #ffbb1f 100%);
+      color: #6c4700;
+      box-shadow: 0 8px 18px rgba(255, 179, 31, 0.35);
+    }
+
+    .basic-practice-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(180deg, #ffbd55 0%, #ee7422 100%);
+      color: #6c4700;
+      border: none;
+      box-shadow: 0 10px 20px rgba(238, 116, 34, 0.4);
+      filter: none;
+    }
+
+    .basic-practice-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(224, 98, 28, 0.32);
+      background: linear-gradient(180deg, #ffa851 0%, #de621c 100%);
+      color: #6c4700;
+      border: none;
+    }
+
+    .beat-display {
+      min-width: 92px;
+      height: 58px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #243a6b 0%, #1f2a44 100%);
+      border: 2px solid #16203a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 900;
+      color: #ffffff;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        0 6px 14px rgba(31, 42, 68, 0.24);
+    }
+
+    #basicStaffCanvas {
+      height: 260px;
+    }
+
+    .basicHole {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 3px solid #16324f;
+      background: rgba(255, 255, 255, 0.94);
+      color: #16324f;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 6px 14px rgba(35, 52, 68, 0.16);
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .grid2, .btnRow, .btnRow3, .practiceMeta {
+        grid-template-columns: 1fr;
+      }
+
+      .practiceControlPanel {
+        grid-template-columns: 1fr;
+      }
+
+      .practiceActionStack {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .practiceMiniBtn {
+        min-height: 92px;
+        border-radius: 20px;
+        padding: 12px 8px;
+      }
+
+      .practiceMiniBtn .icon {
+        font-size: 24px;
+      }
+
+      .practiceMiniBtn .label {
+        font-size: 12px;
+      }
+
+      .leftGroup,
+      .rightGroupBox {
+        flex-basis: 100%;
+      }
+
+      .rightGroup {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .rightGroup .button {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .songButtonGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .gradeButtonGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pageTitle {
+        font-size: 24px;
+      }
+
+      .wrap {
+        padding: 14px 10px 28px;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      canvas {
+        height: 240px;
+      }
+
+      .basicRecorderStage {
+        max-width: 100%;
+      }
+
+      .basicRecorderStage img {
+        width: auto;
+        height: 232%;
+      }
+
+      .basicStaffPanel {
+        grid-template-rows: 220px auto;
+      }
+
+      #basicStaffCanvas {
+        height: 220px;
+      }
+
+      .basicNoteScroller {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .basicNoteBtn {
+        min-height: 54px;
+        font-size: 13px;
+        padding: 8px 4px;
+      }
+
+      .fingering-card {
+        width: min(100%, 320px);
+        min-height: 220px;
+      }
+
+      .fingering-select-wrap {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .basicPracticeSteps {
+        grid-template-columns: 1fr;
+      }
+
+      .basic-practice-wrap {
+        flex-direction: column;
+      }
+
+      .basic-practice-btn {
+        min-width: 0;
+        width: 100%;
+      }
+
+    }
+    /* 狩?硫붾돱 ?붾㈃ ?꾩슜 ?ㅽ???*/
+#screen-menu {
+  max-width: 420px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* ?곷떒 ?대쫫 */
+#screen-menu h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  text-align: center;
+}
+
+/* ?덈꺼 */
+#screen-menu #userLevel {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #4f8cff;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* 踰꾪듉 */
+#screen-menu button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 18px 20px;
+  border-radius: 24px;
+  border: 3px solid #ffffff;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  cursor: pointer;
+  color: white;
+  text-align: left;
+
+  background: linear-gradient(180deg, #7fd3ff 0%, #4fa7ff 55%, #3f86f6 100%);
+  box-shadow:
+    0 10px 20px rgba(63, 134, 246, 0.28),
+    inset 0 3px 0 rgba(255,255,255,0.45),
+    inset 0 -4px 0 rgba(0,0,0,0.08);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+#screen-menu button:hover {
+  transform: translateY(-3px) scale(1.01);
+  background: linear-gradient(180deg, #52b5f7 0%, #2f84e8 55%, #2367d2 100%);
+  box-shadow:
+    0 14px 24px rgba(35, 103, 210, 0.4),
+    inset 0 3px 0 rgba(255,255,255,0.5),
+    inset 0 -4px 0 rgba(0,0,0,0.08);
+  filter: brightness(1.01);
+}
+
+#screen-menu button:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #3ba5f0 0%, #226fd9 55%, #1a57be 100%);
+  box-shadow:
+    0 6px 12px rgba(26, 87, 190, 0.3),
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -2px 0 rgba(0,0,0,0.06);
+}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="heroCard">
+      <h1 class="pageTitle">도전! 퍼펙트 리코더!</h1>
+    </div>
+
+    <section id="step1Section" class="card">
+      <div class="pill">1단계 · 로그인</div>
+      <h2 class="cardTitle">학생 정보 입력</h2>
+
+      <div class="grid2">
+        <div class="field">
+          <label class="label" for="grade">학년</label>
+          <input id="grade" placeholder="예: 3">
+        </div>
+        <div class="field">
+          <label class="label" for="class">반</label>
+          <input id="class" placeholder="예: 1">
+        </div>
+        <div class="field">
+          <label class="label" for="number">번호</label>
+          <input id="number" placeholder="예: 12">
+        </div>
+        <div class="field">
+          <label class="label" for="name">이름</label>
+          <input id="name" placeholder="예: 홍길동">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="code">개인 코드</label>
+        <input id="code" placeholder="코드를 입력하세요">
+      </div>
+
+      <div class="btnRow">
+        <button onclick="login()">로그인</button>
+        <button class="sub" onclick="fillTestData()">테스트 값 넣기</button>
+      </div>
+
+      <div id="loginStatus" class="status">로그인 전</div>
+    </section>
+
+    <section id="step2Section" class="card hidden">
+
+      <div class="field hidden">
+        <label class="label" for="songSelect">곡 선택</label>
+        <select id="songSelect"></select>
+      </div>
+
+      <div id="textbookGradePanel" class="hidden">
+        <div id="gradeButtonGrid" class="gradeButtonGrid"></div>
+        <div id="textbookSongPanel" class="textbookSongPanel hidden">
+          <h3 id="textbookSongPanelTitle" class="textbookSongPanelTitle">교과서 수록곡</h3>
+          <div id="textbookSongButtons" class="textbookSongButtons"></div>
+        </div>
+      </div>
+
+      <div id="songButtonGrid" class="songButtonGrid"></div>
+
+      <div class="songBox hidden">
+        <div id="songInfo" class="muted">곡을 불러오는 중입니다.</div>
+      </div>
+
+      <div class="btnRow3">
+  <button onclick="goToPractice()">연습 시작</button>
+  <button class="sub" onclick="backToLogin()">이전</button>
+  <button class="sub" onclick="goHomeMenu()">홈</button>
+</div>
+
+      <div id="songLoadStatus" class="status hidden">곡을 불러오는 중</div>
+    </section>
+
+    <section id="step34Section" class="card hidden">
+      <div class="pill">3-4단계 · 연습과 저장</div>
+      <h2 class="cardTitle">연습 화면</h2>
+
+      <div class="practiceMeta">
+        <div class="metaCard">
+          <div class="metaLabel">현재 곡</div>
+          <div id="practiceSongTitle" class="metaValue">-</div>
+        </div>
+        <div class="metaCard">
+          <div class="metaLabel">박자</div>
+          <div id="practiceTimeSignature" class="metaValue">-</div>
+        </div>
+        <div class="metaCard">
+          <div class="metaLabel">배속</div>
+          <div id="practiceSpeedText" class="metaValue">1.0x</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="speedSelect">속도(배속)</label>
+        <select id="speedSelect" onchange="updatePracticeSpeedInfo()">
+          <option value="0.5">0.5배</option>
+          <option value="0.75">0.75배</option>
+          <option value="1" selected>1.0배</option>
+          <option value="1.25">1.25배</option>
+          <option value="1.5">1.5배</option>
+        </select>
+      </div>
+
+      <div class="practiceMeta">
+        <div class="metaCard">
+          <div class="metaLabel">현재 감지 음</div>
+          <div id="liveDetectedNote" class="metaValue">-</div>
+        </div>
+        <div class="metaCard">
+          <div class="metaLabel">목표 음</div>
+          <div id="liveTargetNote" class="metaValue">-</div>
+        </div>
+        <div class="metaCard">
+          <div class="metaLabel">실시간 점수</div>
+          <div id="liveScore" class="metaValue">0</div>
+        </div>
+      </div>
+
+      <div class="practiceTop">
+        <div class="practiceBadge" id="practiceBadge">곡을 선택하고 시작하세요</div>
+        <div class="muted">휴대폰에서는 버튼을 눌러 마이크 권한을 허용해야 합니다.</div>
+      </div>
+
+      <div class="canvasWrap">
+        <canvas id="practiceCanvas" width="900" height="320"></canvas>
+      </div>
+
+      <div class="practiceInfoBox">
+        <div id="practiceInfo" class="muted">아직 연습을 시작하지 않았습니다.</div>
+      </div>
+
+      <div class="btnRow3" style="margin-top:10px;">
+        <button onclick="startPractice()">연습 시작</button>
+        <button class="sub" onclick="stopPractice()">연습 정지</button>
+        <button class="sub" onclick="resetPractice()">화면 초기화</button>
+      </div>
+
+      <div class="btnRow" style="margin-top:10px;">
+        <button onclick="save()">저장하기</button>
+        <button class="sub" onclick="backToSongSelect()">곡 다시 선택</button>
+      </div>
+
+      <div id="practiceStatus" class="status">연습 전</div>
+      <div id="saveStatus" class="status">저장 전</div>
+    </section>
+<section id="step-basic-typeSection" class="card hidden">
+  <div class="pill">기본 운지 방법</div>
+  <h2 class="cardTitle">운지 방식을 선택하세요</h2>
+
+  <div class="songBox basicTypeIntro">
+    <div class="muted">리코더의 뒷면 표기를 보고 운지 방식을 선택해 주세요.</div>
+  </div>
+
+  <div class="fingering-select-wrap">
+    <button class="fingering-card german" onclick="openBasicFingering('german')">
+      <div class="title">저먼식 (G)</div>
+      <div class="desc">운지법이 쉬워요</div>
+      <div class="desc">처음 배우기 좋아요</div>
+      <div class="desc">학교에서 많이 사용해요</div>
+    </button>
+    <button class="fingering-card baroque" onclick="openBasicFingering('baroque')">
+      <div class="title">바로크식 (B)</div>
+      <div class="desc">운지법이 조금 어려워요</div>
+      <div class="desc">음이 더 정확해요</div>
+      <div class="desc">연주할 때 좋아요</div>
+    </button>
+  </div>
+
+  <div class="btnRow" style="margin-top:12px;">
+    <button class="sub" onclick="goHomeMenu()">홈으로</button>
+    <button class="sub" onclick="backToLogin()">로그인으로</button>
+  </div>
+
+  <div id="basicTypeStatus" class="status">운지 방식을 선택해 주세요.</div>
+</section>
+
+<section id="step-basicSection" class="card hidden">
+  <div class="pill">기본 운지 방법</div>
+  <h2 id="basicSectionTitle" class="cardTitle">기본 운지 연습</h2>
+
+  <div class="songBox">
+    <div class="muted">
+      왼쪽에는 리코더 운지 그림, 오른쪽에는 오선보를 보여 줍니다.<br>
+      아래 버튼을 누르면 해당 음의 운지와 음표가 함께 표시됩니다.
+    </div>
+  </div>
+
+  <div style="margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <div class="basicPanelCard basicPanelRecorder">
+      <div style="font-weight:800; margin-bottom:10px; color:#34506d;">리코더 운지</div>
+      <div id="basicRecorderStage" class="basicRecorderStage">
+        <div id="basicRecorderImageWrap" class="basicRecorderImageWrap">
+          <img id="basicRecorderImage" src="images/recorder-base.png" alt="리코더 기본 이미지">
+        </div>
+      </div>
+    </div>
+
+    <div class="basicPanelCard basicPanelStaff">
+      <div style="font-weight:800; margin-bottom:10px; color:#34506d;">오선보</div>
+      <div class="basicStaffPanel">
+        <canvas id="basicStaffCanvas" width="520" height="560" style="width:100%; display:block; background:#ffffff; border-radius:16px;"></canvas>
+        <div class="basicStaffButtons">
+          <div class="basicNoteScroller">
+            <button class="basicNoteBtn note1" onclick="selectBasicNote('C5')">도</button>
+            <button class="basicNoteBtn note2" onclick="selectBasicNote('D5')">레</button>
+            <button class="basicNoteBtn note3" onclick="selectBasicNote('E5')">미</button>
+            <button class="basicNoteBtn note4" onclick="selectBasicNote('F5')">파</button>
+            <button class="basicNoteBtn note5" onclick="selectBasicNote('G5')">솔</button>
+            <button class="basicNoteBtn note6" onclick="selectBasicNote('A5')">라</button>
+            <button class="basicNoteBtn note7" onclick="selectBasicNote('B5')">시</button>
+            <button class="basicNoteBtn note8" onclick="selectBasicNote('C6')">높은 도</button>
+            <button class="basicNoteBtn note9" onclick="selectBasicNote('D6')">높은 레</button>
+            <button class="basicNoteBtn note10" onclick="selectBasicNote('E6')">높은 미</button>
+          </div>
+          <div class="basic-practice-wrap">
+            <button class="basic-practice-btn" onclick="startBasicPractice()">
+              🎵 같이 불어보기
+            </button>
+            <div id="beatDisplay" class="beat-display">-</div>
+          </div>
+          <div class="basicPracticePanel">
+            <div class="basicPracticeTitle">리코더 연습 순서</div>
+
+            <div class="basicPracticeSteps">
+              <div class="basicPracticeStep">
+                <div class="icon">👀</div>
+                <div class="label">리코더 운지 확인</div>
+              </div>
+              <div class="basicPracticeStep">
+                <div class="icon">🎼</div>
+                <div class="label">오선보 음표 읽기</div>
+              </div>
+              <div class="basicPracticeStep">
+                <div class="icon">🎵</div>
+                <div class="label">리코더 연주하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btnRow" style="margin-top:12px;">
+    <button class="sub" onclick="goHomeMenu()">홈으로</button>
+    <button class="sub" onclick="backToLogin()">로그인으로</button>
+  </div>
+
+  <div id="basicRecorderStatus" class="status">기본 운지 화면 준비 완료</div>
+</section>
+
+  </div>
+
+  <script src="app.js"></script>
+
+  <script>
+    if (location.protocol === "file:") {
+      alert("Live Server 또는 웹 서버 주소로 실행해 주세요.");
+    }
+
+    let practiceRunning = false;
+    let practiceAnim = null;
+
+    let audioCtx = null;
+    let micStream = null;
+    let micSource = null;
+    let analyser = null;
+    let pitchBuffer = null;
+    let micRunning = false;
+    let pitchLoopHandle = null;
+
+    let livePitchHz = 0;
+    let liveDetectedNote = null;
+    let liveDetectedMidi = null;
+    let liveDetectedCents = null;
+
+    let currentTimeline = null;
+    let currentPracticeStartedAt = 0;
+    let currentCountdownMs = 5000;
+    let currentBasicFingeringSystem = "german";
+    let currentBasicNote = "C5";
+    let currentSongMenuMode = "short";
+    let currentTextbookGrade = null;
+    let songLoadRequestSeq = 0;
+    let basicPracticeRunId = 0;
+    let basicPracticeAudios = [];
+    let basicPracticeTimerIds = [];
+    let basicPracticeRunning = false;
+    const BASIC_PRACTICE_BEAT_MS = 800;
+    const SONG_CLEAR_STATE_KEY = "recorder_song_clear_state_v1";
+    const SHORT_SONG_TITLES = ["나비야", "비행기", "학교종", "작은별"];
+    const BASIC_NOTE_IMAGE_PATHS = {
+      C5: "images/basic-notes/C5.png",
+      D5: "images/basic-notes/D5.png",
+      E5: "images/basic-notes/E5.png",
+      F5: "images/basic-notes/F5.png",
+      G5: "images/basic-notes/G5.png",
+      A5: "images/basic-notes/A5.png",
+      B5: "images/basic-notes/B5.png",
+      C6: "images/basic-notes/C6.png",
+      D6: "images/basic-notes/D6.png",
+      E6: "images/basic-notes/E6.png"
+    };
+    const TEXTBOOK_SONGS_BY_GRADE = {
+      "3": [
+        { songId: "TB3_SPRING", title: "봄바람", bpm: 84, timeSignature: "4/4", notation: "C5/1 D5/1 E5/1 G5/1 E5/1 D5/1 C5/2" },
+        { songId: "TB3_RAINBOW", title: "무지개", bpm: 88, timeSignature: "4/4", notation: "C5/1 E5/1 G5/1 A5/1 G5/1 E5/1 C5/2" },
+        { songId: "TB3_PLAY", title: "즐거운 하루", bpm: 92, timeSignature: "4/4", notation: "G5/1 G5/1 A5/1 G5/1 E5/1 D5/1 C5/2" }
+      ],
+      "4": [
+        { songId: "TB4_RIVER", title: "시냇물", bpm: 86, timeSignature: "4/4", notation: "E5/1 F5/1 G5/1 A5/1 G5/1 F5/1 E5/2" },
+        { songId: "TB4_TRAVEL", title: "즐거운 여행", bpm: 96, timeSignature: "4/4", notation: "C5/1 D5/1 E5/1 G5/1 A5/1 G5/1 E5/2" },
+        { songId: "TB4_FRIEND", title: "우리 친구", bpm: 90, timeSignature: "4/4", notation: "G5/1 E5/1 F5/1 G5/1 A5/1 G5/1 D5/2" },
+        { songId: "TB4_PUFF_JACKY", title: "퍼프와 재키", bpm: 90, timeSignature: "4/4", notation: "G5/1 A5/1 G5/1 E5/1 D5/1 E5/1 G5/2" }
+      ],
+      "5": [
+        { songId: "TB5_FOREST", title: "숲속 이야기", bpm: 88, timeSignature: "3/4", notation: "E5/1 G5/1 A5/1 G5/1 E5/1 D5/1" },
+        { songId: "TB5_DREAM", title: "꿈을 향해", bpm: 94, timeSignature: "4/4", notation: "C5/1 E5/1 G5/1 C6/1 B5/1 G5/1 E5/2" },
+        { songId: "TB5_SUMMER", title: "여름 바다", bpm: 98, timeSignature: "4/4", notation: "G5/1 A5/1 B5/1 A5/1 G5/1 E5/1 D5/2" }
+      ],
+      "6": [
+        { songId: "TB6_MORNING", title: "아침 햇살", bpm: 90, timeSignature: "4/4", notation: "C5/1 D5/1 G5/1 A5/1 G5/1 E5/1 C5/2" },
+        { songId: "TB6_WORLD", title: "넓은 세상", bpm: 100, timeSignature: "4/4", notation: "E5/1 G5/1 A5/1 C6/1 B5/1 A5/1 G5/2" },
+        { songId: "TB6_HOPE", title: "희망의 노래", bpm: 92, timeSignature: "4/4", notation: "D5/1 F5/1 A5/1 B5/1 A5/1 F5/1 D5/2" }
+      ]
+    };
+
+    let scoreState = {
+      totalFrames: 0,
+      judgedFrames: 0,
+      pitchHitFrames: 0,
+      rhythmHitFrames: 0,
+      finalScore: 0,
+      pitchAccuracy: 0,
+      rhythmAccuracy: 0
+    };
+
+    const trebleImg = new Image();
+    let trebleReady = false;
+    let trebleFailed = false;
+
+    trebleImg.onload = () => {
+      trebleReady = true;
+      drawPracticeBase("4/4");
+    };
+
+    trebleImg.onerror = () => {
+      trebleFailed = true;
+      drawPracticeBase("4/4");
+    };
+
+    trebleImg.src = "treble.png";
+
+function setStatus(id, text, type = "") {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = type ? `<span class="${type}">${text}</span>` : text;
+    }
+
+    function isSectionVisible(id) {
+      const el = document.getElementById(id);
+      return !!el && !el.classList.contains("hidden");
+    }
+
+    function loadSongClearState() {
+      try {
+        return JSON.parse(localStorage.getItem(SONG_CLEAR_STATE_KEY) || "{}");
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function saveSongClearState(state) {
+      try {
+        localStorage.setItem(SONG_CLEAR_STATE_KEY, JSON.stringify(state || {}));
+      } catch (_) {}
+    }
+
+    function isSongCleared(songId) {
+      return !!loadSongClearState()[String(songId)];
+    }
+
+    function setSongCleared(songId, cleared = true) {
+      const state = loadSongClearState();
+      state[String(songId)] = !!cleared;
+      saveSongClearState(state);
+      renderSongButtons();
+    }
+
+    function getShortSongCandidates() {
+      const songs = Array.isArray(app.songs) ? app.songs : [];
+      const prioritized = [];
+
+      SHORT_SONG_TITLES.forEach((title) => {
+        const match = songs.find((song) => String(song.title || "").trim() === title);
+        if (match) prioritized.push(match);
+      });
+
+      const fallback = songs.filter(
+        (song) => !prioritized.some((picked) => String(picked.songId) === String(song.songId))
+      );
+
+      return prioritized.length ? prioritized : fallback.slice(0, 4);
+    }
+
+    function getCurrentSongCandidates() {
+      if (currentSongMenuMode === "textbook") {
+        return Array.isArray(app.songs) ? app.songs : [];
+      }
+      return getShortSongCandidates();
+    }
+
+    function renderTextbookGradeButtons() {
+      const panel = document.getElementById("textbookGradePanel");
+      const grid = document.getElementById("gradeButtonGrid");
+      const songGrid = document.getElementById("songButtonGrid");
+      const textbookSongPanel = document.getElementById("textbookSongPanel");
+      const textbookSongButtons = document.getElementById("textbookSongButtons");
+      if (!panel || !grid || !songGrid) return;
+
+      panel.classList.remove("hidden");
+      songGrid.classList.add("hidden");
+      songGrid.innerHTML = "";
+      if (textbookSongPanel) textbookSongPanel.classList.add("hidden");
+      if (textbookSongButtons) textbookSongButtons.innerHTML = "";
+      grid.innerHTML = "";
+
+      [
+        { grade: "3", emoji: "🌱", emojiClass: "", theme: "gradeTheme-3", sub: "리코더와 친해지는\n첫 교과서 곡" },
+        { grade: "4", emoji: "🌼", emojiClass: "", theme: "gradeTheme-4", sub: "조금 더 넓어지는\n연주 여행" },
+        { grade: "5", emoji: "", emojiClass: "growth-blossom", subEmoji: "✨", theme: "gradeTheme-5", sub: "표현력까지 넓어지는\n중간 단계" },
+        { grade: "6", emoji: "", emojiClass: "growth-rainbow", subEmoji: "🌈", theme: "gradeTheme-6", sub: "완성도를 높여 가는\n마지막 단계" }
+      ].forEach((item) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `gradeChoiceBtn ${item.theme}`;
+        btn.onclick = () => openTextbookGrade(item.grade);
+        btn.innerHTML = `
+          <span class="gradeChoiceEmoji ${item.emojiClass || ""}">${item.emoji || ""}${item.subEmoji ? `<span class="gradeFlowerAccent">${item.subEmoji}</span>` : ""}</span>
+          <span class="gradeChoiceTitle">${item.grade}학년</span>
+          <span class="gradeChoiceSub">${item.sub}</span>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function renderTextbookSongButtons() {
+      const panel = document.getElementById("textbookSongPanel");
+      const title = document.getElementById("textbookSongPanelTitle");
+      const wrap = document.getElementById("textbookSongButtons");
+      const sel = document.getElementById("songSelect");
+      if (!panel || !title || !wrap || !sel) return;
+
+      const songs = Array.isArray(app.songs) ? app.songs : [];
+      const selectedId = String(sel.value || "");
+
+      if (!currentTextbookGrade || !songs.length) {
+        panel.classList.add("hidden");
+        wrap.innerHTML = "";
+        return;
+      }
+
+      panel.classList.remove("hidden");
+      panel.className = `textbookSongPanel grade-${currentTextbookGrade}`;
+      title.textContent = `${currentTextbookGrade}학년 교과서 곡`;
+      wrap.innerHTML = "";
+
+      songs.forEach((song) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `textbookSongBtn${String(song.songId) === selectedId ? " selected" : ""}`;
+        btn.textContent = song.title;
+        btn.onclick = () => selectSongById(song.songId);
+        wrap.appendChild(btn);
+      });
+    }
+
+    function setSongMenuView(view) {
+      const panel = document.getElementById("textbookGradePanel");
+      const songGrid = document.getElementById("songButtonGrid");
+      const textbookSongPanel = document.getElementById("textbookSongPanel");
+      if (!panel || !songGrid) return;
+
+      if (view === "grades") {
+        panel.classList.remove("hidden");
+        songGrid.classList.add("hidden");
+        if (textbookSongPanel) textbookSongPanel.classList.add("hidden");
+        return;
+      }
+
+      if (view === "songs") {
+        panel.classList.add("hidden");
+        songGrid.classList.remove("hidden");
+        if (textbookSongPanel) textbookSongPanel.classList.add("hidden");
+        return;
+      }
+
+      if (view === "textbook-songs") {
+        panel.classList.remove("hidden");
+        songGrid.classList.add("hidden");
+        if (textbookSongPanel) textbookSongPanel.classList.remove("hidden");
+      }
+    }
+
+    function resetSongMenuState(mode = "short") {
+      songLoadRequestSeq++;
+      currentSongMenuMode = mode;
+      currentTextbookGrade = null;
+      app.songs = [];
+
+      const sel = document.getElementById("songSelect");
+      if (sel) {
+        sel.innerHTML = "";
+        sel.value = "";
+      }
+
+      const songInfo = document.getElementById("songInfo");
+      if (songInfo) songInfo.textContent = "";
+
+      const songGrid = document.getElementById("songButtonGrid");
+      if (songGrid && mode === "textbook") {
+        songGrid.innerHTML = "";
+        songGrid.classList.add("hidden");
+      }
+
+      const textbookSongButtons = document.getElementById("textbookSongButtons");
+      if (textbookSongButtons) textbookSongButtons.innerHTML = "";
+
+      if (mode === "textbook") {
+        setSongMenuView("grades");
+      } else {
+        setSongMenuView("songs");
+      }
+    }
+
+    function openTextbookGrade(grade) {
+      currentTextbookGrade = String(grade);
+      const songs = TEXTBOOK_SONGS_BY_GRADE[currentTextbookGrade] || [];
+      app.songs = songs;
+
+      const sel = document.getElementById("songSelect");
+      if (sel) {
+        sel.innerHTML = "";
+        songs.forEach((song) => {
+          const opt = document.createElement("option");
+          opt.value = song.songId;
+          opt.textContent = song.title;
+          sel.appendChild(opt);
+        });
+        sel.value = "";
+      }
+
+      setSongMenuView("textbook-songs");
+      renderTextbookSongButtons();
+      showSelectedSong();
+    }
+
+    function getSongCardPresentation(song) {
+      const mapById = {
+        NABIYA: {
+          themeClass: "songTheme-butterfly",
+          icon: "🦋",
+          pattern: "🦋  🌼\n🌿  🦋",
+          level: "Lv.1",
+          desc: "가볍게 시작하는\n첫 연습 스테이지",
+          bpm: 88,
+          medal: "gold"
+        },
+        BIHAENGGI: {
+          themeClass: "songTheme-airplane",
+          icon: "✈️",
+          pattern: "☁️  ✈️\n☁️  ⭐",
+          level: "Lv.2",
+          desc: "리듬과 높이가 살아나는\n비행 스테이지",
+          bpm: 96,
+          medal: "silver"
+        },
+        HAKGYOJONG: {
+          themeClass: "songTheme-bell",
+          icon: "🔔",
+          pattern: "🔔  🎵\n🎵  🔔",
+          level: "Lv.2",
+          desc: "차분하고 반듯한\n즐거운 학교종",
+          bpm: 84,
+          medal: "bronze"
+        },
+        JAGEUNBYEOL: {
+          themeClass: "songTheme-star",
+          icon: "⭐",
+          pattern: "⭐  ✨\n✨  ⭐",
+          level: "Lv.3",
+          desc: "반짝이는 별처럼 이어지는\n대표 연습 스테이지",
+          bpm: 90
+        }
+      };
+
+      const mapByTitle = {
+        "나비야": mapById.NABIYA,
+        "비행기": mapById.BIHAENGGI,
+        "학교종": mapById.HAKGYOJONG,
+        "작은별": mapById.JAGEUNBYEOL
+      };
+
+      const songId = String(song?.songId || "").trim().toUpperCase();
+      const songTitle = String(song?.title || "").trim();
+
+      return mapById[songId] || mapByTitle[songTitle] || {
+        themeClass: "songTheme-airplane",
+        icon: "🎵",
+        pattern: "🎶  🎵\n🎵  🎶",
+        level: "Lv.1",
+        desc: "새로운 곡 스테이지",
+        bpm: Number(song?.bpm) || 80,
+        medal: ""
+      };
+    }
+
+function renderSongButtons() {
+      const grid = document.getElementById("songButtonGrid");
+      const sel = document.getElementById("songSelect");
+      if (!grid || !sel) return;
+
+      if (currentSongMenuMode === "textbook") {
+        setSongMenuView("textbook-songs");
+        renderTextbookSongButtons();
+        return;
+      }
+
+      const songs = getCurrentSongCandidates();
+      const selectedId = String(sel.value || "");
+
+      grid.innerHTML = "";
+      grid.classList.remove("hidden");
+
+      if (!songs.length) {
+        grid.innerHTML = `<div class="muted">${currentSongMenuMode === "textbook" ? "표시할 교과서 곡이 없습니다." : "표시할 짧은 곡이 없습니다."}</div>`;
+        return;
+      }
+
+      songs.forEach((song) => {
+        const cleared = isSongCleared(song.songId);
+        const ui = getSongCardPresentation(song);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `songChoiceBtn ${ui.themeClass}${String(song.songId) === selectedId ? " selected" : ""}`;
+        btn.onclick = () => selectSongById(song.songId);
+        btn.innerHTML = `
+          <span class="songChoicePattern" aria-hidden="true">${ui.pattern}</span>
+          <span class="songChoiceTop">
+            <span class="songChoiceArt" aria-hidden="true"><span class="songChoiceEmoji">${ui.icon}</span></span>
+            <span class="songChoiceBadgeCol">
+              <span class="songChoiceClear${cleared ? "" : " pending"}">${cleared ? "클리어" : "준비중"}</span>
+            </span>
+          </span>
+          <span class="songTitleRow">
+            <span class="songChoiceTitle">${song.title}</span>
+            ${ui.medal ? `<span class="songSuccessStamp ${ui.medal}"><span class="songSuccessStampInner">★</span></span>` : ""}
+          </span>
+          <span class="songChoiceMeta">BPM ${song.bpm || ui.bpm || 80} 쨌 ${song.timeSignature || "4/4"}</span>
+          <span class="songChoiceDesc">${ui.desc}</span>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function createUnifiedNavRow() {
+      const row = document.createElement("div");
+      row.className = "btnRow3";
+      row.style.marginTop = "12px";
+      row.innerHTML = `
+        <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
+        <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
+        <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
+      `;
+      return row;
+    }
+
+    function createPracticeIconButton({ label, icon, className = "", onClick }) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = className;
+      button.setAttribute("aria-label", label);
+      button.innerHTML = `
+        <span class="icon" aria-hidden="true">${icon}</span>
+        <span>${label}</span>
+      `;
+      if (onClick) {
+        button.onclick = onClick;
+      }
+      return button;
+    }
+
+    function enhancePracticeLayout() {
+      const practiceSection = document.getElementById("step34Section");
+      if (!practiceSection || practiceSection.dataset.layoutEnhanced === "true") {
+        return;
+      }
+
+      const practiceInfoBox = practiceSection.querySelector(".practiceInfoBox");
+      const actionRow = practiceSection.querySelector(".btnRow3");
+      const saveRow = practiceSection.querySelector('button[onclick="save()"]')?.closest(".btnRow");
+      const practiceStatus = document.getElementById("practiceStatus");
+      const saveStatus = document.getElementById("saveStatus");
+      const canvasWrap = practiceSection.querySelector(".canvasWrap");
+
+      if (!practiceInfoBox || !actionRow || !saveRow || !practiceStatus || !saveStatus || !canvasWrap) {
+        return;
+      }
+
+      practiceInfoBox.classList.add("practiceInfoCompact");
+
+      const startBtn = actionRow.querySelector('button[onclick="startPractice()"]');
+      const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
+      const resetBtn = actionRow.querySelector('button[onclick="resetPractice()"]');
+      const saveBtn = saveRow.querySelector('button[onclick="save()"]');
+      const backSongBtn = saveRow.querySelector('button[onclick="backToSongSelect()"]');
+
+      if (!startBtn || !stopBtn || !resetBtn || !saveBtn || !backSongBtn) {
+        return;
+      }
+
+      startBtn.className = "practiceMiniBtn";
+      startBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9654;</span><span class="label">\uC5F0\uC2B5 \uC2DC\uC791</span>';
+      startBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC2DC\uC791");
+
+      stopBtn.className = "practiceMiniBtn sub";
+      stopBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9208;</span><span class="label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
+      stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
+
+      saveBtn.className = "practiceMiniBtn";
+      saveBtn.innerHTML = '<span class="icon" aria-hidden="true">&#128190;</span><span class="label">\uC800\uC7A5\uD558\uAE30</span>';
+      saveBtn.setAttribute("aria-label", "\uC800\uC7A5\uD558\uAE30");
+
+      const controlPanel = document.createElement("div");
+      controlPanel.className = "practiceControlPanel";
+      const actionStack = document.createElement("div");
+      actionStack.className = "practiceActionStack";
+      actionStack.setAttribute("aria-label", "\uC5F0\uC2B5 \uB3D9\uC791");
+      actionStack.append(startBtn, stopBtn, saveBtn);
+
+
+      controlPanel.append(practiceInfoBox, actionStack);
+      canvasWrap.insertAdjacentElement("afterend", controlPanel);
+
+      actionRow.remove();
+      saveRow.remove();
+      resetBtn.className = "practiceNavBtn sub";
+      resetBtn.innerHTML = '<span class="icon" aria-hidden="true">&#129533;</span><span>\uD654\uBA74 \uCD08\uAE30\uD654</span>';
+      resetBtn.setAttribute("aria-label", "\uD654\uBA74 \uCD08\uAE30\uD654");
+
+      backSongBtn.className = "practiceNavBtn sub";
+      backSongBtn.innerHTML = '<span class="icon" aria-hidden="true">&#127925;</span><span>\uACE1 \uB2E4\uC2DC \uC120\uD0DD</span>';
+      backSongBtn.setAttribute("aria-label", "\uACE1 \uB2E4\uC2DC \uC120\uD0DD");
+
+
+      const footerBar = document.createElement("div");
+      footerBar.className = "bottomBar";
+
+      const leftGroup = document.createElement("div");
+      leftGroup.className = "leftGroup";
+      leftGroup.append(resetBtn, backSongBtn);
+
+      const rightGroupBox = document.createElement("div");
+      rightGroupBox.className = "rightGroupBox";
+
+      const rightGroup = document.createElement("div");
+      rightGroup.className = "rightGroup";
+      rightGroup.id = "step34UnifiedNav";
+      rightGroup.append(
+        createPracticeIconButton({ label: "\uC774\uC804", icon: "&#8617;", className: "practiceNavBtn button", onClick: goBackFromCurrentScreen }),
+        createPracticeIconButton({ label: "\uD648", icon: "&#127968;", className: "practiceNavBtn button", onClick: goHomeMenu }),
+        createPracticeIconButton({ label: "\uB85C\uADF8\uC544\uC6C3", icon: "&#128682;", className: "practiceNavBtn button", onClick: logout })
+      );
+      rightGroupBox.appendChild(rightGroup);
+
+      footerBar.append(leftGroup, rightGroupBox);
+      controlPanel.insertAdjacentElement("afterend", footerBar);
+
+      const statusStack = document.createElement("div");
+      statusStack.className = "practiceStatusStack";
+      statusStack.append(practiceStatus, saveStatus);
+      footerBar.insertAdjacentElement("afterend", statusStack);
+
+      practiceSection.dataset.layoutEnhanced = "true";
+    }
+
+    function setupUnifiedNavigation() {
+      const songSection = document.getElementById("step2Section");
+      if (songSection && !document.getElementById("step2UnifiedNav")) {
+        const actionRow = songSection.querySelector(".btnRow3");
+        if (actionRow) {
+          actionRow.className = "btnRow";
+          actionRow.style.marginTop = "10px";
+          actionRow.innerHTML = `<button onclick="goToPractice()">연습 시작</button>`;
+          const navRow = createUnifiedNavRow();
+          navRow.id = "step2UnifiedNav";
+          actionRow.insertAdjacentElement("afterend", navRow);
+        }
+      }
+
+      const practiceSection = document.getElementById("step34Section");
+      if (practiceSection && !document.getElementById("step34UnifiedNav")) {
+        const saveRow = practiceSection.querySelector('button[onclick="save()"]')?.closest(".btnRow");
+        if (saveRow) {
+          const navRow = createUnifiedNavRow();
+          navRow.id = "step34UnifiedNav";
+          saveRow.insertAdjacentElement("afterend", navRow);
+        }
+      }
+
+      const basicTypeSection = document.getElementById("step-basic-typeSection");
+      if (basicTypeSection && !document.getElementById("basicTypeUnifiedNav")) {
+        const rows = basicTypeSection.querySelectorAll(".btnRow");
+        const navTarget = rows[rows.length - 1];
+        if (navTarget) {
+          navTarget.className = "btnRow3";
+          navTarget.innerHTML = `
+            <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
+            <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
+            <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
+          `;
+          navTarget.id = "basicTypeUnifiedNav";
+        }
+      }
+
+      const basicSection = document.getElementById("step-basicSection");
+      if (basicSection && !document.getElementById("basicUnifiedNav")) {
+        const rows = basicSection.querySelectorAll(".btnRow");
+        const navTarget = rows[rows.length - 1];
+        if (navTarget) {
+          navTarget.className = "btnRow3";
+          navTarget.innerHTML = `
+            <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
+            <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
+            <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
+          `;
+          navTarget.id = "basicUnifiedNav";
+        }
+      }
+    }
+
+    function showStep(stepId) {
+  if (stepId !== "step-basicSection") {
+    stopBasicPracticeAudio();
+  }
+  document.getElementById("step1Section").classList.add("hidden");
+  document.getElementById("step2Section").classList.add("hidden");
+  document.getElementById("step34Section").classList.add("hidden");
+
+  const basicTypeSection = document.getElementById("step-basic-typeSection");
+  if (basicTypeSection) basicTypeSection.classList.add("hidden");
+
+  const basicSection = document.getElementById("step-basicSection");
+  if (basicSection) basicSection.classList.add("hidden");
+
+  document.getElementById(stepId).classList.remove("hidden");
+}
+    function showScreen(screenId) {
+  stopBasicPracticeSession();
+  document.getElementById("screen-menu").style.display = "none";
+
+  document.getElementById("step1Section").classList.add("hidden");
+  document.getElementById("step2Section").classList.add("hidden");
+  document.getElementById("step34Section").classList.add("hidden");
+
+  if (screenId === "screen-song") {
+    resetSongMenuState("short");
+    showStep("step2Section");
+    loadSongs();
+    return;
+  }
+
+  if (screenId === "screen-textbook") {
+    resetSongMenuState("textbook");
+    showStep("step2Section");
+    renderTextbookGradeButtons();
+    return;
+  }
+
+  if (screenId === "screen-practice") {
+    showStep("step34Section");
+    return;
+  }
+
+  if (screenId === "screen-basic") {
+  showStep("step-basic-typeSection");
+  setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
+  return;
+}
+}
+
+    function getBasicFingeringLabel(system = currentBasicFingeringSystem) {
+      return system === "baroque" ? "바로크식" : "저먼식";
+    }
+
+    function openBasicFingering(system) {
+      currentBasicFingeringSystem = system === "baroque" ? "baroque" : "german";
+
+      resetBasicPracticeState("C5");
+
+      showStep("step-basicSection");
+
+      const titleEl = document.getElementById("basicSectionTitle");
+      if (titleEl) {
+        titleEl.textContent = `기본 운지 연습 · ${getBasicFingeringLabel()}`;
+      }
+
+      drawBasicRecorderImage("C5");
+      drawBasicStaff("C5");
+      setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} 운지 화면 표시 완료`, "ok");
+    }
+
+    function fillTestData() {
+      document.getElementById("grade").value = "3";
+      document.getElementById("class").value = "1";
+      document.getElementById("number").value = "1";
+      document.getElementById("name").value = "홍길동";
+    }
+
+    async function login() {
+      const code = document.getElementById("code").value.trim();
+
+      if (!code) {
+        setStatus("loginStatus", "코드를 입력하세요.", "bad");
+        return;
+      }
+
+      try {
+        const user = await app.login(code);
+
+        app.user.grade = document.getElementById("grade").value;
+        app.user.class = document.getElementById("class").value;
+        app.user.number = document.getElementById("number").value;
+        app.user.name = document.getElementById("name").value;
+
+        setStatus(
+          "loginStatus",
+          `로그인 성공 · ${user.userId} / ${user.name || "이름없음"}`,
+          "ok"
+        );
+
+        document.getElementById("userName").innerText = app.user.name || "학생";
+document.getElementById("userLevel").innerText = "Lv." + (app.user.level || 1);
+resetSongMenuState("short");
+
+document.getElementById("step1Section").classList.add("hidden");
+document.getElementById("step2Section").classList.add("hidden");
+document.getElementById("step34Section").classList.add("hidden");
+const basicTypeSection = document.getElementById("step-basic-typeSection");
+if (basicTypeSection) basicTypeSection.classList.add("hidden");
+const basicSection = document.getElementById("step-basicSection");
+if (basicSection) basicSection.classList.add("hidden");
+
+document.getElementById("screen-menu").style.display = "block";
+app.refreshSongs().catch(() => {});
+      } catch (e) {
+        setStatus("loginStatus", e.message, "bad");
+      }
+    }
+
+    function backToLogin() {
+  stopBasicPracticeSession();
+  resetSongMenuState("short");
+  showStep("step1Section");
+}
+
+function goHomeMenu() {
+  stopBasicPracticeSession();
+  stopPractice();
+  resetSongMenuState("short");
+
+  document.getElementById("step1Section").classList.add("hidden");
+  document.getElementById("step2Section").classList.add("hidden");
+  document.getElementById("step34Section").classList.add("hidden");
+  const basicTypeSection = document.getElementById("step-basic-typeSection");
+  if (basicTypeSection) basicTypeSection.classList.add("hidden");
+  const basicSection = document.getElementById("step-basicSection");
+  if (basicSection) basicSection.classList.add("hidden");
+
+  document.getElementById("screen-menu").style.display = "block";
+}
+
+function goBackFromCurrentScreen() {
+  if (isSectionVisible("step34Section")) {
+    backToSongSelect();
+    return;
+  }
+
+  if (isSectionVisible("step2Section") && currentSongMenuMode === "textbook" && currentTextbookGrade) {
+    currentTextbookGrade = null;
+    setSongMenuView("grades");
+    renderTextbookGradeButtons();
+    return;
+  }
+
+  if (isSectionVisible("step-basicSection")) {
+    stopBasicPracticeSession();
+    showStep("step-basic-typeSection");
+    return;
+  }
+
+  if (isSectionVisible("step2Section") || isSectionVisible("step-basic-typeSection")) {
+    goHomeMenu();
+    return;
+  }
+
+  backToLogin();
+}
+
+function logout() {
+  stopBasicPracticeSession();
+  stopPractice();
+  resetSongMenuState("short");
+
+  document.getElementById("screen-menu").style.display = "none";
+
+  showStep("step1Section");
+}
+
+    function renderShortSongList(songs, { keepSelection = false } = {}) {
+      app.songs = Array.isArray(songs) ? songs : [];
+
+      const sel = document.getElementById("songSelect");
+      const previousValue = keepSelection ? String(sel.value || "") : "";
+      sel.innerHTML = "";
+
+      if (!app.songs.length) {
+        document.getElementById("songInfo").textContent = "불러온 곡이 없습니다.";
+        return false;
+      }
+
+      app.songs.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.songId;
+        opt.textContent = s.title;
+        sel.appendChild(opt);
+      });
+
+      const hasPrevious = previousValue && app.songs.some(s => String(s.songId) === previousValue);
+      sel.value = hasPrevious ? previousValue : "";
+      sel.onchange = showSelectedSong;
+      renderSongButtons();
+      showSelectedSong();
+      return true;
+    }
+
+    async function loadSongs() {
+      if (currentSongMenuMode !== "textbook") {
+        const requestId = ++songLoadRequestSeq;
+        setStatus("songLoadStatus", "곡을 불러오는 중입니다.", "");
+
+        try {
+          const data = await app.loadSongs();
+
+          if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+            return;
+          }
+
+          const hasSongs = renderShortSongList(data.songs || []);
+          if (!hasSongs) {
+            setStatus("songLoadStatus", "곡이 없습니다.", "bad");
+            return;
+          }
+
+          if (data.fromCache) {
+            setStatus(
+              "songLoadStatus",
+              data.stale ? "캐시된 곡 목록을 먼저 보여주고 최신 목록을 확인 중입니다." : "저장된 곡 목록을 바로 불러왔습니다.",
+              "ok"
+            );
+
+            if (data.refreshPromise) {
+              data.refreshPromise
+                .then((freshData) => {
+                  if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+                    return;
+                  }
+
+                  if (Array.isArray(freshData?.songs) && freshData.songs.length) {
+                    renderShortSongList(freshData.songs, { keepSelection: true });
+                    setStatus("songLoadStatus", "최신 곡 목록으로 새로고침했습니다.", "ok");
+                  }
+                })
+                .catch(() => {
+                  if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+                    return;
+                  }
+                  setStatus("songLoadStatus", "저장된 곡 목록을 사용 중입니다.", "ok");
+                });
+            }
+          } else if (data.fromMock) {
+            setStatus("songLoadStatus", "테스트 곡 목록을 불러왔습니다.", "ok");
+          } else {
+            setStatus("songLoadStatus", "서버에서 곡을 불러왔습니다.", "ok");
+          }
+        } catch (e) {
+          if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+            return;
+          }
+          document.getElementById("songInfo").innerHTML = `<span class="bad">${e.message}</span>`;
+          setStatus("songLoadStatus", e.message, "bad");
+        }
+        return;
+      }
+
+      if (currentSongMenuMode === "textbook") {
+        renderTextbookGradeButtons();
+        return;
+      }
+
+      const requestId = ++songLoadRequestSeq;
+      setStatus("songLoadStatus", "곡 불러오는 중입니다.", "");
+      try {
+        const data = await app.loadSongs();
+
+        if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+          return;
+        }
+
+        app.songs = data.songs || [];
+
+        const sel = document.getElementById("songSelect");
+        sel.innerHTML = "";
+
+        if (!app.songs.length) {
+          document.getElementById("songInfo").textContent = "곡이 없습니다.";
+          setStatus("songLoadStatus", "곡이 없습니다.", "bad");
+          return;
+        }
+
+        app.songs.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s.songId;
+          opt.textContent = s.title;
+          sel.appendChild(opt);
+        });
+
+        sel.value = "";
+        sel.onchange = showSelectedSong;
+        renderSongButtons();
+        showSelectedSong();
+
+        if (data.fromCache) {
+          setStatus("songLoadStatus", "서버 연결 실패 · 저장된 곡을 불러왔습니다.", "ok");
+        } else if (data.fromMock) {
+          setStatus("songLoadStatus", "테스트 곡을 불러왔습니다.", "ok");
+        } else {
+          setStatus("songLoadStatus", "서버에서 곡 불러오기 완료", "ok");
+        }
+      } catch (e) {
+        if (requestId !== songLoadRequestSeq || currentSongMenuMode !== "short") {
+          return;
+        }
+        document.getElementById("songInfo").innerHTML = `<span class="bad">${e.message}</span>`;
+        setStatus("songLoadStatus", e.message, "bad");
+      }
+    }
+
+    function getSelectedSong() {
+      const sel = document.getElementById("songSelect");
+      const songId = sel.value;
+      return (app.songs || []).find(s => String(s.songId) === String(songId)) || null;
+    }
+
+    function selectSongById(songId) {
+      const sel = document.getElementById("songSelect");
+      if (!sel) return;
+
+      const normalizedId = String(songId);
+      const matchedSong = (app.songs || []).find((song) => String(song.songId) === normalizedId);
+      if (!matchedSong) return;
+
+      sel.value = normalizedId;
+      if (typeof app.selectSong === "function") {
+        app.selectSong(matchedSong.songId);
+      }
+      showSelectedSong();
+    }
+
+    function goToPractice() {
+      const song = getSelectedSong();
+      if (!song) {
+        setStatus("songLoadStatus", "곡을 선택하세요.", "bad");
+        return;
+      }
+
+      showStep("step34Section");
+      showSelectedSong();
+      resetPractice();
+    }
+
+    function backToSongSelect() {
+      stopBasicPracticeAudio();
+      stopPractice();
+      showStep("step2Section");
+      if (currentSongMenuMode === "textbook" && currentTextbookGrade) {
+        setSongMenuView("textbook-songs");
+        renderTextbookSongButtons();
+        return;
+      }
+
+      setSongMenuView("songs");
+    }
+
+    function parseTimeSignature(ts) {
+      const raw = String(ts || "4/4").trim();
+      const m = raw.match(/^(\d+)\s*\/\s*(\d+)$/);
+
+      if (!m) {
+        return {
+          text: "4/4",
+          beatsPerMeasure: 4,
+          beatUnit: 4,
+          measureBeats: 4
+        };
+      }
+
+      const beatsPerMeasure = Number(m[1]);
+      const beatUnit = Number(m[2]);
+
+      return {
+        text: raw,
+        beatsPerMeasure,
+        beatUnit,
+        measureBeats: beatsPerMeasure * (4 / beatUnit)
+      };
+    }
+
+    function getSpeedMultiplier() {
+      const speedEl = document.getElementById("speedSelect");
+      return Math.max(0.25, Number(speedEl ? speedEl.value : 1) || 1);
+    }
+
+    function updatePracticeSpeedInfo() {
+      const speed = getSpeedMultiplier();
+      const song = getSelectedSong();
+      document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
+
+      if (song) {
+        const actualBpm = Math.round((Number(song.bpm) || 80) * speed);
+        document.getElementById("practiceInfo").innerHTML =
+          `선택곡 <b>${song.title}</b><br>박자: ${song.timeSignature || "4/4"}<br>기준 BPM: ${song.bpm || 80}<br>적용 속도: ${speed.toFixed(2).replace(/\.00$/, "")}배 (${actualBpm} BPM)`;
+      }
+    }
+
+    function showSelectedSong() {
+      const song = getSelectedSong();
+
+      if (!song) {
+        document.getElementById("songInfo").textContent = "선택된 곡이 없습니다.";
+        return;
+      }
+
+      const ts = song.timeSignature || "4/4";
+
+      document.getElementById("songInfo").innerHTML =
+        `<b>${song.title}</b><br>곡 ID: ${song.songId}<br>기준 BPM: ${song.bpm || 80}<br>박자: ${ts}<br>notation: ${song.notation || "(없음)"}`;
+
+      document.getElementById("practiceSongTitle").textContent = song.title;
+      document.getElementById("practiceTimeSignature").textContent = ts;
+      document.getElementById("practiceBadge").textContent = `${song.title} 준비 완료`;
+
+      updatePracticeSpeedInfo();
+    }
+
+    function showSelectedSong() {
+      const song = getSelectedSong();
+      renderSongButtons();
+
+      if (!song) {
+        document.getElementById("songInfo").textContent = "선택된 곡이 없습니다.";
+        return;
+      }
+
+      const ts = song.timeSignature || "4/4";
+      const clearText = isSongCleared(song.songId) ? "클리어 완료" : "연습 중";
+
+      document.getElementById("songInfo").innerHTML =
+        `<b>${song.title}</b><br>곡 ID: ${song.songId}<br>기준 BPM: ${song.bpm || 80}<br>박자: ${ts}<br>진행 상태: ${clearText}<br>notation: ${song.notation || "(없음)"}`;
+
+      document.getElementById("practiceSongTitle").textContent = song.title;
+      document.getElementById("practiceTimeSignature").textContent = ts;
+      document.getElementById("practiceBadge").textContent = `${song.title} 준비 완료`;
+
+      updatePracticeSpeedInfo();
+    }
+
+    function parseNotationToken(token) {
+      token = String(token || "").trim();
+      if (!token) return null;
+
+      const m = token.match(/^([A-GR][#b]?\d?)(?:\/(\d+(?:\.\d+)?))?$/i);
+      if (!m) return null;
+
+      const rawNote = m[1].toUpperCase();
+      const beat = m[2] ? Number(m[2]) : 1;
+
+      if (!Number.isFinite(beat) || beat <= 0) return null;
+
+      return {
+        note: rawNote === "R" ? null : rawNote,
+        beat: beat
+      };
+    }
+
+    function buildSongTimeline(song, selectedBpm) {
+      const notation = String(song && song.notation ? song.notation : "").trim();
+      const bpm = Math.max(1, Number(selectedBpm) || Number(song && song.bpm) || 80);
+      const beatMs = 60000 / bpm;
+      const notes = [];
+      const timeSig = parseTimeSignature(song && song.timeSignature);
+
+      if (!notation) {
+        return {
+          bpm,
+          beatMs,
+          totalMs: 0,
+          totalBeats: 0,
+          notes: [],
+          timeSignature: timeSig.text,
+          measureBeats: timeSig.measureBeats
+        };
+      }
+
+      const tokens = notation
+        .replace(/\|/g, " | ")
+        .split(/\s+/)
+        .filter(Boolean);
+
+      let cursorMs = 0;
+      let cursorBeat = 0;
+
+      for (const token of tokens) {
+        if (token === "|") continue;
+
+        const parsed = parseNotationToken(token);
+        if (!parsed) continue;
+
+        const durMs = parsed.beat * beatMs;
+
+        notes.push({
+          note: parsed.note,
+          beat: parsed.beat,
+          startMs: cursorMs,
+          durMs,
+          startBeat: cursorBeat,
+          raw: token
+        });
+
+        cursorMs += durMs;
+        cursorBeat += parsed.beat;
+      }
+
+      return {
+        bpm,
+        beatMs,
+        totalMs: cursorMs,
+        totalBeats: cursorBeat,
+        notes,
+        timeSignature: timeSig.text,
+        measureBeats: timeSig.measureBeats
+      };
+    }
+
+    function noteToY(note) {
+      if (!note) return 0;
+
+      const order = {
+        C5: 0,
+        D5: 1,
+        E5: 2,
+        F5: 3,
+        G5: 4,
+        A5: 5,
+        B5: 6,
+        C6: 7,
+        D6: 8,
+        E6: 9
+      };
+
+      const step = order[note];
+      if (step === undefined) return 0;
+
+      const canvas = document.getElementById("practiceCanvas");
+      const h = canvas.height;
+
+      const centerY = h / 2;
+      const gap = 20;
+      const bottomLineY = centerY + 60;
+      const halfGap = gap / 2;
+
+      return bottomLineY - step * halfGap;
+    }
+
+    function drawPracticeBase(timeSignatureText = "4/4") {
+      const canvas = document.getElementById("practiceCanvas");
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+
+      const centerY = h / 2;
+      const gap = 20;
+      const topLineY = centerY - 2 * gap;
+      const bottomLineY = topLineY + 4 * gap;
+
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2.2;
+      for (let i = 0; i < 5; i++) {
+        const y = topLineY + i * gap;
+        ctx.beginPath();
+        ctx.moveTo(70, y);
+        ctx.lineTo(w - 40, y);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(w - 52, topLineY);
+      ctx.lineTo(w - 52, bottomLineY);
+      ctx.stroke();
+
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(w - 44, topLineY);
+      ctx.lineTo(w - 44, bottomLineY);
+      ctx.stroke();
+
+      if (trebleReady) {
+        const trebleX = 8;
+        const trebleY = topLineY - 18;
+        const trebleW = 82;
+        const trebleH = 160;
+        ctx.drawImage(trebleImg, trebleX, trebleY, trebleW, trebleH);
+      } else {
+        ctx.fillStyle = "#111";
+        ctx.font = "72px serif";
+        ctx.fillText("𝄞", 20, topLineY + 58);
+      }
+
+      const parts = timeSignatureText.split("/");
+      ctx.fillStyle = "#111";
+      ctx.font = "26px system-ui";
+      ctx.fillText(parts[0] || "4", 90, topLineY + 34);
+      ctx.fillText(parts[1] || "4", 90, topLineY + 66);
+
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(170, 30);
+      ctx.lineTo(170, h - 30);
+      ctx.stroke();
+
+      ctx.fillStyle = "#666";
+      ctx.font = "16px system-ui";
+      ctx.fillText("판정선", 142, 24);
+    }
+
+   function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth) {
+  const beat = Number(noteObj.beat || 1);
+  const noteColor = "#1d4ed8";
+  const lineColor = "#2563eb";
+
+  const headW = 15;
+  const headH = 10;
+  const stemHeight = 52;
+
+  const isWhole = beat >= 4;
+  const isHalf = beat >= 2 && beat < 4;
+  const isQuarter = beat >= 1 && beat < 2;
+  const isEighth = beat < 1;
+
+  const safeBodyWidth = Math.max(12, Number(bodyWidth) || 12);
+
+  // 湲몄씠 ?쒖떆??
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(noteX + 18, y);
+  ctx.lineTo(noteX + 18 + safeBodyWidth, y);
+  ctx.stroke();
+
+  // ?뚰몴 癒몃━
+  ctx.save();
+  ctx.translate(noteX, y);
+  ctx.rotate(-0.4);
+
+  if (isWhole || isHalf) {
+    ctx.fillStyle = "#fff";
+    ctx.strokeStyle = noteColor;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, headW, headH, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = noteColor;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, headW, headH, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // 以꾧린
+  if (!isWhole) {
+    ctx.strokeStyle = noteColor;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(noteX + 12, y);
+    ctx.lineTo(noteX + 12, y - stemHeight);
+    ctx.stroke();
+  }
+
+  // 8遺꾩쓬??瑗щ━
+  if (isEighth) {
+    ctx.strokeStyle = noteColor;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(noteX + 12, y - stemHeight);
+    ctx.quadraticCurveTo(
+      noteX + 28,
+      y - stemHeight + 8,
+      noteX + 17,
+      y - stemHeight + 24
+    );
+    ctx.stroke();
+  }
+
+  // C5 蹂댁“??
+  if (noteObj.note === "C5") {
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(noteX - 18, y);
+    ctx.lineTo(noteX + 18, y);
+    ctx.stroke();
+  }
+
+  // 怨꾩씠由??쒖떆
+  ctx.fillStyle = "#111";
+  ctx.font = "14px system-ui";
+  ctx.fillText(getKoreanNoteName(noteObj.note), noteX - 10, bottomLineY + 38);
+}
+
+function getKoreanNoteName(note) {
+  const raw = String(note || "").trim().toUpperCase();
+  const m = raw.match(/^([A-G])(#|B)?\d*$/);
+  if (!m) return raw;
+
+  const base = m[1];
+  const accidental = m[2] || "";
+
+  const map = {
+    C: "도",
+    D: "레",
+    E: "미",
+    F: "파",
+    G: "솔",
+    A: "라",
+    B: "시"
+  };
+
+  let name = map[base] || raw;
+
+  if (accidental === "#") name += "#";
+  if (accidental === "B") name += "b";
+
+  return name;
+}
+
+function getNoteBodyWidthByBeat(beat) {
+  const baseWidthForWhole = 160; // 4諛?湲곗? 湲몄씠
+  const safeBeat = Math.max(0.25, Number(beat) || 1);
+  return baseWidthForWhole * (safeBeat / 4);
+}
+
+    function drawTimelineNotes(elapsedMs, timeline) {
+      const canvas = document.getElementById("practiceCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const judgeX = 170;
+      const beatMs = timeline.beatMs;
+      const pxPerBeat = 80;
+      const pxPerMs = pxPerBeat / beatMs;
+
+      const noteStartOffset = 22;
+      const noteEndGap = 14;
+
+      drawPracticeBase(timeline.timeSignature || "4/4");
+
+      const h = canvas.height;
+      const centerY = h / 2;
+      const gap = 20;
+      const topLineY = centerY - 2 * gap;
+      const bottomLineY = centerY + 2 * gap;
+
+      const measureBeats = Number(timeline.measureBeats || 4);
+      const measureMs = beatMs * measureBeats;
+
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2;
+
+      for (let t = 0; t <= timeline.totalMs + 1; t += measureMs) {
+        const barX = judgeX + (t - elapsedMs) * pxPerMs;
+        if (barX < 0 || barX > canvas.width) continue;
+
+        ctx.beginPath();
+        ctx.moveTo(barX, topLineY - 10);
+        ctx.lineTo(barX, bottomLineY + 10);
+        ctx.stroke();
+      }
+
+      timeline.notes.forEach(n => {
+        const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
+        const w = Math.max(24, n.durMs * pxPerMs);
+
+        if (x > canvas.width + 80) return;
+        if (x + w < judgeX - 20) return;
+
+        if (!n.note) {
+          ctx.fillStyle = "#111";
+          ctx.font = "30px serif";
+          ctx.fillText("♩", x + noteStartOffset, centerY + 10);
+
+          ctx.strokeStyle = "#2563eb";
+          ctx.lineWidth = 9;
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(x + noteStartOffset + 10, centerY);
+          ctx.lineTo(x + Math.max(noteStartOffset + 20, w - noteEndGap), centerY);
+          ctx.stroke();
+          return;
+        }
+
+        const y = noteToY(n.note);
+const noteX = x + noteStartOffset;
+const bodyWidth = getNoteBodyWidthByBeat(n.beat);
+
+drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
+      });
+
+      if (elapsedMs < 0) {
+        const remain = Math.ceil(Math.abs(elapsedMs) / 1000);
+
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#111";
+        ctx.font = "bold 72px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(remain), canvas.width / 2, canvas.height / 2);
+
+        ctx.textAlign = "start";
+        ctx.textBaseline = "alphabetic";
+      }
+    }
+
+    function freqToMidi(freq) {
+      return 69 + 12 * Math.log2(freq / 440);
+    }
+
+    function midiToNoteName(midi) {
+      const rounded = Math.round(midi);
+      const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      const octave = Math.floor(rounded / 12) - 1;
+      const name = names[((rounded % 12) + 12) % 12];
+      return `${name}${octave}`;
+    }
+
+    function normalizeNoteName(note) {
+      return String(note || "").trim().toUpperCase().replace("?", "#").replace("?", "#");
+    }
+
+    function noteNameToMidi(note) {
+      note = normalizeNoteName(note);
+      const m = note.match(/^([A-G])(#?)(\d)$/);
+      if (!m) return null;
+
+      const baseMap = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+      let semitone = baseMap[m[1]];
+      if (m[2] === "#") semitone += 1;
+
+      const octave = Number(m[3]);
+      return (octave + 1) * 12 + semitone;
+    }
+
+    function findCurrentTargetNote(elapsedMs, timeline) {
+      if (!timeline || !timeline.notes || !timeline.notes.length) return null;
+
+      for (const n of timeline.notes) {
+        if (elapsedMs >= n.startMs && elapsedMs < n.startMs + n.durMs) {
+          return n.note ? n : null;
+        }
+      }
+      return null;
+    }
+
+    function autoCorrelate(buffer, sampleRate) {
+      const SIZE = buffer.length;
+
+      let rms = 0;
+      for (let i = 0; i < SIZE; i++) {
+        const val = buffer[i];
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / SIZE);
+      if (rms < 0.01) return -1;
+
+      let r1 = 0;
+      let r2 = SIZE - 1;
+      const threshold = 0.2;
+
+      for (let i = 0; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[i]) < threshold) {
+          r1 = i;
+          break;
+        }
+      }
+
+      for (let i = 1; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[SIZE - i]) < threshold) {
+          r2 = SIZE - i;
+          break;
+        }
+      }
+
+      const trimmed = buffer.slice(r1, r2);
+      const newSize = trimmed.length;
+      const c = new Array(newSize).fill(0);
+
+      for (let lag = 0; lag < newSize; lag++) {
+        for (let i = 0; i < newSize - lag; i++) {
+          c[lag] += trimmed[i] * trimmed[i + lag];
+        }
+      }
+
+      let d = 0;
+      while (d + 1 < c.length && c[d] > c[d + 1]) d++;
+
+      let maxPos = -1;
+      let maxVal = -1;
+      for (let i = d; i < c.length; i++) {
+        if (c[i] > maxVal) {
+          maxVal = c[i];
+          maxPos = i;
+        }
+      }
+
+      if (maxPos <= 0) return -1;
+
+      let T0 = maxPos;
+      if (maxPos > 0 && maxPos < c.length - 1) {
+        const x1 = c[maxPos - 1];
+        const x2 = c[maxPos];
+        const x3 = c[maxPos + 1];
+        const a = (x1 + x3 - 2 * x2) / 2;
+        const b = (x3 - x1) / 2;
+        if (a) T0 = T0 - b / (2 * a);
+      }
+
+      const freq = sampleRate / T0;
+      if (!Number.isFinite(freq) || freq < 100 || freq > 1200) return -1;
+
+      return freq;
+    }
+
+    async function startMicMonitoring() {
+      if (micRunning) return;
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+
+        micStream = stream;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        if (audioCtx.state === "suspended") {
+          await audioCtx.resume();
+        }
+
+        micSource = audioCtx.createMediaStreamSource(stream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.1;
+
+        micSource.connect(analyser);
+        pitchBuffer = new Float32Array(analyser.fftSize);
+
+        micRunning = true;
+        updatePitchLoop();
+
+        setStatus("practiceStatus", "마이크 연결 완료", "ok");
+      } catch (e) {
+        micRunning = false;
+        setStatus("practiceStatus", "마이크 권한이 거부되었거나 연결에 실패했습니다.", "bad");
+        throw e;
+      }
+    }
+
+    function stopMicMonitoring() {
+      micRunning = false;
+
+      if (pitchLoopHandle) {
+        cancelAnimationFrame(pitchLoopHandle);
+        pitchLoopHandle = null;
+      }
+
+      if (micSource) {
+        try { micSource.disconnect(); } catch (_) {}
+        micSource = null;
+      }
+
+      if (analyser) {
+        try { analyser.disconnect(); } catch (_) {}
+        analyser = null;
+      }
+
+      if (micStream) {
+        try { micStream.getTracks().forEach(t => t.stop()); } catch (_) {}
+        micStream = null;
+      }
+
+      if (audioCtx) {
+        try { audioCtx.close(); } catch (_) {}
+        audioCtx = null;
+      }
+
+      livePitchHz = 0;
+      liveDetectedNote = null;
+      liveDetectedMidi = null;
+      liveDetectedCents = null;
+
+      const liveEl = document.getElementById("liveDetectedNote");
+      if (liveEl) liveEl.textContent = "-";
+    }
+
+    function resetScoreState() {
+      scoreState = {
+        totalFrames: 0,
+        judgedFrames: 0,
+        pitchHitFrames: 0,
+        rhythmHitFrames: 0,
+        finalScore: 0,
+        pitchAccuracy: 0,
+        rhythmAccuracy: 0
+      };
+
+      const liveScoreEl = document.getElementById("liveScore");
+      if (liveScoreEl) liveScoreEl.textContent = "0";
+    }
+
+    function updateScoringFrame() {
+      const now = performance.now();
+      const elapsedMs = (now - currentPracticeStartedAt) - currentCountdownMs;
+
+      if (elapsedMs < 0) return;
+
+      const target = findCurrentTargetNote(elapsedMs, currentTimeline);
+
+      const targetEl = document.getElementById("liveTargetNote");
+      if (targetEl) targetEl.textContent = target ? target.note : "-";
+
+      scoreState.totalFrames++;
+
+      if (!target) return;
+
+      scoreState.judgedFrames++;
+
+      if (liveDetectedMidi == null) return;
+
+      const targetMidi = noteNameToMidi(target.note);
+      if (targetMidi == null) return;
+
+      const diff = Math.abs(liveDetectedMidi - targetMidi);
+
+      if (diff <= 0) {
+        scoreState.pitchHitFrames++;
+        scoreState.rhythmHitFrames++;
+      } else if (diff <= 1) {
+        scoreState.pitchHitFrames += 0.5;
+        scoreState.rhythmHitFrames += 1;
+      }
+
+      const judged = Math.max(1, scoreState.judgedFrames);
+      scoreState.pitchAccuracy = Math.round((scoreState.pitchHitFrames / judged) * 100);
+      scoreState.rhythmAccuracy = Math.round((scoreState.rhythmHitFrames / judged) * 100);
+      scoreState.finalScore = Math.round(
+        scoreState.pitchAccuracy * 0.7 + scoreState.rhythmAccuracy * 0.3
+      );
+
+      const liveScoreEl = document.getElementById("liveScore");
+      if (liveScoreEl) liveScoreEl.textContent = String(scoreState.finalScore);
+    }
+
+    function updatePitchLoop() {
+      if (!micRunning || !analyser || !audioCtx) return;
+
+      analyser.getFloatTimeDomainData(pitchBuffer);
+      const freq = autoCorrelate(pitchBuffer, audioCtx.sampleRate);
+
+      if (freq > 0) {
+        livePitchHz = freq;
+        const midi = freqToMidi(freq);
+        const roundedMidi = Math.round(midi);
+        const cents = Math.round((midi - roundedMidi) * 100);
+
+        liveDetectedMidi = roundedMidi;
+        liveDetectedNote = midiToNoteName(roundedMidi);
+        liveDetectedCents = cents;
+
+        const el = document.getElementById("liveDetectedNote");
+        if (el) el.textContent = liveDetectedNote;
+      } else {
+        livePitchHz = 0;
+        liveDetectedMidi = null;
+        liveDetectedNote = null;
+        liveDetectedCents = null;
+
+        const el = document.getElementById("liveDetectedNote");
+        if (el) el.textContent = "-";
+      }
+
+      if (practiceRunning && currentTimeline) {
+        updateScoringFrame();
+      }
+
+      pitchLoopHandle = requestAnimationFrame(updatePitchLoop);
+    }
+
+    async function startPractice() {
+      const song = getSelectedSong();
+
+      if (!song) {
+        setStatus("practiceStatus", "곡을 먼저 선택하세요.", "bad");
+        return;
+      }
+
+      if (!song.notation) {
+        setStatus("practiceStatus", "notation 정보가 없습니다.", "bad");
+        return;
+      }
+
+      stopPractice();
+
+      try {
+        await startMicMonitoring();
+      } catch (e) {
+        return;
+      }
+
+      const speed = getSpeedMultiplier();
+      const baseBpm = Number(song.bpm) || 80;
+      const selectedBpm = Math.max(40, Math.min(220, Math.round(baseBpm * speed)));
+
+      const timeline = buildSongTimeline(song, selectedBpm);
+      const startedAt = performance.now();
+      const countdownMs = 5000;
+
+      currentTimeline = timeline;
+      currentPracticeStartedAt = startedAt;
+      currentCountdownMs = countdownMs;
+
+      resetScoreState();
+
+      practiceRunning = true;
+      document.getElementById("practiceBadge").textContent = `${song.title} 연습 중`;
+      document.getElementById("practiceSongTitle").textContent = song.title;
+      document.getElementById("practiceTimeSignature").textContent = timeline.timeSignature || "4/4";
+      document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
+
+      document.getElementById("practiceInfo").innerHTML =
+        `<b>${song.title}</b><br>박자: ${timeline.timeSignature || "4/4"}<br>기준 BPM: ${baseBpm}<br>적용 속도: ${speed.toFixed(2).replace(/\.00$/, "")}배 (${selectedBpm} BPM)<br>총 음표 수: ${timeline.notes.length}개<br>총 길이: ${(timeline.totalMs / 1000).toFixed(1)}초`;
+
+      setStatus("practiceStatus", "5초 카운트 후 시작 · 마이크 판정중", "ok");
+
+      function loop(now) {
+        if (!practiceRunning) return;
+
+        const elapsedMs = (now - startedAt) - countdownMs;
+        drawTimelineNotes(elapsedMs, timeline);
+
+        if (elapsedMs >= timeline.totalMs + 1500) {
+          stopPractice();
+          setStatus(
+            "practiceStatus",
+            `연습 완료 · 총점 ${scoreState.finalScore} / 음정 ${scoreState.pitchAccuracy}% / 리듬 ${scoreState.rhythmAccuracy}%`,
+            "ok"
+          );
+          return;
+        }
+
+        practiceAnim = requestAnimationFrame(loop);
+      }
+
+      practiceAnim = requestAnimationFrame(loop);
+    }
+
+    function stopPractice() {
+      practiceRunning = false;
+
+      if (practiceAnim) cancelAnimationFrame(practiceAnim);
+      practiceAnim = null;
+
+      stopMicMonitoring();
+
+      setStatus("practiceStatus", "연습 정지", "");
+      currentTimeline = null;
+    }
+function drawBasicRecorderImage(note = "G5") {
+  const wrap = document.getElementById("basicRecorderImageWrap");
+  if (!wrap) return;
+
+  wrap.querySelectorAll(".basicHole").forEach((node) => node.remove());
+  const img = document.getElementById("basicRecorderImage");
+  if (!img) return;
+
+  img.src = BASIC_NOTE_IMAGE_PATHS[note] || "images/recorder-base.png";
+  img.alt = `${note} 리코더 운지 이미지`;
+}
+
+function drawBasicStaff(note = "G5") {
+  const canvas = document.getElementById("basicStaffCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, w, h);
+
+  const staffWidth = 360;
+  const startX = Math.round((w - staffWidth) / 2);
+  const endX = startX + staffWidth;
+  const gap = 30;
+  const topY = 170;
+
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 2;
+
+  // ?ㅼ꽑
+  for (let i = 0; i < 5; i++) {
+    const y = topY + i * gap;
+    ctx.beginPath();
+    ctx.moveTo(startX, y);
+    ctx.lineTo(endX, y);
+    ctx.stroke();
+  }
+
+  // ?믪??뚯옄由ы몴
+  ctx.fillStyle = "#111";
+  ctx.font = "132px serif";
+  ctx.fillText("𝄞", startX - 26, topY + 96);
+
+  // 湲곗? ?꾩튂
+  const line1 = topY + gap * 4;         // ?꾨옒 泥レ㎏??= E5
+  const space1 = line1 - gap / 2;       // 泥レ㎏移?= F5
+  const line2 = line1 - gap;            // ?섏㎏??= G5
+  const space2 = line2 - gap / 2;       // ?섏㎏移?= A5
+  const line3 = line2 - gap;            // ?뗭㎏??= B5
+  const space3 = line3 - gap / 2;       // ?뗭㎏移?= C6
+  const line4 = line3 - gap;            // ?룹㎏??= D6
+  const space4 = line4 - gap / 2;       // ?룹㎏移?= E6
+  const ledgerD = line1 + gap;          // ?꾨옒 ?㏃쨪 = C5
+  const spaceBelow1 = line1 + gap / 2;  // ?꾨옒 泥レ㎏???꾨옒移?= D5
+
+  const noteMap = {
+    "C5": { name: "도", y: ledgerD },
+    "D5": { name: "레", y: spaceBelow1 },
+    "E5": { name: "미", y: line1 },
+    "F5": { name: "파", y: space1 },
+    "G5": { name: "솔", y: line2 },
+    "A5": { name: "라", y: space2 },
+    "B5": { name: "시", y: line3 },
+    "C6": { name: "높은 도", y: space3 },
+    "D6": { name: "높은 레", y: line4 },
+    "E6": { name: "높은 미", y: space4 }
+  };
+
+  const data = noteMap[note] || noteMap["G5"];
+  const x = Math.round((startX + endX) / 2) + 10;
+  const y = data.y;
+  const downwardStemNotes = ["B5", "C6", "D6", "E6"];
+  const isDownwardStem = downwardStemNotes.includes(note);
+
+  // ??? ??蹂댁“??
+  if (note === "C5") {
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - 28, ledgerD);
+    ctx.lineTo(x + 28, ledgerD);
+    ctx.stroke();
+  }
+
+  if (note === "D6") {
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - 28, line4);
+    ctx.lineTo(x + 28, line4);
+    ctx.stroke();
+  }
+
+  if (note === "E6") {
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - 28, line4);
+    ctx.lineTo(x + 28, line4);
+    ctx.stroke();
+  }
+
+  // ?뚰몴 癒몃━
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(-0.4);
+  ctx.beginPath();
+  ctx.fillStyle = "#1d4ed8";
+  ctx.ellipse(0, 0, 18, 13, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // 以꾧린
+  ctx.strokeStyle = "#1d4ed8";
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  if (isDownwardStem) {
+    ctx.moveTo(x - 16, y);
+    ctx.lineTo(x - 16, y + 78);
+  } else {
+    ctx.moveTo(x + 16, y);
+    ctx.lineTo(x + 16, y - 78);
+  }
+  ctx.stroke();
+
+  // ?쒕ぉ
+  ctx.fillStyle = "#34506d";
+  ctx.font = "bold 18px system-ui";
+  ctx.fillText(`현재 음: ${data.name} (${getBasicFingeringLabel()})`, 220, 80);
+
+  // ?ㅼ꽑蹂??꾨옒 ??怨꾩씠由?  ctx.fillStyle = "#163f7a";
+  ctx.font = "bold 28px system-ui";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(data.name, x, topY + gap * 6.1);
+  ctx.textAlign = "start";
+  ctx.textBaseline = "alphabetic";
+}
+
+function renderBasicNoteDisplay(note) {
+  drawBasicRecorderImage(note);
+  drawBasicStaff(note);
+
+  const nameMap = {
+    "C5": "도",
+    "D5": "레",
+    "E5": "미",
+    "F5": "파",
+    "G5": "솔",
+    "A5": "라",
+    "B5": "시",
+    "C6": "높은 도",
+    "D6": "높은 레",
+    "E6": "높은 미"
+  };
+
+  setStatus(
+    "basicRecorderStatus",
+    `${getBasicFingeringLabel()} ${nameMap[note] || note} 운지 표시 완료`,
+    "ok"
+  );
+}
+
+function resetBasicPracticeState(defaultNote = "C5") {
+  if (typeof stopBasicPracticeAudio === "function") {
+    stopBasicPracticeAudio();
+  }
+
+  currentBasicNote = defaultNote;
+  basicPracticeRunning = false;
+
+  const beatEl = document.getElementById("beatDisplay");
+  if (beatEl) {
+    beatEl.innerText = "-";
+    beatEl.classList.remove("active");
+  }
+}
+
+function showBasicNote(note) {
+  resetBasicPracticeState(note || "C5");
+  renderBasicNoteDisplay(currentBasicNote);
+}
+
+function stopBasicPracticeAudio() {
+  basicPracticeRunning = false;
+  basicPracticeRunId++;
+  basicPracticeAudios.forEach((audio) => {
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+    } catch (_) {}
+  });
+  basicPracticeAudios = [];
+
+  basicPracticeTimerIds.forEach((id) => {
+    try {
+      clearTimeout(id);
+      clearInterval(id);
+    } catch (_) {}
+  });
+  basicPracticeTimerIds = [];
+
+  if (typeof stopBeatDisplay === "function") {
+    stopBeatDisplay();
+  }
+
+  const beatEl = document.getElementById("beatDisplay");
+  if (beatEl) {
+    beatEl.innerText = "-";
+    beatEl.classList.remove("active");
+  }
+}
+
+function stopBasicPracticeSession() {
+  stopBasicPracticeAudio();
+}
+
+function stopBeatDisplay() {
+  const beat = document.getElementById("beatDisplay");
+  if (beat) beat.innerText = "-";
+}
+
+function updateBeatDisplay(beat) {
+  const beatEl = document.getElementById("beatDisplay");
+  if (beatEl) beatEl.innerText = String(beat);
+}
+
+function pulseBeatDisplay() {
+  const beatEl = document.getElementById("beatDisplay");
+  if (!beatEl) return;
+
+  beatEl.classList.remove("active");
+  void beatEl.offsetWidth;
+  beatEl.classList.add("active");
+
+  beatEl.animate(
+    [
+      { transform: "scale(1)", filter: "brightness(1)" },
+      { transform: "scale(1.08)", filter: "brightness(1.12)" },
+      { transform: "scale(1)", filter: "brightness(1)" }
+    ],
+    {
+      duration: Math.min(260, Math.round(BASIC_PRACTICE_BEAT_MS * 0.45)),
+      easing: "ease-out"
+    }
+  );
+}
+
+function selectBasicNote(note) {
+  currentBasicNote = note || "C5";
+  stopBasicPracticeSession();
+  showBasicNote(currentBasicNote);
+}
+
+function playBasicSound(src) {
+  const audio = new Audio(src);
+  audio.currentTime = 0;
+  basicPracticeAudios.push(audio);
+
+  const cleanup = () => {
+    basicPracticeAudios = basicPracticeAudios.filter((item) => item !== audio);
+  };
+
+  audio.addEventListener("ended", cleanup, { once: true });
+  audio.addEventListener("error", cleanup, { once: true });
+  audio.play().catch(() => {
+    cleanup();
+  });
+}
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    const id = setTimeout(() => {
+      basicPracticeTimerIds = basicPracticeTimerIds.filter((timerId) => timerId !== id);
+      resolve();
+    }, ms);
+    basicPracticeTimerIds.push(id);
+  });
+}
+
+async function playBasicPractice(note) {
+  stopBasicPracticeAudio();
+  basicPracticeRunning = true;
+  const runId = ++basicPracticeRunId;
+  const noteSrc = `audio/${note}.wav`;
+  const metroSrc = "audio/metronome.wav";
+
+  currentBasicNote = note || "C5";
+  renderBasicNoteDisplay(currentBasicNote);
+  setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} ${note} 같이 불어보기 시작`, "ok");
+
+  async function runBasicBeat(beat, { includeNote = false } = {}) {
+    if (!basicPracticeRunning || runId !== basicPracticeRunId) {
+      stopBasicPracticeAudio();
+      return false;
+    }
+
+    updateBeatDisplay(beat);
+    pulseBeatDisplay();
+    playBasicSound(metroSrc);
+    if (includeNote) {
+      playBasicSound(noteSrc);
+    }
+    await delay(BASIC_PRACTICE_BEAT_MS);
+    return basicPracticeRunning && runId === basicPracticeRunId;
+  }
+
+  for (let repeat = 0; repeat < 4; repeat++) {
+    if (!basicPracticeRunning || runId !== basicPracticeRunId) {
+      stopBasicPracticeAudio();
+      return;
+    }
+
+    for (let beat = 1; beat <= 4; beat++) {
+      const keepGoing = await runBasicBeat(beat, { includeNote: true });
+      if (!keepGoing) {
+        return;
+      }
+    }
+
+    for (let beat = 1; beat <= 4; beat++) {
+      const keepGoing = await runBasicBeat(beat);
+      if (!keepGoing) {
+        return;
+      }
+    }
+  }
+
+  if (runId === basicPracticeRunId) {
+    setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} ${note} 같이 불어보기 4회 반복 완료`, "ok");
+  }
+  stopBasicPracticeAudio();
+}
+
+function startBasicPractice() {
+  const noteToPlay = currentBasicNote || "C5";
+
+  if (typeof stopBasicPracticeAudio === "function") {
+    stopBasicPracticeAudio();
+  }
+
+  currentBasicNote = noteToPlay;
+  playBasicPractice(noteToPlay);
+}
+    function resetPractice() {
+      stopPractice();
+      drawPracticeBase(getSelectedSong()?.timeSignature || "4/4");
+
+      document.getElementById("practiceBadge").textContent = "곡을 선택하고 시작하세요";
+      document.getElementById("practiceInfo").textContent = "아직 연습을 시작하지 않았습니다.";
+
+      const liveDetected = document.getElementById("liveDetectedNote");
+      const liveTarget = document.getElementById("liveTargetNote");
+      const liveScore = document.getElementById("liveScore");
+
+      if (liveDetected) liveDetected.textContent = "-";
+      if (liveTarget) liveTarget.textContent = "-";
+      if (liveScore) liveScore.textContent = "0";
+
+      resetScoreState();
+      updatePracticeSpeedInfo();
+      setStatus("practiceStatus", "화면 초기화 완료", "ok");
+      setStatus("saveStatus", "저장 전", "");
+    }
+
+    async function save() {
+      if (!app.user) {
+        setStatus("saveStatus", "먼저 로그인하세요.", "bad");
+        return;
+      }
+
+      const song = getSelectedSong();
+      if (!song) {
+        setStatus("saveStatus", "곡을 먼저 선택하세요.", "bad");
+        return;
+      }
+
+      try {
+        await app.api("saveRecord", {
+          userId: app.user.userId,
+          mode: "song",
+          songId: song.songId,
+          scoreTotal: scoreState.finalScore || 0,
+          pitchAccuracy: scoreState.pitchAccuracy || 0,
+          rhythmAccuracy: scoreState.rhythmAccuracy || 0,
+          meta: {
+            grade: app.user.grade,
+            class: app.user.class,
+            number: app.user.number,
+            name: app.user.name,
+            detectedNote: liveDetectedNote || "",
+            judgedFrames: scoreState.judgedFrames || 0,
+            timeSignature: song.timeSignature || "4/4",
+            speedMultiplier: getSpeedMultiplier()
+          }
+        });
+
+        setStatus(
+          "saveStatus",
+          `저장 완료 · 총점 ${scoreState.finalScore || 0} / 음정 ${scoreState.pitchAccuracy || 0}% / 리듬 ${scoreState.rhythmAccuracy || 0}%`,
+          "ok"
+        );
+      } catch (e) {
+        setStatus("saveStatus", e.message, "bad");
+      }
+    }
+
+    window.addEventListener("load", () => {
+      enhancePracticeLayout();
+      setupUnifiedNavigation();
+      drawPracticeBase("4/4");
+      showStep("step1Section");
+    });
+  </script>
+
+<!-- 홈 메뉴 -->
+<div id="screen-menu" style="display:none; padding:20px; text-align:center;">
+  <h2 id="userName">학생 이름</h2>
+  <div id="userLevel">Lv.1</div>
+  <img id="levelRecorder" src="" style="height:120px; margin:10px 0;">
+  <hr style="margin:20px 0;">
+  <button onclick="showScreen('screen-basic')">기본 운지 방법</button>
+  <button onclick="showScreen('screen-practice')">운지법 연습</button>
+  <button onclick="showScreen('screen-song')">짧은 곡 연습</button>
+  <button onclick="showScreen('screen-textbook')">교과서 수록곡</button>
+  <button class="sub" onclick="logout()">로그아웃</button>
+</div>
+
+</body>
+</html>
