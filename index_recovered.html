@@ -217,6 +217,11 @@ button:disabled {
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
+    #step34Section {
+      position: relative;
+      overflow: hidden;
+    }
+
     .pill {
   display: inline-block;
   padding: 8px 12px;
@@ -954,12 +959,67 @@ button:disabled {
       }
     }
 
+    @keyframes overlayFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes overlayFadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes stampSlam {
+      0% {
+        opacity: 0;
+        transform: scale(2.6) rotate(-14deg);
+      }
+      45% {
+        opacity: 1;
+        transform: scale(0.82) rotate(-5deg);
+      }
+      68% {
+        opacity: 1;
+        transform: scale(1.08) rotate(-6.5deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(-6deg);
+      }
+    }
+
+    @keyframes resultValuePop {
+      0% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      45% {
+        transform: scale(1.1);
+        filter: brightness(1.12);
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .songChoiceBtn.selected,
       .songChoiceBtn:hover::after,
       .songChoiceBtn.selected::after,
       .songChoiceArt,
-      .songChoiceArt::after {
+      .songChoiceArt::after,
+      .resultOverlay.show,
+      .resultOverlay.hide,
+      .resultStamp.show {
         animation: none;
       }
     }
@@ -1207,6 +1267,284 @@ button:disabled {
       display: grid;
       gap: 10px;
       margin-top: 12px;
+    }
+
+    .resultOverlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(8, 16, 30, 0.44);
+      backdrop-filter: blur(3px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: auto;
+    }
+
+    .resultOverlay.hidden {
+      display: none;
+    }
+
+    .resultOverlay.show {
+      animation: overlayFadeIn 180ms ease-out forwards;
+    }
+
+    .resultOverlay.hide {
+      animation: overlayFadeOut 240ms ease-in forwards;
+    }
+
+    .resultPanel {
+      width: min(88vw, 620px);
+      padding: 28px 24px 24px;
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(18, 34, 61, 0.92) 0%, rgba(12, 24, 46, 0.9) 100%),
+        radial-gradient(circle at top, rgba(255,255,255,0.1) 0%, transparent 55%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 24px 50px rgba(0,0,0,0.34),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .resultScoreBoard {
+      width: 100%;
+      display: grid;
+      gap: 12px;
+    }
+
+    .resultScoreRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .resultScoreRow-total {
+      padding: 18px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .resultScoreLabel {
+      font-size: 15px;
+      font-weight: 800;
+      color: rgba(232, 240, 255, 0.92);
+    }
+
+    .resultScoreValue {
+      font-size: clamp(22px, 4vw, 38px);
+      font-weight: 1000;
+      color: #ffffff;
+      text-shadow: 0 0 16px rgba(126, 214, 255, 0.2);
+    }
+
+    .resultScoreRow-total .resultScoreLabel {
+      font-size: 18px;
+      color: #fff7d5;
+    }
+
+    .resultScoreRow-total .resultScoreValue {
+      font-size: clamp(30px, 5.4vw, 54px);
+      color: #ffe27a;
+      text-shadow:
+        0 0 18px rgba(255, 226, 122, 0.28),
+        0 0 30px rgba(255, 188, 31, 0.2);
+    }
+
+    .resultScoreValue.bump {
+      animation: resultValuePop 240ms ease-out;
+    }
+
+    .resultStamp {
+      position: relative;
+      width: min(78vw, 520px);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffd84d;
+      opacity: 0;
+      transform: scale(2.6) rotate(-14deg);
+      filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.35));
+    }
+
+    .resultStamp::before {
+      content: "";
+      position: absolute;
+      inset: 2%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18) 0 38%, transparent 39%),
+        radial-gradient(circle at 32% 28%, rgba(255,255,255,0.28) 0 10%, transparent 11%),
+        radial-gradient(circle at 70% 72%, rgba(255,255,255,0.18) 0 8%, transparent 9%);
+      opacity: 0.95;
+      pointer-events: none;
+    }
+
+    .resultStamp.show {
+      animation: stampSlam 620ms cubic-bezier(.2,.9,.2,1.15) forwards;
+    }
+
+    .resultStampRing {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      border: 12px solid currentColor;
+      opacity: 0.95;
+      box-shadow:
+        0 0 0 8px rgba(255,255,255,0.08),
+        0 0 30px currentColor,
+        inset 0 0 20px rgba(255,255,255,0.12);
+    }
+
+    .resultStampInner {
+      position: absolute;
+      inset: 23%;
+      border: 8px solid currentColor;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%),
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,0.18) 0%, transparent 58%);
+      box-shadow:
+        inset 0 0 28px rgba(255,255,255,0.12),
+        0 0 24px rgba(255,255,255,0.08);
+      text-align: center;
+    }
+
+    .resultText {
+      font-size: clamp(34px, 6.8vw, 84px);
+      font-weight: 1000;
+      letter-spacing: 0.04em;
+      line-height: 1.02;
+      text-transform: uppercase;
+      text-shadow:
+        0 2px 0 rgba(255,255,255,0.18),
+        0 0 20px currentColor;
+      word-break: keep-all;
+    }
+
+    .resultScore {
+      margin-top: 12px;
+      font-size: clamp(16px, 2.4vw, 28px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 14px rgba(255,255,255,0.18);
+    }
+
+    .resultConfirmBtn {
+      width: auto;
+      min-width: 132px;
+      min-height: 52px;
+      margin-top: 18px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.35);
+      background: linear-gradient(180deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.12) 100%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.26);
+      backdrop-filter: blur(4px);
+    }
+
+    .resultConfirmBtn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow:
+        0 14px 26px rgba(0,0,0,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+    .resultConfirmBtn:active {
+      transform: translateY(1px);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+
+    .resultStamp.perfect {
+      color: #ffd84d;
+      filter: drop-shadow(0 22px 40px rgba(0,0,0,0.34)) drop-shadow(0 0 32px rgba(255, 216, 77, 0.55));
+    }
+
+    .resultStamp.great {
+      color: #7fe3ff;
+      filter: drop-shadow(0 20px 38px rgba(0,0,0,0.34)) drop-shadow(0 0 28px rgba(127, 227, 255, 0.52));
+    }
+
+    .resultStamp.good {
+      color: #7de38b;
+      filter: drop-shadow(0 20px 38px rgba(0,0,0,0.34)) drop-shadow(0 0 28px rgba(125, 227, 139, 0.48));
+    }
+
+    .resultStamp.pass {
+      color: #ffbe5c;
+      filter: drop-shadow(0 20px 38px rgba(0,0,0,0.34)) drop-shadow(0 0 28px rgba(255, 190, 92, 0.5));
+    }
+
+    .resultStamp.retry {
+      color: #c6b8e8;
+      filter: drop-shadow(0 20px 38px rgba(0,0,0,0.34)) drop-shadow(0 0 28px rgba(198, 184, 232, 0.42));
+    }
+
+    .resultStamp.perfect .resultStampRing,
+    .resultStamp.perfect .resultStampInner {
+      box-shadow:
+        0 0 0 8px rgba(255, 244, 178, 0.12),
+        0 0 36px rgba(255, 216, 77, 0.75),
+        inset 0 0 22px rgba(255,255,255,0.14);
+    }
+
+    .resultStamp.great .resultStampRing,
+    .resultStamp.great .resultStampInner {
+      box-shadow:
+        0 0 0 8px rgba(127, 227, 255, 0.1),
+        0 0 32px rgba(127, 227, 255, 0.62),
+        inset 0 0 20px rgba(255,255,255,0.12);
+    }
+
+    .resultStamp.good .resultStampRing,
+    .resultStamp.good .resultStampInner {
+      box-shadow:
+        0 0 0 8px rgba(125, 227, 139, 0.1),
+        0 0 32px rgba(125, 227, 139, 0.56),
+        inset 0 0 20px rgba(255,255,255,0.12);
+    }
+
+    .resultStamp.pass .resultStampRing,
+    .resultStamp.pass .resultStampInner {
+      box-shadow:
+        0 0 0 8px rgba(255, 190, 92, 0.1),
+        0 0 32px rgba(255, 190, 92, 0.58),
+        inset 0 0 20px rgba(255,255,255,0.12);
+    }
+
+    .resultStamp.retry .resultStampRing,
+    .resultStamp.retry .resultStampInner {
+      box-shadow:
+        0 0 0 8px rgba(198, 184, 232, 0.08),
+        0 0 28px rgba(198, 184, 232, 0.46),
+        inset 0 0 20px rgba(255,255,255,0.1);
     }
 
     canvas {
@@ -1882,6 +2220,34 @@ button:disabled {
 
       <div id="practiceStatus" class="status">연습 전</div>
       <div id="saveStatus" class="status">저장 전</div>
+
+      <div id="resultOverlay" class="resultOverlay hidden" aria-hidden="true">
+        <div class="resultPanel">
+          <div class="resultScoreBoard">
+            <div class="resultScoreRow">
+              <span class="resultScoreLabel">음정 점수</span>
+              <span id="resultPitchScore" class="resultScoreValue">0점</span>
+            </div>
+            <div class="resultScoreRow">
+              <span class="resultScoreLabel">박자 점수</span>
+              <span id="resultRhythmScore" class="resultScoreValue">0점</span>
+            </div>
+            <div class="resultScoreRow resultScoreRow-total">
+              <span class="resultScoreLabel">전체 점수</span>
+              <span id="resultTotalScore" class="resultScoreValue">0점</span>
+            </div>
+          </div>
+
+          <div id="resultStamp" class="resultStamp hidden">
+            <div class="resultStampRing"></div>
+            <div class="resultStampInner">
+              <div id="resultText" class="resultText">PERFECT!!</div>
+            </div>
+          </div>
+
+          <button id="resultConfirmBtn" class="resultConfirmBtn" type="button">확인</button>
+        </div>
+      </div>
     </section>
 <section id="step-basic-typeSection" class="card hidden">
   <div class="pill">기본 운지 방법</div>
@@ -2026,6 +2392,7 @@ button:disabled {
     let basicPracticeAudios = [];
     let basicPracticeTimerIds = [];
     let basicPracticeRunning = false;
+    let resultSequenceRunId = 0;
     const BASIC_PRACTICE_BEAT_MS = 800;
     const SONG_CLEAR_STATE_KEY = "recorder_song_clear_state_v1";
     const SONG_SCORE_STATE_KEY = "recorder_song_score_state_v1";
@@ -2203,6 +2570,124 @@ function setStatus(id, text, type = "") {
     function getScoreGrade(score) {
       const safeScore = Number(score) || 0;
       return GRADE_RULES.find((rule) => safeScore >= rule.min) || GRADE_RULES[GRADE_RULES.length - 1];
+    }
+
+    function hideResultStamp({ immediate = false } = {}) {
+      const overlay = document.getElementById("resultOverlay");
+      const stamp = document.getElementById("resultStamp");
+      if (!overlay || !stamp) return;
+
+      resultSequenceRunId++;
+
+      stamp.classList.remove("show");
+      stamp.classList.add("hidden");
+
+      if (immediate) {
+        overlay.classList.remove("show", "hide");
+        overlay.classList.add("hidden");
+        overlay.setAttribute("aria-hidden", "true");
+        return;
+      }
+
+      overlay.classList.remove("show");
+      overlay.classList.add("hide");
+      overlay.setAttribute("aria-hidden", "true");
+
+      setTimeout(() => {
+        overlay.classList.add("hidden");
+        overlay.classList.remove("hide");
+      }, 240);
+    }
+
+    function pulseResultValue(element) {
+      if (!element) return;
+      element.classList.remove("bump");
+      void element.offsetWidth;
+      element.classList.add("bump");
+    }
+
+    function animateCountUp(element, endValue, duration = 700, suffix = "점", runId = resultSequenceRunId) {
+      return new Promise((resolve) => {
+        if (!element) {
+          resolve();
+          return;
+        }
+
+        const startTime = performance.now();
+        const target = Math.max(0, Math.round(Number(endValue) || 0));
+
+        function tick(now) {
+          if (runId !== resultSequenceRunId) {
+            resolve();
+            return;
+          }
+
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(target * eased);
+
+          element.textContent = `${current}${suffix}`;
+
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+            return;
+          }
+
+          element.textContent = `${target}${suffix}`;
+          pulseResultValue(element);
+          resolve();
+        }
+
+        requestAnimationFrame(tick);
+      });
+    }
+
+    async function showPracticeResultSequence(currentScoreState) {
+      const scoreData = currentScoreState || scoreState;
+      const grade = scoreData.gradeKey && scoreData.gradeLabel
+        ? { key: scoreData.gradeKey, label: scoreData.gradeLabel }
+        : getScoreGrade(scoreData.finalScore || 0);
+
+      const overlay = document.getElementById("resultOverlay");
+      const stamp = document.getElementById("resultStamp");
+      const pitchEl = document.getElementById("resultPitchScore");
+      const rhythmEl = document.getElementById("resultRhythmScore");
+      const totalEl = document.getElementById("resultTotalScore");
+      const text = document.getElementById("resultText");
+      const runId = ++resultSequenceRunId;
+
+      if (!overlay || !stamp || !pitchEl || !rhythmEl || !totalEl || !text) return;
+
+      const pitchScore = Math.round(Number(scoreData.pitchAccuracy) || 0);
+      const rhythmScore = Math.round(Number(scoreData.rhythmAccuracy) || 0);
+      const finalScore = Math.round(Number(scoreData.finalScore) || 0);
+
+      pitchEl.textContent = "0점";
+      rhythmEl.textContent = "0점";
+      totalEl.textContent = "0점";
+      pitchEl.classList.remove("bump");
+      rhythmEl.classList.remove("bump");
+      totalEl.classList.remove("bump");
+
+      text.textContent = grade.label;
+      stamp.className = `resultStamp ${grade.key} hidden`;
+      overlay.classList.remove("hidden", "hide");
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+
+      await animateCountUp(pitchEl, pitchScore, 650, "점", runId);
+      if (runId !== resultSequenceRunId) return;
+      await animateCountUp(rhythmEl, rhythmScore, 650, "점", runId);
+      if (runId !== resultSequenceRunId) return;
+      await animateCountUp(totalEl, finalScore, 850, "점", runId);
+      if (runId !== resultSequenceRunId) return;
+      await new Promise((resolve) => setTimeout(resolve, 180));
+      if (runId !== resultSequenceRunId) return;
+
+      stamp.className = `resultStamp ${grade.key}`;
+      void stamp.offsetWidth;
+      stamp.classList.add("show");
     }
 
     function getShortSongCandidates() {
@@ -3938,6 +4423,7 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
             `연습 완료 · ${finalScore}점 · ${grade.label} · 음정 ${scoreState.pitchAccuracy}% · 리듬 ${scoreState.rhythmAccuracy}%`,
             "ok"
           );
+          showPracticeResultSequence(scoreState);
           return;
         }
 
@@ -4381,9 +4867,30 @@ function startBasicPractice() {
       }
     }
 
+    function setupResultOverlayInteractions() {
+      const resultOverlay = document.getElementById("resultOverlay");
+      const resultConfirmBtn = document.getElementById("resultConfirmBtn");
+
+      if (resultOverlay && !resultOverlay.dataset.dismissBound) {
+        resultOverlay.addEventListener("click", () => {
+          hideResultStamp();
+        });
+        resultOverlay.dataset.dismissBound = "true";
+      }
+
+      if (resultConfirmBtn && !resultConfirmBtn.dataset.dismissBound) {
+        resultConfirmBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          hideResultStamp();
+        });
+        resultConfirmBtn.dataset.dismissBound = "true";
+      }
+    }
+
     window.addEventListener("load", () => {
       enhancePracticeLayout();
       setupUnifiedNavigation();
+      setupResultOverlayInteractions();
       drawPracticeBase("4/4");
       showStep("step1Section");
     });
