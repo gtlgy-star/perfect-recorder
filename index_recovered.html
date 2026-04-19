@@ -545,6 +545,10 @@ button:disabled {
       overflow: hidden;
       padding: 18px 18px 16px;
       min-height: 198px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 12px;
       border-radius: 28px;
       border: 3px solid #d6e9fb;
       background: linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
@@ -614,14 +618,30 @@ button:disabled {
       user-select: none;
     }
 
-    .songTitleRow {
+    .songCardRow {
       position: relative;
       z-index: 2;
       display: flex;
       align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .songCardRow-top {
+      gap: 14px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .songCardRow-middle {
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .songCardRow-bottom {
+      margin-top: auto;
+      align-items: flex-end;
     }
 
     .songSuccessStamp {
@@ -746,25 +766,15 @@ button:disabled {
       opacity: 1;
     }
 
-    .songChoiceTop {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      z-index: 1;
-    }
-
     .songChoiceArt {
-      width: 84px;
-      height: 84px;
-      flex: 0 0 84px;
-      border-radius: 26px;
+      width: 72px;
+      height: 72px;
+      flex: 0 0 72px;
+      border-radius: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
+      font-size: 34px;
       border: 3px solid rgba(255, 255, 255, 0.88);
       box-shadow:
         inset 0 3px 0 rgba(255, 255, 255, 0.7),
@@ -779,8 +789,8 @@ button:disabled {
     .songChoiceArt::before {
       content: "";
       position: absolute;
-      inset: 7px;
-      border-radius: 20px;
+      inset: 6px;
+      border-radius: 16px;
       background: radial-gradient(circle at 30% 28%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.3) 34%, rgba(255,255,255,0) 35%);
       opacity: 0.95;
     }
@@ -802,49 +812,67 @@ button:disabled {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 58px;
-      height: 58px;
+      width: 50px;
+      height: 50px;
       border-radius: 18px;
       text-shadow: 0 6px 10px rgba(31, 49, 71, 0.12);
       filter: saturate(1.05);
     }
 
-    .songChoiceBadgeCol {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0;
-      min-width: 0;
-      z-index: 1;
-    }
-
     .songChoiceTitle {
       display: block;
-      font-size: 20px;
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 22px;
       font-weight: 900;
       color: #15406e;
       letter-spacing: -0.02em;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .songChoiceMeta {
       display: block;
       position: relative;
       z-index: 1;
-      font-size: 13px;
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 14px;
       color: #4f6480;
-      line-height: 1.5;
-      margin-bottom: 10px;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .songChoiceDesc {
       display: block;
       position: relative;
       z-index: 1;
+      width: 100%;
       font-size: 12px;
       color: #6b7d92;
       line-height: 1.45;
-      white-space: pre-line;
+      white-space: normal;
       word-break: keep-all;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .songSuccessStamp.songSuccessStamp-empty {
+      visibility: hidden;
+      opacity: 0;
+      box-shadow: none;
+      animation: none;
+    }
+
+    .songSuccessStamp.songSuccessStamp-empty::before,
+    .songSuccessStamp.songSuccessStamp-empty::after {
+      content: none;
     }
 
     .songChoiceClear {
@@ -1769,7 +1797,7 @@ button:disabled {
 
       <div id="songButtonGrid" class="songButtonGrid"></div>
 
-      <div class="songBox hidden">
+      <div class="songBox">
         <div id="songInfo" class="muted">곡을 불러오는 중입니다.</div>
       </div>
 
@@ -1999,6 +2027,32 @@ button:disabled {
     let basicPracticeRunning = false;
     const BASIC_PRACTICE_BEAT_MS = 800;
     const SONG_CLEAR_STATE_KEY = "recorder_song_clear_state_v1";
+    const SONG_SCORE_STATE_KEY = "recorder_song_score_state_v1";
+    const STARTUP_GRACE_MS = 450;
+    const NOTE_TRANSITION_GRACE_MS = 140;
+    const PITCH_EXACT_TOLERANCE_CENTS = 25;
+    const PITCH_NEAR_TOLERANCE_CENTS = 60;
+    const PITCH_LOOSE_TOLERANCE_CENTS = 95;
+    const PITCH_WIDE_TOLERANCE_CENTS = 140;
+    const RHYTHM_EXACT_SCORE = 1.0;
+    const RHYTHM_NEAR_SCORE = 0.88;
+    const RHYTHM_LOOSE_SCORE = 0.72;
+    const RHYTHM_TRANSITION_SCORE = 0.82;
+    const PITCH_EXACT_SCORE = 1.0;
+    const PITCH_NEAR_SCORE = 0.82;
+    const PITCH_LOOSE_SCORE = 0.55;
+    const PITCH_WIDE_SCORE = 0.18;
+    const PITCH_TRANSITION_NEAR_SCORE = 0.85;
+    const PITCH_TRANSITION_LOOSE_SCORE = 0.6;
+    const PITCH_NO_INPUT_TRANSITION_SCORE = 0.35;
+    const PITCH_NO_INPUT_SUSTAIN_SCORE = 0.1;
+    const GRADE_RULES = [
+      { min: 90, key: "perfect", label: "PERFECT!!" },
+      { min: 80, key: "great", label: "GREAT!" },
+      { min: 70, key: "good", label: "GOOD!" },
+      { min: 60, key: "pass", label: "PASS" },
+      { min: 0, key: "retry", label: "다시 도전!" }
+    ];
     const SHORT_SONG_TITLES = ["나비야", "비행기", "학교종", "작은별"];
     const BASIC_NOTE_IMAGE_PATHS = {
       C5: "images/basic-notes/C5.png",
@@ -2043,7 +2097,9 @@ button:disabled {
       rhythmHitFrames: 0,
       finalScore: 0,
       pitchAccuracy: 0,
-      rhythmAccuracy: 0
+      rhythmAccuracy: 0,
+      gradeKey: "retry",
+      gradeLabel: "다시 도전!"
     };
 
     const trebleImg = new Image();
@@ -2096,6 +2152,56 @@ function setStatus(id, text, type = "") {
       state[String(songId)] = !!cleared;
       saveSongClearState(state);
       renderSongButtons();
+    }
+
+    function loadSongScoreState() {
+      try {
+        return JSON.parse(localStorage.getItem(SONG_SCORE_STATE_KEY) || "{}");
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function saveSongScoreState(state) {
+      try {
+        localStorage.setItem(SONG_SCORE_STATE_KEY, JSON.stringify(state || {}));
+      } catch (_) {}
+    }
+
+    function getSongStoredScore(songId) {
+      const state = loadSongScoreState();
+      const score = Number(state[String(songId)]);
+      return Number.isFinite(score) ? score : null;
+    }
+
+    function setSongStoredScore(songId, score) {
+      const normalizedScore = Number(score);
+      if (!Number.isFinite(normalizedScore)) return;
+
+      const key = String(songId);
+      const state = loadSongScoreState();
+      const previous = Number(state[key]);
+
+      state[key] = Number.isFinite(previous)
+        ? Math.max(previous, normalizedScore)
+        : normalizedScore;
+
+      saveSongScoreState(state);
+      renderSongButtons();
+    }
+
+    function getMedalTierForScore(score) {
+      const normalizedScore = Number(score);
+      if (!Number.isFinite(normalizedScore)) return "";
+      if (normalizedScore >= 95) return "gold";
+      if (normalizedScore >= 85) return "silver";
+      if (normalizedScore >= 75) return "bronze";
+      return "";
+    }
+
+    function getScoreGrade(score) {
+      const safeScore = Number(score) || 0;
+      return GRADE_RULES.find((rule) => safeScore >= rule.min) || GRADE_RULES[GRADE_RULES.length - 1];
     }
 
     function getShortSongCandidates() {
@@ -2218,6 +2324,7 @@ function setStatus(id, text, type = "") {
       currentSongMenuMode = mode;
       currentTextbookGrade = null;
       app.songs = [];
+      app.currentSong = null;
 
       const sel = document.getElementById("songSelect");
       if (sel) {
@@ -2248,6 +2355,7 @@ function setStatus(id, text, type = "") {
       currentTextbookGrade = String(grade);
       const songs = TEXTBOOK_SONGS_BY_GRADE[currentTextbookGrade] || [];
       app.songs = songs;
+      app.currentSong = null;
 
       const sel = document.getElementById("songSelect");
       if (sel) {
@@ -2291,7 +2399,7 @@ function setStatus(id, text, type = "") {
           icon: "🔔",
           pattern: "🔔  🎵\n🎵  🔔",
           level: "Lv.2",
-          desc: "차분하고 반듯한\n즐거운 학교종",
+          desc: "선생님과 함께하는\n즐거운 학교",
           bpm: 84,
           medal: "bronze"
         },
@@ -2349,26 +2457,43 @@ function renderSongButtons() {
       }
 
       songs.forEach((song) => {
-        const cleared = isSongCleared(song.songId);
         const ui = getSongCardPresentation(song);
+        const storedScore = getSongStoredScore(song.songId);
+        const score = Number.isFinite(storedScore) ? storedScore : 0;
+        const medal = getMedalTierForScore(score);
+
+        const medalHtml = medal
+          ? `<span class="songSuccessStamp ${medal}">
+               <span class="songSuccessStampInner">★</span>
+             </span>`
+          : `<span class="songSuccessStamp songSuccessStamp-empty"></span>`;
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = `songChoiceBtn ${ui.themeClass}${String(song.songId) === selectedId ? " selected" : ""}`;
         btn.onclick = () => selectSongById(song.songId);
         btn.innerHTML = `
           <span class="songChoicePattern" aria-hidden="true">${ui.pattern}</span>
-          <span class="songChoiceTop">
-            <span class="songChoiceArt" aria-hidden="true"><span class="songChoiceEmoji">${ui.icon}</span></span>
-            <span class="songChoiceBadgeCol">
-              <span class="songChoiceClear${cleared ? "" : " pending"}">${cleared ? "클리어" : "준비중"}</span>
+
+          <!-- 1줄: 아이콘 + 제목 -->
+          <span class="songCardRow songCardRow-top">
+            <span class="songChoiceArt">
+              <span class="songChoiceEmoji">${ui.icon}</span>
             </span>
-          </span>
-          <span class="songTitleRow">
             <span class="songChoiceTitle">${song.title}</span>
-            ${ui.medal ? `<span class="songSuccessStamp ${ui.medal}"><span class="songSuccessStampInner">★</span></span>` : ""}
           </span>
-          <span class="songChoiceMeta">BPM ${song.bpm || ui.bpm || 80} 쨌 ${song.timeSignature || "4/4"}</span>
-          <span class="songChoiceDesc">${ui.desc}</span>
+
+          <!-- 2줄: 정보 + 메달 -->
+          <span class="songCardRow songCardRow-middle">
+            <span class="songChoiceMeta">
+              BPM ${song.bpm || ui.bpm || 80} · ${song.timeSignature || "4/4"}
+            </span>
+            ${medalHtml}
+          </span>
+
+          <!-- 3줄: 설명 -->
+          <span class="songCardRow songCardRow-bottom">
+            <span class="songChoiceDesc">${ui.desc}</span>
+          </span>
         `;
         grid.appendChild(btn);
       });
@@ -2749,6 +2874,9 @@ function logout() {
 
       const hasPrevious = previousValue && app.songs.some(s => String(s.songId) === previousValue);
       sel.value = hasPrevious ? previousValue : "";
+      app.currentSong = hasPrevious
+        ? app.songs.find((song) => String(song.songId) === previousValue) || null
+        : null;
       sel.onchange = showSelectedSong;
       renderSongButtons();
       showSelectedSong();
@@ -2884,6 +3012,8 @@ function logout() {
       sel.value = normalizedId;
       if (typeof app.selectSong === "function") {
         app.selectSong(matchedSong.songId);
+      } else {
+        app.currentSong = matchedSong;
       }
       showSelectedSong();
     }
@@ -2955,43 +3085,39 @@ function logout() {
     }
 
     function showSelectedSong() {
-      const song = getSelectedSong();
+      const song = app.currentSong || getSelectedSong();
+      const infoEl = document.getElementById("songInfo");
+      const songInfoBox = infoEl ? infoEl.closest(".songBox") : null;
+      const practiceSongTitleEl = document.getElementById("practiceSongTitle");
+      const practiceTimeSignatureEl = document.getElementById("practiceTimeSignature");
+      const practiceBadgeEl = document.getElementById("practiceBadge");
 
-      if (!song) {
-        document.getElementById("songInfo").textContent = "선택된 곡이 없습니다.";
-        return;
-      }
-
-      const ts = song.timeSignature || "4/4";
-
-      document.getElementById("songInfo").innerHTML =
-        `<b>${song.title}</b><br>곡 ID: ${song.songId}<br>기준 BPM: ${song.bpm || 80}<br>박자: ${ts}<br>notation: ${song.notation || "(없음)"}`;
-
-      document.getElementById("practiceSongTitle").textContent = song.title;
-      document.getElementById("practiceTimeSignature").textContent = ts;
-      document.getElementById("practiceBadge").textContent = `${song.title} 준비 완료`;
-
-      updatePracticeSpeedInfo();
-    }
-
-    function showSelectedSong() {
-      const song = getSelectedSong();
       renderSongButtons();
 
       if (!song) {
-        document.getElementById("songInfo").textContent = "선택된 곡이 없습니다.";
+        if (songInfoBox) songInfoBox.classList.add("hidden");
+        if (infoEl) infoEl.textContent = "선택된 곡이 없습니다.";
+        if (practiceSongTitleEl) practiceSongTitleEl.textContent = "-";
+        if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = "-";
+        if (practiceBadgeEl) practiceBadgeEl.textContent = "곡을 선택하고 시작하세요";
         return;
       }
 
-      const ts = song.timeSignature || "4/4";
-      const clearText = isSongCleared(song.songId) ? "클리어 완료" : "연습 중";
+      app.currentSong = song;
 
-      document.getElementById("songInfo").innerHTML =
-        `<b>${song.title}</b><br>곡 ID: ${song.songId}<br>기준 BPM: ${song.bpm || 80}<br>박자: ${ts}<br>진행 상태: ${clearText}<br>notation: ${song.notation || "(없음)"}`;
+      const sel = document.getElementById("songSelect");
+      if (sel) {
+        sel.value = String(song.songId);
+      }
 
-      document.getElementById("practiceSongTitle").textContent = song.title;
-      document.getElementById("practiceTimeSignature").textContent = ts;
-      document.getElementById("practiceBadge").textContent = `${song.title} 준비 완료`;
+      if (infoEl) {
+        if (songInfoBox) songInfoBox.classList.remove("hidden");
+        infoEl.textContent = `${song.title || "-"} · ${song.timeSignature || ""}`;
+      }
+
+      if (practiceSongTitleEl) practiceSongTitleEl.textContent = song.title || "-";
+      if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = song.timeSignature || "-";
+      if (practiceBadgeEl) practiceBadgeEl.textContent = "연습 준비 완료";
 
       updatePracticeSpeedInfo();
     }
@@ -3402,6 +3528,107 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       return (octave + 1) * 12 + semitone;
     }
 
+    function getDetectedMidiValue() {
+      if (liveDetectedMidi == null) return null;
+      const centsOffset = Number.isFinite(liveDetectedCents) ? liveDetectedCents / 100 : 0;
+      return liveDetectedMidi + centsOffset;
+    }
+
+    function getTimelineNoteIndex(target, timeline) {
+      if (!target || !timeline || !Array.isArray(timeline.notes)) return -1;
+      return timeline.notes.findIndex((note) => note === target);
+    }
+
+    function getAdjacentPlayableNotes(target, timeline) {
+      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      const index = getTimelineNoteIndex(target, timeline);
+      const neighbors = [];
+
+      if (index > 0 && notes[index - 1]?.note) neighbors.push(notes[index - 1]);
+      if (index >= 0 && index < notes.length - 1 && notes[index + 1]?.note) neighbors.push(notes[index + 1]);
+
+      return neighbors;
+    }
+
+    function isInTransitionWindow(elapsedMs, target) {
+      if (!target) return false;
+      const noteStartGap = elapsedMs - target.startMs;
+      const noteEndGap = (target.startMs + target.durMs) - elapsedMs;
+      return noteStartGap <= NOTE_TRANSITION_GRACE_MS || noteEndGap <= NOTE_TRANSITION_GRACE_MS;
+    }
+
+    function getPitchDiffCents(note, detectedMidiValue) {
+      if (!note?.note || detectedMidiValue == null) return Infinity;
+      const midi = noteNameToMidi(note.note);
+      if (midi == null) return Infinity;
+      return Math.abs((detectedMidiValue - midi) * 100);
+    }
+
+    function getPitchMatchScore(target, elapsedMs, timeline) {
+      const detectedMidiValue = getDetectedMidiValue();
+      const inTransition = isInTransitionWindow(elapsedMs, target);
+
+      if (detectedMidiValue == null) {
+        return inTransition ? PITCH_NO_INPUT_TRANSITION_SCORE : PITCH_NO_INPUT_SUSTAIN_SCORE;
+      }
+
+      const candidateNotes = [target];
+      if (inTransition) {
+        candidateNotes.push(...getAdjacentPlayableNotes(target, timeline));
+      }
+
+      let bestDiffCents = Infinity;
+      let matchedAdjacentNote = false;
+
+      candidateNotes.forEach((note, index) => {
+        const diffCents = getPitchDiffCents(note, detectedMidiValue);
+        if (diffCents < bestDiffCents) {
+          bestDiffCents = diffCents;
+          matchedAdjacentNote = index > 0;
+        }
+      });
+
+      if (bestDiffCents <= PITCH_EXACT_TOLERANCE_CENTS) {
+        return matchedAdjacentNote ? PITCH_TRANSITION_NEAR_SCORE : PITCH_EXACT_SCORE;
+      }
+
+      if (bestDiffCents <= PITCH_NEAR_TOLERANCE_CENTS) {
+        return matchedAdjacentNote ? PITCH_TRANSITION_NEAR_SCORE : PITCH_NEAR_SCORE;
+      }
+
+      if (bestDiffCents <= PITCH_LOOSE_TOLERANCE_CENTS) {
+        return matchedAdjacentNote ? PITCH_TRANSITION_LOOSE_SCORE : PITCH_LOOSE_SCORE;
+      }
+
+      if (bestDiffCents <= PITCH_WIDE_TOLERANCE_CENTS) {
+        return PITCH_WIDE_SCORE;
+      }
+
+      return 0;
+    }
+
+    function getRhythmMatchScore(elapsedMs, target) {
+      if (!target) return 0;
+
+      const noteStartGap = elapsedMs - target.startMs;
+      const noteEndGap = (target.startMs + target.durMs) - elapsedMs;
+      const boundaryGap = Math.min(noteStartGap, noteEndGap);
+
+      if (elapsedMs < STARTUP_GRACE_MS) {
+        return RHYTHM_NEAR_SCORE;
+      }
+
+      if (boundaryGap <= NOTE_TRANSITION_GRACE_MS) {
+        return RHYTHM_TRANSITION_SCORE;
+      }
+
+      if (boundaryGap <= NOTE_TRANSITION_GRACE_MS * 2) {
+        return RHYTHM_LOOSE_SCORE;
+      }
+
+      return RHYTHM_EXACT_SCORE;
+    }
+
     function findCurrentTargetNote(elapsedMs, timeline) {
       if (!timeline || !timeline.notes || !timeline.notes.length) return null;
 
@@ -3565,7 +3792,9 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
         rhythmHitFrames: 0,
         finalScore: 0,
         pitchAccuracy: 0,
-        rhythmAccuracy: 0
+        rhythmAccuracy: 0,
+        gradeKey: "retry",
+        gradeLabel: "다시 도전!"
       };
 
       const liveScoreEl = document.getElementById("liveScore");
@@ -3587,22 +3816,16 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
 
       if (!target) return;
 
-      scoreState.judgedFrames++;
-
-      if (liveDetectedMidi == null) return;
-
-      const targetMidi = noteNameToMidi(target.note);
-      if (targetMidi == null) return;
-
-      const diff = Math.abs(liveDetectedMidi - targetMidi);
-
-      if (diff <= 0) {
-        scoreState.pitchHitFrames++;
-        scoreState.rhythmHitFrames++;
-      } else if (diff <= 1) {
-        scoreState.pitchHitFrames += 0.5;
-        scoreState.rhythmHitFrames += 1;
+      if (elapsedMs < STARTUP_GRACE_MS) {
+        return;
       }
+
+      scoreState.judgedFrames++;
+      const pitchScore = getPitchMatchScore(target, elapsedMs, currentTimeline);
+      const rhythmScore = getRhythmMatchScore(elapsedMs, target);
+
+      scoreState.pitchHitFrames += pitchScore;
+      scoreState.rhythmHitFrames += rhythmScore;
 
       const judged = Math.max(1, scoreState.judgedFrames);
       scoreState.pitchAccuracy = Math.round((scoreState.pitchHitFrames / judged) * 100);
@@ -3610,6 +3833,9 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       scoreState.finalScore = Math.round(
         scoreState.pitchAccuracy * 0.7 + scoreState.rhythmAccuracy * 0.3
       );
+      const grade = getScoreGrade(scoreState.finalScore);
+      scoreState.gradeKey = grade.key;
+      scoreState.gradeLabel = grade.label;
 
       const liveScoreEl = document.getElementById("liveScore");
       if (liveScoreEl) liveScoreEl.textContent = String(scoreState.finalScore);
@@ -3704,9 +3930,11 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
 
         if (elapsedMs >= timeline.totalMs + 1500) {
           stopPractice();
+          const finalScore = scoreState.finalScore || 0;
+          const grade = getScoreGrade(finalScore);
           setStatus(
             "practiceStatus",
-            `연습 완료 · 총점 ${scoreState.finalScore} / 음정 ${scoreState.pitchAccuracy}% / 리듬 ${scoreState.rhythmAccuracy}%`,
+            `연습 완료 · ${finalScore}점 · ${grade.label} · 음정 ${scoreState.pitchAccuracy}% · 리듬 ${scoreState.rhythmAccuracy}%`,
             "ok"
           );
           return;
@@ -4104,18 +4332,23 @@ function startBasicPractice() {
         return;
       }
 
-      const song = getSelectedSong();
+      const song = app.currentSong || getSelectedSong();
       if (!song) {
         setStatus("saveStatus", "곡을 먼저 선택하세요.", "bad");
         return;
       }
 
       try {
+        const finalScore = scoreState.finalScore || 0;
+        const grade = getScoreGrade(finalScore);
+
         await app.api("saveRecord", {
           userId: app.user.userId,
           mode: "song",
           songId: song.songId,
-          scoreTotal: scoreState.finalScore || 0,
+          scoreTotal: finalScore,
+          gradeKey: grade.key,
+          gradeLabel: grade.label,
           pitchAccuracy: scoreState.pitchAccuracy || 0,
           rhythmAccuracy: scoreState.rhythmAccuracy || 0,
           meta: {
@@ -4126,13 +4359,20 @@ function startBasicPractice() {
             detectedNote: liveDetectedNote || "",
             judgedFrames: scoreState.judgedFrames || 0,
             timeSignature: song.timeSignature || "4/4",
-            speedMultiplier: getSpeedMultiplier()
+            speedMultiplier: getSpeedMultiplier(),
+            gradeKey: grade.key,
+            gradeLabel: grade.label
           }
         });
 
+        setSongStoredScore(song.songId, finalScore);
+        setSongCleared(song.songId, finalScore >= 75);
+        renderSongButtons();
+        showSelectedSong();
+
         setStatus(
           "saveStatus",
-          `저장 완료 · 총점 ${scoreState.finalScore || 0} / 음정 ${scoreState.pitchAccuracy || 0}% / 리듬 ${scoreState.rhythmAccuracy || 0}%`,
+          `저장 완료 · ${finalScore}점 · ${grade.label}`,
           "ok"
         );
       } catch (e) {
