@@ -1182,10 +1182,275 @@ button:disabled {
     }
 
     .canvasWrap {
+      position: relative;
       border: 1px solid #e7e9f0;
       border-radius: 18px;
       overflow: hidden;
       background: #fff;
+    }
+
+    .comboOverlay {
+      --combo-tilt: -18deg;
+      --combo-number-color: #f7ffd2;
+      --combo-number-shadow-1: rgba(214, 255, 211, 0.56);
+      --combo-number-shadow-2: rgba(255, 247, 150, 0.34);
+      --combo-number-shadow-3: rgba(169, 255, 238, 0.18);
+      position: absolute;
+      left: -16px;
+      top: -16px;
+      width: 128px;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      transform: rotate(var(--combo-tilt)) scale(0.74);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transition:
+        opacity 180ms ease,
+        transform 260ms cubic-bezier(.2,.9,.22,1.18),
+        filter 220ms ease;
+      filter: saturate(1) brightness(1);
+    }
+
+    .comboOverlay::before,
+    .comboOverlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(50% 0%, 63% 11%, 80% 4%, 84% 21%, 100% 28%, 92% 44%, 100% 60%, 84% 68%, 80% 87%, 61% 81%, 50% 100%, 38% 82%, 19% 89%, 15% 70%, 0% 61%, 8% 44%, 0% 27%, 17% 21%, 20% 4%, 38% 11%);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+
+    .comboOverlay::before {
+      background:
+        radial-gradient(circle at 28% 26%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.25) 16%, transparent 24%),
+        radial-gradient(circle at 70% 76%, rgba(255, 234, 162, 0.6) 0%, transparent 20%),
+        linear-gradient(180deg, #b8fbff 0%, #8fefff 22%, #f5ef95 52%, #ffd06b 76%, #ffbd7c 100%);
+      box-shadow:
+        0 16px 28px rgba(30, 113, 160, 0.24),
+        0 0 26px rgba(255, 221, 124, 0.4);
+    }
+
+    .comboOverlay::after {
+      inset: 10px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.28) 16%, rgba(255,255,255,0) 34%),
+        radial-gradient(circle at 50% 52%, rgba(255, 240, 170, 0.14) 0%, transparent 62%);
+      opacity: 0.95;
+      mix-blend-mode: screen;
+    }
+
+    .comboCore {
+      position: relative;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.22) 18%, transparent 24%),
+        radial-gradient(circle at 50% 50%, #fff9c8 0%, #e7ffb2 28%, #c6fff4 52%, #ffe07b 76%, #ffc96f 100%);
+      box-shadow:
+        inset 0 3px 0 rgba(255,255,255,0.65),
+        inset 0 -8px 18px rgba(161, 124, 28, 0.24),
+        0 10px 18px rgba(154, 90, 16, 0.24);
+      z-index: 1;
+    }
+
+    .comboRibbon {
+      position: absolute;
+      bottom: 16px;
+      width: 70px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #a25b0e 0%, #7e4308 100%);
+      box-shadow:
+        0 6px 12px rgba(114, 67, 8, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+      z-index: 2;
+    }
+
+    .comboRibbon::before,
+    .comboRibbon::after {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      width: 19px;
+      height: 19px;
+      background: linear-gradient(180deg, #92510d 0%, #6e3907 100%);
+      z-index: -1;
+    }
+
+    .comboRibbon::before {
+      left: 8px;
+      clip-path: polygon(0 0, 100% 0, 74% 100%, 0 64%);
+    }
+
+    .comboRibbon::after {
+      right: 8px;
+      clip-path: polygon(0 0, 100% 0, 100% 64%, 26% 100%);
+    }
+
+    .comboSpark {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(213,255,210,0.82) 24%, rgba(255,244,174,0.72) 42%, rgba(255,244,174,0) 72%);
+      filter: drop-shadow(0 0 10px rgba(208, 255, 220, 0.72));
+      opacity: 0.88;
+      z-index: 3;
+    }
+
+    .comboSpark::before,
+    .comboSpark::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.95);
+      border-radius: 999px;
+    }
+
+    .comboSpark::before {
+      width: 2px;
+      height: 18px;
+    }
+
+    .comboSpark::after {
+      width: 16px;
+      height: 2px;
+    }
+
+    .comboSpark-s1 {
+      left: 8px;
+      top: 18px;
+      transform: rotate(14deg);
+    }
+
+    .comboSpark-s2 {
+      right: 6px;
+      top: 16px;
+      width: 14px;
+      height: 14px;
+      transform: rotate(-8deg);
+    }
+
+    .comboSpark-s3 {
+      right: 18px;
+      bottom: 18px;
+      width: 12px;
+      height: 12px;
+      transform: rotate(18deg);
+    }
+
+    .comboOverlay.visible {
+      opacity: 1;
+      transform: rotate(var(--combo-tilt)) scale(1);
+    }
+
+    .comboOverlay.pop {
+      transform: rotate(calc(var(--combo-tilt) - 2deg)) scale(1.16);
+    }
+
+    .comboOverlay.combo-tier-2 {
+      filter: saturate(1.1) brightness(1.06);
+      --combo-number-color: #d7fff0;
+      --combo-number-shadow-1: rgba(150, 255, 232, 0.64);
+      --combo-number-shadow-2: rgba(130, 255, 244, 0.38);
+      --combo-number-shadow-3: rgba(255, 247, 150, 0.24);
+    }
+
+    .comboOverlay.combo-tier-2::before {
+      box-shadow:
+        0 18px 30px rgba(30, 113, 160, 0.24),
+        0 0 34px rgba(255, 221, 124, 0.5);
+    }
+
+    .comboOverlay.combo-tier-2 .comboCore {
+      width: 104px;
+      height: 104px;
+      box-shadow:
+        inset 0 3px 0 rgba(255,255,255,0.7),
+        inset 0 -8px 18px rgba(161, 124, 28, 0.24),
+        0 12px 22px rgba(154, 90, 16, 0.26),
+        0 0 20px rgba(216, 255, 188, 0.28);
+    }
+
+    .comboOverlay.combo-tier-3 {
+      filter: saturate(1.08) brightness(1.04);
+      --combo-number-color: #fff7c4;
+      --combo-number-shadow-1: rgba(255, 252, 176, 0.7);
+      --combo-number-shadow-2: rgba(183, 255, 239, 0.42);
+      --combo-number-shadow-3: rgba(255, 220, 120, 0.3);
+    }
+
+    .comboOverlay.combo-tier-3::before {
+      box-shadow:
+        0 20px 34px rgba(30, 113, 160, 0.28),
+        0 0 44px rgba(255, 221, 124, 0.6),
+        0 0 64px rgba(116, 220, 255, 0.28);
+    }
+
+    .comboOverlay.combo-tier-3 .comboCore {
+      width: 108px;
+      height: 108px;
+      box-shadow:
+        inset 0 3px 0 rgba(255,255,255,0.76),
+        inset 0 -8px 18px rgba(161, 124, 28, 0.24),
+        0 14px 24px rgba(154, 90, 16, 0.28),
+        0 0 28px rgba(206, 255, 200, 0.36);
+    }
+
+    .comboOverlay.combo-tier-3 .comboSpark {
+      filter: drop-shadow(0 0 14px rgba(210, 255, 224, 0.92));
+    }
+
+    .comboLabel {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%) rotate(4deg);
+      font-size: 10px;
+      font-weight: 1000;
+      letter-spacing: 0.28em;
+      color: #2f8f8e;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.44),
+        0 0 14px rgba(174, 255, 238, 0.58);
+      z-index: 4;
+    }
+
+    .comboValue {
+      position: relative;
+      z-index: 4;
+      font-size: clamp(34px, 4.4vw, 52px);
+      font-weight: 1000;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--combo-number-color);
+      text-shadow:
+        0 2px 0 rgba(118, 92, 24, 0.42),
+        0 0 18px var(--combo-number-shadow-1),
+        0 0 30px var(--combo-number-shadow-2),
+        0 0 42px var(--combo-number-shadow-3);
+    }
+
+    .comboValue::after {
+      content: "x";
+      position: absolute;
+      right: -11px;
+      top: 3px;
+      font-size: 15px;
+      font-weight: 1000;
+      color: #67bdb4;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.38),
+        0 0 10px rgba(175, 255, 241, 0.42);
     }
 
     .practiceControlPanel {
@@ -1387,55 +1652,214 @@ button:disabled {
     .resultScoreBoard {
       width: 100%;
       display: grid;
+      gap: 16px;
+    }
+
+    .resultScoreGrid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
 
-    .resultScoreRow {
+    .resultScoreCard {
+      --card-accent-a: rgba(116, 230, 255, 0.26);
+      --card-accent-b: rgba(255, 238, 155, 0.2);
+      --card-glow-a: rgba(104, 224, 255, 0.24);
+      --card-glow-b: rgba(255, 226, 128, 0.16);
+      position: relative;
+      min-height: 112px;
+      padding: 16px 16px 18px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(20, 43, 77, 0.88) 0%, rgba(12, 28, 55, 0.92) 100%),
+        radial-gradient(circle at top, rgba(255,255,255,0.06) 0%, transparent 58%);
+      border: 1px solid rgba(210, 241, 255, 0.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        0 14px 28px rgba(6, 14, 28, 0.2),
+        0 0 22px rgba(104, 224, 255, 0.08);
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 16px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      overflow: hidden;
+      isolation: isolate;
     }
 
-    .resultScoreRow-total {
-      padding: 18px 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 100%);
-      border-color: rgba(255,255,255,0.18);
+    .resultScoreCard::before,
+    .resultScoreCard::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .resultScoreCard::before {
+      inset: 1px;
+      background:
+        linear-gradient(135deg, var(--card-accent-a) 0%, transparent 26%, transparent 74%, var(--card-accent-b) 100%),
+        radial-gradient(circle at top left, var(--card-glow-a) 0%, transparent 36%),
+        radial-gradient(circle at bottom right, var(--card-glow-b) 0%, transparent 34%);
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      padding: 1px;
+      opacity: 0.92;
+    }
+
+    .resultScoreCard::after {
+      inset: 10px;
+      background:
+        radial-gradient(circle at top, color-mix(in srgb, var(--card-glow-a) 76%, white) 0%, color-mix(in srgb, var(--card-glow-a) 34%, transparent) 26%, transparent 62%),
+        radial-gradient(circle at bottom, color-mix(in srgb, var(--card-glow-b) 88%, transparent) 0%, transparent 34%);
+      filter: blur(8px);
+      opacity: 0.88;
+    }
+
+    .resultScoreCard-pitch {
+      --card-accent-a: rgba(118, 235, 255, 0.3);
+      --card-accent-b: rgba(147, 229, 255, 0.18);
+      --card-glow-a: rgba(110, 230, 255, 0.28);
+      --card-glow-b: rgba(120, 196, 255, 0.18);
+    }
+
+    .resultScoreCard-rhythm {
+      --card-accent-a: rgba(111, 255, 212, 0.24);
+      --card-accent-b: rgba(121, 255, 232, 0.16);
+      --card-glow-a: rgba(94, 246, 211, 0.24);
+      --card-glow-b: rgba(126, 255, 234, 0.16);
+    }
+
+    .resultScoreCard-combo {
+      --card-accent-a: rgba(255, 233, 134, 0.3);
+      --card-accent-b: rgba(255, 196, 92, 0.22);
+      --card-glow-a: rgba(255, 226, 124, 0.28);
+      --card-glow-b: rgba(255, 184, 92, 0.18);
     }
 
     .resultScoreLabel {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
-      color: rgba(232, 240, 255, 0.92);
+      letter-spacing: 0.04em;
+      color: rgba(225, 236, 255, 0.8);
     }
 
     .resultScoreValue {
-      font-size: clamp(22px, 4vw, 38px);
+      font-size: clamp(28px, 4vw, 40px);
       font-weight: 1000;
       color: #ffffff;
-      text-shadow: 0 0 16px rgba(126, 214, 255, 0.2);
-    }
-
-    .resultScoreRow-total .resultScoreLabel {
-      font-size: 18px;
-      color: #fff7d5;
-    }
-
-    .resultScoreRow-total .resultScoreValue {
-      font-size: clamp(30px, 5.4vw, 54px);
-      color: #ffe27a;
       text-shadow:
-        0 0 18px rgba(255, 226, 122, 0.28),
-        0 0 30px rgba(255, 188, 31, 0.2);
+        0 0 16px rgba(126, 214, 255, 0.22),
+        0 4px 18px rgba(0,0,0,0.18);
     }
 
     .resultScoreValue.bump {
       animation: resultValuePop 240ms ease-out;
+    }
+
+    .resultScoreStage {
+      --stage-accent-a: rgba(120, 240, 255, 0.22);
+      --stage-accent-b: rgba(255, 233, 140, 0.22);
+      --stage-glow-a: rgba(107, 234, 255, 0.28);
+      --stage-glow-b: rgba(255, 224, 132, 0.22);
+      position: relative;
+      min-height: 260px;
+      padding: 24px 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(17, 38, 69, 0.9) 0%, rgba(10, 23, 47, 0.96) 100%),
+        radial-gradient(circle at top, rgba(255, 223, 124, 0.12) 0%, transparent 54%);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 24px 42px rgba(5, 12, 24, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 0 0 1px rgba(255, 227, 151, 0.08),
+        0 0 30px rgba(255, 220, 132, 0.08);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      isolation: isolate;
+    }
+
+    .resultScoreStage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, var(--stage-accent-a) 0%, transparent 24%, transparent 76%, var(--stage-accent-b) 100%),
+        radial-gradient(circle at 50% 58%, rgba(255, 225, 132, 0.18) 0%, rgba(255,255,255,0.04) 32%, transparent 66%);
+      opacity: 0.96;
+      pointer-events: none;
+    }
+
+    .resultScoreStage::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 18%, transparent 30%),
+        radial-gradient(circle at top left, var(--stage-glow-a) 0%, transparent 34%),
+        radial-gradient(circle at bottom right, var(--stage-glow-b) 0%, transparent 34%);
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      padding: 1px;
+      opacity: 0.96;
+      pointer-events: none;
+    }
+
+    .resultScoreStage-main {
+      --stage-accent-a: rgba(122, 241, 255, 0.22);
+      --stage-accent-b: rgba(255, 236, 146, 0.28);
+      --stage-glow-a: rgba(108, 234, 255, 0.3);
+      --stage-glow-b: rgba(255, 219, 120, 0.26);
+    }
+
+    .resultTotalBlock {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 10px;
+      max-width: 66%;
+    }
+
+    .resultTotalLabel {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff0bb;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 16px rgba(255, 223, 124, 0.22);
+    }
+
+    .resultScoreValue-total {
+      font-size: clamp(48px, 10vw, 92px);
+      font-weight: 1000;
+      line-height: 0.92;
+      color: #ffe07a;
+      text-shadow:
+        0 4px 0 rgba(116, 69, 0, 0.3),
+        0 0 22px rgba(255, 226, 122, 0.42),
+        0 0 44px rgba(255, 188, 31, 0.22);
+    }
+
+    .resultTotalSub {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(230, 240, 255, 0.74);
+      letter-spacing: 0.04em;
     }
 
     .resultStamp {
@@ -1443,8 +1867,10 @@ button:disabled {
       --stamp-glow: rgba(255, 216, 77, 0.62);
       --stamp-glow-strong: rgba(255, 238, 162, 0.78);
       --stamp-core: rgba(255,255,255,0.26);
-      position: relative;
-      width: min(78vw, 520px);
+      position: absolute;
+      right: -6px;
+      top: -26px;
+      width: min(44vw, 260px);
       aspect-ratio: 1 / 1;
       display: flex;
       align-items: center;
@@ -1643,6 +2069,61 @@ button:disabled {
       box-shadow:
         0 8px 16px rgba(0,0,0,0.18),
         inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+
+    @media (max-width: 640px) {
+      .comboOverlay {
+        left: -18px;
+        top: -10px;
+        width: 104px;
+      }
+
+      .comboOverlay.visible {
+        transform: rotate(var(--combo-tilt)) scale(0.88);
+      }
+
+      .comboOverlay.pop {
+        transform: rotate(calc(var(--combo-tilt) - 2deg)) scale(0.98);
+      }
+
+      .comboCore {
+        width: 82px;
+        height: 82px;
+      }
+
+      .comboLabel {
+        top: 14px;
+        font-size: 9px;
+      }
+
+      .comboValue {
+        font-size: 32px;
+      }
+
+      .resultScoreGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .resultScoreCard {
+        min-height: 92px;
+      }
+
+      .resultScoreStage {
+        min-height: 300px;
+        padding: 20px 18px 22px;
+        align-items: flex-end;
+      }
+
+      .resultTotalBlock {
+        max-width: 100%;
+      }
+
+      .resultStamp {
+        width: min(58vw, 230px);
+        right: 50%;
+        top: 4px;
+        margin-right: -102px;
+      }
     }
 
     .resultStamp.stamp-perfect {
@@ -2394,6 +2875,15 @@ button:disabled {
       </div>
 
       <div class="canvasWrap">
+        <div id="comboOverlay" class="comboOverlay" aria-hidden="true">
+          <div class="comboSpark comboSpark-s1" aria-hidden="true"></div>
+          <div class="comboSpark comboSpark-s2" aria-hidden="true"></div>
+          <div class="comboSpark comboSpark-s3" aria-hidden="true"></div>
+          <div class="comboRibbon" aria-hidden="true"></div>
+          <div class="comboCore" aria-hidden="true"></div>
+          <div class="comboLabel">COMBO</div>
+          <div id="comboValue" class="comboValue">5</div>
+        </div>
         <canvas id="practiceCanvas" width="900" height="320"></canvas>
       </div>
 
@@ -2418,39 +2908,49 @@ button:disabled {
       <div id="resultOverlay" class="resultOverlay hidden" aria-hidden="true">
         <div class="resultPanel">
           <div class="resultScoreBoard">
-            <div class="resultScoreRow">
-              <span class="resultScoreLabel">음정 점수</span>
-              <span id="resultPitchScore" class="resultScoreValue">0점</span>
+            <div class="resultScoreGrid">
+              <div class="resultScoreCard resultScoreCard-pitch">
+                <span class="resultScoreLabel">음정 점수</span>
+                <span id="resultPitchScore" class="resultScoreValue">0점</span>
+              </div>
+              <div class="resultScoreCard resultScoreCard-rhythm">
+                <span class="resultScoreLabel">박자 점수</span>
+                <span id="resultRhythmScore" class="resultScoreValue">0점</span>
+              </div>
+              <div class="resultScoreCard resultScoreCard-combo">
+                <span class="resultScoreLabel">MAX COMBO</span>
+                <span id="resultMaxCombo" class="resultScoreValue">0</span>
+              </div>
             </div>
-            <div class="resultScoreRow">
-              <span class="resultScoreLabel">박자 점수</span>
-              <span id="resultRhythmScore" class="resultScoreValue">0점</span>
-            </div>
-            <div class="resultScoreRow resultScoreRow-total">
-              <span class="resultScoreLabel">전체 점수</span>
-              <span id="resultTotalScore" class="resultScoreValue">0점</span>
-            </div>
-          </div>
 
-          <div id="resultStamp" class="resultStamp hidden">
-            <div class="resultStampGlow"></div>
-            <div class="resultStampBurst" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="resultStampDust" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="resultStampRing"></div>
-            <div class="resultStampInner">
-              <div id="resultText" class="resultText">PERFECT!!</div>
+            <div class="resultScoreStage resultScoreStage-main">
+              <div class="resultTotalBlock">
+                <span class="resultTotalLabel">전체 점수</span>
+                <span id="resultTotalScore" class="resultScoreValue resultScoreValue-total">0점</span>
+                <span class="resultTotalSub">이번 연습 결과를 한눈에 확인해 보세요</span>
+              </div>
+
+              <div id="resultStamp" class="resultStamp hidden">
+                <div class="resultStampGlow"></div>
+                <div class="resultStampBurst" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="resultStampDust" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="resultStampRing"></div>
+                <div class="resultStampInner">
+                  <div id="resultText" class="resultText">PERFECT!!</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2588,6 +3088,10 @@ button:disabled {
     let liveDetectedNote = null;
     let liveDetectedMidi = null;
     let liveDetectedCents = null;
+    let currentInputLevel = 0;
+    let currentCombo = 0;
+    let bestCombo = 0;
+    let comboPopTimer = null;
 
     let currentTimeline = null;
     let currentPracticeStartedAt = 0;
@@ -2632,6 +3136,7 @@ button:disabled {
     const PITCH_NO_INPUT_SUSTAIN_SCORE = 0.1;
     const STAMP_AUDIO_SRC = "audio/stamp.mp3";
     const JUDGMENT_LINE_X = 170;
+    const MIN_PERFORMANCE_INPUT_LEVEL = 0.018;
     const GRADE_RULES = [
       { min: 90, key: "perfect", label: "PERFECT!!" },
       { min: 80, key: "great", label: "GREAT!" },
@@ -2684,9 +3189,11 @@ button:disabled {
       finalScore: 0,
       pitchAccuracy: 0,
       rhythmAccuracy: 0,
+      maxCombo: 0,
       gradeKey: "retry",
       gradeLabel: "다시 도전!"
     };
+    let judgedNoteSet = new Set();
 
     const trebleImg = new Image();
     let trebleReady = false;
@@ -2932,7 +3439,30 @@ function setStatus(id, text, type = "") {
       element.classList.add("bump");
     }
 
-    function animateCountUp(element, endValue, duration = 700, suffix = "점", runId = resultSequenceRunId) {
+    function getCountEaseOut(progress, mode = "quart") {
+      const t = Math.min(Math.max(progress, 0), 1);
+
+      if (mode === "expo") {
+        if (t >= 1) return 1;
+        return 1 - Math.pow(2, -10 * t);
+      }
+
+      if (mode === "quint") {
+        return 1 - Math.pow(1 - t, 5);
+      }
+
+      return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animateCountUp(
+      element,
+      endValue,
+      duration = 700,
+      suffix = "점",
+      runId = resultSequenceRunId,
+      easingMode = "quart",
+      options = {}
+    ) {
       return new Promise((resolve) => {
         if (!element) {
           resolve();
@@ -2941,6 +3471,10 @@ function setStatus(id, text, type = "") {
 
         const startTime = performance.now();
         const target = Math.max(0, Math.round(Number(endValue) || 0));
+        const tailStepCount = Math.max(0, Math.round(Number(options.tailStepCount) || 0));
+        const tailFraction = Math.min(0.7, Math.max(0, Number(options.tailFraction) || 0));
+        const headTarget = tailStepCount > 0 ? Math.max(0, target - tailStepCount) : target;
+        const tailStartProgress = tailStepCount > 0 ? Math.max(0.1, 1 - tailFraction) : 1;
 
         function tick(now) {
           if (runId !== resultSequenceRunId) {
@@ -2950,8 +3484,19 @@ function setStatus(id, text, type = "") {
 
           const elapsed = now - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.round(target * eased);
+          let current = 0;
+
+          if (tailStepCount > 0 && target > 0 && progress >= tailStartProgress) {
+            const tailProgress = Math.min(1, (progress - tailStartProgress) / Math.max(0.0001, 1 - tailStartProgress));
+            const steppedTail = Math.floor(tailProgress * tailStepCount);
+            current = Math.min(target, headTarget + steppedTail);
+          } else {
+            const normalizedProgress = tailStepCount > 0
+              ? Math.min(1, progress / tailStartProgress)
+              : progress;
+            const eased = getCountEaseOut(normalizedProgress, easingMode);
+            current = Math.round(headTarget * eased);
+          }
 
           element.textContent = `${current}${suffix}`;
 
@@ -2979,21 +3524,25 @@ function setStatus(id, text, type = "") {
       const stamp = document.getElementById("resultStamp");
       const pitchEl = document.getElementById("resultPitchScore");
       const rhythmEl = document.getElementById("resultRhythmScore");
+      const comboEl = document.getElementById("resultMaxCombo");
       const totalEl = document.getElementById("resultTotalScore");
       const text = document.getElementById("resultText");
       const runId = ++resultSequenceRunId;
 
-      if (!overlay || !stamp || !pitchEl || !rhythmEl || !totalEl || !text) return;
+      if (!overlay || !stamp || !pitchEl || !rhythmEl || !comboEl || !totalEl || !text) return;
 
       const pitchScore = Math.round(Number(scoreData.pitchAccuracy) || 0);
       const rhythmScore = Math.round(Number(scoreData.rhythmAccuracy) || 0);
+      const maxCombo = Math.max(0, Math.round(Number(scoreData.maxCombo) || 0));
       const finalScore = Math.round(Number(scoreData.finalScore) || 0);
 
       pitchEl.textContent = "0점";
       rhythmEl.textContent = "0점";
+      comboEl.textContent = "0";
       totalEl.textContent = "0점";
       pitchEl.classList.remove("bump");
       rhythmEl.classList.remove("bump");
+      comboEl.classList.remove("bump");
       totalEl.classList.remove("bump");
 
       text.textContent = grade.label;
@@ -3002,11 +3551,16 @@ function setStatus(id, text, type = "") {
       overlay.classList.add("show");
       overlay.setAttribute("aria-hidden", "false");
 
-      await animateCountUp(pitchEl, pitchScore, 650, "점", runId);
+      await animateCountUp(pitchEl, pitchScore, 760, "점", runId, "quint");
       if (runId !== resultSequenceRunId) return;
-      await animateCountUp(rhythmEl, rhythmScore, 650, "점", runId);
+      await animateCountUp(rhythmEl, rhythmScore, 760, "점", runId, "quint");
       if (runId !== resultSequenceRunId) return;
-      await animateCountUp(totalEl, finalScore, 850, "점", runId);
+      await animateCountUp(comboEl, maxCombo, 560, "", runId, "quint");
+      if (runId !== resultSequenceRunId) return;
+      await animateCountUp(totalEl, finalScore, 1320, "점", runId, "expo", {
+        tailStepCount: 5,
+        tailFraction: 0.38
+      });
       if (runId !== resultSequenceRunId) return;
       await new Promise((resolve) => setTimeout(resolve, 180));
       if (runId !== resultSequenceRunId) return;
@@ -4254,7 +4808,9 @@ function getNoteBodyWidthByBeat(beat) {
       }
     }
 
-    function getJudgmentFeedbackKind(pitchScore, rhythmScore) {
+    function getJudgmentFeedbackKind(pitchScore, rhythmScore, hasValidInput = true) {
+      if (!hasValidInput) return "miss";
+
       const combined = (Number(pitchScore) + Number(rhythmScore)) / 2;
       if (combined >= 0.95) return "perfect";
       if (combined >= 0.78) return "great";
@@ -4337,29 +4893,32 @@ function getNoteBodyWidthByBeat(beat) {
       const pulseRemaining = Math.max(0, judgmentZonePulseUntil - now);
       const pulseRatio = judgmentZonePulseUntil ? Math.min(1, pulseRemaining / 260) : 0;
       const pulsePower = pulseRatio * judgmentZonePulseStrength;
-      const breathe = 0.5 + 0.5 * Math.sin(now / 320);
+      const breathe = 0.5 + 0.5 * Math.sin(now / 520);
       const nearestGapMs = getNearestJudgmentApproach(elapsedMs, timeline);
       const beatMs = Math.max(1, Number(timeline?.beatMs) || 600);
       const approachRatio = nearestGapMs === Infinity
         ? 0
-        : Math.max(0, 1 - (nearestGapMs / (beatMs * 0.75)));
-      const zoneGlow = 0.22 + breathe * 0.1 + approachRatio * 0.24 + pulsePower * 0.34;
+        : Math.max(0, 1 - (nearestGapMs / (beatMs * 0.9)));
+      const baseVisibility = 0.78;
+      const approachBoost = approachRatio * 0.18;
+      const pulseBoost = pulsePower * 0.22;
+      const zoneGlow = 0.48 + breathe * 0.04 + approachBoost + pulseBoost;
 
       ctx.save();
 
-      ctx.fillStyle = `rgba(110, 223, 255, ${0.08 + approachRatio * 0.08 + pulsePower * 0.06})`;
+      ctx.fillStyle = `rgba(110, 223, 255, ${0.18 + approachBoost * 0.55 + pulseBoost * 0.32})`;
       ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
 
-      ctx.fillStyle = `rgba(255, 227, 124, ${0.04 + pulsePower * 0.08})`;
+      ctx.fillStyle = `rgba(255, 227, 124, ${0.16 + pulseBoost * 0.26})`;
       ctx.fillRect(JUDGMENT_LINE_X - 7, zoneTop, 14, zoneHeight);
 
-      ctx.shadowBlur = 18 + approachRatio * 12 + pulsePower * 20;
-      ctx.shadowColor = `rgba(93, 214, 255, ${0.16 + zoneGlow * 0.5})`;
-      ctx.fillStyle = `rgba(173, 239, 255, ${0.08 + zoneGlow * 0.18})`;
+      ctx.shadowBlur = 22 + approachBoost * 22 + pulseBoost * 24;
+      ctx.shadowColor = `rgba(93, 214, 255, ${0.28 + zoneGlow * 0.34})`;
+      ctx.fillStyle = `rgba(173, 239, 255, ${0.16 + zoneGlow * 0.16})`;
       ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
 
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = `rgba(73, 193, 230, ${0.28 + approachRatio * 0.24})`;
+      ctx.strokeStyle = `rgba(73, 193, 230, ${0.52 + approachBoost * 0.3 + pulseBoost * 0.16})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(leftX, zoneTop);
@@ -4368,17 +4927,17 @@ function getNoteBodyWidthByBeat(beat) {
       ctx.lineTo(rightX, zoneBottom);
       ctx.stroke();
 
-      ctx.strokeStyle = `rgba(255, 221, 112, ${0.7 + approachRatio * 0.1 + pulsePower * 0.1})`;
-      ctx.lineWidth = 3;
-      ctx.shadowBlur = 20 + approachRatio * 12 + pulsePower * 16;
-      ctx.shadowColor = `rgba(255, 221, 112, ${0.28 + pulsePower * 0.2})`;
+      ctx.strokeStyle = `rgba(255, 221, 112, ${0.86 + approachBoost * 0.18 + pulseBoost * 0.14})`;
+      ctx.lineWidth = 3.2;
+      ctx.shadowBlur = 22 + approachBoost * 16 + pulseBoost * 18;
+      ctx.shadowColor = `rgba(255, 221, 112, ${0.34 + approachBoost * 0.18 + pulseBoost * 0.2})`;
       ctx.beginPath();
       ctx.moveTo(JUDGMENT_LINE_X, zoneTop);
       ctx.lineTo(JUDGMENT_LINE_X, zoneBottom);
       ctx.stroke();
 
       ctx.shadowBlur = 0;
-      ctx.fillStyle = "rgba(53, 88, 126, 0.68)";
+      ctx.fillStyle = `rgba(53, 88, 126, ${baseVisibility})`;
       ctx.font = "bold 14px system-ui";
       ctx.textAlign = "center";
       ctx.fillText("판정 존", JUDGMENT_LINE_X, zoneTop - 8);
@@ -4533,6 +5092,110 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       return liveDetectedMidi + centsOffset;
     }
 
+    function getCurrentInputRms(buffer) {
+      if (!buffer || !buffer.length) return 0;
+
+      let sum = 0;
+      for (let i = 0; i < buffer.length; i++) {
+        const sample = buffer[i];
+        sum += sample * sample;
+      }
+
+      return Math.sqrt(sum / buffer.length);
+    }
+
+    function hasValidPerformanceInput() {
+      return livePitchHz > 0 && currentInputLevel >= MIN_PERFORMANCE_INPUT_LEVEL;
+    }
+
+    function getNoteSignature(note) {
+      if (!note) return "";
+      return `${note.startMs}:${note.note}:${note.durMs}`;
+    }
+
+    function shouldJudgeNoteNow(elapsedMs, target) {
+      if (!target) return false;
+
+      const judgeOffset = Math.min(
+        Math.max(target.durMs * 0.5, 90),
+        Math.max(90, target.durMs - NOTE_TRANSITION_GRACE_MS)
+      );
+
+      return elapsedMs >= target.startMs + judgeOffset;
+    }
+
+    function resetNoteJudgmentState() {
+      judgedNoteSet = new Set();
+      lastJudgedNoteSignature = "";
+    }
+
+    function hideCombo() {
+      const comboOverlay = document.getElementById("comboOverlay");
+      if (!comboOverlay) return;
+
+      comboOverlay.classList.remove("visible", "pop", "combo-tier-2", "combo-tier-3");
+      comboOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function updateComboUI(combo) {
+      const comboOverlay = document.getElementById("comboOverlay");
+      const comboValue = document.getElementById("comboValue");
+      if (!comboOverlay || !comboValue) return;
+
+      if (combo < 5) {
+        hideCombo();
+        return;
+      }
+
+      comboValue.textContent = String(combo);
+      comboOverlay.classList.add("visible");
+      comboOverlay.classList.remove("combo-tier-2", "combo-tier-3", "combo-tier-4");
+
+      if (combo >= 15) {
+        comboOverlay.classList.add("combo-tier-3");
+      } else if (combo >= 10) {
+        comboOverlay.classList.add("combo-tier-2");
+      }
+
+      comboOverlay.setAttribute("aria-hidden", "false");
+      comboOverlay.classList.remove("pop");
+      void comboOverlay.offsetWidth;
+      comboOverlay.classList.add("pop");
+
+      if (comboPopTimer) {
+        clearTimeout(comboPopTimer);
+      }
+
+      comboPopTimer = setTimeout(() => {
+        comboOverlay.classList.remove("pop");
+      }, 220);
+    }
+
+    function resetComboState() {
+      currentCombo = 0;
+      bestCombo = 0;
+      if (comboPopTimer) {
+        clearTimeout(comboPopTimer);
+        comboPopTimer = null;
+      }
+      hideCombo();
+    }
+
+    function applyComboForJudgment(feedbackKind) {
+      if (feedbackKind === "perfect" || feedbackKind === "great" || feedbackKind === "good") {
+        currentCombo += 1;
+        bestCombo = Math.max(bestCombo, currentCombo);
+        if (scoreState) {
+          scoreState.maxCombo = bestCombo;
+        }
+        updateComboUI(currentCombo);
+        return;
+      }
+
+      currentCombo = 0;
+      hideCombo();
+    }
+
     function getTimelineNoteIndex(target, timeline) {
       if (!target || !timeline || !Array.isArray(timeline.notes)) return -1;
       return timeline.notes.findIndex((note) => note === target);
@@ -4563,13 +5226,17 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       return Math.abs((detectedMidiValue - midi) * 100);
     }
 
-    function getPitchMatchScore(target, elapsedMs, timeline) {
-      const detectedMidiValue = getDetectedMidiValue();
-      const inTransition = isInTransitionWindow(elapsedMs, target);
-
-      if (detectedMidiValue == null) {
-        return inTransition ? PITCH_NO_INPUT_TRANSITION_SCORE : PITCH_NO_INPUT_SUSTAIN_SCORE;
+    function getPitchMatchScore(target, elapsedMs, timeline, hasValidInput = hasValidPerformanceInput()) {
+      if (!target || !hasValidInput) {
+        return 0;
       }
+
+      const detectedMidiValue = getDetectedMidiValue();
+      if (detectedMidiValue == null) {
+        return 0;
+      }
+
+      const inTransition = isInTransitionWindow(elapsedMs, target);
 
       const candidateNotes = [target];
       if (inTransition) {
@@ -4606,8 +5273,8 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       return 0;
     }
 
-    function getRhythmMatchScore(elapsedMs, target) {
-      if (!target) return 0;
+    function getRhythmMatchScore(elapsedMs, target, hasValidInput = hasValidPerformanceInput()) {
+      if (!target || !hasValidInput) return 0;
 
       const noteStartGap = elapsedMs - target.startMs;
       const noteEndGap = (target.startMs + target.durMs) - elapsedMs;
@@ -4792,12 +5459,16 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
         finalScore: 0,
         pitchAccuracy: 0,
         rhythmAccuracy: 0,
+        maxCombo: 0,
         gradeKey: "retry",
         gradeLabel: "다시 도전!"
       };
 
       const liveScoreEl = document.getElementById("liveScore");
       if (liveScoreEl) liveScoreEl.textContent = "0";
+      currentInputLevel = 0;
+      resetNoteJudgmentState();
+      resetComboState();
     }
 
     function updateScoringFrame() {
@@ -4819,10 +5490,22 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
         return;
       }
 
+      if (!shouldJudgeNoteNow(elapsedMs, target)) {
+        return;
+      }
+
+      const noteSignature = getNoteSignature(target);
+      if (!noteSignature || judgedNoteSet.has(noteSignature)) {
+        return;
+      }
+
+      judgedNoteSet.add(noteSignature);
+
+      const hasValidInput = hasValidPerformanceInput();
+      const pitchScore = getPitchMatchScore(target, elapsedMs, currentTimeline, hasValidInput);
+      const rhythmScore = getRhythmMatchScore(elapsedMs, target, hasValidInput);
+
       scoreState.judgedFrames++;
-      const pitchScore = getPitchMatchScore(target, elapsedMs, currentTimeline);
-      const rhythmScore = getRhythmMatchScore(elapsedMs, target);
-      const noteSignature = `${target.startMs}:${target.note}:${target.durMs}`;
 
       scoreState.pitchHitFrames += pitchScore;
       scoreState.rhythmHitFrames += rhythmScore;
@@ -4837,12 +5520,11 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       scoreState.gradeKey = grade.key;
       scoreState.gradeLabel = grade.label;
 
-      if (noteSignature !== lastJudgedNoteSignature) {
-        lastJudgedNoteSignature = noteSignature;
-        const feedbackKind = getJudgmentFeedbackKind(pitchScore, rhythmScore);
-        enqueueJudgmentFeedback(feedbackKind);
-        triggerJudgmentZonePulse(feedbackKind);
-      }
+      lastJudgedNoteSignature = noteSignature;
+      const feedbackKind = getJudgmentFeedbackKind(pitchScore, rhythmScore, hasValidInput);
+      applyComboForJudgment(feedbackKind);
+      enqueueJudgmentFeedback(feedbackKind);
+      triggerJudgmentZonePulse(feedbackKind);
 
       const liveScoreEl = document.getElementById("liveScore");
       if (liveScoreEl) liveScoreEl.textContent = String(scoreState.finalScore);
@@ -4852,7 +5534,10 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       if (!micRunning || !analyser || !audioCtx) return;
 
       analyser.getFloatTimeDomainData(pitchBuffer);
-      const freq = autoCorrelate(pitchBuffer, audioCtx.sampleRate);
+      currentInputLevel = getCurrentInputRms(pitchBuffer);
+      const freq = currentInputLevel >= MIN_PERFORMANCE_INPUT_LEVEL
+        ? autoCorrelate(pitchBuffer, audioCtx.sampleRate)
+        : -1;
 
       if (freq > 0) {
         livePitchHz = freq;
@@ -4965,6 +5650,9 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
 
       setStatus("practiceStatus", "연습 정지", "");
       currentTimeline = null;
+      currentInputLevel = 0;
+      resetNoteJudgmentState();
+      resetComboState();
       resetJudgmentZoneState();
     }
 function drawBasicRecorderImage(note = "G5") {
@@ -5362,6 +6050,7 @@ function startBasicPractice() {
           gradeLabel: grade.label,
           pitchAccuracy: scoreState.pitchAccuracy || 0,
           rhythmAccuracy: scoreState.rhythmAccuracy || 0,
+          maxCombo: scoreState.maxCombo || 0,
           meta: {
             grade: app.user.grade,
             class: app.user.class,
@@ -5369,6 +6058,7 @@ function startBasicPractice() {
             name: app.user.name,
             detectedNote: liveDetectedNote || "",
             judgedFrames: scoreState.judgedFrames || 0,
+            maxCombo: scoreState.maxCombo || 0,
             timeSignature: song.timeSignature || "4/4",
             speedMultiplier: getSpeedMultiplier(),
             gradeKey: grade.key,
