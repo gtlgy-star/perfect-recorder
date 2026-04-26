@@ -3985,8 +3985,10 @@ button:disabled {
     /* 狩?硫붾돱 ?붾㈃ ?꾩슜 ?ㅽ???*/
 #screen-menu {
   max-width: 520px;
-  margin: 40px auto;
+  margin: 40px auto 96px;
   position: relative;
+  z-index: 2;
+  isolation: isolate;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(18, 39, 73, 0.92) 0%, rgba(10, 20, 40, 0.96) 100%);
@@ -3998,6 +4000,11 @@ button:disabled {
     0 0 42px rgba(103, 220, 255, 0.12),
     inset 0 1px 0 rgba(255,255,255,0.12),
     inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+#screen-menu > * {
+  position: relative;
+  z-index: 1;
 }
 
 #screen-menu::before,
