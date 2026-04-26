@@ -4028,6 +4028,7 @@ button:disabled {
 
 .challenge-main-card {
   position: relative;
+  z-index: 5;
   overflow: hidden;
   padding: 28px 22px;
   border-radius: 30px;
@@ -4051,6 +4052,7 @@ button:disabled {
   content: "";
   position: absolute;
   inset: -45%;
+  z-index: 0;
   background: conic-gradient(
     from 0deg,
     transparent,
@@ -4072,6 +4074,7 @@ button:disabled {
   left: -120%;
   width: 60%;
   height: 100%;
+  z-index: 0;
   background: linear-gradient(
     120deg,
     transparent,
@@ -4213,6 +4216,7 @@ button:disabled {
 
 .challenge-info-card {
   position: relative;
+  z-index: 5;
   overflow: hidden;
   padding: 20px 18px;
   border-radius: 22px;
@@ -4229,6 +4233,7 @@ button:disabled {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 24%, transparent 48%),
@@ -4254,6 +4259,8 @@ button:disabled {
 
 .challenge-record-block {
   display: grid;
+  position: relative;
+  z-index: 5;
   gap: 8px;
   padding: 14px 14px 16px;
   border-radius: 18px;
@@ -4376,6 +4383,8 @@ button:disabled {
 
 .challenge-ranking-item {
   display: grid;
+  position: relative;
+  z-index: 5;
   grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 10px;
@@ -4432,7 +4441,7 @@ button:disabled {
 
 .challenge-my-ranking {
   position: relative;
-  z-index: 1;
+  z-index: 5;
   margin-top: 14px;
   padding: 14px 16px;
   border-radius: 18px;
@@ -4598,6 +4607,7 @@ body.theme-light .challenge-my-ranking {
 
 .next-mission-card {
   position: relative;
+  z-index: 5;
   padding: 16px 12px;
   min-height: 120px;
   border-radius: 22px;
@@ -4647,6 +4657,93 @@ body.theme-light .challenge-my-ranking {
   margin-top: 18px;
 }
 
+#screen-challenge-play {
+  display: none;
+  padding: 20px;
+}
+
+.wave,
+.wave-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#screen-challenge,
+#screen-challenge-play {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+.challenge-play-shell {
+  display: grid;
+  position: relative;
+  z-index: 5;
+  gap: 16px;
+}
+
+.challenge-play-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.challenge-play-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.challenge-play-copy .challenge-badge {
+  margin-bottom: 0;
+}
+
+.challenge-play-copy h3 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 1000;
+  color: #fff6d9;
+  text-shadow:
+    0 0 18px rgba(255, 206, 91, 0.34),
+    0 0 34px rgba(110, 220, 255, 0.16);
+}
+
+.challenge-play-copy p {
+  margin: 0;
+  color: rgba(255,255,255,0.82);
+  font-size: 14px;
+}
+
+.challenge-play-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.challenge-play-actions button {
+  width: auto;
+  min-width: 132px;
+}
+
+.challengePlayMount {
+  position: relative;
+  z-index: 5;
+}
+
+#screen-challenge-play #step34Section {
+  margin-bottom: 0;
+}
+
+#screen-challenge-play #step34Section > .pill,
+#screen-challenge-play #step34Section > .cardTitle {
+  display: none;
+}
+
 @media (max-width: 640px) {
   .challengeScreen {
     padding: 16px;
@@ -4674,6 +4771,37 @@ body.theme-light .challenge-my-ranking {
 
   .mission-song-title {
     font-size: 42px;
+  }
+
+  .challenge-play-head {
+    align-items: stretch;
+  }
+
+  .challenge-play-actions {
+    width: 100%;
+  }
+
+  .challenge-play-actions button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .wave,
+  .wave-layer {
+    z-index: 0;
+  }
+
+  .card,
+  .challenge-main-card,
+  .challenge-info-card,
+  .challenge-record-block,
+  .challenge-ranking-item,
+  .challenge-my-ranking,
+  .next-mission-card,
+  .challenge-play-shell {
+    z-index: 5;
   }
 }
 
@@ -4714,7 +4842,7 @@ body.theme-light .challenge-my-ranking {
 
 .challenge-play-mode > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .challenge-play-mode .metaCard,
@@ -6180,6 +6308,16 @@ body.theme-light .fingering-card .desc {
       { min: 0, key: "retry", label: "다시 도전!" }
     ];
     const SHORT_SONG_TITLES = ["나비야", "비행기", "학교종", "작은별"];
+    const FALLBACK_CHALLENGE_SONGS = {
+      JAGEUNBYEOL: {
+        songId: "JAGEUNBYEOL",
+        title: "작은별",
+        bpm: 90,
+        timeSignature: "4/4",
+        recorderImage: "",
+        notation: "C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2"
+      }
+    };
     const BASIC_NOTE_IMAGE_PATHS = {
       C5: "images/basic-notes/C5.png",
       D5: "images/basic-notes/D5.png",
@@ -6279,10 +6417,43 @@ function initTheme() {
 
 function setChallengePlayMode(active) {
   window.isChallengePlayMode = !!active;
-  const practiceSection = document.getElementById("step34Section");
-  if (practiceSection) {
-    practiceSection.classList.toggle("challenge-play-mode", !!active);
+  const challengePlayScreen = document.getElementById("screen-challenge-play");
+  if (challengePlayScreen) {
+    challengePlayScreen.classList.toggle("challenge-play-mode", !!active);
   }
+}
+
+let challengePracticeHomeParent = null;
+let challengePracticeHomeNextSibling = null;
+
+function mountPracticeIntoChallengePlay() {
+  const practiceSection = document.getElementById("step34Section");
+  const mountTarget = document.getElementById("challengePlayMount");
+  if (!practiceSection || !mountTarget) return;
+
+  if (!challengePracticeHomeParent) {
+    challengePracticeHomeParent = practiceSection.parentNode;
+    challengePracticeHomeNextSibling = practiceSection.nextSibling;
+  }
+
+  if (practiceSection.parentNode !== mountTarget) {
+    mountTarget.appendChild(practiceSection);
+  }
+
+  practiceSection.classList.remove("hidden");
+}
+
+function restorePracticeFromChallengePlay() {
+  const practiceSection = document.getElementById("step34Section");
+  if (!practiceSection || !challengePracticeHomeParent) return;
+
+  if (challengePracticeHomeNextSibling && challengePracticeHomeNextSibling.parentNode === challengePracticeHomeParent) {
+    challengePracticeHomeParent.insertBefore(practiceSection, challengePracticeHomeNextSibling);
+  } else {
+    challengePracticeHomeParent.appendChild(practiceSection);
+  }
+
+  practiceSection.classList.add("hidden");
 }
 
     function isSectionVisible(id) {
@@ -7116,7 +7287,9 @@ function renderSongButtons() {
     stopBasicPracticeAudio();
   }
   const challengeScreen = document.getElementById("screen-challenge");
+  const challengePlayScreen = document.getElementById("screen-challenge-play");
   if (challengeScreen) challengeScreen.style.display = "none";
+  if (challengePlayScreen) challengePlayScreen.style.display = "none";
   document.getElementById("step1Section").classList.add("hidden");
   document.getElementById("step2Section").classList.add("hidden");
   document.getElementById("step34Section").classList.add("hidden");
@@ -7133,8 +7306,10 @@ function renderSongButtons() {
   stopBasicPracticeSession();
   const menuScreen = document.getElementById("screen-menu");
   const challengeScreen = document.getElementById("screen-challenge");
+  const challengePlayScreen = document.getElementById("screen-challenge-play");
   if (menuScreen) menuScreen.style.display = "none";
   if (challengeScreen) challengeScreen.style.display = "none";
+  if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
   document.getElementById("step1Section").classList.add("hidden");
   document.getElementById("step2Section").classList.add("hidden");
@@ -7153,6 +7328,11 @@ function renderSongButtons() {
 
   if (screenId === "screen-challenge") {
     if (challengeScreen) challengeScreen.style.display = "block";
+    return;
+  }
+
+  if (screenId === "screen-challenge-play") {
+    if (challengePlayScreen) challengePlayScreen.style.display = "block";
     return;
   }
 
@@ -7245,6 +7425,9 @@ const basicSection = document.getElementById("step-basicSection");
 if (basicSection) basicSection.classList.add("hidden");
 const challengeScreen = document.getElementById("screen-challenge");
 if (challengeScreen) challengeScreen.style.display = "none";
+const challengePlayScreen = document.getElementById("screen-challenge-play");
+if (challengePlayScreen) challengePlayScreen.style.display = "none";
+restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
 document.getElementById("screen-menu").style.display = "block";
@@ -7257,6 +7440,7 @@ app.refreshSongs().catch(() => {});
 function backToLogin() {
   stopBasicPracticeSession();
   resetSongMenuState("short");
+  restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
   showStep("step1Section");
 }
@@ -7265,6 +7449,7 @@ function goHomeMenu() {
   stopBasicPracticeSession();
   stopPractice();
   resetSongMenuState("short");
+  restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
 
   document.getElementById("step1Section").classList.add("hidden");
@@ -7276,6 +7461,8 @@ function goHomeMenu() {
   if (basicSection) basicSection.classList.add("hidden");
   const challengeScreen = document.getElementById("screen-challenge");
   if (challengeScreen) challengeScreen.style.display = "none";
+  const challengePlayScreen = document.getElementById("screen-challenge-play");
+  if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
   document.getElementById("screen-menu").style.display = "block";
 }
@@ -7311,6 +7498,7 @@ function logout() {
   stopBasicPracticeSession();
   stopPractice();
   resetSongMenuState("short");
+  restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
 
   document.getElementById("screen-menu").style.display = "none";
@@ -7500,8 +7688,7 @@ function logout() {
       stopBasicPracticeAudio();
       stopPractice();
       if (window.isChallengePlayMode) {
-        setChallengePlayMode(false);
-        showScreen("screen-challenge");
+        backFromChallengePlay();
         return;
       }
 
@@ -7547,7 +7734,7 @@ function logout() {
 
     function updatePracticeSpeedInfo() {
       const speed = getSpeedMultiplier();
-      const song = getSelectedSong();
+      const song = app.currentSong || getSelectedSong();
       document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
 
       if (song) {
@@ -8677,7 +8864,7 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
     }
 
     async function startPractice() {
-      const song = getSelectedSong();
+      const song = app.currentSong || getSelectedSong();
 
       if (!song) {
         setStatus("practiceStatus", "곡을 먼저 선택하세요.", "bad");
@@ -9278,7 +9465,7 @@ function startBasicPractice() {
       </div>
     </div>
 
-    <button class="challenge-start-btn" onclick="startChallengeSong('JAGEUNBYEOL')">
+    <button class="challenge-start-btn" onclick="startChallengeMission('twinkle')">
       ✨ 도전 시작
     </button>
   </div>
@@ -9364,39 +9551,130 @@ function startBasicPractice() {
   </div>
 </section>
 
+<section id="screen-challenge-play" class="challengeScreen">
+  <div class="challenge-play-shell">
+    <div class="challenge-play-head">
+      <div class="challenge-play-copy">
+        <div class="challenge-badge">CHALLENGE PLAY</div>
+        <h3 id="challengePlayTitle">작은별 도전 연주</h3>
+        <p id="challengePlaySubtitle">도전 전용 화면에서 기존 평가 방식으로 연주를 확인합니다.</p>
+      </div>
+      <div class="challenge-play-actions">
+        <button type="button" onclick="startPractice()">연주 시작</button>
+        <button type="button" class="sub" onclick="backFromChallengePlay()">이전</button>
+      </div>
+    </div>
+
+    <div id="challengePlayMount" class="challengePlayMount"></div>
+  </div>
+</section>
+
 <script>
 function goChallenge() {
   showScreen("screen-challenge");
 }
 
-async function startChallengeSong(songId) {
-  const challengeSongId = String(songId || "JAGEUNBYEOL");
-  try {
-    setChallengePlayMode(true);
-    resetSongMenuState("short");
-    await loadSongs();
+function normalizeSongId(value) {
+  return String(value || "").trim().toUpperCase();
+}
 
-    let matchedSong = (app.songs || []).find((song) => String(song.songId) === challengeSongId);
+async function startChallengeSong(songId) {
+  const challengeSongId = normalizeSongId(songId || "JAGEUNBYEOL");
+  try {
+    console.log("[challenge] start:", challengeSongId);
+
+    window.isChallengePlayMode = true;
+
+    if (!app.songs || app.songs.length === 0) {
+      await app.loadSongs();
+    }
+
+    let matchedSong = (app.songs || []).find(
+      (song) => normalizeSongId(song.songId) === challengeSongId
+    );
 
     if (!matchedSong && typeof app.refreshSongs === "function") {
       const refreshed = await app.refreshSongs({ force: true });
       renderShortSongList((refreshed && refreshed.songs) || []);
-      matchedSong = (app.songs || []).find((song) => String(song.songId) === challengeSongId);
+      matchedSong = (app.songs || []).find(
+        (song) => normalizeSongId(song.songId) === challengeSongId
+      );
     }
 
     if (!matchedSong) {
+      matchedSong = FALLBACK_CHALLENGE_SONGS[challengeSongId];
+      console.warn("[challenge] fallback song used:", matchedSong);
+    }
+
+    if (!matchedSong) {
+      window.isChallengePlayMode = false;
       setChallengePlayMode(false);
-      alert("작은별 곡 정보를 찾을 수 없습니다. 곡 목록을 다시 불러와 주세요.");
+      console.error("[challenge] song not found", challengeSongId, app.songs);
+      alert("작은별 곡 정보를 찾을 수 없습니다.");
       return;
     }
 
-    selectSongById(challengeSongId);
-    goToPractice();
+    app.currentSong = matchedSong;
+
+    if (typeof app.selectSong === "function") {
+      const selected = app.selectSong(matchedSong.songId);
+      if (!selected) {
+        app.currentSong = matchedSong;
+      }
+    }
+
+    if (typeof selectSongById === "function") {
+      try {
+        selectSongById(matchedSong.songId);
+      } catch (e) {
+        console.warn("[challenge] selectSongById skipped:", e);
+      }
+    }
+
+    console.log("[challenge] selected:", matchedSong);
+    console.log("[challenge] app.currentSong:", app.currentSong);
+
+    showScreen("screen-challenge-play");
+    initChallengePlay(matchedSong);
   } catch (error) {
+    window.isChallengePlayMode = false;
     setChallengePlayMode(false);
     console.error("도전 미션 시작 실패:", error);
     alert("도전 미션을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.");
   }
+}
+
+function initChallengePlay(song) {
+  console.log("[challenge] init", song);
+
+  const titleEl = document.getElementById("challengePlayTitle");
+  if (titleEl) {
+    titleEl.textContent = `${song.title || "작은별"} 도전 연주`;
+  }
+
+  const subtitleEl = document.getElementById("challengePlaySubtitle");
+  if (subtitleEl) {
+    subtitleEl.textContent = `${song.timeSignature || "4/4"} 박자 미션입니다. 기존 평가 방식으로 결과가 표시됩니다.`;
+  }
+
+  mountPracticeIntoChallengePlay();
+  setChallengePlayMode(true);
+  showSelectedSong();
+  resetPractice();
+
+  if (typeof drawPracticeBase === "function") {
+    drawPracticeBase(song.timeSignature || "4/4");
+  }
+
+  setStatus("practiceStatus", "연주를 시작하세요!", "");
+}
+
+function backFromChallengePlay() {
+  stopPractice();
+  restorePracticeFromChallengePlay();
+  window.isChallengePlayMode = false;
+  document.getElementById("screen-challenge-play")?.classList.remove("challenge-play-mode");
+  showScreen("screen-challenge");
 }
 
 async function startChallengeMission(missionId) {
