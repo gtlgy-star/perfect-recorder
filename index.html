@@ -4093,20 +4093,20 @@ button:disabled {
 }
 
 #screen-menu button:nth-of-type(1) {
-  background: linear-gradient(180deg, #87eaff 0%, #42c6ff 36%, #2d89ff 100%);
+  background: linear-gradient(135deg, #7fdcff, #5aa9ff);
 }
 
 #screen-menu button:nth-of-type(2) {
-  background: linear-gradient(180deg, #93fff1 0%, #42dfd5 38%, #1ea7d6 100%);
+  background: linear-gradient(135deg, #5aa9ff, #4fd1c5);
 }
 
 #screen-menu button:nth-of-type(3) {
-  background: linear-gradient(180deg, #fff0a1 0%, #ffc76c 36%, #ff8f63 100%);
+  background: linear-gradient(135deg, #4fd1c5, #9f7aea);
   color: #4f2c00;
 }
 
 #screen-menu button:nth-of-type(4) {
-  background: linear-gradient(180deg, #d4b3ff 0%, #7cb8ff 40%, #4d89ff 100%);
+  background: linear-gradient(135deg, #9f7aea, #7f7fd5);
 }
 
 #screen-menu button:hover {
@@ -4125,6 +4125,159 @@ button:disabled {
     0 8px 14px rgba(0,0,0,0.16),
     0 0 16px rgba(103, 220, 255, 0.12),
     inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.btn-challenge {
+  margin-top: 26px;
+  margin-bottom: 18px;
+  width: 100%;
+  min-height: 86px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 230, 240, 0.75);
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.45), transparent 8%),
+    radial-gradient(circle at 82% 34%, rgba(255, 210, 230, 0.35), transparent 10%),
+    radial-gradient(circle at 34% 76%, rgba(255, 90, 130, 0.55), transparent 18%),
+    radial-gradient(circle at 75% 72%, rgba(255, 95, 20, 0.55), transparent 20%),
+    linear-gradient(135deg, rgba(255, 35, 92, 0.92), rgba(143, 0, 68, 0.94) 45%, rgba(255, 91, 0, 0.92));
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.65),
+    inset 0 -12px 26px rgba(60,0,30,0.35),
+    0 0 24px rgba(255, 0, 90, 0.8),
+    0 0 54px rgba(255, 70, 70, 0.55),
+    0 14px 34px rgba(0, 0, 0, 0.35);
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.45),
+    0 0 12px rgba(255,255,255,0.55);
+  transform: scale(1.03);
+  isolation: isolate;
+}
+
+.btn-challenge::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background:
+    conic-gradient(
+      from 20deg,
+      transparent 0deg,
+      rgba(255,255,255,0.16) 28deg,
+      rgba(255,42,110,0.34) 68deg,
+      transparent 118deg,
+      rgba(255,116,0,0.32) 178deg,
+      transparent 250deg,
+      rgba(255,255,255,0.18) 310deg,
+      transparent 360deg
+    );
+  animation: challengeNebulaSpin 9s linear infinite;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.btn-challenge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 42%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.85),
+    transparent
+  );
+  transform: skewX(-22deg);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.btn-challenge .challenge-icon,
+.btn-challenge .challenge-text {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-challenge .challenge-icon {
+  font-size: 30px;
+  filter:
+    drop-shadow(0 0 8px rgba(255,255,255,0.85))
+    drop-shadow(0 0 14px rgba(255,210,80,0.85));
+}
+
+.btn-challenge .challenge-text {
+  white-space: nowrap;
+}
+
+.btn-challenge:hover {
+  transform: scale(1.07);
+  border-color: rgba(255,255,255,0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.75),
+    inset 0 -12px 26px rgba(60,0,30,0.35),
+    0 0 36px rgba(255, 0, 120, 1),
+    0 0 82px rgba(255, 80, 80, 0.85),
+    0 18px 42px rgba(0, 0, 0, 0.42);
+}
+
+.btn-challenge:hover::after {
+  opacity: 1;
+  animation: challengeShineMove 1.15s ease forwards;
+}
+
+.btn-challenge:active {
+  transform: scale(1.01);
+}
+
+.btn-challenge:active::after {
+  opacity: 1;
+  animation: challengeShineMove 0.9s ease forwards;
+}
+
+@keyframes challengeNebulaSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes challengeShineMove {
+  0% {
+    left: -80%;
+  }
+  100% {
+    left: 145%;
+  }
+}
+
+@media (max-width: 520px) {
+  .btn-challenge {
+    min-height: 76px;
+    padding: 20px 18px;
+    font-size: 20px;
+    border-radius: 24px;
+  }
+
+  .btn-challenge .challenge-icon {
+    font-size: 26px;
+  }
 }
 
 .gradeChoiceBtn,
@@ -8211,8 +8364,18 @@ function startBasicPractice() {
   <button onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
   <button onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
   <button onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
+  <button class="menu-btn btn-challenge" onclick="goChallenge()">
+    <span class="challenge-icon">🏆</span>
+    <span class="challenge-text">도전! 퍼펙트 리코더</span>
+  </button>
   <button class="sub" onclick="logout()">🚪 로그아웃</button>
 </div>
+
+<script>
+function goChallenge() {
+  console.log("도전 퍼펙트 리코더 진입");
+}
+</script>
 
 </body>
 </html>
