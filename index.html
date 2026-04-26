@@ -3982,6 +3982,818 @@ button:disabled {
         grid-template-columns: 1fr;
       }
     }
+
+.challengeScreen {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.challenge-top {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.challenge-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: #5a1800;
+  background: linear-gradient(135deg, #fff2a8, #ffbd4a);
+  box-shadow:
+    0 0 18px rgba(255, 207, 87, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.challenge-title {
+  margin: 0;
+  font-size: clamp(30px, 6vw, 46px);
+  font-weight: 1000;
+  color: #fff7de;
+  text-shadow:
+    0 0 14px rgba(255, 96, 120, 0.85),
+    0 0 30px rgba(255, 60, 80, 0.55),
+    0 0 60px rgba(255, 100, 40, 0.35);
+}
+
+.challenge-subtitle {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: rgba(255,255,255,0.82);
+}
+
+.challenge-main-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 22px;
+  border-radius: 30px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.34), transparent 24%),
+    radial-gradient(circle at 75% 20%, rgba(255,210,110,0.32), transparent 24%),
+    linear-gradient(135deg, rgba(255, 54, 92, 0.9), rgba(105, 0, 80, 0.88), rgba(255, 116, 38, 0.82));
+  border: 1px solid rgba(255,255,255,0.32);
+  box-shadow:
+    0 0 28px rgba(255, 45, 90, 0.72),
+    0 0 70px rgba(255, 80, 120, 0.34),
+    0 20px 36px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 0 24px rgba(255,255,255,0.16);
+  backdrop-filter: blur(12px);
+  animation: challengeBreath 3.6s ease-in-out infinite;
+}
+
+.challenge-main-card::before {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255,255,255,0.24),
+    transparent,
+    rgba(255,190,80,0.24),
+    transparent,
+    rgba(255,80,130,0.18),
+    transparent
+  );
+  animation: challengeGalaxySpin 10s linear infinite;
+  pointer-events: none;
+}
+
+.challenge-main-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.42),
+    transparent
+  );
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+
+.challenge-main-card:hover::after {
+  animation: challengeShine 1.25s ease forwards;
+}
+
+.challenge-main-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes challengeBreath {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 0 28px rgba(255, 45, 90, 0.72),
+      0 0 70px rgba(255, 80, 120, 0.34),
+      0 20px 36px rgba(0,0,0,0.34),
+      inset 0 1px 0 rgba(255,255,255,0.28),
+      inset 0 0 24px rgba(255,255,255,0.16);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 38px rgba(255, 70, 110, 0.88),
+      0 0 90px rgba(255, 100, 130, 0.48),
+      0 24px 42px rgba(0,0,0,0.38),
+      inset 0 1px 0 rgba(255,255,255,0.32),
+      inset 0 0 30px rgba(255,255,255,0.2);
+  }
+}
+
+@keyframes challengeGalaxySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes challengeShine {
+  from {
+    left: -120%;
+  }
+  to {
+    left: 160%;
+  }
+}
+
+.mission-label {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #5b1900;
+  background: linear-gradient(135deg, #fff5ba, #ffcf5a);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.mission-song-title {
+  margin: 8px 0;
+  font-size: clamp(36px, 9vw, 58px);
+  font-weight: 1000;
+  color: #fff;
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.9),
+    0 0 26px rgba(255,220,140,0.6);
+}
+
+.mission-desc {
+  margin: 10px 0 18px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.9);
+}
+
+.mission-goal-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.mission-goal {
+  padding: 12px 8px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+}
+
+.mission-goal span {
+  display: block;
+  font-size: 12px;
+  color: rgba(255,255,255,0.76);
+}
+
+.mission-goal strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 17px;
+  color: #fff6b8;
+}
+
+.challenge-start-btn {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 4px;
+  border-radius: 999px;
+  font-size: 20px;
+  font-weight: 1000;
+  color: #6a2200;
+  background: linear-gradient(135deg, #fff5b8, #ffcf5a, #ff9f35);
+  border: 1px solid rgba(255,255,255,0.45);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.25),
+    0 0 24px rgba(255,210,90,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.challenge-start-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.08);
+}
+
+.challenge-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.challenge-info-card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 18px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 14px 24px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+}
+
+.challenge-info-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 24%, transparent 48%),
+    radial-gradient(circle at top left, rgba(255,255,255,0.14) 0%, transparent 28%);
+  opacity: 0.9;
+}
+
+.challenge-info-card h4 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #fff0b8;
+  letter-spacing: -0.02em;
+}
+
+.challenge-record-list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+}
+
+.challenge-record-block {
+  display: grid;
+  gap: 8px;
+  padding: 14px 14px 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.18));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.1),
+    inset 0 -8px 14px rgba(0,0,0,0.3),
+    0 10px 24px rgba(0,0,0,0.2);
+}
+
+.challenge-record-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.62);
+}
+
+.challenge-record-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.challenge-record-score {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow:
+    0 0 18px rgba(255,255,255,0.14),
+    0 0 26px rgba(255, 211, 120, 0.16);
+}
+
+.challenge-grade-stamp {
+  --stamp-main: #ffd84d;
+  --stamp-glow: rgba(255, 211, 77, 0.28);
+  --stamp-glow-strong: rgba(255, 244, 179, 0.32);
+  min-width: 118px;
+  height: 58px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  color: var(--stamp-main);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 40%, transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%),
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,0.22) 0%, transparent 24%);
+  box-shadow:
+    0 0 12px currentColor,
+    0 0 24px rgba(255,255,255,0.12),
+    inset 0 0 8px currentColor,
+    inset 0 0 18px rgba(255,255,255,0.1),
+    0 10px 20px rgba(0,0,0,0.16);
+  font-size: 21px;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  transform: rotate(-8deg);
+  opacity: 0.84;
+  filter: blur(0.2px);
+  text-shadow:
+    0 0 6px currentColor,
+    0 0 12px currentColor,
+    0 2px 4px rgba(0,0,0,0.4);
+}
+
+.challenge-grade-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 66%, rgba(255,255,255,0.28));
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.challenge-grade-stamp.stamp-perfect {
+  --stamp-main: #ffcc33;
+  --stamp-glow: rgba(255, 204, 51, 0.4);
+  --stamp-glow-strong: rgba(255, 213, 79, 0.4);
+  color: #ffd54f;
+  box-shadow:
+    0 0 16px #ffcc33,
+    0 0 32px rgba(255, 204, 51, 0.4),
+    inset 0 0 10px #ffcc33,
+    inset 0 0 18px rgba(255,255,255,0.1),
+    0 10px 20px rgba(0,0,0,0.16);
+}
+
+.challenge-grade-stamp.stamp-great {
+  --stamp-main: #5adfff;
+  --stamp-glow: rgba(90,223,255,0.4);
+  --stamp-glow-strong: rgba(90,223,255,0.38);
+  color: #5adfff;
+  box-shadow:
+    0 0 14px #5adfff,
+    0 0 28px rgba(90,223,255,0.4),
+    inset 0 0 10px #5adfff,
+    inset 0 0 18px rgba(255,255,255,0.1),
+    0 10px 20px rgba(0,0,0,0.16);
+}
+
+.challenge-ranking-list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.challenge-ranking-item {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14));
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 6px 14px rgba(0,0,0,0.15);
+}
+
+.challenge-ranking-item:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(255,215,0,0.18), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14));
+}
+
+.challenge-ranking-item:nth-child(2) {
+  background:
+    linear-gradient(90deg, rgba(200,200,255,0.12), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14));
+}
+
+.challenge-ranking-item:nth-child(3) {
+  background:
+    linear-gradient(90deg, rgba(255,170,120,0.12), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14));
+}
+
+.challenge-ranking-medal {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.challenge-ranking-rank {
+  font-size: 16px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.88);
+}
+
+.challenge-ranking-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.challenge-ranking-score {
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff3b1;
+}
+
+.challenge-my-ranking {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,140,0,0.12));
+  border: 1px solid rgba(255,215,0,0.4);
+  box-shadow:
+    0 0 18px rgba(255,215,0,0.25),
+    0 10px 18px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.challenge-my-ranking-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.68);
+}
+
+.challenge-my-ranking-value {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.challenge-my-ranking-value strong {
+  color: #fff3b1;
+}
+
+body.theme-light .challenge-info-card {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(244, 248, 253, 0.93) 100%);
+  border: 1px solid rgba(30, 58, 95, 0.16);
+  box-shadow:
+    0 16px 34px rgba(31, 41, 55, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.84);
+}
+
+body.theme-light .challenge-info-card::before {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.24) 22%, transparent 48%),
+    radial-gradient(circle at top left, rgba(178, 208, 235, 0.16) 0%, transparent 28%);
+}
+
+body.theme-light .challenge-info-card h4,
+body.theme-light .next-mission-area h3 {
+  color: #1e3a5f;
+  text-shadow: none;
+}
+
+body.theme-light .challenge-record-block,
+body.theme-light .challenge-ranking-item,
+body.theme-light .challenge-my-ranking,
+body.theme-light .next-mission-card {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(241, 246, 251, 0.92) 100%);
+  border: 1px solid rgba(30, 58, 95, 0.16);
+  box-shadow:
+    0 12px 24px rgba(31, 41, 55, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+body.theme-light .challenge-record-label,
+body.theme-light .challenge-my-ranking-label,
+body.theme-light .next-mission-card span {
+  color: #475569;
+}
+
+body.theme-light .challenge-record-score,
+body.theme-light .challenge-ranking-score,
+body.theme-light .challenge-my-ranking-value strong,
+body.theme-light .next-mission-card strong {
+  color: #0f172a;
+  text-shadow: none;
+}
+
+body.theme-light .challenge-ranking-name,
+body.theme-light .challenge-ranking-rank,
+body.theme-light .challenge-my-ranking-value {
+  color: #1f2937;
+}
+
+body.theme-light .next-mission-card em {
+  color: #8a5a00;
+}
+
+body.theme-light .challenge-grade-stamp {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(243, 247, 251, 0.86) 100%),
+    radial-gradient(circle at 50% 40%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 40%, transparent 70%),
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,0.4) 0%, transparent 24%);
+  border-color: currentColor;
+  box-shadow:
+    0 8px 16px rgba(31, 41, 55, 0.12),
+    0 0 8px rgba(31, 41, 55, 0.06),
+    inset 0 0 6px currentColor,
+    inset 0 0 12px rgba(255,255,255,0.18);
+}
+
+body.theme-light .challenge-grade-stamp.stamp-perfect {
+  color: #8a5a00;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.22);
+}
+
+body.theme-light .challenge-grade-stamp.stamp-great {
+  color: #0f5f83;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.18);
+}
+
+body.theme-light .next-mission-card .lock-mark {
+  color: #475569;
+}
+
+body.theme-light .challenge-ranking-item:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(255,215,0,0.12), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(241, 246, 251, 0.92) 100%);
+}
+
+body.theme-light .challenge-ranking-item:nth-child(2) {
+  background:
+    linear-gradient(90deg, rgba(200,200,255,0.1), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(241, 246, 251, 0.92) 100%);
+}
+
+body.theme-light .challenge-ranking-item:nth-child(3) {
+  background:
+    linear-gradient(90deg, rgba(255,170,120,0.1), transparent),
+    linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(241, 246, 251, 0.92) 100%);
+}
+
+body.theme-light .challenge-my-ranking {
+  background:
+    linear-gradient(135deg, rgba(255,215,0,0.16), rgba(255,140,0,0.1));
+  border: 1px solid rgba(255,215,0,0.34);
+  box-shadow:
+    0 0 14px rgba(255,215,0,0.16),
+    0 12px 24px rgba(31, 41, 55, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+.next-mission-area {
+  margin-top: 20px;
+}
+
+.next-mission-area h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.next-mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.next-mission-card {
+  position: relative;
+  padding: 16px 12px;
+  min-height: 120px;
+  border-radius: 22px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.next-mission-card .lock-mark {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.next-mission-card span {
+  display: block;
+  font-size: 12px;
+  color: rgba(255,255,255,0.68);
+}
+
+.next-mission-card strong {
+  display: block;
+  margin: 6px 0;
+  font-size: 18px;
+  color: rgba(255,255,255,0.92);
+}
+
+.next-mission-card em {
+  font-style: normal;
+  font-size: 12px;
+  color: #ffd98a;
+  letter-spacing: 0.08em;
+}
+
+.next-mission-card.locked {
+  opacity: 0.68;
+  filter: grayscale(0.2);
+  pointer-events: none;
+}
+
+.challenge-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+@media (max-width: 640px) {
+  .challengeScreen {
+    padding: 16px;
+  }
+
+  .mission-goal-row {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-record-row {
+    align-items: flex-start;
+  }
+
+  .next-mission-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .challenge-title {
+    font-size: 30px;
+  }
+
+  .mission-song-title {
+    font-size: 42px;
+  }
+}
+
+.challenge-play-mode {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.challenge-play-mode::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 115%, rgba(255, 210, 120, 0.22), transparent 28%),
+    radial-gradient(circle at 16% 18%, rgba(110, 220, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 84% 22%, rgba(255, 100, 180, 0.16), transparent 32%),
+    radial-gradient(circle at 50% 45%, rgba(140, 120, 255, 0.12), transparent 38%),
+    linear-gradient(180deg, #071120 0%, #130f2c 44%, #210c22 100%);
+}
+
+.challenge-play-mode::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 24%, rgba(255,255,255,0.75) 0 1px, transparent 2px),
+    radial-gradient(circle at 42% 68%, rgba(255,255,255,0.65) 0 1px, transparent 2px),
+    radial-gradient(circle at 86% 70%, rgba(255,255,255,0.7) 0 1px, transparent 2px);
+  opacity: 0.55;
+  animation: challengeStarTwinkle 4.8s ease-in-out infinite;
+}
+
+.challenge-play-mode > * {
+  position: relative;
+  z-index: 1;
+}
+
+.challenge-play-mode .metaCard,
+.challenge-play-mode .practiceInfoBox,
+.challenge-play-mode .practiceInfoCompact,
+.challenge-play-mode .canvasWrap,
+.challenge-play-mode .status,
+.challenge-play-mode .rightGroupBox {
+  background:
+    linear-gradient(180deg, rgba(16, 28, 58, 0.94) 0%, rgba(10, 19, 40, 0.96) 100%);
+  border-color: rgba(214, 234, 255, 0.22);
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 0 24px rgba(122, 202, 255, 0.08);
+}
+
+.challenge-play-mode .practiceMiniBtn,
+.challenge-play-mode .practiceNavBtn {
+  box-shadow:
+    0 14px 28px rgba(16, 28, 58, 0.28),
+    0 0 28px rgba(110, 220, 255, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -10px 18px rgba(0, 52, 120, 0.2);
+}
+
+@keyframes challengeStarTwinkle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translateY(-4px);
+  }
+}
+
+body.theme-light .challenge-play-mode::before {
+  background:
+    radial-gradient(circle at 50% 112%, rgba(255, 198, 102, 0.18), transparent 30%),
+    radial-gradient(circle at 14% 18%, rgba(112, 195, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 84% 22%, rgba(255, 132, 179, 0.14), transparent 30%),
+    radial-gradient(circle at 50% 42%, rgba(165, 154, 255, 0.1), transparent 38%),
+    linear-gradient(180deg, rgba(229, 242, 255, 0.98) 0%, rgba(219, 236, 255, 0.96) 48%, rgba(238, 228, 243, 0.94) 100%);
+}
+
+body.theme-light .challenge-play-mode::after {
+  opacity: 0.44;
+}
+
+body.theme-light .challenge-play-mode .metaCard,
+body.theme-light .challenge-play-mode .practiceInfoBox,
+body.theme-light .challenge-play-mode .practiceInfoCompact,
+body.theme-light .challenge-play-mode .canvasWrap,
+body.theme-light .challenge-play-mode .status,
+body.theme-light .challenge-play-mode .rightGroupBox {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(242, 247, 252, 0.94) 100%);
+  border-color: rgba(96, 137, 184, 0.28);
+  box-shadow:
+    0 12px 24px rgba(54, 78, 108, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.88);
+}
+
+body.theme-light .challenge-play-mode .metaLabel,
+body.theme-light .challenge-play-mode .muted,
+body.theme-light .challenge-play-mode .practiceBadge,
+body.theme-light .challenge-play-mode .status {
+  color: #355070 !important;
+}
+
+body.theme-light .challenge-play-mode .metaValue,
+body.theme-light .challenge-play-mode .cardTitle,
+body.theme-light .challenge-play-mode #practiceInfo,
+body.theme-light .challenge-play-mode .practiceNavBtn,
+body.theme-light .challenge-play-mode .practiceMiniBtn {
+  color: #1f3147;
+  text-shadow: none;
+}
     /* 狩?硫붾돱 ?붾㈃ ?꾩슜 ?ㅽ???*/
 #screen-menu {
   max-width: 520px;
@@ -4145,7 +4957,10 @@ button:disabled {
   justify-content: center;
   gap: 14px;
   position: relative;
+  z-index: 5;
   overflow: hidden;
+  pointer-events: auto;
+  touch-action: manipulation;
   border-radius: 28px;
   border: 1.5px solid rgba(255, 230, 240, 0.75);
   color: #ffffff;
@@ -5462,6 +6277,14 @@ function initTheme() {
   setTheme(savedTheme === "light" ? "light" : "dark", false);
 }
 
+function setChallengePlayMode(active) {
+  window.isChallengePlayMode = !!active;
+  const practiceSection = document.getElementById("step34Section");
+  if (practiceSection) {
+    practiceSection.classList.toggle("challenge-play-mode", !!active);
+  }
+}
+
     function isSectionVisible(id) {
       const el = document.getElementById(id);
       return !!el && !el.classList.contains("hidden");
@@ -6292,6 +7115,8 @@ function renderSongButtons() {
   if (stepId !== "step-basicSection") {
     stopBasicPracticeAudio();
   }
+  const challengeScreen = document.getElementById("screen-challenge");
+  if (challengeScreen) challengeScreen.style.display = "none";
   document.getElementById("step1Section").classList.add("hidden");
   document.getElementById("step2Section").classList.add("hidden");
   document.getElementById("step34Section").classList.add("hidden");
@@ -6306,11 +7131,30 @@ function renderSongButtons() {
 }
     function showScreen(screenId) {
   stopBasicPracticeSession();
-  document.getElementById("screen-menu").style.display = "none";
+  const menuScreen = document.getElementById("screen-menu");
+  const challengeScreen = document.getElementById("screen-challenge");
+  if (menuScreen) menuScreen.style.display = "none";
+  if (challengeScreen) challengeScreen.style.display = "none";
 
   document.getElementById("step1Section").classList.add("hidden");
   document.getElementById("step2Section").classList.add("hidden");
   document.getElementById("step34Section").classList.add("hidden");
+
+  const basicTypeSection = document.getElementById("step-basic-typeSection");
+  if (basicTypeSection) basicTypeSection.classList.add("hidden");
+
+  const basicSection = document.getElementById("step-basicSection");
+  if (basicSection) basicSection.classList.add("hidden");
+
+  if (screenId === "screen-menu") {
+    if (menuScreen) menuScreen.style.display = "block";
+    return;
+  }
+
+  if (screenId === "screen-challenge") {
+    if (challengeScreen) challengeScreen.style.display = "block";
+    return;
+  }
 
   if (screenId === "screen-song") {
     resetSongMenuState("short");
@@ -6399,6 +7243,9 @@ const basicTypeSection = document.getElementById("step-basic-typeSection");
 if (basicTypeSection) basicTypeSection.classList.add("hidden");
 const basicSection = document.getElementById("step-basicSection");
 if (basicSection) basicSection.classList.add("hidden");
+const challengeScreen = document.getElementById("screen-challenge");
+if (challengeScreen) challengeScreen.style.display = "none";
+setChallengePlayMode(false);
 
 document.getElementById("screen-menu").style.display = "block";
 app.refreshSongs().catch(() => {});
@@ -6407,9 +7254,10 @@ app.refreshSongs().catch(() => {});
       }
     }
 
-    function backToLogin() {
+function backToLogin() {
   stopBasicPracticeSession();
   resetSongMenuState("short");
+  setChallengePlayMode(false);
   showStep("step1Section");
 }
 
@@ -6417,6 +7265,7 @@ function goHomeMenu() {
   stopBasicPracticeSession();
   stopPractice();
   resetSongMenuState("short");
+  setChallengePlayMode(false);
 
   document.getElementById("step1Section").classList.add("hidden");
   document.getElementById("step2Section").classList.add("hidden");
@@ -6425,6 +7274,8 @@ function goHomeMenu() {
   if (basicTypeSection) basicTypeSection.classList.add("hidden");
   const basicSection = document.getElementById("step-basicSection");
   if (basicSection) basicSection.classList.add("hidden");
+  const challengeScreen = document.getElementById("screen-challenge");
+  if (challengeScreen) challengeScreen.style.display = "none";
 
   document.getElementById("screen-menu").style.display = "block";
 }
@@ -6460,6 +7311,7 @@ function logout() {
   stopBasicPracticeSession();
   stopPractice();
   resetSongMenuState("short");
+  setChallengePlayMode(false);
 
   document.getElementById("screen-menu").style.display = "none";
 
@@ -6638,6 +7490,7 @@ function logout() {
         return;
       }
 
+      setChallengePlayMode(!!window.isChallengePlayMode);
       showStep("step34Section");
       showSelectedSong();
       resetPractice();
@@ -6646,6 +7499,13 @@ function logout() {
     function backToSongSelect() {
       stopBasicPracticeAudio();
       stopPractice();
+      if (window.isChallengePlayMode) {
+        setChallengePlayMode(false);
+        showScreen("screen-challenge");
+        return;
+      }
+
+      setChallengePlayMode(false);
       showStep("step2Section");
       if (currentSongMenuMode === "textbook" && currentTextbookGrade) {
         setSongMenuView("textbook-songs");
@@ -8351,8 +9211,17 @@ function startBasicPractice() {
       }
     }
 
+    function bindChallengeButtons() {
+      document.querySelectorAll(".btn-challenge").forEach((btn) => {
+        if (btn.dataset.challengeBound === "true") return;
+        btn.addEventListener("click", goChallenge);
+        btn.dataset.challengeBound = "true";
+      });
+    }
+
     window.addEventListener("load", () => {
       initTheme();
+      bindChallengeButtons();
       enhancePracticeLayout();
       setupUnifiedNavigation();
       setupResultOverlayInteractions();
@@ -8378,9 +9247,164 @@ function startBasicPractice() {
   <button class="sub" onclick="logout()">🚪 로그아웃</button>
 </div>
 
+<section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
+  <div class="challenge-top">
+    <div class="challenge-badge">SPECIAL MISSION</div>
+    <h2 class="challenge-title">🏆 도전! 퍼펙트 리코더</h2>
+    <p class="challenge-subtitle">
+      이번 주 미션곡에 도전하고 나의 최고 기록을 갱신해 보세요!
+    </p>
+  </div>
+
+  <div class="challenge-main-card">
+    <div class="mission-label">이번 미션곡</div>
+    <h3 class="mission-song-title">작은별</h3>
+    <p class="mission-desc">
+      정확한 운지와 박자로 퍼펙트 점수에 도전하세요.
+    </p>
+
+    <div class="mission-goal-row">
+      <div class="mission-goal">
+        <span>목표 점수</span>
+        <strong>95+</strong>
+      </div>
+      <div class="mission-goal">
+        <span>목표 등급</span>
+        <strong>S</strong>
+      </div>
+      <div class="mission-goal">
+        <span>미션 상태</span>
+        <strong>도전 가능</strong>
+      </div>
+    </div>
+
+    <button class="challenge-start-btn" onclick="startChallengeSong('JAGEUNBYEOL')">
+      ✨ 도전 시작
+    </button>
+  </div>
+
+  <div class="challenge-info-grid">
+    <div class="challenge-info-card">
+      <h4>나의 기록</h4>
+      <div class="challenge-record-list">
+        <div class="challenge-record-block">
+          <span class="challenge-record-label">최고 점수</span>
+          <div class="challenge-record-row">
+            <strong class="challenge-record-score">95점</strong>
+            <span class="challenge-grade-stamp stamp-perfect">PERFECT</span>
+          </div>
+        </div>
+
+        <div class="challenge-record-block">
+          <span class="challenge-record-label">최근 기록</span>
+          <div class="challenge-record-row">
+            <strong class="challenge-record-score">88점</strong>
+            <span class="challenge-grade-stamp stamp-great">GREAT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge-info-card">
+      <h4>학급 Ranking</h4>
+      <ol class="challenge-ranking-list">
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥇</span>
+          <span class="challenge-ranking-rank">1</span>
+          <span class="challenge-ranking-name">황윤재</span>
+          <strong class="challenge-ranking-score">99점</strong>
+        </li>
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥈</span>
+          <span class="challenge-ranking-rank">2</span>
+          <span class="challenge-ranking-name">전성철</span>
+          <strong class="challenge-ranking-score">97점</strong>
+        </li>
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥉</span>
+          <span class="challenge-ranking-rank">3</span>
+          <span class="challenge-ranking-name">김영호</span>
+          <strong class="challenge-ranking-score">96점</strong>
+        </li>
+      </ol>
+
+      <div class="challenge-my-ranking">
+        <span class="challenge-my-ranking-label">나의 Ranking</span>
+        <div class="challenge-my-ranking-value">
+          <span>Rank 4</span>
+          <strong>95점</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-mission-area">
+    <h3>다음 미션 예고</h3>
+
+    <div class="next-mission-grid">
+      <div class="next-mission-card locked">
+        <div class="lock-mark">🔒</div>
+        <span>Next Mission 01</span>
+        <strong>준비중</strong>
+        <em>COMING SOON</em>
+      </div>
+
+      <div class="next-mission-card locked">
+        <div class="lock-mark">🔒</div>
+        <span>Next Mission 02</span>
+        <strong>준비중</strong>
+        <em>COMING SOON</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="challenge-nav">
+    <button class="sub" onclick="showScreen('screen-menu')">← 이전</button>
+    <button class="sub" onclick="showScreen('screen-menu')">🏠 홈</button>
+  </div>
+</section>
+
 <script>
 function goChallenge() {
-  console.log("도전 퍼펙트 리코더 진입");
+  showScreen("screen-challenge");
+}
+
+async function startChallengeSong(songId) {
+  const challengeSongId = String(songId || "JAGEUNBYEOL");
+  try {
+    setChallengePlayMode(true);
+    resetSongMenuState("short");
+    await loadSongs();
+
+    let matchedSong = (app.songs || []).find((song) => String(song.songId) === challengeSongId);
+
+    if (!matchedSong && typeof app.refreshSongs === "function") {
+      const refreshed = await app.refreshSongs({ force: true });
+      renderShortSongList((refreshed && refreshed.songs) || []);
+      matchedSong = (app.songs || []).find((song) => String(song.songId) === challengeSongId);
+    }
+
+    if (!matchedSong) {
+      setChallengePlayMode(false);
+      alert("작은별 곡 정보를 찾을 수 없습니다. 곡 목록을 다시 불러와 주세요.");
+      return;
+    }
+
+    selectSongById(challengeSongId);
+    goToPractice();
+  } catch (error) {
+    setChallengePlayMode(false);
+    console.error("도전 미션 시작 실패:", error);
+    alert("도전 미션을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+  }
+}
+
+async function startChallengeMission(missionId) {
+  const challengeSongMap = {
+    twinkle: "JAGEUNBYEOL"
+  };
+
+  return startChallengeSong(challengeSongMap[String(missionId)] || "JAGEUNBYEOL");
 }
 </script>
 
