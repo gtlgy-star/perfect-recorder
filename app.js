@@ -259,3 +259,20 @@ window.addEventListener("load", () => {
 });
 
 window.app = app;
+
+function toggleMission() {
+  const panel = document.getElementById("missionPanel");
+  const arrow = document.getElementById("missionArrow");
+  if (!panel || !arrow) return;
+
+  panel.classList.toggle("collapsed");
+  arrow.textContent = panel.classList.contains("collapsed") ? "▶" : "▼";
+}
+
+function initStatusDashboardMock() {
+  const expFill = document.getElementById("expFill");
+  if (expFill) expFill.style.width = "85%";
+}
+
+window.addEventListener("load", initStatusDashboardMock);
+window.toggleMission = toggleMission;
