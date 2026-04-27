@@ -6617,6 +6617,151 @@ body.theme-light .mission-header {
     border-left: 0;
   }
 }
+
+body.menu-title-active .heroCard {
+  display: none;
+}
+
+#screen-menu .heroCard,
+#screen-menu .pageTitle {
+  display: none;
+}
+
+.menuTitle {
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #c9f6ff;
+  background: linear-gradient(
+    180deg,
+    rgba(40, 80, 140, 0.5),
+    rgba(10, 25, 60, 0.7)
+  );
+  border: 1px solid rgba(120, 220, 255, 0.3);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.3),
+    0 0 18px rgba(100,200,255,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  text-shadow:
+    0 0 12px rgba(120, 230, 255, 0.5),
+    0 0 24px rgba(120, 230, 255, 0.2);
+}
+
+#screen-menu .status-card {
+  margin-top: 6px;
+}
+
+.menuButtonGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+#screen-menu .menuButtonGrid .menuBtn {
+  grid-column: span 3;
+  min-height: 72px;
+  margin: 0;
+  justify-content: center;
+  text-align: center;
+}
+
+#screen-menu .menuButtonGrid .btn-challenge {
+  grid-column: span 4;
+  min-height: 72px;
+  margin: 0;
+  padding: 18px;
+  border-radius: 24px;
+  font-size: 18px;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(255,255,255,0.38), transparent 10%),
+    linear-gradient(135deg, #ff3c6a, #ff7a00);
+  box-shadow:
+    0 8px 20px rgba(255,80,80,0.4),
+    0 0 16px rgba(255,120,80,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    inset 0 -12px 24px rgba(80,20,0,0.24);
+  transform: none;
+}
+
+#screen-menu .menuButtonGrid .btn-challenge:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 14px 26px rgba(255,80,80,0.46),
+    0 0 28px rgba(255,120,80,0.48),
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    inset 0 -12px 24px rgba(80,20,0,0.26);
+}
+
+#screen-menu .menuButtonGrid .btn-challenge:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+#screen-menu .menuButtonGrid .btn-logout {
+  grid-column: span 2;
+  min-height: 48px;
+  padding: 10px;
+  align-self: center;
+  font-size: 14px;
+  opacity: 0.85;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  color: rgba(238, 248, 255, 0.82);
+  box-shadow:
+    0 8px 16px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+#screen-menu .menuButtonGrid .btn-logout:hover {
+  opacity: 1;
+}
+
+body.theme-light .menuTitle {
+  color: #1f5f99;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.9),
+    rgba(225, 240, 255, 0.86)
+  );
+  border-color: rgba(76, 134, 200, 0.28);
+  box-shadow:
+    0 8px 20px rgba(93, 145, 214, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  text-shadow: none;
+}
+
+body.theme-light #screen-menu .menuButtonGrid .btn-logout {
+  color: #486481;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(225, 240, 255, 0.62));
+  box-shadow:
+    0 8px 16px rgba(93, 145, 214, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+@media (max-width: 480px) {
+  .menuTitle {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .menuButtonGrid {
+    grid-template-columns: 1fr;
+  }
+
+  #screen-menu .menuButtonGrid .menuBtn,
+  #screen-menu .menuButtonGrid .btn-challenge,
+  #screen-menu .menuButtonGrid .btn-logout {
+    grid-column: auto;
+  }
+}
   </style>
 </head>
 <body class="theme-dark">
@@ -7217,6 +7362,10 @@ function updatePageTitleByScreen(screenId) {
       ? sharedPracticeTitle
       : SCREEN_TITLES[screenId] || DEFAULT_PAGE_TITLE;
   setPageTitle(title);
+}
+
+function setMenuTitleMode(active) {
+  document.body.classList.toggle("menu-title-active", !!active);
 }
 
 function setChallengePlayMode(active) {
@@ -8090,6 +8239,7 @@ function renderSongButtons() {
   if (stepId !== "step-basicSection") {
     stopBasicPracticeAudio();
   }
+  setMenuTitleMode(false);
   const challengeScreen = document.getElementById("screen-challenge");
   const challengePlayScreen = document.getElementById("screen-challenge-play");
   if (challengeScreen) challengeScreen.style.display = "none";
@@ -8109,6 +8259,7 @@ function renderSongButtons() {
 }
     function showScreen(screenId) {
   stopBasicPracticeSession();
+  setMenuTitleMode(false);
   const menuScreen = document.getElementById("screen-menu");
   const challengeScreen = document.getElementById("screen-challenge");
   const challengePlayScreen = document.getElementById("screen-challenge-play");
@@ -8127,6 +8278,7 @@ function renderSongButtons() {
   if (basicSection) basicSection.classList.add("hidden");
 
   if (screenId === "screen-menu") {
+    setMenuTitleMode(true);
     if (menuScreen) menuScreen.style.display = "block";
     updatePageTitleByScreen(screenId);
     return;
@@ -8246,6 +8398,7 @@ restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
 document.getElementById("screen-menu").style.display = "block";
+setMenuTitleMode(true);
 updatePageTitleByScreen("screen-menu");
 app.refreshSongs().catch(() => {});
       } catch (e) {
@@ -8283,6 +8436,7 @@ function goHomeMenu() {
   if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
   document.getElementById("screen-menu").style.display = "block";
+  setMenuTitleMode(true);
   updatePageTitleByScreen("screen-menu");
 }
 
@@ -8322,6 +8476,7 @@ function logout() {
   setChallengePlayMode(false);
 
   document.getElementById("screen-menu").style.display = "none";
+  setMenuTitleMode(false);
 
   showStep("step1Section");
 }
@@ -10239,6 +10394,8 @@ function startBasicPractice() {
 
 <!-- 홈 메뉴 -->
 <div id="screen-menu" style="display:none; padding:20px; text-align:center;">
+  <div class="menuTitle">도전! 퍼펙트 리코더!</div>
+
   <div class="status-card">
     
     <!-- 왼쪽 -->
@@ -10300,15 +10457,17 @@ function startBasicPractice() {
 
   </div>
   <hr style="margin:6px 0 8px;">
-  <button onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
-  <button onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
-  <button onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
-  <button onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
-  <button class="menu-btn btn-challenge" onclick="goChallenge()">
-    <span class="challenge-icon">🏆</span>
-    <span class="challenge-text">도전! 퍼펙트 리코더</span>
-  </button>
-  <button class="sub" onclick="logout()">🚪 로그아웃</button>
+  <div class="menuButtonGrid">
+    <button class="menuBtn" onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
+    <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
+    <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
+    <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
+    <button class="menuBtn menu-btn btn-challenge" onclick="goChallenge()">
+      <span class="challenge-icon">🏆</span>
+      <span class="challenge-text">도전! 퍼펙트 리코더</span>
+    </button>
+    <button class="menuBtn btn-logout sub" onclick="logout()">🚪 로그아웃</button>
+  </div>
 </div>
 
 <section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
