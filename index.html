@@ -4978,27 +4978,6 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
   padding: 1px;
 }
 
-/* ?곷떒 ?대쫫 */
-#screen-menu h2 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 900;
-  text-align: center;
-  color: #f3fbff;
-  text-shadow:
-    0 0 22px rgba(111, 229, 255, 0.18),
-    0 0 36px rgba(111, 229, 255, 0.1);
-}
-
-#levelRecorder {
-  display: block;
-  height: 120px;
-  margin: 14px auto 10px;
-  filter:
-    drop-shadow(0 10px 20px rgba(0,0,0,0.22))
-    drop-shadow(0 0 18px rgba(103, 220, 255, 0.16));
-}
-
 #screen-menu hr {
   margin: 18px 0 20px;
   border: 0;
@@ -5812,11 +5791,6 @@ body.theme-light #screen-menu {
   box-shadow: 0 14px 32px rgba(93, 145, 214, 0.14);
 }
 
-body.theme-light #screen-menu h2 {
-  color: #355070;
-  text-shadow: none;
-}
-
 body.theme-light .gradeChoiceTitle,
 body.theme-light .fingering-card .title,
 body.theme-light .basicPracticeTitle {
@@ -6189,22 +6163,22 @@ body.theme-light #step1Section input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
-  margin: 8px 0 4px;
-  padding: 20px;
+  margin: 6px 0 2px;
+  padding: 16px;
   border-radius: 24px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.15),
-    rgba(20,40,80,0.6)
-  );
+  background:
+    linear-gradient(180deg, rgba(24, 52, 98, 0.72), rgba(9, 22, 48, 0.9)),
+    radial-gradient(circle at 22% 0%, rgba(112, 221, 255, 0.16), transparent 42%),
+    radial-gradient(circle at 84% 100%, rgba(128, 92, 255, 0.14), transparent 44%);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(120,200,255,0.35);
+  border: 1px solid rgba(120,210,255,0.48);
   box-shadow:
-    0 20px 50px rgba(0,0,0,0.5),
-    0 0 25px rgba(100,200,255,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+    0 18px 42px rgba(0, 0, 0, 0.42),
+    0 0 26px rgba(96, 205, 255, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 0 32px rgba(96, 205, 255, 0.08);
   text-align: left;
   position: relative;
   overflow: hidden;
@@ -6215,15 +6189,17 @@ body.theme-light #step1Section input:focus {
   content: "";
   position: absolute;
   top: 0;
-  left: 10%;
-  width: 80%;
-  height: 40%;
+  left: 8%;
+  width: 84%;
+  height: 34%;
   background: linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.25),
+    180deg,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.04),
     transparent
   );
   border-radius: 24px;
+  opacity: 0.12;
   pointer-events: none;
   z-index: 0;
 }
@@ -6238,7 +6214,7 @@ body.theme-light #step1Section input:focus {
   gap: 12px;
   align-items: center;
   min-width: 0;
-  flex: 1 1 auto;
+  flex: 1.35 1 0;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -6258,6 +6234,93 @@ body.theme-light #step1Section input:focus {
     0 0 15px rgba(100,200,255,0.5),
     0 0 30px rgba(100,200,255,0.2),
     inset 0 1px 0 rgba(255,255,255,0.32);
+}
+
+.level-gem {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255,255,255,0.46) 0%, transparent 26%),
+    linear-gradient(180deg, rgba(29, 70, 128, 0.92), rgba(12, 27, 62, 0.98));
+  border: 1px solid rgba(168, 232, 255, 0.38);
+  box-shadow:
+    0 0 18px rgba(105, 220, 255, 0.42),
+    0 0 32px rgba(64, 120, 255, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.34),
+    inset 0 -10px 18px rgba(10, 30, 86, 0.32);
+  font-size: 0;
+}
+
+.level-gem::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  transform: rotate(45deg);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e7fbff 0%, #5ed8ff 42%, #276dff 100%);
+  box-shadow:
+    0 0 10px rgba(111, 219, 255, 0.95),
+    0 0 22px rgba(75, 151, 255, 0.58),
+    inset 0 2px 4px rgba(255,255,255,0.65),
+    inset -3px -3px 8px rgba(26, 65, 178, 0.4);
+}
+
+.level-gem::after {
+  content: "✦";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #ffffff;
+  font-size: 13px;
+  text-shadow:
+    0 0 8px rgba(255,255,255,0.95),
+    0 0 14px rgba(111,219,255,0.8);
+  animation: gemSparkle 1.8s ease-in-out infinite;
+}
+
+.level-gem .gem-shine {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.92);
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.9),
+    0 0 16px rgba(103, 219, 255, 0.74);
+}
+
+.gem-tier-1::before {
+  background: linear-gradient(135deg, #e7fbff 0%, #5ed8ff 42%, #276dff 100%);
+}
+
+.gem-tier-2::before {
+  background: linear-gradient(135deg, #ecfff5 0%, #4ee8a8 42%, #0f9f6e 100%);
+}
+
+.gem-tier-3::before {
+  background: linear-gradient(135deg, #fff0ff 0%, #b56cff 42%, #6236ff 100%);
+}
+
+.gem-tier-4::before {
+  background: linear-gradient(135deg, #eaffff 0%, #5ff4ff 28%, #b96cff 58%, #7dffcf 100%);
+}
+
+.gem-tier-5::before {
+  background: linear-gradient(135deg, #fff8c9 0%, #ffd76a 38%, #ff7a3d 72%, #ffef9a 100%);
+  box-shadow:
+    0 0 12px rgba(255, 232, 118, 0.95),
+    0 0 26px rgba(255, 146, 72, 0.62),
+    inset 0 2px 4px rgba(255,255,255,0.75),
+    inset -3px -3px 8px rgba(178, 83, 0, 0.38);
 }
 
 .status-info {
@@ -6325,18 +6388,21 @@ body.theme-light #step1Section input:focus {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(50%, -50%);
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 999px;
   background: #fff;
-  box-shadow: 0 0 10px #6bd1ff;
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.9),
+    0 0 14px rgba(100,220,255,0.8);
 }
 
 .mission-panel {
-  width: 180px;
-  flex: 0 0 180px;
-  padding: 12px;
+  flex: 0.9 1 168px;
+  min-width: 154px;
+  max-width: 190px;
+  padding: 10px;
   border-left: 0;
   border-radius: 18px;
   background: linear-gradient(
@@ -6350,6 +6416,18 @@ body.theme-light #step1Section input:focus {
     inset 0 0 30px rgba(120,80,255,0.3);
 }
 
+.mission-panel:not(.collapsed) {
+  background: linear-gradient(
+    135deg,
+    rgba(58, 34, 126, 0.72),
+    rgba(18, 27, 74, 0.92)
+  );
+  border: 1px solid rgba(184, 127, 255, 0.46);
+  box-shadow:
+    0 0 18px rgba(139, 80, 255, 0.36),
+    inset 0 0 24px rgba(124, 83, 255, 0.16);
+}
+
 .mission-header {
   display: flex;
   justify-content: space-between;
@@ -6360,9 +6438,38 @@ body.theme-light #step1Section input:focus {
   font-weight: 800;
   cursor: pointer;
   user-select: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(93, 54, 190, 0.72), rgba(47, 25, 118, 0.88));
+  border: 1px solid rgba(188, 139, 255, 0.42);
+  box-shadow:
+    0 0 14px rgba(146, 91, 255, 0.38),
+    inset 0 1px 0 rgba(255,255,255,0.18);
   text-shadow:
     0 0 10px rgba(255,255,255,0.8),
     0 0 14px rgba(140,80,255,0.8);
+  transition: filter 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.mission-header:hover {
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 20px rgba(178, 116, 255, 0.56),
+    inset 0 1px 0 rgba(255,255,255,0.24);
+}
+
+.mission-panel.collapsed .mission-header {
+  animation: missionPulse 2.2s ease-in-out infinite;
+}
+
+#missionArrow {
+  display: inline-block;
+  margin-left: 8px;
+  animation: missionArrowNudge 1.4s ease-in-out infinite;
+}
+
+.mission-panel:not(.collapsed) #missionArrow {
+  animation: none;
 }
 
 .mission-body {
@@ -6407,13 +6514,44 @@ body.theme-light #step1Section input:focus {
   display: none;
 }
 
+@keyframes gemSparkle {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.16);
+  }
+}
+
+@keyframes missionPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(146, 91, 255, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.16);
+  }
+  50% {
+    box-shadow:
+      0 0 22px rgba(178, 116, 255, 0.62),
+      inset 0 1px 0 rgba(255,255,255,0.24);
+  }
+}
+
+@keyframes missionArrowNudge {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
 body.theme-light .status-card {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.82),
-    rgba(210,230,250,0.66)
-  );
-  border-color: rgba(83, 168, 235, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(229, 242, 255, 0.82)),
+    radial-gradient(circle at 20% 0%, rgba(106, 190, 255, 0.16), transparent 44%);
+  border-color: rgba(93, 145, 214, 0.32);
   box-shadow:
     0 10px 28px rgba(84, 132, 190, 0.18),
     0 0 20px rgba(91, 181, 248, 0.16),
@@ -6422,13 +6560,13 @@ body.theme-light .status-card {
 
 body.theme-light .name,
 body.theme-light .mission-header {
-  color: #1f3147;
+  color: #20314d;
 }
 
 body.theme-light .exp-text,
 body.theme-light .exp-desc,
 body.theme-light .mission-item {
-  color: #4f6784;
+  color: #20314d;
 }
 
 body.theme-light .mission-panel {
@@ -6443,13 +6581,22 @@ body.theme-light .mission-panel {
     inset 0 0 18px rgba(127, 101, 219, 0.1);
 }
 
-#screen-menu .status-card + #levelRecorder {
-  height: 54px !important;
-  margin: 4px auto 2px !important;
+body.theme-light .mission-panel:not(.collapsed) {
+  background: rgba(255,255,255,0.9);
 }
 
-#screen-menu .status-card + #levelRecorder + hr {
-  margin: 6px 0 8px !important;
+body.theme-light .mission-header {
+  background: linear-gradient(135deg, rgba(239, 235, 255, 0.94), rgba(222, 235, 255, 0.9));
+  border-color: rgba(127, 101, 219, 0.28);
+  color: #20314d;
+  text-shadow: none;
+  box-shadow:
+    0 0 14px rgba(127, 101, 219, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+#screen-menu .status-card + hr {
+  margin: 4px 0 6px !important;
 }
 
 #screen-menu > button:first-of-type {
@@ -8079,7 +8226,8 @@ function renderSongButtons() {
           "ok"
         );
 
-        document.getElementById("userName").innerText = app.user.name || "학생";
+        const userNameEl = document.getElementById("userName");
+        if (userNameEl) userNameEl.textContent = app.user?.name || "학생";
 resetSongMenuState("short");
 currentActivityTitle = DEFAULT_PAGE_TITLE;
 
@@ -10091,12 +10239,13 @@ function startBasicPractice() {
 
 <!-- 홈 메뉴 -->
 <div id="screen-menu" style="display:none; padding:20px; text-align:center;">
-  <h2 id="userName">학생 이름</h2>
   <div class="status-card">
     
     <!-- 왼쪽 -->
     <div class="status-left">
-      <div class="avatar">👦</div>
+      <div class="avatar level-gem gem-tier-1" id="levelGem" aria-label="레벨 보석">
+        <span class="gem-shine" aria-hidden="true"></span>
+      </div>
 
       <div class="status-info">
         <div class="name-row">
@@ -10119,10 +10268,10 @@ function startBasicPractice() {
     </div>
 
     <!-- 오른쪽 -->
-    <div class="mission-panel" id="missionPanel">
+    <div class="mission-panel collapsed" id="missionPanel">
 
       <div class="mission-header" onclick="toggleMission()">
-        🎯 오늘의 미션 <span id="missionArrow">▼</span>
+        🎯 오늘의 미션 <span id="missionArrow">▶</span>
       </div>
 
       <div class="mission-body" id="missionBody">
@@ -10150,8 +10299,7 @@ function startBasicPractice() {
     </div>
 
   </div>
-  <img id="levelRecorder" src="" style="height:120px; margin:10px 0;">
-  <hr style="margin:20px 0;">
+  <hr style="margin:6px 0 8px;">
   <button onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
   <button onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
   <button onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>

@@ -266,13 +266,33 @@ function toggleMission() {
   if (!panel || !arrow) return;
 
   panel.classList.toggle("collapsed");
-  arrow.textContent = panel.classList.contains("collapsed") ? "▶" : "▼";
+  arrow.textContent = panel.classList.contains("collapsed") ? "▶" : "▲";
+}
+
+function getGemTierByLevel(level) {
+  const lv = Number(level) || 1;
+  if (lv >= 41) return 5;
+  if (lv >= 31) return 4;
+  if (lv >= 21) return 3;
+  if (lv >= 11) return 2;
+  return 1;
+}
+
+function updateLevelGem(level) {
+  const gem = document.getElementById("levelGem");
+  if (!gem) return;
+
+  gem.classList.remove("gem-tier-1", "gem-tier-2", "gem-tier-3", "gem-tier-4", "gem-tier-5");
+  gem.classList.add("gem-tier-" + getGemTierByLevel(level));
 }
 
 function initStatusDashboardMock() {
   const expFill = document.getElementById("expFill");
   if (expFill) expFill.style.width = "85%";
+  updateLevelGem(7);
 }
 
 window.addEventListener("load", initStatusDashboardMock);
 window.toggleMission = toggleMission;
+window.getGemTierByLevel = getGemTierByLevel;
+window.updateLevelGem = updateLevelGem;
