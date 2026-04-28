@@ -7443,10 +7443,12 @@ body.theme-light .menuPageTitle {
 }
 
 .practiceStaffSlot {
+  position: relative;
   min-height: 150px;
   padding: 12px;
   border-radius: 18px;
   cursor: pointer;
+  overflow: hidden;
   background:
     radial-gradient(circle at 18% 16%, rgba(165, 235, 255, 0.16), transparent 36%),
     linear-gradient(180deg, rgba(24, 44, 86, 0.92), rgba(10, 22, 50, 0.96));
@@ -7463,8 +7465,8 @@ body.theme-light .menuPageTitle {
 .practiceStaffSlot.is-active {
   border-color: rgba(77,168,255,0.95);
   box-shadow:
-    0 0 0 3px rgba(77,168,255,0.25),
-    0 12px 24px rgba(0,0,0,0.18),
+    0 0 0 3px rgba(77,168,255,0.24),
+    0 12px 26px rgba(0,0,0,0.16),
     inset 0 1px 0 rgba(255,255,255,0.16);
 }
 
@@ -7475,6 +7477,95 @@ body.theme-light .menuPageTitle {
     0 0 0 4px rgba(255,215,106,0.28),
     0 14px 28px rgba(0,0,0,0.18),
     inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.practiceStaffSlot.slot-inserted {
+  animation: slotInsertPop 0.42s ease-out;
+}
+
+.practiceStaffSlot.slot-inserted::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 45%;
+  height: 160%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.55),
+    transparent
+  );
+  transform: rotate(18deg);
+  animation: slotShine 0.48s ease-out;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.practiceStaffSlot.has-pattern .slotEmptyHint {
+  display: none;
+}
+
+.slotEmptyHint {
+  position: absolute;
+  inset: 42px 16px 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(77, 168, 255, 0.45);
+  border-radius: 16px;
+  color: rgba(47, 128, 237, 0.8);
+  font-weight: 900;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.28);
+  pointer-events: none;
+}
+
+.practicePatternCanvas,
+.practiceStaffSlot .fingeringStaffCanvas {
+  position: relative;
+  z-index: 1;
+}
+
+.practiceStaffSlotLabel,
+.practiceStaffSlotTitle,
+.practiceStaffSlotHead {
+  position: relative;
+  z-index: 3;
+}
+
+body.dark .slotEmptyHint,
+.dark-mode .slotEmptyHint {
+  background: rgba(20, 30, 50, 0.45);
+  border-color: rgba(123, 224, 199, 0.45);
+  color: rgba(190, 255, 240, 0.9);
+}
+
+@keyframes slotInsertPop {
+  0% {
+    transform: scale(0.985);
+  }
+  45% {
+    transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slotShine {
+  0% {
+    left: -45%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    left: 110%;
+    opacity: 0;
+  }
 }
 
 .practiceStaffSlot + .practiceStaffSlot {
@@ -8214,17 +8305,19 @@ body.theme-light .practiceStaffSlot {
 
                 <div class="practiceStaffSlot" data-slot="0">
                   <div class="practiceStaffSlotHead">
-                    <span>1번 가락</span>
+                    <span class="practiceStaffSlotLabel">1번 가락</span>
                     <span id="practiceStaffTitle1" class="practiceStaffPatternTitle">카드를 선택하세요</span>
                   </div>
+                  <div class="slotEmptyHint">+ 카드 넣기</div>
                   <canvas id="fingeringStaffCanvas1" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
 
                 <div class="practiceStaffSlot" data-slot="1">
                   <div class="practiceStaffSlotHead">
-                    <span>2번 가락</span>
+                    <span class="practiceStaffSlotLabel">2번 가락</span>
                     <span id="practiceStaffTitle2" class="practiceStaffPatternTitle">카드를 선택하세요</span>
                   </div>
+                  <div class="slotEmptyHint">+ 카드 넣기</div>
                   <canvas id="fingeringStaffCanvas2" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
               </div>
@@ -11991,6 +12084,37 @@ function startBasicPractice() {
       updateActivePatternSlotUI();
     }
 
+    function updateSlotEmptyState(slotIndex) {
+      const slot = document.querySelector(`.practiceStaffSlot[data-slot="${slotIndex}"]`);
+      if (!slot) return;
+
+      const hasPattern = !!selectedPracticePatterns[slotIndex];
+      slot.classList.toggle("has-pattern", hasPattern);
+
+      const hint = slot.querySelector(".slotEmptyHint");
+      if (hint) {
+        hint.style.display = hasPattern ? "none" : "flex";
+      }
+    }
+
+    function updateAllSlotEmptyStates() {
+      updateSlotEmptyState(0);
+      updateSlotEmptyState(1);
+    }
+
+    function playSlotInsertAnimation(slotIndex) {
+      const slot = document.querySelector(`.practiceStaffSlot[data-slot="${slotIndex}"]`);
+      if (!slot) return;
+
+      slot.classList.remove("slot-inserted");
+      void slot.offsetWidth;
+      slot.classList.add("slot-inserted");
+
+      setTimeout(() => {
+        slot.classList.remove("slot-inserted");
+      }, 450);
+    }
+
     function assignFingeringPatternToSlot(slotIndex, patternKey) {
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
@@ -12000,6 +12124,8 @@ function startBasicPractice() {
       syncSelectedFingeringPracticeNotes();
       updatePatternCardSelectionUI();
       updateSelectedPatternTitles();
+      updateSlotEmptyState(slotIndex);
+      playSlotInsertAnimation(slotIndex);
       renderFingeringPracticeFrame();
     }
 
@@ -12384,6 +12510,7 @@ function startBasicPractice() {
       updatePatternCardSelectionUI();
       updateSelectedPatternTitles();
       updateActivePatternSlotUI();
+      updateAllSlotEmptyStates();
       renderFingeringPracticeFrame();
     }
 
