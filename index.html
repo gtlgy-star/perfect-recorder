@@ -7274,7 +7274,12 @@ body.theme-light .menuPageTitle {
 
 .patternCard {
   min-height: 82px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
 }
 
 .patternCard:hover,
@@ -7308,12 +7313,27 @@ body.theme-light .menuPageTitle {
   line-height: 1.15;
 }
 
+.patternTitle {
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
 .patternCardNotes {
   display: block;
   margin-top: 6px;
   font-size: 12px;
   font-weight: 800;
   color: rgba(215, 244, 255, 0.78);
+}
+
+.patternRange {
+  font-size: 0.78rem;
+  opacity: 0.68;
+  margin-top: 4px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .patternSlotBadge {
@@ -7426,6 +7446,7 @@ body.theme-light .menuPageTitle {
   min-height: 150px;
   padding: 12px;
   border-radius: 18px;
+  cursor: pointer;
   background:
     radial-gradient(circle at 18% 16%, rgba(165, 235, 255, 0.16), transparent 36%),
     linear-gradient(180deg, rgba(24, 44, 86, 0.92), rgba(10, 22, 50, 0.96));
@@ -7433,6 +7454,27 @@ body.theme-light .menuPageTitle {
   box-shadow:
     0 10px 24px rgba(0,0,0,0.24),
     inset 0 1px 0 rgba(255,255,255,0.14);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.practiceStaffSlot.is-active {
+  border-color: rgba(77,168,255,0.95);
+  box-shadow:
+    0 0 0 3px rgba(77,168,255,0.25),
+    0 12px 24px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+.practiceStaffSlot.is-drag-over {
+  transform: translateY(-2px);
+  border-color: rgba(255,215,106,0.95);
+  box-shadow:
+    0 0 0 4px rgba(255,215,106,0.28),
+    0 14px 28px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .practiceStaffSlot + .practiceStaffSlot {
@@ -8105,13 +8147,13 @@ body.theme-light .practiceStaffSlot {
           <div class="patternColumn">
             <div class="patternGroupTitle patternColumnTitle">순차진행</div>
             <button type="button" class="patternCard" data-pattern="stepUp">
-              <span class="patternCardTitle">위로 가는 가락</span>
-              <span class="patternCardNotes">도 → 레 → 미 → 파 → 솔 → 라 → 시 → 높은도</span>
+              <div class="patternTitle">위로 가는 가락</div>
+              <div class="patternRange">도 → 높은도</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
             <button type="button" class="patternCard" data-pattern="stepDown">
-              <span class="patternCardTitle">아래로 가는 가락</span>
-              <span class="patternCardNotes">높은도 → 시 → 라 → 솔 → 파 → 미 → 레 → 도</span>
+              <div class="patternTitle">아래로 가는 가락</div>
+              <div class="patternRange">높은도 → 도</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
           </div>
@@ -8119,13 +8161,13 @@ body.theme-light .practiceStaffSlot {
           <div class="patternColumn">
             <div class="patternGroupTitle patternColumnTitle">도약진행</div>
             <button type="button" class="patternCard" data-pattern="leapUp">
-              <span class="patternCardTitle">위로 뛰는 가락</span>
-              <span class="patternCardNotes">도 → 도 → 미 → 미 → 솔 → 솔 → 시 → 시</span>
+              <div class="patternTitle">위로 뛰는 가락</div>
+              <div class="patternRange">도 → 시</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
             <button type="button" class="patternCard" data-pattern="leapDown">
-              <span class="patternCardTitle">아래로 뛰는 가락</span>
-              <span class="patternCardNotes">높은도 → 높은도 → 라 → 라 → 파 → 파 → 레 → 레</span>
+              <div class="patternTitle">아래로 뛰는 가락</div>
+              <div class="patternRange">높은도 → 레</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
           </div>
@@ -8133,13 +8175,11 @@ body.theme-light .practiceStaffSlot {
           <div class="patternColumn">
             <div class="patternGroupTitle patternColumnTitle">혼합진행</div>
             <button type="button" class="patternCard" data-pattern="mixedUpDown">
-              <span class="patternCardTitle">오르내리는 가락</span>
-              <span class="patternCardNotes">도 → 미 → 레 → 파 → 미 → 솔 → 파 → 라 → 솔 → 시 → 라 → 높은도</span>
+              <div class="patternTitle">위로 갔다 내려오는 가락</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
             <button type="button" class="patternCard" data-pattern="mixedDownUp">
-              <span class="patternCardTitle">내리오르는 가락</span>
-              <span class="patternCardNotes">높은도 → 라 → 시 → 솔 → 라 → 파 → 솔 → 미 → 파 → 레 → 미 → 도</span>
+              <div class="patternTitle">아래로 갔다 올라오는 가락</div>
               <span class="patternSlotBadge" hidden></span>
             </button>
           </div>
@@ -8170,7 +8210,7 @@ body.theme-light .practiceStaffSlot {
 
             <div class="practiceRight">
               <div class="practiceStaffStack">
-                <p class="practiceStaffGuide">카드 2장을 골라 위에서 아래로 이어 연주해요.</p>
+                <p class="practiceStaffGuide">카드를 눌러 넣거나, 끌어다 놓아도 됩니다. 1번 또는 2번 가락 칸을 먼저 선택할 수도 있어요.</p>
 
                 <div class="practiceStaffSlot" data-slot="0">
                   <div class="practiceStaffSlotHead">
@@ -8596,14 +8636,14 @@ body.theme-light .practiceStaffSlot {
       },
       mixedUpDown: {
         category: "혼합진행",
-        title: "오르내리는 가락",
-        fullTitle: "혼합진행 - 오르내리는 가락",
+        title: "위로 갔다 내려오는 가락",
+        fullTitle: "혼합진행 - 위로 갔다 내려오는 가락",
         notes: ["C5", "E5", "D5", "F5", "E5", "G5", "F5", "A5", "G5", "B5", "A5", "C6"]
       },
       mixedDownUp: {
         category: "혼합진행",
-        title: "내리오르는 가락",
-        fullTitle: "혼합진행 - 내리오르는 가락",
+        title: "아래로 갔다 올라오는 가락",
+        fullTitle: "혼합진행 - 아래로 갔다 올라오는 가락",
         notes: ["C6", "A5", "B5", "G5", "A5", "F5", "G5", "E5", "F5", "D5", "E5", "C5"]
       }
     };
@@ -8622,6 +8662,7 @@ body.theme-light .practiceStaffSlot {
     const FINGERING_PRACTICE_PATTERNS = fingeringPracticePatterns;
     const FINGERING_NOTE_LABELS = NOTE_DISPLAY_LABELS;
     let selectedPracticePatterns = [null, null];
+    let activePatternSlot = 0;
     let nextPatternSlot = 0;
     let fingeringPracticeSpeed = "normal";
     let practiceState = {
@@ -11935,7 +11976,31 @@ function startBasicPractice() {
 
     function updateNextPatternGuide() {
       const guide = document.getElementById("nextPatternGuide");
-      if (guide) guide.textContent = `다음 선택: ${nextPatternSlot + 1}번 가락`;
+      if (guide) guide.textContent = `현재 선택: ${activePatternSlot + 1}번 가락`;
+    }
+
+    function updateActivePatternSlotUI() {
+      document.querySelectorAll(".practiceStaffSlot").forEach((slot, index) => {
+        slot.classList.toggle("is-active", index === activePatternSlot);
+      });
+      updateNextPatternGuide();
+    }
+
+    function setActivePatternSlot(slotIndex) {
+      activePatternSlot = slotIndex === 1 ? 1 : 0;
+      updateActivePatternSlotUI();
+    }
+
+    function assignFingeringPatternToSlot(slotIndex, patternKey) {
+      if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
+
+      stopFingeringPracticeTimer();
+      selectedPracticePatterns[slotIndex] = patternKey;
+      practiceState.index = 0;
+      syncSelectedFingeringPracticeNotes();
+      updatePatternCardSelectionUI();
+      updateSelectedPatternTitles();
+      renderFingeringPracticeFrame();
     }
 
     function updatePatternCardSelectionUI() {
@@ -11969,16 +12034,18 @@ function startBasicPractice() {
     function selectFingeringPattern(patternKey) {
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
-      stopFingeringPracticeTimer();
-      selectedPracticePatterns[nextPatternSlot] = patternKey;
-      nextPatternSlot = nextPatternSlot === 0 ? 1 : 0;
+      const targetSlot = activePatternSlot ?? nextPatternSlot;
+      assignFingeringPatternToSlot(targetSlot, patternKey);
 
-      practiceState.index = 0;
-      syncSelectedFingeringPracticeNotes();
-      updatePatternCardSelectionUI();
-      updateSelectedPatternTitles();
-      updateNextPatternGuide();
-      renderFingeringPracticeFrame();
+      if (targetSlot === 0) {
+        nextPatternSlot = 1;
+        activePatternSlot = 1;
+      } else {
+        nextPatternSlot = 0;
+        activePatternSlot = 0;
+      }
+
+      updateActivePatternSlotUI();
     }
 
     function setFingeringPracticeSpeed(speedKey, speedValue, label) {
@@ -12270,9 +12337,42 @@ function startBasicPractice() {
 
     function setupFingeringPracticeControls() {
       document.querySelectorAll(".patternCard").forEach((btn) => {
+        btn.setAttribute("draggable", "true");
+
         btn.onclick = () => {
           selectFingeringPattern(btn.dataset.pattern);
         };
+
+        btn.addEventListener("dragstart", (event) => {
+          event.dataTransfer.setData("text/plain", btn.dataset.pattern || "");
+        });
+      });
+
+      document.querySelectorAll(".practiceStaffSlot").forEach((slot, index) => {
+        slot.addEventListener("click", () => {
+          setActivePatternSlot(index);
+        });
+
+        slot.addEventListener("dragover", (event) => {
+          event.preventDefault();
+          slot.classList.add("is-drag-over");
+        });
+
+        slot.addEventListener("dragleave", () => {
+          slot.classList.remove("is-drag-over");
+        });
+
+        slot.addEventListener("drop", (event) => {
+          event.preventDefault();
+          slot.classList.remove("is-drag-over");
+
+          const patternKey = event.dataTransfer.getData("text/plain");
+          if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
+
+          assignFingeringPatternToSlot(index, patternKey);
+          setActivePatternSlot(index);
+          nextPatternSlot = index === 0 ? 1 : 0;
+        });
       });
 
       document.querySelectorAll(".speedBtn, .speedButton").forEach((btn) => {
@@ -12283,7 +12383,7 @@ function startBasicPractice() {
 
       updatePatternCardSelectionUI();
       updateSelectedPatternTitles();
-      updateNextPatternGuide();
+      updateActivePatternSlotUI();
       renderFingeringPracticeFrame();
     }
 
