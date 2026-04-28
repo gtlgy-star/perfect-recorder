@@ -7322,6 +7322,53 @@ body.theme-light .practiceInfoRow {
   color: #163b63;
 }
 
+.loadingScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(95, 219, 255, 0.16), transparent 36%),
+    linear-gradient(180deg, #071120, #0a1933);
+}
+
+.loadingScreen.hidden {
+  display: none;
+}
+
+.loadingContent {
+  text-align: center;
+}
+
+.recorderLoadingRow {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.loadingRecorder {
+  width: 78px;
+  opacity: 0.2;
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+}
+
+.loadingRecorder.active {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 12px rgba(120,230,255,0.6));
+}
+
+.loadingText {
+  font-size: 22px;
+  font-weight: 800;
+  color: #bdf6ff;
+  transition: opacity 0.3s ease;
+}
+
 @media (max-width: 600px) {
   .heroCard,
   .menuTitle-main {
@@ -7378,6 +7425,19 @@ body.theme-light .practiceInfoRow {
     <span class="globalMiniStar" style="--global-star-left: 84%; --global-star-top: 82%; --global-star-size: 2px; --global-star-duration: 7.9s; --global-star-delay: -0.5s; --global-star-from-x: 13px; --global-star-from-y: 5px; --global-star-to-x: -11px; --global-star-to-y: -13px;"></span>
     <span class="globalMiniStar" style="--global-star-left: 91%; --global-star-top: 72%; --global-star-size: 3px; --global-star-duration: 8.3s; --global-star-delay: -2.9s; --global-star-from-x: -10px; --global-star-from-y: 11px; --global-star-to-x: 12px; --global-star-to-y: -9px;"></span>
     <span class="globalMiniStar" style="--global-star-left: 95%; --global-star-top: 90%; --global-star-size: 2px; --global-star-duration: 7s; --global-star-delay: -4.4s; --global-star-from-x: 10px; --global-star-from-y: -12px; --global-star-to-x: -8px; --global-star-to-y: 14px;"></span>
+  </div>
+  <div id="loadingScreen" class="loadingScreen hidden">
+    <div class="loadingContent">
+      <div class="recorderLoadingRow">
+        <img src="images/recorder-base.png" class="loadingRecorder r1" alt="리코더 준비 1">
+        <img src="images/recorder-base.png" class="loadingRecorder r2" alt="리코더 준비 2">
+        <img src="images/recorder-base.png" class="loadingRecorder r3" alt="리코더 준비 3">
+      </div>
+
+      <div id="loadingText" class="loadingText">
+        🎶 연주를 준비하고 있어요
+      </div>
+    </div>
   </div>
   <div class="wrap">
     <div class="topBar">
@@ -7945,6 +8005,14 @@ body.theme-light .practiceInfoRow {
       { min: 60, key: "pass", label: "PASS" },
       { min: 0, key: "retry", label: "다시 도전!" }
     ];
+    const loadingMessages = [
+      "🎶 연주를 준비하고 있어요",
+      "🎵 함께 연주할 준비가 되었나요?",
+      "🚀 곧 연습이 시작됩니다",
+      "🏆 도전! 퍼펙트 리코더!"
+    ];
+    let loadingIndex = 0;
+    let loadingInterval = null;
     const SHORT_SONG_TITLES = ["나비야", "비행기", "학교종", "작은별"];
     const FALLBACK_CHALLENGE_SONGS = {
       JAGEUNBYEOL: {
@@ -8114,6 +8182,46 @@ function setChallengePlayMode(active) {
   const challengePlayScreen = document.getElementById("screen-challenge-play");
   if (challengePlayScreen) {
     challengePlayScreen.classList.toggle("challenge-play-mode", !!active);
+  }
+}
+
+function showLoadingScreen() {
+  const loadingScreen = document.getElementById("loadingScreen");
+  const recorders = document.querySelectorAll(".loadingRecorder");
+  const text = document.getElementById("loadingText");
+
+  if (!loadingScreen || !text) return;
+
+  loadingScreen.classList.remove("hidden");
+  document.getElementById("step1Section")?.classList.add("hidden");
+
+  loadingIndex = 0;
+  clearInterval(loadingInterval);
+
+  const renderLoadingStep = () => {
+    recorders.forEach((recorder) => recorder.classList.remove("active"));
+
+    const step = loadingIndex % 3;
+    for (let i = 0; i <= step; i++) {
+      if (recorders[i]) recorders[i].classList.add("active");
+    }
+
+    text.textContent = loadingMessages[loadingIndex % loadingMessages.length];
+    loadingIndex++;
+  };
+
+  renderLoadingStep();
+  loadingInterval = setInterval(renderLoadingStep, 1000);
+}
+
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById("loadingScreen");
+
+  clearInterval(loadingInterval);
+  loadingInterval = null;
+
+  if (loadingScreen) {
+    loadingScreen.classList.add("hidden");
   }
 }
 
@@ -9108,6 +9216,7 @@ function renderSongButtons() {
       }
 
       try {
+        showLoadingScreen();
         const user = await app.login(code);
 
         app.user.grade = document.getElementById("grade").value;
@@ -9140,11 +9249,14 @@ if (challengePlayScreen) challengePlayScreen.style.display = "none";
 restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
+hideLoadingScreen();
 document.getElementById("screen-menu").style.display = "block";
 setMenuTitleMode(true);
 updatePageTitleByScreen("screen-menu");
 app.refreshSongs().catch(() => {});
       } catch (e) {
+        hideLoadingScreen();
+        showStep("step1Section");
         setStatus("loginStatus", e.message, "bad");
       }
     }
