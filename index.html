@@ -6618,13 +6618,21 @@ body.theme-light .mission-header {
   }
 }
 
-body.menu-title-active .heroCard {
+body.menu-title-active .wrap > .heroCard:not(#screen-menu-title) {
   display: none;
 }
 
 #screen-menu .heroCard,
 #screen-menu .pageTitle {
   display: none;
+}
+
+#screen-menu-title {
+  display: none;
+}
+
+body.menu-title-active #screen-menu-title {
+  display: block;
 }
 
 .menuTitle {
@@ -6744,6 +6752,239 @@ body.theme-light #screen-menu .menuButtonGrid .btn-logout {
     inset 0 1px 0 rgba(255,255,255,0.72);
 }
 
+#screen-menu {
+  width: 100%;
+  max-width: inherit;
+  margin: 0 auto 16px;
+  overflow: hidden;
+}
+
+#screen-menu > * {
+  width: 100%;
+}
+
+#screen-menu .status-card,
+#screen-menu .menuButtonGrid,
+#screen-menu .menuGrid {
+  width: 100%;
+  max-width: none;
+}
+
+#screen-menu .menuButtonGrid,
+#screen-menu .menuGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+#screen-menu .menuButtonGrid .menuBtn {
+  grid-column: auto;
+  min-height: 82px;
+  font-size: 18px;
+}
+
+#screen-menu .menuButtonGrid .btn-challenge {
+  grid-column: auto;
+  min-height: 86px;
+}
+
+#screen-menu .menuButtonGrid .btn-logout {
+  grid-column: auto;
+  min-height: 56px;
+  font-size: 15px;
+}
+
+#screen-menu .status-card {
+  min-height: 128px;
+  padding: 20px 22px;
+}
+
+#screen-menu .status-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+#screen-menu .status-left,
+#screen-menu .student-info,
+#screen-menu .studentInfo {
+  max-width: 520px;
+  min-width: 0;
+}
+
+#screen-menu .status-info {
+  max-width: 460px;
+}
+
+#screen-menu .exp-bar,
+#screen-menu .expBar,
+#screen-menu .expTrack,
+#screen-menu .exp-wrap,
+#screen-menu .expWrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+#screen-menu #expFill {
+  max-width: 420px;
+}
+
+#screen-menu .missionDock {
+  display: grid;
+  grid-template-columns: auto 0fr;
+  align-items: center;
+  gap: 0;
+  max-width: 420px;
+  min-width: 180px;
+  justify-self: end;
+  transition:
+    grid-template-columns 0.28s ease,
+    gap 0.28s ease;
+}
+
+#screen-menu .missionDock.open {
+  grid-template-columns: auto minmax(220px, 1fr);
+  gap: 12px;
+}
+
+#screen-menu .mission-toggle,
+#screen-menu .missionToggle,
+#screen-menu #missionToggle,
+#screen-menu .mission-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "main arrow"
+    "bonus arrow";
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 2px;
+  text-align: left;
+  justify-self: end;
+  white-space: nowrap;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+#screen-menu .mission-main {
+  grid-area: main;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+#screen-menu .mission-bonus {
+  grid-area: bonus;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffd76a;
+  opacity: 0.95;
+  line-height: 1.1;
+}
+
+#screen-menu #missionArrow {
+  grid-area: arrow;
+}
+
+#screen-menu .missionDock.open .mission-toggle {
+  transform: translateX(-4px);
+}
+
+#screen-menu #missionPanel {
+  position: static;
+  transform: none;
+  width: 100%;
+  min-width: 0;
+  max-width: 280px;
+  max-height: 180px;
+  overflow: hidden;
+  opacity: 1;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(35, 35, 92, 0.92), rgba(16, 22, 56, 0.96)),
+    radial-gradient(circle at 20% 20%, rgba(170, 100, 255, 0.28), transparent 42%);
+  border: 1px solid rgba(190, 150, 255, 0.46);
+  box-shadow:
+    0 12px 26px rgba(0,0,0,0.28),
+    0 0 22px rgba(150,90,255,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  transition:
+    opacity 0.22s ease,
+    max-width 0.28s ease,
+    max-height 0.28s ease,
+    padding 0.28s ease,
+    border-width 0.28s ease;
+}
+
+#screen-menu #missionPanel.collapsed {
+  max-width: 0;
+  max-height: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-width: 0;
+  pointer-events: none;
+}
+
+#screen-menu .missionDock.open #missionPanel {
+  max-width: 280px;
+  max-height: 180px;
+  opacity: 1;
+}
+
+#screen-menu #missionPanel .mission-body {
+  display: block;
+  margin-top: 0;
+}
+
+#screen-menu #missionPanel .mission-item,
+#screen-menu #missionPanel .mission-row,
+#screen-menu #missionPanel .missionRow,
+#screen-menu #missionPanel li {
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+#screen-menu #missionPanel .mission-item:last-child,
+#screen-menu #missionPanel .mission-row:last-child,
+#screen-menu #missionPanel .missionRow:last-child,
+#screen-menu #missionPanel li:last-child {
+  margin-bottom: 0;
+}
+
+body.theme-light #screen-menu #missionPanel {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(228, 235, 255, 0.98)),
+    radial-gradient(circle at 20% 20%, rgba(160, 120, 255, 0.22), transparent 42%);
+  border-color: rgba(127, 101, 219, 0.34);
+  box-shadow:
+    0 18px 38px rgba(84, 88, 150, 0.22),
+    0 0 22px rgba(127, 101, 219, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.82);
+}
+
+#screen-menu-title {
+  width: 100%;
+  max-width: inherit;
+  margin-bottom: 22px;
+}
+
+#screen-menu-title.menuTitle-main {
+  padding: 30px 30px 28px;
+  border-radius: 34px;
+}
+
+#screen-menu-title .menuPageTitle {
+  margin: 0;
+}
+
 @media (max-width: 480px) {
   .menuTitle {
     font-size: 18px;
@@ -6751,7 +6992,83 @@ body.theme-light #screen-menu .menuButtonGrid .btn-logout {
   }
 }
 
+@media (max-width: 600px) {
+  #screen-menu-title.menuTitle-main {
+    padding: 22px 20px;
+    border-radius: 28px;
+    margin-bottom: 16px;
+  }
+
+  #screen-menu-title .menuPageTitle {
+    font-size: clamp(34px, 9vw, 48px);
+  }
+
+  #screen-menu {
+    padding: 18px;
+  }
+
+  #screen-menu .menuButtonGrid,
+  #screen-menu .menuGrid {
+    gap: 10px;
+  }
+
+  #screen-menu .menuButtonGrid .menuBtn {
+    min-height: 68px;
+    font-size: 15px;
+  }
+
+  #screen-menu .status-card {
+    min-height: 110px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 700px) {
+  #screen-menu .status-card {
+    grid-template-columns: 1fr;
+  }
+
+  #screen-menu .missionDock,
+  #screen-menu .missionDock.open {
+    width: 100%;
+    max-width: none;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  #screen-menu .mission-toggle,
+  #screen-menu .mission-header {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  #screen-menu .missionDock.open .mission-toggle {
+    transform: none;
+  }
+
+  #screen-menu #missionPanel,
+  #screen-menu .missionDock.open #missionPanel {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  #screen-menu .status-card {
+    gap: 12px;
+  }
+
+  #screen-menu #missionPanel {
+    width: 100%;
+  }
+}
+
 @media (max-width: 360px) {
+  #screen-menu .menuButtonGrid,
+  #screen-menu .menuGrid {
+    grid-template-columns: 1fr;
+  }
+
   .menuButtonGrid {
     grid-template-columns: 1fr;
   }
@@ -6760,6 +7077,145 @@ body.theme-light #screen-menu .menuButtonGrid .btn-logout {
   #screen-menu .menuButtonGrid .btn-challenge,
   #screen-menu .menuButtonGrid .btn-logout {
     grid-column: auto;
+  }
+}
+
+.heroCard,
+.menuTitle-main {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 32px 28px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(180, 248, 255, 0.28), transparent 28%),
+    radial-gradient(circle at 82% 32%, rgba(180, 170, 255, 0.22), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(80, 220, 255, 0.20), transparent 42%),
+    linear-gradient(180deg, rgba(52, 92, 158, 0.66), rgba(14, 32, 72, 0.84));
+  border: 1px solid rgba(170, 230, 255, 0.46);
+  box-shadow:
+    0 24px 52px rgba(0, 0, 0, 0.34),
+    0 0 34px rgba(105, 220, 255, 0.22),
+    0 0 70px rgba(120, 110, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 42px rgba(120, 230, 255, 0.10);
+  backdrop-filter: blur(18px);
+}
+
+.heroCard::before,
+.menuTitle-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05) 18%, transparent 42%),
+    radial-gradient(circle at 14% 32%, rgba(255,255,255,0.95) 0 1.2px, transparent 2.6px),
+    radial-gradient(circle at 31% 62%, rgba(190,250,255,0.85) 0 1px, transparent 2.4px),
+    radial-gradient(circle at 52% 24%, rgba(255,255,255,0.9) 0 1.1px, transparent 2.5px),
+    radial-gradient(circle at 74% 52%, rgba(190,250,255,0.8) 0 1.4px, transparent 2.8px),
+    radial-gradient(circle at 90% 28%, rgba(255,255,255,0.82) 0 1px, transparent 2.3px);
+  opacity: 0.9;
+}
+
+.heroCard::after,
+.menuTitle-main::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(180, 245, 255, 0.26), transparent 18%, transparent 78%, rgba(255, 235, 150, 0.20));
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  opacity: 0.95;
+}
+
+.heroCard > *,
+.menuTitle-main > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pageTitle,
+.menuPageTitle {
+  margin: 0;
+  font-size: clamp(46px, 5.9vw, 68px);
+  font-weight: 1000;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  background:
+    linear-gradient(90deg, #f2ffff 0%, #b9f7ff 24%, #78e5ff 52%, #d8c8ff 82%, #fff2b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 14px rgba(150, 240, 255, 0.42),
+    0 0 34px rgba(110, 220, 255, 0.28),
+    0 0 60px rgba(130, 120, 255, 0.18);
+  filter:
+    drop-shadow(0 8px 18px rgba(90, 210, 255, 0.34))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.18));
+}
+
+body.theme-light .heroCard,
+body.theme-light .menuTitle-main {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.64), transparent 30%),
+    radial-gradient(circle at 82% 32%, rgba(160, 210, 255, 0.28), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(90, 190, 255, 0.18), transparent 42%),
+    linear-gradient(180deg, rgba(218, 244, 255, 0.92), rgba(118, 184, 238, 0.78));
+  border: 1px solid rgba(70, 150, 210, 0.38);
+  box-shadow:
+    0 22px 46px rgba(55, 120, 180, 0.20),
+    0 0 28px rgba(80, 190, 255, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.72),
+    inset 0 0 36px rgba(255,255,255,0.30);
+}
+
+body.theme-light .pageTitle,
+body.theme-light .menuPageTitle {
+  background:
+    linear-gradient(90deg, #062f5f 0%, #005f9f 30%, #163fba 64%, #5b278f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #073a70;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.7px rgba(255, 255, 255, 0.72);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.92),
+    0 3px 8px rgba(18, 69, 130, 0.26),
+    0 0 16px rgba(42, 126, 210, 0.30);
+  filter:
+    drop-shadow(0 6px 14px rgba(28, 91, 156, 0.24))
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.34));
+}
+
+@media (max-width: 600px) {
+  .heroCard,
+  .menuTitle-main {
+    padding: 22px 20px;
+    border-radius: 28px;
+  }
+
+  .pageTitle,
+  .menuPageTitle {
+    font-size: clamp(34px, 9vw, 48px);
+    letter-spacing: -0.045em;
+  }
+}
+
+@media (max-width: 360px) {
+  .pageTitle,
+  .menuPageTitle {
+    font-size: clamp(30px, 10vw, 40px);
   }
 }
   </style>
@@ -6796,6 +7252,85 @@ body.theme-light #screen-menu .menuButtonGrid .btn-logout {
       <span class="heroStar" style="--hero-star-left: 84%; --hero-star-top: 34%; --hero-star-size: 3px; --hero-star-duration: 5.6s; --hero-star-delay: -4.2s; --hero-star-from-x: -6px; --hero-star-from-y: 10px; --hero-star-to-x: 12px; --hero-star-to-y: -6px;"></span>
       <h1 id="pageTitle" class="pageTitle">도전! 퍼펙트 리코더!</h1>
     </div>
+
+    <div id="screen-menu-title" class="heroCard menuTitle-main">
+      <h1 class="pageTitle menuPageTitle">도전! 퍼펙트 리코더!</h1>
+    </div>
+
+    <!-- 홈 메뉴 -->
+    <section id="screen-menu" class="card" style="display:none;">
+      <div class="status-card">
+        
+        <!-- 왼쪽 -->
+        <div class="status-left">
+          <div class="avatar level-gem gem-tier-1" id="levelGem" aria-label="레벨 보석">
+            <span class="gem-shine" aria-hidden="true"></span>
+          </div>
+
+          <div class="status-info">
+            <div class="name-row">
+              <span class="name">학생</span>
+              <span class="level">Lv.7</span>
+            </div>
+
+            <div class="exp-text">
+              EXP <span id="expNow">2100</span> / <span id="expMax">2450</span>
+            </div>
+
+            <div class="exp-bar">
+              <div class="exp-fill" id="expFill"></div>
+            </div>
+
+            <div class="exp-desc">
+              다음 레벨까지 <span id="expRemain">350</span> EXP 남았어요!
+            </div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 -->
+        <div class="missionDock">
+          <div class="mission-header mission-toggle" onclick="toggleMission()">
+            <span class="mission-main">🎯 오늘의 미션</span>
+            <span class="mission-bonus">완료 보너스 +30</span>
+            <span id="missionArrow">▶</span>
+          </div>
+
+          <div class="mission-panel missionPanel collapsed" id="missionPanel">
+            <div class="mission-body" id="missionBody">
+
+              <div class="mission-item done">
+                기본 운지 1회 보기
+                <span class="mission-score">+3</span>
+              </div>
+
+              <div class="mission-item progress">
+                운지법 연습 2/3
+                <span class="mission-score">+6</span>
+              </div>
+
+              <div class="mission-item">
+                짧은 곡 0/1
+                <span class="mission-score">+10</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <hr style="margin:6px 0 8px;">
+      <div class="menuButtonGrid">
+        <button class="menuBtn" onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
+        <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
+        <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
+        <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
+        <button class="menuBtn menu-btn btn-challenge" onclick="goChallenge()">
+          <span class="challenge-icon">🏆</span>
+          <span class="challenge-text">도전! 퍼펙트 리코더</span>
+        </button>
+        <button class="menuBtn btn-logout sub" onclick="logout()">🚪 로그아웃</button>
+      </div>
+    </section>
 
     <section id="step1Section" class="card">
       <div class="loginStagePattern" aria-hidden="true">
@@ -10391,84 +10926,6 @@ function startBasicPractice() {
       showStep("step1Section");
     });
   </script>
-
-<!-- 홈 메뉴 -->
-<div id="screen-menu" style="display:none; padding:20px; text-align:center;">
-  <div class="menuTitle">도전! 퍼펙트 리코더!</div>
-
-  <div class="status-card">
-    
-    <!-- 왼쪽 -->
-    <div class="status-left">
-      <div class="avatar level-gem gem-tier-1" id="levelGem" aria-label="레벨 보석">
-        <span class="gem-shine" aria-hidden="true"></span>
-      </div>
-
-      <div class="status-info">
-        <div class="name-row">
-          <span class="name">학생</span>
-          <span class="level">Lv.7</span>
-        </div>
-
-        <div class="exp-text">
-          EXP <span id="expNow">2100</span> / <span id="expMax">2450</span>
-        </div>
-
-        <div class="exp-bar">
-          <div class="exp-fill" id="expFill"></div>
-        </div>
-
-        <div class="exp-desc">
-          다음 레벨까지 <span id="expRemain">350</span> EXP 남았어요!
-        </div>
-      </div>
-    </div>
-
-    <!-- 오른쪽 -->
-    <div class="mission-panel collapsed" id="missionPanel">
-
-      <div class="mission-header" onclick="toggleMission()">
-        🎯 오늘의 미션 <span id="missionArrow">▶</span>
-      </div>
-
-      <div class="mission-body" id="missionBody">
-
-        <div class="mission-item done">
-          기본 운지 1회 보기
-          <span class="mission-score">+3</span>
-        </div>
-
-        <div class="mission-item progress">
-          운지법 연습 2/3
-          <span class="mission-score">+6</span>
-        </div>
-
-        <div class="mission-item">
-          짧은 곡 0/1
-          <span class="mission-score">+10</span>
-        </div>
-
-        <div class="mission-bonus">
-          완료 보너스 +30
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-  <hr style="margin:6px 0 8px;">
-  <div class="menuButtonGrid">
-    <button class="menuBtn" onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
-    <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
-    <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
-    <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
-    <button class="menuBtn menu-btn btn-challenge" onclick="goChallenge()">
-      <span class="challenge-icon">🏆</span>
-      <span class="challenge-text">도전! 퍼펙트 리코더</span>
-    </button>
-    <button class="menuBtn btn-logout sub" onclick="logout()">🚪 로그아웃</button>
-  </div>
-</div>
 
 <section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
   <div class="challenge-top">

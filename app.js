@@ -263,10 +263,16 @@ window.app = app;
 function toggleMission() {
   const panel = document.getElementById("missionPanel");
   const arrow = document.getElementById("missionArrow");
+  const dock = document.querySelector("#screen-menu .missionDock");
   if (!panel || !arrow) return;
 
   panel.classList.toggle("collapsed");
-  arrow.textContent = panel.classList.contains("collapsed") ? "▶" : "▲";
+  const isCollapsed = panel.classList.contains("collapsed");
+  arrow.textContent = isCollapsed ? "▶" : "▲";
+
+  if (dock) {
+    dock.classList.toggle("open", !isCollapsed);
+  }
 }
 
 function getGemTierByLevel(level) {
