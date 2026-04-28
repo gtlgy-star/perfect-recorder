@@ -7198,6 +7198,130 @@ body.theme-light .menuPageTitle {
     drop-shadow(0 0 8px rgba(255, 255, 255, 0.34));
 }
 
+#step34Section .practiceGameShell {
+  display: none;
+}
+
+#step34Section.fingeringTrainingMode .practiceGameShell {
+  display: grid;
+  gap: 14px;
+}
+
+#step34Section.fingeringTrainingMode .songPracticeLegacy {
+  display: none;
+}
+
+#step34Section.songPracticeMode .practiceGameShell {
+  display: none;
+}
+
+.practiceModeRow,
+.speedRow {
+  display: flex;
+  gap: 10px;
+}
+
+.modeBtn,
+.speedBtn {
+  flex: 1;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.modeBtn.active,
+.speedBtn.active {
+  background: linear-gradient(180deg, #6ecbff, #2f80ed);
+  color: #fff;
+}
+
+.practiceMainCard {
+  padding: 20px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(126, 236, 255, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(20,40,80,0.9), rgba(10,20,40,0.95));
+  border: 1px solid rgba(142, 224, 255, 0.32);
+  box-shadow:
+    0 18px 42px rgba(0,0,0,0.28),
+    0 0 24px rgba(100, 210, 255, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.notePreviewRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.noteMain {
+  font-size: 48px;
+  font-weight: 1000;
+  color: #c9f8ff;
+  text-shadow:
+    0 0 16px rgba(120, 230, 255, 0.5),
+    0 0 34px rgba(120, 230, 255, 0.22);
+}
+
+.noteSmall {
+  font-size: 20px;
+  opacity: 0.4;
+  color: #eefcff;
+  min-height: 1.4em;
+}
+
+.recorderArea {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  margin-top: 14px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
+    radial-gradient(circle at 50% 52%, rgba(118, 227, 255, 0.18), transparent 44%);
+  overflow: hidden;
+}
+
+.recorderArea img {
+  display: block;
+  max-width: min(360px, 90%);
+  max-height: 240px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,0.28));
+}
+
+.practiceInfoRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #eaf9ff;
+  font-weight: 800;
+}
+
+.practiceControlRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+body.theme-light .practiceMainCard {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255,255,255,0.58), transparent 32%),
+    linear-gradient(180deg, rgba(230, 246, 255, 0.96), rgba(197, 225, 252, 0.9));
+  border-color: rgba(90, 156, 220, 0.3);
+}
+
+body.theme-light .noteMain {
+  color: #075d91;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.86), 0 0 12px rgba(83, 172, 255, 0.2);
+}
+
+body.theme-light .noteSmall,
+body.theme-light .practiceInfoRow {
+  color: #163b63;
+}
+
 @media (max-width: 600px) {
   .heroCard,
   .menuTitle-main {
@@ -7209,6 +7333,24 @@ body.theme-light .menuPageTitle {
   .menuPageTitle {
     font-size: clamp(34px, 9vw, 48px);
     letter-spacing: -0.045em;
+  }
+
+  .practiceModeRow,
+  .speedRow,
+  .practiceInfoRow {
+    flex-direction: column;
+  }
+
+  .practiceControlRow {
+    grid-template-columns: 1fr;
+  }
+
+  .noteMain {
+    font-size: 40px;
+  }
+
+  .recorderArea {
+    min-height: 220px;
   }
 }
 
@@ -7441,8 +7583,46 @@ body.theme-light .menuPageTitle {
     </section>
 
     <section id="step34Section" class="card hidden">
-      <div class="pill">3-4단계 · 연습과 저장</div>
-      <h2 class="cardTitle">연습 화면</h2>
+      <div class="practiceGameShell">
+        <div class="practiceModeRow">
+          <button type="button" class="modeBtn active" data-mode="up">상승식</button>
+          <button type="button" class="modeBtn" data-mode="down">하강식</button>
+          <button type="button" class="modeBtn" data-mode="jump">계단식</button>
+        </div>
+
+        <div class="speedRow">
+          <button type="button" class="speedBtn" data-speed="1200">느림</button>
+          <button type="button" class="speedBtn active" data-speed="800">보통</button>
+          <button type="button" class="speedBtn" data-speed="500">빠름</button>
+        </div>
+
+        <div class="practiceMainCard">
+          <div class="notePreviewRow">
+            <div class="noteSmall" id="prevNote"></div>
+            <div class="noteMain" id="currentNote">도</div>
+            <div class="noteSmall" id="nextNote"></div>
+          </div>
+
+          <div class="recorderArea">
+            <img id="practiceRecorderImage" src="images/basic-notes/C5.png" alt="현재 음 리코더 운지">
+          </div>
+        </div>
+
+        <div class="practiceInfoRow">
+          <div>진행: <span id="practiceStep">1 / 8</span></div>
+          <div>속도: <span id="practiceSpeedLabel">보통</span></div>
+        </div>
+
+        <div class="practiceControlRow">
+          <button onclick="startPractice()">시작</button>
+          <button onclick="stopPractice()">일시정지</button>
+          <button onclick="resetPractice()">다시하기</button>
+        </div>
+      </div>
+
+      <div class="songPracticeLegacy">
+        <div class="pill">3-4단계 · 연습과 저장</div>
+        <h2 class="cardTitle">연습 화면</h2>
 
       <div class="practiceMeta">
         <div class="metaCard">
@@ -7520,6 +7700,7 @@ body.theme-light .menuPageTitle {
 
       <div id="practiceStatus" class="status">연습 전</div>
       <div id="saveStatus" class="status">저장 전</div>
+      </div>
 
       <div id="resultOverlay" class="resultOverlay hidden" aria-hidden="true">
         <div class="resultPanel">
@@ -7715,8 +7896,10 @@ body.theme-light .menuPageTitle {
     let currentBasicFingeringSystem = "german";
     let currentBasicNote = "C5";
     let currentSongMenuMode = "short";
+    let currentPracticeMode = "song";
     let currentActivityTitle = "도전! 퍼펙트 리코더!";
     let currentTextbookGrade = null;
+    let practiceTimer = null;
     let songLoadRequestSeq = 0;
     let basicPracticeRunId = 0;
     let basicPracticeAudios = [];
@@ -7784,6 +7967,29 @@ body.theme-light .menuPageTitle {
       C6: "images/basic-notes/C6.png",
       D6: "images/basic-notes/D6.png",
       E6: "images/basic-notes/E6.png"
+    };
+    const PRACTICE_MODES = {
+      up: ["C5","D5","E5","F5","G5","A5","B5","C6"],
+      down: ["C6","B5","A5","G5","F5","E5","D5","C5"],
+      jump: ["C5","E5","D5","F5","E5","G5","F5","A5"]
+    };
+    const NOTE_DISPLAY_LABELS = {
+      C5: "도",
+      D5: "레",
+      E5: "미",
+      F5: "파",
+      G5: "솔",
+      A5: "라",
+      B5: "시",
+      C6: "높은 도",
+      D6: "높은 레",
+      E6: "높은 미"
+    };
+    let practiceState = {
+      mode: "up",
+      notes: PRACTICE_MODES.up.slice(),
+      index: 0,
+      speed: 800
     };
     const TEXTBOOK_SONGS_BY_GRADE = {
       "3": [
@@ -8851,7 +9057,9 @@ function renderSongButtons() {
 
   if (screenId === "screen-practice") {
     currentActivityTitle = SCREEN_TITLES[screenId];
+    setPracticeScreenMode("fingering");
     showStep("step34Section");
+    resetPractice();
     return;
   }
 
@@ -9189,6 +9397,7 @@ function logout() {
       }
 
       setChallengePlayMode(!!window.isChallengePlayMode);
+      setPracticeScreenMode("song");
       showStep("step34Section");
       showSelectedSong();
       resetPractice();
@@ -10374,6 +10583,11 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
     }
 
     async function startPractice() {
+      if (isFingeringPracticeMode()) {
+        startFingeringPractice();
+        return;
+      }
+
       const song = app.currentSong || getSelectedSong();
 
       if (!song) {
@@ -10446,6 +10660,14 @@ drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
     }
 
     function stopPractice() {
+      stopFingeringPracticeTimer();
+
+      if (isFingeringPracticeMode()) {
+        practiceRunning = false;
+        setStatus("practiceStatus", "운지법 훈련 일시정지", "");
+        return;
+      }
+
       practiceRunning = false;
 
       if (practiceAnim) cancelAnimationFrame(practiceAnim);
@@ -10809,6 +11031,11 @@ function startBasicPractice() {
   playBasicPractice(noteToPlay);
 }
     function resetPractice() {
+      if (isFingeringPracticeMode()) {
+        resetFingeringPractice();
+        return;
+      }
+
       stopPractice();
       resetJudgmentZoneState();
       drawPracticeBase(getSelectedSong()?.timeSignature || "4/4");
@@ -10908,6 +11135,154 @@ function startBasicPractice() {
       }
     }
 
+    function getPracticeNoteLabel(note) {
+      return NOTE_DISPLAY_LABELS[note] || note || "";
+    }
+
+    function setPracticeScreenMode(mode) {
+      currentPracticeMode = mode === "fingering" ? "fingering" : "song";
+      const practiceSection = document.getElementById("step34Section");
+      if (!practiceSection) return;
+
+      practiceSection.classList.toggle("fingeringTrainingMode", currentPracticeMode === "fingering");
+      practiceSection.classList.toggle("songPracticeMode", currentPracticeMode !== "fingering");
+
+      if (currentPracticeMode === "fingering") {
+        renderFingeringPracticeFrame();
+      }
+    }
+
+    function isFingeringPracticeMode() {
+      return currentPracticeMode === "fingering" && !window.isChallengePlayMode;
+    }
+
+    function stopFingeringPracticeTimer() {
+      if (practiceTimer) {
+        clearInterval(practiceTimer);
+        practiceTimer = null;
+      }
+    }
+
+    function updateRecorderImageByNote(note) {
+      if (!note) return;
+
+      const img = document.getElementById("practiceRecorderImage");
+      if (img) {
+        img.src = BASIC_NOTE_IMAGE_PATHS[note] || "images/recorder-base.png";
+        img.alt = `${getPracticeNoteLabel(note)} 리코더 운지`;
+      }
+
+      if (typeof updateRecorderImage === "function") {
+        updateRecorderImage({ recorderImage: BASIC_NOTE_IMAGE_PATHS[note] || "" });
+      }
+    }
+
+    function renderFingeringPracticeFrame() {
+      if (!practiceState.notes.length) {
+        practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+      }
+
+      const notes = practiceState.notes;
+      const i = Math.min(practiceState.index, Math.max(notes.length - 1, 0));
+      const current = notes[i] || notes[0] || "C5";
+      const prev = notes[i - 1] || "";
+      const next = notes[i + 1] || "";
+
+      const currentEl = document.getElementById("currentNote");
+      const prevEl = document.getElementById("prevNote");
+      const nextEl = document.getElementById("nextNote");
+      const stepEl = document.getElementById("practiceStep");
+
+      if (currentEl) currentEl.textContent = getPracticeNoteLabel(current);
+      if (prevEl) prevEl.textContent = getPracticeNoteLabel(prev);
+      if (nextEl) nextEl.textContent = getPracticeNoteLabel(next);
+      if (stepEl) stepEl.textContent = `${i + 1} / ${notes.length}`;
+
+      updateRecorderImageByNote(current);
+    }
+
+    function nextNote() {
+      const notes = practiceState.notes;
+      const i = practiceState.index;
+
+      const current = notes[i];
+      const prev = notes[i - 1] || "";
+      const next = notes[i + 1] || "";
+
+      const currentEl = document.getElementById("currentNote");
+      const prevEl = document.getElementById("prevNote");
+      const nextEl = document.getElementById("nextNote");
+      const stepEl = document.getElementById("practiceStep");
+
+      if (currentEl) currentEl.textContent = getPracticeNoteLabel(current);
+      if (prevEl) prevEl.textContent = getPracticeNoteLabel(prev);
+      if (nextEl) nextEl.textContent = getPracticeNoteLabel(next);
+      if (stepEl) stepEl.textContent = `${Math.min(i + 1, notes.length)} / ${notes.length}`;
+
+      updateRecorderImageByNote(current);
+
+      practiceState.index++;
+
+      if (practiceState.index >= notes.length) {
+        stopFingeringPracticeTimer();
+        setStatus("practiceStatus", "운지법 자동 훈련 완료", "ok");
+      }
+    }
+
+    function startFingeringPractice() {
+      stopFingeringPracticeTimer();
+      practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+      practiceState.index = 0;
+
+      setStatus("practiceStatus", "운지법 자동 훈련 시작", "ok");
+      nextNote();
+      practiceTimer = setInterval(nextNote, practiceState.speed);
+    }
+
+    function stopFingeringPractice() {
+      stopFingeringPracticeTimer();
+      setStatus("practiceStatus", "운지법 훈련 일시정지", "");
+    }
+
+    function resetFingeringPractice() {
+      stopFingeringPracticeTimer();
+      practiceState.index = 0;
+      practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+      renderFingeringPracticeFrame();
+      setStatus("practiceStatus", "운지법 훈련 다시하기 준비 완료", "ok");
+    }
+
+    function setupFingeringPracticeControls() {
+      document.querySelectorAll(".modeBtn").forEach((btn) => {
+        btn.onclick = () => {
+          document.querySelectorAll(".modeBtn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          practiceState.mode = btn.dataset.mode || "up";
+          practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+          practiceState.index = 0;
+          renderFingeringPracticeFrame();
+          if (practiceTimer) {
+            startFingeringPractice();
+          }
+        };
+      });
+
+      document.querySelectorAll(".speedBtn").forEach((btn) => {
+        btn.onclick = () => {
+          document.querySelectorAll(".speedBtn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          practiceState.speed = Number(btn.dataset.speed) || 800;
+          const speedLabel = document.getElementById("practiceSpeedLabel");
+          if (speedLabel) speedLabel.textContent = btn.textContent.trim();
+          if (practiceTimer) {
+            startFingeringPractice();
+          }
+        };
+      });
+
+      renderFingeringPracticeFrame();
+    }
+
     function bindChallengeButtons() {
       document.querySelectorAll(".btn-challenge").forEach((btn) => {
         if (btn.dataset.challengeBound === "true") return;
@@ -10919,6 +11294,7 @@ function startBasicPractice() {
     window.addEventListener("load", () => {
       initTheme();
       bindChallengeButtons();
+      setupFingeringPracticeControls();
       enhancePracticeLayout();
       setupUnifiedNavigation();
       setupResultOverlayInteractions();
@@ -11151,6 +11527,7 @@ function initChallengePlay(song) {
   }
 
   mountPracticeIntoChallengePlay();
+  setPracticeScreenMode("song");
   setChallengePlayMode(true);
   showSelectedSong();
   resetPractice();
