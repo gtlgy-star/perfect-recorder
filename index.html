@@ -7215,23 +7215,145 @@ body.theme-light .menuPageTitle {
   display: none;
 }
 
-.practiceModeRow,
-.speedRow {
-  display: flex;
+.practicePatternGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.72fr;
   gap: 10px;
+  align-items: stretch;
 }
 
-.modeBtn,
-.speedBtn {
-  flex: 1;
+.patternColumn,
+.speedColumn {
+  display: grid;
+  gap: 8px;
+}
+
+.patternColumn {
+  grid-template-rows: auto 1fr 1fr;
+}
+
+.speedColumn {
+  grid-template-rows: auto auto auto auto;
+}
+
+.patternGroupTitle,
+.patternColumnTitle,
+.speedColumnTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 1000;
+  color: #dff8ff;
+  background: rgba(120, 215, 255, 0.12);
+  border: 1px solid rgba(150, 225, 255, 0.22);
+}
+
+.patternCard,
+.speedBtn,
+.speedButton {
+  border: 1px solid rgba(150, 225, 255, 0.28);
   border-radius: 16px;
   padding: 12px;
+  cursor: pointer;
+  color: #eaf8ff;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(160, 235, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(45, 75, 130, 0.72), rgba(16, 32, 72, 0.86));
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
 }
 
-.modeBtn.active,
-.speedBtn.active {
+.patternCard {
+  min-height: 82px;
+  text-align: left;
+}
+
+.patternCard:hover,
+.speedBtn:hover,
+.speedButton:hover {
+  transform: translateY(-1px);
+}
+
+.patternCard.selected,
+.patternCard.is-selected {
+  transform: scale(1.025);
+  border-color: rgba(255, 232, 120, 0.9);
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.24),
+    0 0 24px rgba(255, 220, 95, 0.32),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.patternCard.activeSlot1 {
+  border-color: rgba(115, 235, 255, 0.88);
+}
+
+.patternCard.activeSlot2 {
+  border-color: rgba(206, 160, 255, 0.9);
+}
+
+.patternCardTitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 1000;
+  line-height: 1.15;
+}
+
+.patternCardNotes {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(215, 244, 255, 0.78);
+}
+
+.patternSlotBadge {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 1000;
+  color: #102044;
+  background: #ffe77a;
+}
+
+.speedBtn {
+  min-height: 52px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.speedBtn.active,
+.speedBtn.is-selected,
+.speedButton.active,
+.speedButton.is-selected {
   background: linear-gradient(180deg, #6ecbff, #2f80ed);
   color: #fff;
+  border-color: rgba(210, 245, 255, 0.76);
+  box-shadow:
+    0 10px 24px rgba(47, 128, 237, 0.34),
+    0 0 20px rgba(110, 210, 255, 0.28);
+}
+
+.nextPatternGuide {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #dff8ff;
+  background: rgba(120, 215, 255, 0.1);
+  border: 1px solid rgba(150, 225, 255, 0.2);
+  text-align: center;
 }
 
 .practiceMainCard {
@@ -7245,6 +7367,105 @@ body.theme-light .menuPageTitle {
     0 18px 42px rgba(0,0,0,0.28),
     0 0 24px rgba(100, 210, 255, 0.16),
     inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.practiceSplit {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.practiceLeft {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.practiceRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.fingeringStaffCanvas {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(18, 38, 78, 0.92), rgba(8, 18, 42, 0.96)),
+    radial-gradient(circle at 22% 20%, rgba(110, 220, 255, 0.18), transparent 36%),
+    radial-gradient(circle at 82% 76%, rgba(160, 120, 255, 0.14), transparent 38%);
+  border: 1px solid rgba(150, 225, 255, 0.36);
+  box-shadow:
+    0 16px 34px rgba(0,0,0,0.28),
+    0 0 28px rgba(100,210,255,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+.practiceStaffGuide {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(225, 246, 255, 0.82);
+  text-align: center;
+}
+
+.practiceStaffStack {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 10px;
+}
+
+.practiceStaffSlot {
+  min-height: 150px;
+  padding: 12px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(165, 235, 255, 0.16), transparent 36%),
+    linear-gradient(180deg, rgba(24, 44, 86, 0.92), rgba(10, 22, 50, 0.96));
+  border: 1px solid rgba(150, 225, 255, 0.34);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+}
+
+.practiceStaffSlot + .practiceStaffSlot {
+  position: relative;
+}
+
+.practiceStaffSlot + .practiceStaffSlot::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: -6px;
+  height: 1px;
+  background: rgba(180, 235, 255, 0.28);
+}
+
+.practiceStaffSlotHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 1000;
+  color: #dff8ff;
+}
+
+.practiceStaffPatternTitle {
+  color: rgba(255, 232, 128, 0.96);
+  text-align: right;
+}
+
+.practiceStaffSlot .fingeringStaffCanvas {
+  margin: 0;
 }
 
 .notePreviewRow {
@@ -7283,6 +7504,81 @@ body.theme-light .menuPageTitle {
   overflow: hidden;
 }
 
+#step34Section.fingeringTrainingMode .practiceLeft img,
+#step34Section.fingeringTrainingMode .practiceLeft canvas {
+  height: 260px;
+  max-height: 100%;
+}
+
+#step34Section.fingeringTrainingMode .fingeringStaffCanvas {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#step34Section.fingeringTrainingMode .notePreviewRow,
+#step34Section.fingeringTrainingMode #prevNote,
+#step34Section.fingeringTrainingMode #currentNote,
+#step34Section.fingeringTrainingMode #nextNote,
+#step34Section.fingeringTrainingMode .noteMain,
+#step34Section.fingeringTrainingMode .noteSmall {
+  display: none;
+}
+
+#step34Section.fingeringTrainingMode .practiceSplit {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+#step34Section.fingeringTrainingMode .practiceLeft {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(180, 240, 255, 0.18), transparent 52%),
+    linear-gradient(180deg, rgba(35, 65, 105, 0.72), rgba(12, 28, 60, 0.86));
+  border: 1px solid rgba(150, 225, 255, 0.24);
+}
+
+#step34Section.fingeringTrainingMode .practiceLeft img,
+#step34Section.fingeringTrainingMode .practiceLeft canvas,
+#step34Section.fingeringTrainingMode .practiceLeft .recorderImg,
+#step34Section.fingeringTrainingMode .practiceLeft #recorderImg,
+#step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage,
+#step34Section.fingeringTrainingMode .practiceLeft .recorder-image {
+  height: 280px;
+  width: auto;
+  max-width: 95%;
+  max-height: 92%;
+  object-fit: contain;
+  opacity: 1;
+  filter:
+    brightness(1.45)
+    contrast(1.18)
+    drop-shadow(0 0 12px rgba(180, 245, 255, 0.55))
+    drop-shadow(0 0 24px rgba(80, 190, 255, 0.30));
+}
+
+#step34Section.fingeringTrainingMode .practiceLeft #recorderImg {
+  height: 280px !important;
+  display: block !important;
+}
+
+#step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage {
+  height: 280px !important;
+  display: block !important;
+}
+
+#step34Section.fingeringTrainingMode .practiceRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .recorderArea img {
   display: block;
   max-width: min(360px, 90%);
@@ -7305,6 +7601,37 @@ body.theme-light .menuPageTitle {
   gap: 10px;
 }
 
+#step34Section.fingeringTrainingMode .practiceControlRow {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr 1.2fr 1.2fr 0.8fr;
+  gap: 10px;
+}
+
+#step34Section.fingeringTrainingMode .navBtn.small {
+  border: 1px solid rgba(150, 225, 255, 0.3);
+  border-radius: 14px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  background:
+    linear-gradient(180deg, rgba(50, 80, 140, 0.8), rgba(18, 32, 70, 0.9));
+  color: #eaf8ff;
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+#step34Section.fingeringTrainingMode .navBtn.small:active {
+  transform: scale(0.95);
+}
+
+#step34Section.fingeringTrainingMode .practiceControlRow button:not(.navBtn) {
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
 body.theme-light .practiceMainCard {
   background:
     radial-gradient(circle at 18% 10%, rgba(255,255,255,0.58), transparent 32%),
@@ -7320,6 +7647,51 @@ body.theme-light .noteMain {
 body.theme-light .noteSmall,
 body.theme-light .practiceInfoRow {
   color: #163b63;
+}
+
+body.theme-light .patternGroupTitle,
+body.theme-light .patternColumnTitle,
+body.theme-light .speedColumnTitle,
+body.theme-light .nextPatternGuide {
+  color: #17486f;
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(78, 145, 205, 0.28);
+}
+
+body.theme-light .patternCard,
+body.theme-light .speedBtn,
+body.theme-light .speedButton {
+  color: #16415f;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255,255,255,0.72), transparent 38%),
+    linear-gradient(180deg, rgba(230, 248, 255, 0.92), rgba(182, 218, 250, 0.9));
+  border-color: rgba(80, 150, 210, 0.32);
+  box-shadow:
+    0 10px 22px rgba(60, 120, 180, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body.theme-light .patternCardNotes {
+  color: rgba(32, 86, 125, 0.76);
+}
+
+body.theme-light .practiceStaffGuide,
+body.theme-light .practiceStaffSlotHead {
+  color: #17486f;
+}
+
+body.theme-light .practiceStaffPatternTitle {
+  color: #7a4b00;
+}
+
+body.theme-light .practiceStaffSlot {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255,255,255,0.78), transparent 38%),
+    linear-gradient(180deg, rgba(238, 250, 255, 0.95), rgba(204, 228, 250, 0.94));
+  border-color: rgba(80, 150, 210, 0.3);
+  box-shadow:
+    0 10px 24px rgba(60, 120, 180, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.72);
 }
 
 .loadingScreen {
@@ -7382,10 +7754,60 @@ body.theme-light .practiceInfoRow {
     letter-spacing: -0.045em;
   }
 
-  .practiceModeRow,
-  .speedRow,
   .practiceInfoRow {
     flex-direction: column;
+  }
+
+  .practicePatternGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .patternColumn,
+  .speedColumn {
+    gap: 6px;
+  }
+
+  .patternGroupTitle,
+  .patternColumnTitle,
+  .speedColumnTitle {
+    min-height: 30px;
+    font-size: 12px;
+  }
+
+  .patternCard,
+  .speedBtn,
+  .speedButton {
+    padding: 9px;
+    border-radius: 14px;
+  }
+
+  .patternCard {
+    min-height: 68px;
+  }
+
+  .patternCardTitle {
+    font-size: 13px;
+  }
+
+  .patternCardNotes,
+  .patternSlotBadge {
+    font-size: 10px;
+  }
+
+  .practiceStaffSlot {
+    min-height: 130px;
+    padding: 10px;
+  }
+
+  .speedColumn {
+    grid-column: span 2;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+  }
+
+  .speedColumnTitle {
+    grid-column: span 3;
   }
 
   .practiceControlRow {
@@ -7398,6 +7820,41 @@ body.theme-light .practiceInfoRow {
 
   .recorderArea {
     min-height: 220px;
+  }
+
+  .practiceSplit {
+    grid-template-columns: 1fr;
+  }
+
+  .practiceLeft {
+    order: 2;
+  }
+
+  .practiceRight {
+    order: 1;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceLeft {
+    min-height: 240px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceLeft img,
+  #step34Section.fingeringTrainingMode .practiceLeft canvas,
+  #step34Section.fingeringTrainingMode .practiceLeft #recorderImg,
+  #step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage {
+    height: 220px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #step34Section.fingeringTrainingMode .practiceControlRow {
+    grid-template-columns: 0.7fr 1fr 1fr 1fr 0.7fr;
+    gap: 6px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceControlRow button {
+    font-size: 13px;
+    padding: 8px;
   }
 }
 
@@ -7644,17 +8101,58 @@ body.theme-light .practiceInfoRow {
 
     <section id="step34Section" class="card hidden">
       <div class="practiceGameShell">
-        <div class="practiceModeRow">
-          <button type="button" class="modeBtn active" data-mode="up">상승식</button>
-          <button type="button" class="modeBtn" data-mode="down">하강식</button>
-          <button type="button" class="modeBtn" data-mode="jump">계단식</button>
+        <div class="practicePatternGrid" aria-label="운지법 가락 선택">
+          <div class="patternColumn">
+            <div class="patternGroupTitle patternColumnTitle">순차진행</div>
+            <button type="button" class="patternCard" data-pattern="stepUp">
+              <span class="patternCardTitle">위로 가는 가락</span>
+              <span class="patternCardNotes">도 → 레 → 미 → 파 → 솔 → 라 → 시 → 높은도</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+            <button type="button" class="patternCard" data-pattern="stepDown">
+              <span class="patternCardTitle">아래로 가는 가락</span>
+              <span class="patternCardNotes">높은도 → 시 → 라 → 솔 → 파 → 미 → 레 → 도</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+          </div>
+
+          <div class="patternColumn">
+            <div class="patternGroupTitle patternColumnTitle">도약진행</div>
+            <button type="button" class="patternCard" data-pattern="leapUp">
+              <span class="patternCardTitle">위로 뛰는 가락</span>
+              <span class="patternCardNotes">도 → 도 → 미 → 미 → 솔 → 솔 → 시 → 시</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+            <button type="button" class="patternCard" data-pattern="leapDown">
+              <span class="patternCardTitle">아래로 뛰는 가락</span>
+              <span class="patternCardNotes">높은도 → 높은도 → 라 → 라 → 파 → 파 → 레 → 레</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+          </div>
+
+          <div class="patternColumn">
+            <div class="patternGroupTitle patternColumnTitle">혼합진행</div>
+            <button type="button" class="patternCard" data-pattern="mixedUpDown">
+              <span class="patternCardTitle">오르내리는 가락</span>
+              <span class="patternCardNotes">도 → 미 → 레 → 파 → 미 → 솔 → 파 → 라 → 솔 → 시 → 라 → 높은도</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+            <button type="button" class="patternCard" data-pattern="mixedDownUp">
+              <span class="patternCardTitle">내리오르는 가락</span>
+              <span class="patternCardNotes">높은도 → 라 → 시 → 솔 → 라 → 파 → 솔 → 미 → 파 → 레 → 미 → 도</span>
+              <span class="patternSlotBadge" hidden></span>
+            </button>
+          </div>
+
+          <div class="speedColumn">
+            <div class="speedColumnTitle">속도</div>
+            <button type="button" class="speedBtn speedButton" data-speed-key="slow" data-speed="1200">🐢 느림</button>
+            <button type="button" class="speedBtn speedButton active is-selected" data-speed-key="normal" data-speed="800">🙂 보통</button>
+            <button type="button" class="speedBtn speedButton" data-speed-key="fast" data-speed="500">🚀 빠름</button>
+          </div>
         </div>
 
-        <div class="speedRow">
-          <button type="button" class="speedBtn" data-speed="1200">느림</button>
-          <button type="button" class="speedBtn active" data-speed="800">보통</button>
-          <button type="button" class="speedBtn" data-speed="500">빠름</button>
-        </div>
+        <div id="nextPatternGuide" class="nextPatternGuide">다음 선택: 1번 가락</div>
 
         <div class="practiceMainCard">
           <div class="notePreviewRow">
@@ -7663,20 +8161,48 @@ body.theme-light .practiceInfoRow {
             <div class="noteSmall" id="nextNote"></div>
           </div>
 
-          <div class="recorderArea">
-            <img id="practiceRecorderImage" src="images/basic-notes/C5.png" alt="현재 음 리코더 운지">
+          <div class="practiceSplit">
+            <div class="practiceLeft">
+              <div class="recorderArea">
+                <img id="practiceRecorderImage" src="images/basic-notes/C5.png" alt="현재 음 리코더 운지">
+              </div>
+            </div>
+
+            <div class="practiceRight">
+              <div class="practiceStaffStack">
+                <p class="practiceStaffGuide">카드 2장을 골라 위에서 아래로 이어 연주해요.</p>
+
+                <div class="practiceStaffSlot" data-slot="0">
+                  <div class="practiceStaffSlotHead">
+                    <span>1번 가락</span>
+                    <span id="practiceStaffTitle1" class="practiceStaffPatternTitle">카드를 선택하세요</span>
+                  </div>
+                  <canvas id="fingeringStaffCanvas1" class="fingeringStaffCanvas" width="720" height="170"></canvas>
+                </div>
+
+                <div class="practiceStaffSlot" data-slot="1">
+                  <div class="practiceStaffSlotHead">
+                    <span>2번 가락</span>
+                    <span id="practiceStaffTitle2" class="practiceStaffPatternTitle">카드를 선택하세요</span>
+                  </div>
+                  <canvas id="fingeringStaffCanvas2" class="fingeringStaffCanvas" width="720" height="170"></canvas>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="practiceInfoRow">
           <div>진행: <span id="practiceStep">1 / 8</span></div>
-          <div>속도: <span id="practiceSpeedLabel">보통</span></div>
+          <div>속도: <span id="practiceSpeedLabel">🙂 보통</span></div>
         </div>
 
         <div class="practiceControlRow">
-          <button onclick="startPractice()">시작</button>
-          <button onclick="stopPractice()">일시정지</button>
+          <button class="navBtn small" onclick="goPrevScreen()">←</button>
           <button onclick="resetPractice()">다시하기</button>
+          <button onclick="startPractice()">시작하기</button>
+          <button onclick="stopPractice()">일시정지</button>
+          <button class="navBtn small" onclick="goHomeMenu()">🏠</button>
         </div>
       </div>
 
@@ -7958,6 +8484,8 @@ body.theme-light .practiceInfoRow {
     let currentSongMenuMode = "short";
     let currentPracticeMode = "song";
     let currentActivityTitle = "도전! 퍼펙트 리코더!";
+    let appCurrentScreen = "step1Section";
+    let appHistoryLocked = false;
     let currentTextbookGrade = null;
     let practiceTimer = null;
     let songLoadRequestSeq = 0;
@@ -8041,6 +8569,44 @@ body.theme-light .practiceInfoRow {
       down: ["C6","B5","A5","G5","F5","E5","D5","C5"],
       jump: ["C5","E5","D5","F5","E5","G5","F5","A5"]
     };
+    const fingeringPracticePatterns = {
+      stepUp: {
+        category: "순차진행",
+        title: "위로 가는 가락",
+        fullTitle: "순차진행 - 위로 가는 가락",
+        notes: ["C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6"]
+      },
+      stepDown: {
+        category: "순차진행",
+        title: "아래로 가는 가락",
+        fullTitle: "순차진행 - 아래로 가는 가락",
+        notes: ["C6", "B5", "A5", "G5", "F5", "E5", "D5", "C5"]
+      },
+      leapUp: {
+        category: "도약진행",
+        title: "위로 뛰는 가락",
+        fullTitle: "도약진행 - 위로 뛰는 가락",
+        notes: ["C5", "C5", "E5", "E5", "G5", "G5", "B5", "B5"]
+      },
+      leapDown: {
+        category: "도약진행",
+        title: "아래로 뛰는 가락",
+        fullTitle: "도약진행 - 아래로 뛰는 가락",
+        notes: ["C6", "C6", "A5", "A5", "F5", "F5", "D5", "D5"]
+      },
+      mixedUpDown: {
+        category: "혼합진행",
+        title: "오르내리는 가락",
+        fullTitle: "혼합진행 - 오르내리는 가락",
+        notes: ["C5", "E5", "D5", "F5", "E5", "G5", "F5", "A5", "G5", "B5", "A5", "C6"]
+      },
+      mixedDownUp: {
+        category: "혼합진행",
+        title: "내리오르는 가락",
+        fullTitle: "혼합진행 - 내리오르는 가락",
+        notes: ["C6", "A5", "B5", "G5", "A5", "F5", "G5", "E5", "F5", "D5", "E5", "C5"]
+      }
+    };
     const NOTE_DISPLAY_LABELS = {
       C5: "도",
       D5: "레",
@@ -8049,13 +8615,18 @@ body.theme-light .practiceInfoRow {
       G5: "솔",
       A5: "라",
       B5: "시",
-      C6: "높은 도",
-      D6: "높은 레",
-      E6: "높은 미"
+      C6: "높은도",
+      D6: "높은레",
+      E6: "높은미"
     };
+    const FINGERING_PRACTICE_PATTERNS = fingeringPracticePatterns;
+    const FINGERING_NOTE_LABELS = NOTE_DISPLAY_LABELS;
+    let selectedPracticePatterns = [null, null];
+    let nextPatternSlot = 0;
+    let fingeringPracticeSpeed = "normal";
     let practiceState = {
-      mode: "up",
-      notes: PRACTICE_MODES.up.slice(),
+      mode: "cards",
+      notes: [],
       index: 0,
       speed: 800
     };
@@ -9084,100 +9655,134 @@ function renderSongButtons() {
       }
     }
 
-    function showStep(stepId) {
-  if (stepId !== "step-basicSection") {
-    stopBasicPracticeAudio();
-  }
-  setMenuTitleMode(false);
-  const challengeScreen = document.getElementById("screen-challenge");
-  const challengePlayScreen = document.getElementById("screen-challenge-play");
-  if (challengeScreen) challengeScreen.style.display = "none";
-  if (challengePlayScreen) challengePlayScreen.style.display = "none";
-  document.getElementById("step1Section").classList.add("hidden");
-  document.getElementById("step2Section").classList.add("hidden");
-  document.getElementById("step34Section").classList.add("hidden");
+    function pushAppHistory(screenId, { replace = false } = {}) {
+      if (appHistoryLocked || screenId === "step1Section" || screenId === "screen-login") return;
+      const method = replace ? "replaceState" : "pushState";
+      history[method]({ screen: screenId }, "", `#${screenId}`);
+    }
 
-  const basicTypeSection = document.getElementById("step-basic-typeSection");
-  if (basicTypeSection) basicTypeSection.classList.add("hidden");
+    function renderScreenOnly(screenId) {
+      const targetId = screenId === "screen-login" ? "step1Section" : screenId;
+      const menuScreen = document.getElementById("screen-menu");
+      const challengeScreen = document.getElementById("screen-challenge");
+      const challengePlayScreen = document.getElementById("screen-challenge-play");
+      const stepIds = [
+        "step1Section",
+        "step2Section",
+        "step34Section",
+        "step-basic-typeSection",
+        "step-basicSection"
+      ];
 
-  const basicSection = document.getElementById("step-basicSection");
-  if (basicSection) basicSection.classList.add("hidden");
+      setMenuTitleMode(false);
+      if (menuScreen) menuScreen.style.display = "none";
+      if (challengeScreen) challengeScreen.style.display = "none";
+      if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
-  document.getElementById(stepId).classList.remove("hidden");
-  updatePageTitleByScreen(stepId);
-}
-    function showScreen(screenId) {
-  stopBasicPracticeSession();
-  setMenuTitleMode(false);
-  const menuScreen = document.getElementById("screen-menu");
-  const challengeScreen = document.getElementById("screen-challenge");
-  const challengePlayScreen = document.getElementById("screen-challenge-play");
-  if (menuScreen) menuScreen.style.display = "none";
-  if (challengeScreen) challengeScreen.style.display = "none";
-  if (challengePlayScreen) challengePlayScreen.style.display = "none";
+      stepIds.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section) section.classList.add("hidden");
+      });
 
-  document.getElementById("step1Section").classList.add("hidden");
-  document.getElementById("step2Section").classList.add("hidden");
-  document.getElementById("step34Section").classList.add("hidden");
+      if (targetId === "screen-menu") {
+        setMenuTitleMode(true);
+        if (menuScreen) menuScreen.style.display = "block";
+      } else if (targetId === "screen-challenge") {
+        if (challengeScreen) challengeScreen.style.display = "block";
+      } else if (targetId === "screen-challenge-play") {
+        if (challengePlayScreen) challengePlayScreen.style.display = "block";
+      } else if (targetId === "screen-song" || targetId === "screen-textbook") {
+        const step2 = document.getElementById("step2Section");
+        if (step2) step2.classList.remove("hidden");
+      } else if (targetId === "screen-practice") {
+        setPracticeScreenMode("fingering");
+        const practice = document.getElementById("step34Section");
+        if (practice) practice.classList.remove("hidden");
+      } else if (targetId === "screen-basic") {
+        const basicType = document.getElementById("step-basic-typeSection");
+        if (basicType) basicType.classList.remove("hidden");
+      } else {
+        const target = document.getElementById(targetId);
+        if (target) target.classList.remove("hidden");
+      }
 
-  const basicTypeSection = document.getElementById("step-basic-typeSection");
-  if (basicTypeSection) basicTypeSection.classList.add("hidden");
+      appCurrentScreen = targetId;
+      updatePageTitleByScreen(targetId);
+    }
 
-  const basicSection = document.getElementById("step-basicSection");
-  if (basicSection) basicSection.classList.add("hidden");
+    function showStep(stepId, options = {}) {
+      if (!options.skipHistory && stepId !== "step1Section") appHistoryLocked = false;
+      if (stepId !== "step-basicSection") {
+        stopBasicPracticeAudio();
+      }
 
-  if (screenId === "screen-menu") {
-    setMenuTitleMode(true);
-    if (menuScreen) menuScreen.style.display = "block";
-    updatePageTitleByScreen(screenId);
-    return;
-  }
+      renderScreenOnly(stepId);
+      if (stepId !== "step1Section" && !options.skipHistory) {
+        pushAppHistory(stepId);
+      }
+    }
 
-  if (screenId === "screen-challenge") {
-    currentActivityTitle = SCREEN_TITLES[screenId];
-    if (challengeScreen) challengeScreen.style.display = "block";
-    updatePageTitleByScreen(screenId);
-    return;
-  }
+    function showScreen(screenId, options = {}) {
+      const skipHistory = options.skipHistory === true;
+      if (!skipHistory) appHistoryLocked = false;
 
-  if (screenId === "screen-challenge-play") {
-    currentActivityTitle = SCREEN_TITLES[screenId];
-    if (challengePlayScreen) challengePlayScreen.style.display = "block";
-    updatePageTitleByScreen(screenId);
-    return;
-  }
+      stopBasicPracticeSession();
 
-  if (screenId === "screen-song") {
-    currentActivityTitle = SCREEN_TITLES[screenId];
-    resetSongMenuState("short");
-    showStep("step2Section");
-    loadSongs();
-    return;
-  }
+      if (screenId === "screen-menu") {
+        currentActivityTitle = DEFAULT_PAGE_TITLE;
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
 
-  if (screenId === "screen-textbook") {
-    currentActivityTitle = SCREEN_TITLES[screenId];
-    resetSongMenuState("textbook");
-    showStep("step2Section");
-    renderTextbookGradeButtons();
-    return;
-  }
+      if (screenId === "screen-challenge") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
 
-  if (screenId === "screen-practice") {
-    currentActivityTitle = SCREEN_TITLES[screenId];
-    setPracticeScreenMode("fingering");
-    showStep("step34Section");
-    resetPractice();
-    return;
-  }
+      if (screenId === "screen-challenge-play") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
 
-  if (screenId === "screen-basic") {
-  currentActivityTitle = SCREEN_TITLES[screenId];
-  showStep("step-basic-typeSection");
-  setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
-  return;
-}
-}
+      if (screenId === "screen-song") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        resetSongMenuState("short");
+        showStep("step2Section", { skipHistory: true });
+        if (!skipHistory) pushAppHistory(screenId);
+        loadSongs();
+        return;
+      }
+
+      if (screenId === "screen-textbook") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        resetSongMenuState("textbook");
+        showStep("step2Section", { skipHistory: true });
+        if (!skipHistory) pushAppHistory(screenId);
+        renderTextbookGradeButtons();
+        return;
+      }
+
+      if (screenId === "screen-practice") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        setPracticeScreenMode("fingering");
+        showStep("step34Section", { skipHistory: true });
+        if (!skipHistory) pushAppHistory(screenId);
+        resetPractice();
+        return;
+      }
+
+      if (screenId === "screen-basic") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        showStep("step-basic-typeSection", { skipHistory: true });
+        if (!skipHistory) pushAppHistory(screenId);
+        setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
+      }
+    }
 
     function getBasicFingeringLabel(system = currentBasicFingeringSystem) {
       return system === "baroque" ? "바로크식" : "저먼식";
@@ -9250,9 +9855,9 @@ restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
 hideLoadingScreen();
-document.getElementById("screen-menu").style.display = "block";
-setMenuTitleMode(true);
-updatePageTitleByScreen("screen-menu");
+appHistoryLocked = false;
+pushAppHistory("screen-menu", { replace: true });
+showScreen("screen-menu", { skipHistory: true });
 app.refreshSongs().catch(() => {});
       } catch (e) {
         hideLoadingScreen();
@@ -9267,7 +9872,7 @@ function backToLogin() {
   currentActivityTitle = DEFAULT_PAGE_TITLE;
   restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
-  showStep("step1Section");
+  logout();
 }
 
 function goHomeMenu() {
@@ -9278,29 +9883,21 @@ function goHomeMenu() {
   restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
 
-  document.getElementById("step1Section").classList.add("hidden");
-  document.getElementById("step2Section").classList.add("hidden");
-  document.getElementById("step34Section").classList.add("hidden");
-  const basicTypeSection = document.getElementById("step-basic-typeSection");
-  if (basicTypeSection) basicTypeSection.classList.add("hidden");
-  const basicSection = document.getElementById("step-basicSection");
-  if (basicSection) basicSection.classList.add("hidden");
-  const challengeScreen = document.getElementById("screen-challenge");
-  if (challengeScreen) challengeScreen.style.display = "none";
-  const challengePlayScreen = document.getElementById("screen-challenge-play");
-  if (challengePlayScreen) challengePlayScreen.style.display = "none";
+  pushAppHistory("screen-menu", { replace: true });
+  appHistoryLocked = true;
+  renderScreenOnly("screen-menu");
+}
 
-  document.getElementById("screen-menu").style.display = "block";
-  setMenuTitleMode(true);
-  updatePageTitleByScreen("screen-menu");
+function goPrevScreen() {
+  goBackInApp();
+}
+
+function goBackInApp() {
+  if (appCurrentScreen === "screen-menu") return;
+  history.back();
 }
 
 function goBackFromCurrentScreen() {
-  if (isSectionVisible("step34Section")) {
-    backToSongSelect();
-    return;
-  }
-
   if (isSectionVisible("step2Section") && currentSongMenuMode === "textbook" && currentTextbookGrade) {
     currentTextbookGrade = null;
     setSongMenuView("grades");
@@ -9308,18 +9905,7 @@ function goBackFromCurrentScreen() {
     return;
   }
 
-  if (isSectionVisible("step-basicSection")) {
-    stopBasicPracticeSession();
-    showStep("step-basic-typeSection");
-    return;
-  }
-
-  if (isSectionVisible("step2Section") || isSectionVisible("step-basic-typeSection")) {
-    goHomeMenu();
-    return;
-  }
-
-  backToLogin();
+  goBackInApp();
 }
 
 function logout() {
@@ -9330,11 +9916,38 @@ function logout() {
   restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
 
-  document.getElementById("screen-menu").style.display = "none";
-  setMenuTitleMode(false);
-
-  showStep("step1Section");
+  history.replaceState({ screen: "step1Section" }, "", "#screen-login");
+  renderScreenOnly("step1Section");
+  appHistoryLocked = true;
 }
+
+window.addEventListener("popstate", function (event) {
+  if (appHistoryLocked) {
+    const lockedScreen = appCurrentScreen === "step1Section" ? "step1Section" : "screen-menu";
+    const lockedHash = lockedScreen === "step1Section" ? "#screen-login" : "#screen-menu";
+    history.replaceState({ screen: lockedScreen }, "", lockedHash);
+    renderScreenOnly(lockedScreen);
+    return;
+  }
+
+  const screenId = event.state && event.state.screen
+    ? event.state.screen
+    : "screen-menu";
+
+  if (screenId === "screen-login" || screenId === "step1Section") {
+    history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
+    renderScreenOnly("screen-menu");
+    return;
+  }
+
+  if (!document.getElementById(screenId) && !["screen-song", "screen-textbook", "screen-practice", "screen-basic"].includes(screenId)) {
+    history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
+    renderScreenOnly("screen-menu");
+    return;
+  }
+
+  renderScreenOnly(screenId);
+});
 
     function renderShortSongList(songs, { keepSelection = false } = {}) {
       app.songs = Array.isArray(songs) ? songs : [];
@@ -11260,6 +11873,9 @@ function startBasicPractice() {
       practiceSection.classList.toggle("songPracticeMode", currentPracticeMode !== "fingering");
 
       if (currentPracticeMode === "fingering") {
+        practiceState.mode = "cards";
+        practiceState.notes = getSelectedFingeringPracticeNotes();
+        practiceState.index = 0;
         renderFingeringPracticeFrame();
       }
     }
@@ -11289,10 +11905,283 @@ function startBasicPractice() {
       }
     }
 
-    function renderFingeringPracticeFrame() {
-      if (!practiceState.notes.length) {
-        practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+    function getPatternNoteLabels(notes) {
+      return (notes || []).map((note) => getPracticeNoteLabel(note)).join(" → ");
+    }
+
+    function getSelectedFingeringPracticeNotes() {
+      return selectedPracticePatterns.flatMap((patternKey) => {
+        const pattern = FINGERING_PRACTICE_PATTERNS[patternKey];
+        return pattern ? pattern.notes : [];
+      });
+    }
+
+    function getFingeringPatternSlotNotes(slotIndex) {
+      const pattern = FINGERING_PRACTICE_PATTERNS[selectedPracticePatterns[slotIndex]];
+      return pattern ? pattern.notes : [];
+    }
+
+    function getFingeringPatternGlobalOffset(slotIndex) {
+      let offset = 0;
+      for (let i = 0; i < slotIndex; i++) {
+        offset += getFingeringPatternSlotNotes(i).length;
       }
+      return offset;
+    }
+
+    function syncSelectedFingeringPracticeNotes() {
+      practiceState.notes = getSelectedFingeringPracticeNotes();
+    }
+
+    function updateNextPatternGuide() {
+      const guide = document.getElementById("nextPatternGuide");
+      if (guide) guide.textContent = `다음 선택: ${nextPatternSlot + 1}번 가락`;
+    }
+
+    function updatePatternCardSelectionUI() {
+      document.querySelectorAll(".patternCard").forEach((card) => {
+        const patternKey = card.dataset.pattern;
+        const slots = selectedPracticePatterns
+          .map((selectedKey, index) => selectedKey === patternKey ? index : -1)
+          .filter((index) => index !== -1);
+        const badge = card.querySelector(".patternSlotBadge");
+
+        card.classList.toggle("selected", slots.length > 0);
+        card.classList.toggle("is-selected", slots.length > 0);
+        card.classList.toggle("activeSlot1", slots.includes(0));
+        card.classList.toggle("activeSlot2", slots.includes(1));
+
+        if (badge) {
+          badge.hidden = slots.length === 0;
+          badge.textContent = slots.length ? `${slots.map((slot) => slot + 1).join(", ")}번 가락` : "";
+        }
+      });
+    }
+
+    function updateSelectedPatternTitles() {
+      selectedPracticePatterns.forEach((patternKey, index) => {
+        const titleEl = document.getElementById(`practiceStaffTitle${index + 1}`);
+        const pattern = FINGERING_PRACTICE_PATTERNS[patternKey];
+        if (titleEl) titleEl.textContent = pattern ? pattern.fullTitle : "카드를 선택하세요";
+      });
+    }
+
+    function selectFingeringPattern(patternKey) {
+      if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
+
+      stopFingeringPracticeTimer();
+      selectedPracticePatterns[nextPatternSlot] = patternKey;
+      nextPatternSlot = nextPatternSlot === 0 ? 1 : 0;
+
+      practiceState.index = 0;
+      syncSelectedFingeringPracticeNotes();
+      updatePatternCardSelectionUI();
+      updateSelectedPatternTitles();
+      updateNextPatternGuide();
+      renderFingeringPracticeFrame();
+    }
+
+    function setFingeringPracticeSpeed(speedKey, speedValue, label) {
+      fingeringPracticeSpeed = speedKey || "normal";
+      practiceState.speed = Number(speedValue) || 800;
+
+      document.querySelectorAll(".speedBtn, .speedButton").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.speedKey === fingeringPracticeSpeed);
+        btn.classList.toggle("is-selected", btn.dataset.speedKey === fingeringPracticeSpeed);
+      });
+
+      const speedLabel = document.getElementById("practiceSpeedLabel");
+      if (speedLabel) speedLabel.textContent = label || "🙂 보통";
+
+      if (practiceTimer) {
+        startFingeringPractice();
+      }
+    }
+
+    function getStaffYForNote(note, staffTop, lineGap) {
+      const bottomLineY = staffTop + lineGap * 4;
+      const stepMap = {
+        C5: -2,
+        D5: -1,
+        E5: 0,
+        F5: 1,
+        G5: 2,
+        A5: 3,
+        B5: 4,
+        C6: 5
+      };
+      const step = stepMap[note] ?? 0;
+      return bottomLineY - step * (lineGap / 2);
+    }
+
+    function drawLedgerLineIfNeeded(ctx, note, x, staffTop, lineGap) {
+      const bottomLineY = staffTop + lineGap * 4;
+      const topLineY = staffTop;
+
+      ctx.save();
+      ctx.strokeStyle = "rgba(230, 248, 255, 0.72)";
+      ctx.lineWidth = 2;
+
+      if (note === "C5") {
+        const y = bottomLineY + lineGap;
+        ctx.beginPath();
+        ctx.moveTo(x - 17, y);
+        ctx.lineTo(x + 17, y);
+        ctx.stroke();
+      }
+
+      if (note === "D5") {
+        const y = bottomLineY + lineGap;
+        ctx.beginPath();
+        ctx.moveTo(x - 14, y);
+        ctx.lineTo(x + 14, y);
+        ctx.stroke();
+      }
+
+      if (note === "C6") {
+        const y = topLineY - lineGap / 2;
+        ctx.beginPath();
+        ctx.moveTo(x - 17, y);
+        ctx.lineTo(x + 17, y);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawFingeringStaffOnCanvas(canvas, notes, currentIndex) {
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const staffLeft = 78;
+      const staffRight = w - 34;
+      const staffTop = 58;
+      const lineGap = 13;
+      const staffWidth = staffRight - staffLeft;
+
+      const glow = ctx.createRadialGradient(w * 0.5, h * 0.5, 20, w * 0.5, h * 0.5, w * 0.6);
+      glow.addColorStop(0, "rgba(120,230,255,0.12)");
+      glow.addColorStop(1, "rgba(120,230,255,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.save();
+      ctx.strokeStyle = "rgba(230, 248, 255, 0.72)";
+      ctx.lineWidth = 2;
+
+      for (let i = 0; i < 5; i++) {
+        const y = staffTop + i * lineGap;
+        ctx.beginPath();
+        ctx.moveTo(staffLeft, y);
+        ctx.lineTo(staffRight, y);
+        ctx.stroke();
+      }
+
+      ctx.font = "52px serif";
+      ctx.fillStyle = "rgba(235, 250, 255, 0.92)";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("𝄞", 42, staffTop + lineGap * 2);
+
+      if (!notes.length) {
+        ctx.font = "bold 18px sans-serif";
+        ctx.fillStyle = "rgba(225, 242, 255, 0.68)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("가락 카드를 선택하세요", w * 0.54, staffTop + lineGap * 2);
+        ctx.restore();
+        return;
+      }
+
+      const xs = notes.map((_, i) => {
+        if (notes.length === 1) return staffLeft + staffWidth / 2;
+        return staffLeft + 34 + (staffWidth - 68) * (i / (notes.length - 1));
+      });
+
+      notes.forEach((note, i) => {
+        const x = xs[i];
+        const y = getStaffYForNote(note, staffTop, lineGap);
+        const isCurrent = currentIndex >= 0 && i === currentIndex;
+        const isPast = currentIndex >= 0 && i < currentIndex;
+
+        if (isCurrent) {
+          ctx.save();
+          ctx.shadowColor = "rgba(255, 230, 120, 0.95)";
+          ctx.shadowBlur = 26;
+          ctx.fillStyle = "rgba(255, 225, 100, 0.26)";
+          ctx.beginPath();
+          ctx.arc(x, y, 22, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        drawLedgerLineIfNeeded(ctx, note, x, staffTop, lineGap);
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-0.25);
+        ctx.fillStyle = isCurrent
+          ? "#ffe66d"
+          : isPast
+            ? "rgba(150, 245, 210, 0.82)"
+            : "rgba(235, 248, 255, 0.72)";
+        ctx.strokeStyle = isCurrent
+          ? "rgba(255,255,255,0.95)"
+          : "rgba(255,255,255,0.45)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, isCurrent ? 11 : 9, isCurrent ? 8 : 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.strokeStyle = isCurrent ? "#ffe66d" : "rgba(235, 248, 255, 0.68)";
+        ctx.lineWidth = isCurrent ? 3 : 2;
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y - 2);
+        ctx.lineTo(x + 8, y - 42);
+        ctx.stroke();
+
+        if (isPast) {
+          ctx.fillStyle = "rgba(130, 255, 210, 0.88)";
+          ctx.font = "16px sans-serif";
+          ctx.fillText("✓", x, y - 52);
+        }
+
+        ctx.font = isCurrent ? "bold 16px sans-serif" : "bold 14px sans-serif";
+        ctx.fillStyle = isCurrent
+          ? "#fff2a8"
+          : isPast
+            ? "rgba(160, 255, 220, 0.84)"
+            : "rgba(225, 242, 255, 0.72)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillText(FINGERING_NOTE_LABELS[note] || note, x, staffTop + lineGap * 5 + 18);
+      });
+
+      ctx.restore();
+    }
+
+    function drawFingeringStaff() {
+      syncSelectedFingeringPracticeNotes();
+
+      [0, 1].forEach((slotIndex) => {
+        const canvas = document.getElementById(`fingeringStaffCanvas${slotIndex + 1}`);
+        const notes = getFingeringPatternSlotNotes(slotIndex);
+        const offset = getFingeringPatternGlobalOffset(slotIndex);
+        const localIndex = practiceState.index - offset;
+        const currentIndex = localIndex >= 0 && localIndex < notes.length ? localIndex : -1;
+        drawFingeringStaffOnCanvas(canvas, notes, currentIndex);
+      });
+    }
+
+    function renderFingeringPracticeFrame() {
+      syncSelectedFingeringPracticeNotes();
 
       const notes = practiceState.notes;
       const i = Math.min(practiceState.index, Math.max(notes.length - 1, 0));
@@ -11308,13 +12197,21 @@ function startBasicPractice() {
       if (currentEl) currentEl.textContent = getPracticeNoteLabel(current);
       if (prevEl) prevEl.textContent = getPracticeNoteLabel(prev);
       if (nextEl) nextEl.textContent = getPracticeNoteLabel(next);
-      if (stepEl) stepEl.textContent = `${i + 1} / ${notes.length}`;
+      if (stepEl) stepEl.textContent = notes.length ? `${i + 1} / ${notes.length}` : "0 / 0";
 
-      updateRecorderImageByNote(current);
+      if (notes.length) updateRecorderImageByNote(current);
+      drawFingeringStaff();
     }
 
     function nextNote() {
       const notes = practiceState.notes;
+      if (!notes.length) {
+        stopFingeringPracticeTimer();
+        renderFingeringPracticeFrame();
+        setStatus("practiceStatus", "가락 카드 2장을 선택해 주세요", "");
+        return;
+      }
+
       const i = practiceState.index;
 
       const current = notes[i];
@@ -11332,6 +12229,7 @@ function startBasicPractice() {
       if (stepEl) stepEl.textContent = `${Math.min(i + 1, notes.length)} / ${notes.length}`;
 
       updateRecorderImageByNote(current);
+      drawFingeringStaff();
 
       practiceState.index++;
 
@@ -11343,8 +12241,14 @@ function startBasicPractice() {
 
     function startFingeringPractice() {
       stopFingeringPracticeTimer();
-      practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+      syncSelectedFingeringPracticeNotes();
       practiceState.index = 0;
+
+      if (selectedPracticePatterns.some((patternKey) => !patternKey)) {
+        renderFingeringPracticeFrame();
+        setStatus("practiceStatus", "가락 카드 2장을 선택해 주세요", "");
+        return;
+      }
 
       setStatus("practiceStatus", "운지법 자동 훈련 시작", "ok");
       nextNote();
@@ -11359,39 +12263,27 @@ function startBasicPractice() {
     function resetFingeringPractice() {
       stopFingeringPracticeTimer();
       practiceState.index = 0;
-      practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
+      syncSelectedFingeringPracticeNotes();
       renderFingeringPracticeFrame();
       setStatus("practiceStatus", "운지법 훈련 다시하기 준비 완료", "ok");
     }
 
     function setupFingeringPracticeControls() {
-      document.querySelectorAll(".modeBtn").forEach((btn) => {
+      document.querySelectorAll(".patternCard").forEach((btn) => {
         btn.onclick = () => {
-          document.querySelectorAll(".modeBtn").forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          practiceState.mode = btn.dataset.mode || "up";
-          practiceState.notes = (PRACTICE_MODES[practiceState.mode] || PRACTICE_MODES.up).slice();
-          practiceState.index = 0;
-          renderFingeringPracticeFrame();
-          if (practiceTimer) {
-            startFingeringPractice();
-          }
+          selectFingeringPattern(btn.dataset.pattern);
         };
       });
 
-      document.querySelectorAll(".speedBtn").forEach((btn) => {
+      document.querySelectorAll(".speedBtn, .speedButton").forEach((btn) => {
         btn.onclick = () => {
-          document.querySelectorAll(".speedBtn").forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          practiceState.speed = Number(btn.dataset.speed) || 800;
-          const speedLabel = document.getElementById("practiceSpeedLabel");
-          if (speedLabel) speedLabel.textContent = btn.textContent.trim();
-          if (practiceTimer) {
-            startFingeringPractice();
-          }
+          setFingeringPracticeSpeed(btn.dataset.speedKey, btn.dataset.speed, btn.textContent.trim());
         };
       });
 
+      updatePatternCardSelectionUI();
+      updateSelectedPatternTitles();
+      updateNextPatternGuide();
       renderFingeringPracticeFrame();
     }
 
@@ -11527,8 +12419,8 @@ function startBasicPractice() {
   </div>
 
   <div class="challenge-nav">
-    <button class="sub" onclick="showScreen('screen-menu')">← 이전</button>
-    <button class="sub" onclick="showScreen('screen-menu')">🏠 홈</button>
+    <button class="sub" onclick="goBackInApp()">← 이전</button>
+    <button class="sub" onclick="goHomeMenu()">🏠 홈</button>
   </div>
 </section>
 
