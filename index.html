@@ -115,9 +115,9 @@
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 1080px;
       width: 100%;
-      margin: 0 auto;
+      max-width: none;
+      margin: 0;
       padding: 32px 22px 76px;
     }
 
@@ -8998,17 +8998,45 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
 }
 
 @media (max-width: 950px) and (orientation: landscape) {
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
   .wrap {
+    width: 1280px;
+    max-width: 1280px;
+    min-width: 1280px;
+
     transform: scale(var(--app-auto-scale));
     transform-origin: top center;
-    width: calc(100% / var(--app-auto-scale));
+
+    margin: 0 auto;
+    padding-top: 10px;
   }
+
 }
 
 @media not all and (max-width: 950px) and (orientation: landscape) {
+  body {
+    display: block;
+  }
+
   .wrap {
-    transform: none;
     width: 100%;
+    max-width: none;
+    min-width: 0;
+    transform: none;
+    margin: 0 auto;
   }
 }
   </style>
