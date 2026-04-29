@@ -7723,11 +7723,16 @@ body.dark .slotEmptyHint,
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 22px;
+  border-radius: 20px;
   background:
-    radial-gradient(circle at 50% 50%, rgba(180, 240, 255, 0.18), transparent 52%),
-    linear-gradient(180deg, rgba(35, 65, 105, 0.72), rgba(12, 28, 60, 0.86));
-  border: 1px solid rgba(150, 225, 255, 0.24);
+    linear-gradient(
+      180deg,
+      #eaf6ff 0%,
+      #d8f0ff 40%,
+      #c7e9ff 100%
+    );
+  border: 1px solid rgba(150, 205, 235, 0.54);
+  overflow: hidden;
 }
 
 #step34Section.fingeringTrainingMode .practiceLeft img,
@@ -7736,26 +7741,24 @@ body.dark .slotEmptyHint,
 #step34Section.fingeringTrainingMode .practiceLeft #recorderImg,
 #step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage,
 #step34Section.fingeringTrainingMode .practiceLeft .recorder-image {
-  height: 280px;
+  height: 90%;
   width: auto;
   max-width: 95%;
-  max-height: 92%;
+  max-height: 420px;
   object-fit: contain;
   opacity: 1;
-  filter:
-    brightness(1.45)
-    contrast(1.18)
-    drop-shadow(0 0 12px rgba(180, 245, 255, 0.55))
-    drop-shadow(0 0 24px rgba(80, 190, 255, 0.30));
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25));
 }
 
 #step34Section.fingeringTrainingMode .practiceLeft #recorderImg {
-  height: 280px !important;
+  height: 90% !important;
+  max-height: 420px !important;
   display: block !important;
 }
 
 #step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage {
-  height: 280px !important;
+  height: 90% !important;
+  max-height: 420px !important;
   display: block !important;
 }
 
@@ -8064,7 +8067,8 @@ body.theme-light .practiceStaffSlot {
   #step34Section.fingeringTrainingMode .practiceLeft canvas,
   #step34Section.fingeringTrainingMode .practiceLeft #recorderImg,
   #step34Section.fingeringTrainingMode .practiceLeft #practiceRecorderImage {
-    height: 220px !important;
+    height: 90% !important;
+    max-height: 420px !important;
   }
 }
 
@@ -8931,96 +8935,199 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
   }
 }
 
-.mobilePortraitGuide {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: none;
-  align-items: center;
+@media screen and (max-width: 950px) and (orientation: landscape) {
+  #appViewport {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  #appViewport #app.wrap {
+    position: absolute;
+    margin: 0;
+    transform-origin: top left;
+  }
+}
+
+@media screen and (max-width: 950px) and (orientation: portrait) {
+  #appViewport,
+  #app {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.fingeringPracticeActionRow {
+  display: flex;
   justify-content: center;
-  padding: 24px;
-  color: #f8fdff;
+  gap: 14px;
+  margin: 12px 0 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.fingeringPracticeStartBtn,
+.fingeringPracticeResetBtn {
+  min-width: 160px;
+  min-height: 52px;
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  color: #ffffff;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.28);
+}
+
+.fingeringPracticeStartBtn {
+  background: linear-gradient(135deg, #2f80ed, #6ee7ff);
+}
+
+.fingeringPracticeStartBtn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+.fingeringPracticeResetBtn {
+  background: linear-gradient(135deg, #64748b, #334155);
+}
+
+#step34Section.fingeringTrainingMode .patternCard.selected {
+  outline: 3px solid rgba(255, 230, 120, 0.95);
+  box-shadow:
+    0 0 0 4px rgba(255, 230, 120, 0.22),
+    0 0 24px rgba(255, 215, 106, 0.42),
+    inset 0 1px 0 rgba(255,255,255,0.24);
+  transform: translateY(-2px);
+}
+
+.selectedFingeringReadyCard {
+  width: min(420px, 92%);
+  margin: 0 auto 12px;
+  padding: 14px 18px;
+  border-radius: 22px;
   text-align: center;
   background:
-    radial-gradient(circle at 50% 32%, rgba(126, 236, 255, 0.24), transparent 34%),
-    radial-gradient(circle at 50% 82%, rgba(255, 216, 106, 0.16), transparent 30%),
-    linear-gradient(180deg, rgba(7, 17, 32, 0.98), rgba(10, 25, 51, 0.98));
-  backdrop-filter: blur(8px);
-}
-
-.mobilePortraitGuideCard {
-  width: min(100%, 360px);
-  padding: 28px 24px;
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(34, 68, 126, 0.86), rgba(12, 28, 58, 0.94)),
-    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.18), transparent 46%);
-  border: 1px solid rgba(192, 236, 255, 0.36);
+    linear-gradient(180deg, rgba(255,255,255,0.20), rgba(80,160,255,0.14)),
+    radial-gradient(circle at 20% 0%, rgba(255,230,130,0.28), transparent 42%);
+  border: 1px solid rgba(220,245,255,0.34);
   box-shadow:
-    0 24px 54px rgba(0, 8, 24, 0.42),
-    0 0 38px rgba(96, 219, 255, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.2);
+    0 14px 28px rgba(0,0,0,0.24),
+    0 0 22px rgba(105,220,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.26);
+  color: #f5fbff;
 }
 
-.mobilePortraitGuideIcon {
-  display: block;
-  margin-bottom: 14px;
-  font-size: 46px;
-  line-height: 1;
+.readyCardBadge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(255, 215, 106, 0.22);
+  color: #ffe58a;
 }
 
-.mobilePortraitGuideTitle {
-  margin: 0;
-  font-size: 24px;
+.readyCardTitle {
+  font-size: 20px;
   font-weight: 1000;
-  line-height: 1.28;
-  color: #ffffff;
-  text-shadow:
-    0 0 16px rgba(126, 236, 255, 0.32),
-    0 0 28px rgba(126, 236, 255, 0.16);
 }
 
-.mobilePortraitGuideText {
-  margin: 10px 0 0;
+.readyCardRange {
+  margin-top: 4px;
   font-size: 14px;
-  line-height: 1.5;
-  color: rgba(230, 245, 255, 0.78);
+  font-weight: 800;
+  color: rgba(235,248,255,0.86);
 }
 
-@media (max-width: 950px) and (orientation: portrait) {
-  .mobilePortraitGuide {
-    display: flex;
+.readyCardHint {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(235,248,255,0.72);
+}
+
+body.theme-light .selectedFingeringReadyCard {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(222,242,255,0.88)),
+    radial-gradient(circle at 20% 0%, rgba(255,215,106,0.24), transparent 42%);
+  border-color: rgba(74,140,210,0.32);
+  color: #16324f;
+}
+
+body.theme-light .readyCardRange,
+body.theme-light .readyCardHint {
+  color: #3f5874;
+}
+
+@media (max-width: 640px) {
+  .fingeringPracticeActionRow {
+    gap: 8px;
+  }
+
+  .fingeringPracticeStartBtn,
+  .fingeringPracticeResetBtn {
+    min-width: 0;
+    flex: 1;
+    font-size: 14px;
+    padding: 12px 14px;
   }
 }
 
-:root {
-  --app-auto-scale: 1;
+#step34Section.fingeringTrainingMode .practiceLeft {
+  background: radial-gradient(
+    circle at center,
+    #ffffff 0%,
+    #eaf6ff 60%,
+    #cfeaff 100%
+  );
 }
 
-@media (max-width: 950px) and (orientation: landscape) {
-  .wrap {
-    transform: scale(var(--app-auto-scale));
-    transform-origin: top center;
-    width: calc(100% / var(--app-auto-scale));
-  }
+#step34Section.fingeringTrainingMode #recorderImg,
+#step34Section.fingeringTrainingMode #practiceRecorderImage {
+  height: 95% !important;
+  max-height: none !important;
+  width: auto !important;
+  object-fit: contain;
+  transform: scale(1.8) !important;
+  transform-origin: center;
+  filter:
+    contrast(1.15)
+    brightness(1.05)
+    drop-shadow(0 12px 20px rgba(0,0,0,0.25));
 }
 
-@media not all and (max-width: 950px) and (orientation: landscape) {
-  .wrap {
-    transform: none;
-    width: 100%;
-  }
+#startFingeringPracticeBtn:disabled,
+#fingeringPracticeStartBtn:disabled {
+  opacity: 0.45;
+  filter: grayscale(0.45);
+  cursor: not-allowed;
 }
+
+#startFingeringPracticeBtn.is-active,
+#fingeringPracticeStartBtn.is-active {
+  opacity: 1;
+  filter: none;
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(105, 220, 255, 0.45),
+    0 10px 22px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.32);
+}
+
   </style>
 </head>
 <body class="theme-dark">
-  <div class="mobilePortraitGuide" aria-hidden="true">
-    <div class="mobilePortraitGuideCard">
-      <span class="mobilePortraitGuideIcon" aria-hidden="true">↻</span>
-      <h2 class="mobilePortraitGuideTitle">가로모드 전용</h2>
-      <p class="mobilePortraitGuideText">기기를 가로로 돌려서 사용해주세요.</p>
-    </div>
-  </div>
   <div class="globalStarField" aria-hidden="true">
     <span class="globalMiniStar" style="--global-star-left: 6%; --global-star-top: 72%; --global-star-size: 2px; --global-star-duration: 8.2s; --global-star-delay: -0.8s; --global-star-from-x: -10px; --global-star-from-y: 6px; --global-star-to-x: 12px; --global-star-to-y: -8px;"></span>
     <span class="globalMiniStar" style="--global-star-left: 12%; --global-star-top: 84%; --global-star-size: 3px; --global-star-duration: 7.1s; --global-star-delay: -2.7s; --global-star-from-x: 8px; --global-star-from-y: 11px; --global-star-to-x: -14px; --global-star-to-y: -10px;"></span>
@@ -9050,7 +9157,8 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
       </div>
     </div>
   </div>
-  <div class="wrap">
+  <div id="appViewport">
+  <div id="app" class="wrap">
     <div class="topBar">
       <div class="themeToggle" role="group" aria-label="테마 선택">
         <button type="button" id="themeDarkBtn" class="themeToggleBtn" onclick="setTheme('dark')"><span class="glassBtnLabel">🌙 다크</span></button>
@@ -9299,6 +9407,15 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
             <button type="button" class="speedBtn speedButton active is-selected" data-speed-key="normal" data-speed="800">🙂 보통</button>
             <button type="button" class="speedBtn speedButton" data-speed-key="fast" data-speed="500">🚀 빠름</button>
           </div>
+        </div>
+
+        <div class="fingeringPracticeActionRow">
+          <button type="button" id="startFingeringPracticeBtn" class="fingeringPracticeStartBtn" disabled>
+            ▶ 연습 시작
+          </button>
+          <button type="button" id="resetFingeringPracticeBtn" class="fingeringPracticeResetBtn">
+            ↺ 다시 하기
+          </button>
         </div>
 
         <div id="nextPatternGuide" class="nextPatternGuide">가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.</div>
@@ -9586,6 +9703,137 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
   <div id="basicRecorderStatus" class="status">기본 운지 화면 준비 완료</div>
 </section>
 
+<section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
+  <div class="challenge-top">
+    <div class="challenge-badge">SPECIAL MISSION</div>
+    <h2 class="challenge-title">🏆 도전! 퍼펙트 리코더</h2>
+    <p class="challenge-subtitle">
+      이번 주 미션곡에 도전하고 나의 최고 기록을 갱신해 보세요!
+    </p>
+  </div>
+
+  <div class="challenge-main-card">
+    <div class="mission-label">이번 미션곡</div>
+    <h3 class="mission-song-title">작은별</h3>
+    <p class="mission-desc">
+      정확한 운지와 박자로 퍼펙트 점수에 도전하세요.
+    </p>
+
+    <div class="mission-goal-row">
+      <div class="mission-goal">
+        <span>목표 점수</span>
+        <strong>95+</strong>
+      </div>
+      <div class="mission-goal">
+        <span>목표 등급</span>
+        <strong>S</strong>
+      </div>
+      <div class="mission-goal">
+        <span>미션 상태</span>
+        <strong>도전 가능</strong>
+      </div>
+    </div>
+
+    <button class="challenge-start-btn" onclick="startChallengeMission('twinkle')">
+      ✨ 도전 시작
+    </button>
+  </div>
+
+  <div class="challenge-info-grid">
+    <div class="challenge-info-card">
+      <h4>나의 기록</h4>
+      <div class="challenge-record-list">
+        <div class="challenge-record-block">
+          <span class="challenge-record-label">최고 점수</span>
+          <div class="challenge-record-row">
+            <strong class="challenge-record-score">95점</strong>
+            <span class="challenge-grade-stamp stamp-perfect">PERFECT</span>
+          </div>
+        </div>
+
+        <div class="challenge-record-block">
+          <span class="challenge-record-label">최근 기록</span>
+          <div class="challenge-record-row">
+            <strong class="challenge-record-score">88점</strong>
+            <span class="challenge-grade-stamp stamp-great">GREAT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="challenge-info-card">
+      <h4>학급 Ranking</h4>
+      <ol class="challenge-ranking-list">
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥇</span>
+          <span class="challenge-ranking-rank">1</span>
+          <span class="challenge-ranking-name">황윤재</span>
+          <strong class="challenge-ranking-score">99점</strong>
+        </li>
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥈</span>
+          <span class="challenge-ranking-rank">2</span>
+          <span class="challenge-ranking-name">전성철</span>
+          <strong class="challenge-ranking-score">97점</strong>
+        </li>
+        <li class="challenge-ranking-item">
+          <span class="challenge-ranking-medal">🥉</span>
+          <span class="challenge-ranking-rank">3</span>
+          <span class="challenge-ranking-name">김영호</span>
+          <strong class="challenge-ranking-score">96점</strong>
+        </li>
+      </ol>
+
+      <div class="challenge-my-ranking">
+        <span class="challenge-my-ranking-label">나의 Ranking</span>
+        <div class="challenge-my-ranking-value">
+          <span>Rank 4</span>
+          <strong>95점</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-mission-area">
+    <h3>다음 미션 예고</h3>
+
+    <div class="next-mission-grid">
+      <div class="next-mission-card locked">
+        <div class="lock-mark">🔒</div>
+        <span>Next Mission 01</span>
+        <strong>준비중</strong>
+        <em>COMING SOON</em>
+      </div>
+
+      <div class="next-mission-card locked">
+        <div class="lock-mark">🔒</div>
+        <span>Next Mission 02</span>
+        <strong>준비중</strong>
+        <em>COMING SOON</em>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section id="screen-challenge-play" class="challengeScreen">
+  <div class="challenge-play-shell">
+    <div class="challenge-play-head">
+      <div class="challenge-play-copy">
+        <div class="challenge-badge">CHALLENGE PLAY</div>
+        <h3 id="challengePlayTitle">작은별 도전 연주</h3>
+        <p id="challengePlaySubtitle">도전 전용 화면에서 기존 평가 방식으로 연주를 확인합니다.</p>
+      </div>
+      <div class="challenge-play-actions">
+        <button type="button" onclick="startPractice()">연주 시작</button>
+      </div>
+    </div>
+
+    <div id="challengePlayMount" class="challengePlayMount"></div>
+  </div>
+</section>
+
+  </div>
   </div>
 
   <script src="app.js"></script>
@@ -9761,6 +10009,7 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
     const FINGERING_PRACTICE_PATTERNS = fingeringPracticePatterns;
     const FINGERING_NOTE_LABELS = NOTE_DISPLAY_LABELS;
     let selectedPracticePatterns = [null, null];
+    let selectedFingeringPattern = null;
     let activePatternSlot = 0;
     let nextPatternSlot = 0;
     let fingeringPracticeSpeed = "normal";
@@ -9770,6 +10019,21 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
       index: 0,
       speed: 800
     };
+
+    function updateFingeringStartButtonState() {
+      const startBtn =
+        document.getElementById("startFingeringPracticeBtn") ||
+        document.getElementById("fingeringPracticeStartBtn");
+
+      if (!startBtn) return;
+
+      const hasPattern =
+        Array.isArray(selectedPracticePatterns) &&
+        selectedPracticePatterns.some(Boolean);
+
+      startBtn.disabled = !hasPattern;
+      startBtn.classList.toggle("is-active", hasPattern);
+    }
     const TEXTBOOK_SONGS_BY_GRADE = {
       "3": [
         { songId: "TB3_SPRING", title: "봄바람", bpm: 84, timeSignature: "4/4", notation: "C5/1 D5/1 E5/1 G5/1 E5/1 D5/1 C5/2" },
@@ -13035,6 +13299,7 @@ function startBasicPractice() {
         practiceState.notes = getSelectedFingeringPracticeNotes();
         practiceState.index = 0;
         renderFingeringPracticeFrame();
+        updateFingeringStartButtonState();
       }
     }
 
@@ -13263,6 +13528,7 @@ function startBasicPractice() {
       updateSlotEmptyState(slotIndex);
       playSlotInsertAnimation(slotIndex);
       renderFingeringPracticeFrame();
+      updateFingeringStartButtonState();
     }
 
     function updatePatternCardSelectionUI() {
@@ -13293,21 +13559,70 @@ function startBasicPractice() {
       });
     }
 
-    function selectFingeringPattern(patternKey) {
+    function selectFingeringPattern(cardOrPattern) {
+      const card = cardOrPattern instanceof Element
+        ? cardOrPattern
+        : document.querySelector(`#step34Section .patternCard[data-pattern="${cardOrPattern}"]`);
+      const patternKey = card?.dataset.pattern || (typeof cardOrPattern === "string" ? cardOrPattern : null);
+
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
-      const targetSlot = activePatternSlot ?? nextPatternSlot;
-      assignFingeringPatternToSlot(targetSlot, patternKey);
+      selectedFingeringPattern = patternKey;
+      selectedPracticePatterns = [patternKey, null];
+      practiceState.index = 0;
+      syncSelectedFingeringPracticeNotes();
+      updatePatternCardSelectionUI();
+      updateSelectedPatternTitles();
+      updateSlotEmptyState(0);
+      updateSlotEmptyState(1);
+      playSlotInsertAnimation(0);
+      renderFingeringPracticeFrame();
+      updateFingeringStartButtonState();
 
-      if (targetSlot === 0) {
-        nextPatternSlot = 1;
-        activePatternSlot = 1;
-      } else {
-        nextPatternSlot = 0;
-        activePatternSlot = 0;
-      }
+      document.querySelectorAll("#step34Section.fingeringTrainingMode .patternCard")
+        .forEach((btn) => {
+          const isSelected = btn === card;
+          btn.classList.toggle("selected", isSelected);
+          btn.classList.toggle("is-selected", isSelected);
+        });
+
+      updateFingeringStaffReadyCard(card);
 
       updateActivePatternSlotUI();
+    }
+
+    function updateFingeringStaffReadyCard(card) {
+      const target =
+        document.querySelector("#step34Section.fingeringTrainingMode .practiceMainCard") ||
+        document.querySelector("#step34Section.fingeringTrainingMode .staffPanel") ||
+        document.querySelector("#step34Section.fingeringTrainingMode canvas")?.parentElement;
+
+      if (!target || !card) return;
+
+      let readyCard = document.getElementById("selectedFingeringReadyCard");
+      if (!readyCard) {
+        readyCard = document.createElement("div");
+        readyCard.id = "selectedFingeringReadyCard";
+        readyCard.className = "selectedFingeringReadyCard";
+        target.prepend(readyCard);
+      }
+
+      const title =
+        card.querySelector(".patternTitle")?.textContent?.trim() ||
+        card.querySelector(".patternName")?.textContent?.trim() ||
+        "선택한 가락";
+
+      const range =
+        card.querySelector(".patternRange")?.textContent?.trim() ||
+        card.querySelector(".patternDesc")?.textContent?.trim() ||
+        "";
+
+      readyCard.innerHTML = `
+        <div class="readyCardBadge">선택 완료</div>
+        <div class="readyCardTitle">${title}</div>
+        <div class="readyCardRange">${range}</div>
+        <div class="readyCardHint">연습 시작을 누르면 오선보 연습이 시작돼요.</div>
+      `;
     }
 
     function setFingeringPracticeSpeed(speedKey, speedValue, label) {
@@ -13567,14 +13882,19 @@ function startBasicPractice() {
       }
     }
 
-    function startFingeringPractice() {
+    function startFingeringPractice(patternKey) {
       stopFingeringPracticeTimer();
-      syncSelectedFingeringPracticeNotes();
       practiceState.index = 0;
 
-      if (selectedPracticePatterns.some((patternKey) => !patternKey)) {
+      if (patternKey && FINGERING_PRACTICE_PATTERNS[patternKey]) {
+        practiceState.notes = [...FINGERING_PRACTICE_PATTERNS[patternKey].notes];
+      } else {
+        syncSelectedFingeringPracticeNotes();
+      }
+
+      if (!practiceState.notes.length) {
         renderFingeringPracticeFrame();
-        setStatus("practiceStatus", "가락 카드 2장을 슬롯에 놓아주세요", "");
+        setStatus("practiceStatus", "가락 카드를 선택해 주세요", "");
         return;
       }
 
@@ -13590,9 +13910,19 @@ function startBasicPractice() {
 
     function resetFingeringPractice() {
       stopFingeringPracticeTimer();
+      selectedFingeringPattern = null;
+      selectedPracticePatterns = [null, null];
+      activePatternSlot = 0;
+      nextPatternSlot = 0;
       practiceState.index = 0;
-      syncSelectedFingeringPracticeNotes();
+      practiceState.notes = [];
+      updatePatternCardSelectionUI();
+      updateSelectedPatternTitles();
+      updateActivePatternSlotUI();
+      updateAllSlotEmptyStates();
+      document.getElementById("selectedFingeringReadyCard")?.remove();
       renderFingeringPracticeFrame();
+      updateFingeringStartButtonState();
       setStatus("practiceStatus", "운지법 훈련 다시하기 준비 완료", "ok");
     }
 
@@ -13656,6 +13986,102 @@ function startBasicPractice() {
       updateActivePatternSlotUI();
       updateAllSlotEmptyStates();
       renderFingeringPracticeFrame();
+      updateFingeringStartButtonState();
+    }
+
+    function bindFingeringPracticeButtons() {
+      document.querySelectorAll("#step34Section .patternCard").forEach((card) => {
+        if (card.dataset.fingeringClickBound === "true") return;
+
+        card.addEventListener("click", () => {
+          if (!document.getElementById("step34Section")?.classList.contains("fingeringTrainingMode")) return;
+          selectFingeringPattern(card);
+        });
+
+        card.dataset.fingeringClickBound = "true";
+      });
+
+      const startBtn = document.getElementById("startFingeringPracticeBtn");
+      if (startBtn && startBtn.dataset.fingeringStartBound !== "true") {
+        startBtn.addEventListener("click", () => {
+          updateFingeringStartButtonState();
+          if (startBtn.disabled) return;
+
+          document.getElementById("step34Section")?.classList.add("fingeringPracticeStarted");
+          practiceState.notes = getSelectedFingeringPracticeNotes();
+          practiceState.index = 0;
+
+          if (!practiceState.notes.length) {
+            updateFingeringStartButtonState();
+            return;
+          }
+
+          renderFingeringPracticeFrame();
+
+          if (typeof startPractice === "function") {
+            startPractice();
+          }
+        });
+
+        startBtn.dataset.fingeringStartBound = "true";
+      }
+
+      const resetBtn = document.getElementById("resetFingeringPracticeBtn");
+      if (resetBtn && resetBtn.dataset.fingeringResetBound !== "true") {
+        resetBtn.addEventListener("click", resetFingeringPracticeSelection);
+        resetBtn.dataset.fingeringResetBound = "true";
+      }
+
+      updateFingeringStartButtonState();
+    }
+
+    function bindFingeringStartButton() {
+      bindFingeringPracticeButtons();
+      updateFingeringStartButtonState();
+    }
+
+    function resetFingeringPracticeSelection() {
+      selectedFingeringPattern = null;
+      selectedPracticePatterns = [null, null];
+      activePatternSlot = 0;
+      nextPatternSlot = 0;
+      practiceState.index = 0;
+      practiceState.notes = [];
+
+      document.querySelectorAll("#step34Section .patternCard")
+        .forEach((btn) => {
+          btn.classList.remove("selected", "is-selected", "activeSlot1", "activeSlot2");
+          const badge = btn.querySelector(".patternSlotBadge");
+          if (badge) {
+            badge.hidden = true;
+            badge.textContent = "";
+          }
+        });
+
+      const readyCard = document.getElementById("selectedFingeringReadyCard");
+      if (readyCard) readyCard.remove();
+
+      const startBtn = document.getElementById("startFingeringPracticeBtn");
+      if (startBtn) {
+        startBtn.disabled = true;
+        startBtn.classList.remove("is-active");
+      }
+
+      document.getElementById("step34Section")?.classList.remove("fingeringPracticeStarted");
+
+      if (typeof stopFingeringPractice === "function") {
+        stopFingeringPractice();
+      }
+
+      updateSelectedPatternTitles();
+      updateActivePatternSlotUI();
+      updateAllSlotEmptyStates();
+      renderFingeringPracticeFrame();
+      updateFingeringStartButtonState();
+
+      if (typeof drawPracticeBase === "function") {
+        drawPracticeBase("4/4");
+      }
     }
 
     function bindChallengeButtons() {
@@ -13670,29 +14096,52 @@ function startBasicPractice() {
       const isMobileLandscape =
         window.matchMedia("(max-width: 950px) and (orientation: landscape)").matches;
 
-      const root = document.documentElement;
-      const wrap = document.querySelector(".wrap");
+      const viewport = document.getElementById("appViewport");
+      const app = document.getElementById("app");
 
-      if (!wrap) return;
+      if (!viewport || !app) return;
 
       if (!isMobileLandscape) {
-        root.style.setProperty("--app-auto-scale", "1");
+        app.style.position = "";
+        app.style.left = "";
+        app.style.top = "";
+        app.style.transform = "";
+        app.style.transformOrigin = "";
+        document.body.style.overflow = "";
         return;
       }
 
-      root.style.setProperty("--app-auto-scale", "1");
+      const viewportWidth = window.visualViewport?.width || window.innerWidth;
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const safePadding = 8;
+
+      document.body.style.overflow = "hidden";
+
+      app.style.transform = "none";
+      app.style.transformOrigin = "top left";
+      app.style.left = "0px";
+      app.style.top = "0px";
 
       requestAnimationFrame(() => {
-        const contentHeight = wrap.scrollHeight;
-        const viewportHeight = window.innerHeight;
+        const contentWidth = app.scrollWidth;
+        const contentHeight = app.scrollHeight;
 
-        if (!contentHeight || !viewportHeight) return;
+        if (!contentWidth || !contentHeight) return;
 
-        let scale = viewportHeight / contentHeight;
+        const scaleX = (viewportWidth - safePadding) / contentWidth;
+        const scaleY = (viewportHeight - safePadding) / contentHeight;
 
-        scale = Math.min(1, Math.max(0.68, scale));
+        const scale = Math.min(scaleX, scaleY, 1);
 
-        root.style.setProperty("--app-auto-scale", scale.toFixed(3));
+        const scaledWidth = contentWidth * scale;
+        const scaledHeight = contentHeight * scale;
+
+        const left = Math.max(0, (viewportWidth - scaledWidth) / 2);
+        const top = Math.max(0, (viewportHeight - scaledHeight) / 2);
+
+        app.style.left = `${left}px`;
+        app.style.top = `${top}px`;
+        app.style.transform = `scale(${scale})`;
       });
     }
 
@@ -13706,6 +14155,7 @@ function startBasicPractice() {
       initTheme();
       bindChallengeButtons();
       setupFingeringPracticeControls();
+      bindFingeringStartButton();
       enhancePracticeLayout();
       setupUnifiedNavigation();
       setupResultOverlayInteractions();
@@ -13713,136 +14163,6 @@ function startBasicPractice() {
       showStep("step1Section");
     });
   </script>
-
-<section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
-  <div class="challenge-top">
-    <div class="challenge-badge">SPECIAL MISSION</div>
-    <h2 class="challenge-title">🏆 도전! 퍼펙트 리코더</h2>
-    <p class="challenge-subtitle">
-      이번 주 미션곡에 도전하고 나의 최고 기록을 갱신해 보세요!
-    </p>
-  </div>
-
-  <div class="challenge-main-card">
-    <div class="mission-label">이번 미션곡</div>
-    <h3 class="mission-song-title">작은별</h3>
-    <p class="mission-desc">
-      정확한 운지와 박자로 퍼펙트 점수에 도전하세요.
-    </p>
-
-    <div class="mission-goal-row">
-      <div class="mission-goal">
-        <span>목표 점수</span>
-        <strong>95+</strong>
-      </div>
-      <div class="mission-goal">
-        <span>목표 등급</span>
-        <strong>S</strong>
-      </div>
-      <div class="mission-goal">
-        <span>미션 상태</span>
-        <strong>도전 가능</strong>
-      </div>
-    </div>
-
-    <button class="challenge-start-btn" onclick="startChallengeMission('twinkle')">
-      ✨ 도전 시작
-    </button>
-  </div>
-
-  <div class="challenge-info-grid">
-    <div class="challenge-info-card">
-      <h4>나의 기록</h4>
-      <div class="challenge-record-list">
-        <div class="challenge-record-block">
-          <span class="challenge-record-label">최고 점수</span>
-          <div class="challenge-record-row">
-            <strong class="challenge-record-score">95점</strong>
-            <span class="challenge-grade-stamp stamp-perfect">PERFECT</span>
-          </div>
-        </div>
-
-        <div class="challenge-record-block">
-          <span class="challenge-record-label">최근 기록</span>
-          <div class="challenge-record-row">
-            <strong class="challenge-record-score">88점</strong>
-            <span class="challenge-grade-stamp stamp-great">GREAT</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="challenge-info-card">
-      <h4>학급 Ranking</h4>
-      <ol class="challenge-ranking-list">
-        <li class="challenge-ranking-item">
-          <span class="challenge-ranking-medal">🥇</span>
-          <span class="challenge-ranking-rank">1</span>
-          <span class="challenge-ranking-name">황윤재</span>
-          <strong class="challenge-ranking-score">99점</strong>
-        </li>
-        <li class="challenge-ranking-item">
-          <span class="challenge-ranking-medal">🥈</span>
-          <span class="challenge-ranking-rank">2</span>
-          <span class="challenge-ranking-name">전성철</span>
-          <strong class="challenge-ranking-score">97점</strong>
-        </li>
-        <li class="challenge-ranking-item">
-          <span class="challenge-ranking-medal">🥉</span>
-          <span class="challenge-ranking-rank">3</span>
-          <span class="challenge-ranking-name">김영호</span>
-          <strong class="challenge-ranking-score">96점</strong>
-        </li>
-      </ol>
-
-      <div class="challenge-my-ranking">
-        <span class="challenge-my-ranking-label">나의 Ranking</span>
-        <div class="challenge-my-ranking-value">
-          <span>Rank 4</span>
-          <strong>95점</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="next-mission-area">
-    <h3>다음 미션 예고</h3>
-
-    <div class="next-mission-grid">
-      <div class="next-mission-card locked">
-        <div class="lock-mark">🔒</div>
-        <span>Next Mission 01</span>
-        <strong>준비중</strong>
-        <em>COMING SOON</em>
-      </div>
-
-      <div class="next-mission-card locked">
-        <div class="lock-mark">🔒</div>
-        <span>Next Mission 02</span>
-        <strong>준비중</strong>
-        <em>COMING SOON</em>
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<section id="screen-challenge-play" class="challengeScreen">
-  <div class="challenge-play-shell">
-    <div class="challenge-play-head">
-      <div class="challenge-play-copy">
-        <div class="challenge-badge">CHALLENGE PLAY</div>
-        <h3 id="challengePlayTitle">작은별 도전 연주</h3>
-        <p id="challengePlaySubtitle">도전 전용 화면에서 기존 평가 방식으로 연주를 확인합니다.</p>
-      </div>
-      <div class="challenge-play-actions">
-        <button type="button" onclick="startPractice()">연주 시작</button>
-      </div>
-    </div>
-
-    <div id="challengePlayMount" class="challengePlayMount"></div>
-  </div>
-</section>
 
 <script>
 function goChallenge() {

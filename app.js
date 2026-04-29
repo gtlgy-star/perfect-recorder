@@ -224,10 +224,12 @@ function applyRecorderStyle() {
   wrap.style.position = "relative";
 
   img.style.position = "absolute";
-  img.style.top = "-140px";
+  img.style.top = "50%";
   img.style.left = "50%";
-  img.style.transform = "translateX(-50%)";
-  img.style.height = "220px";
+  img.style.transform = "translate(-50%, -50%)";
+  img.style.height = "90%";
+  img.style.maxHeight = "420px";
+  img.style.filter = "drop-shadow(0 10px 20px rgba(0,0,0,0.25))";
   img.style.pointerEvents = "none";
 }
 
