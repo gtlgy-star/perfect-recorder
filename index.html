@@ -9017,8 +9017,8 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
   <div class="mobilePortraitGuide" aria-hidden="true">
     <div class="mobilePortraitGuideCard">
       <span class="mobilePortraitGuideIcon" aria-hidden="true">↻</span>
-      <h2 class="mobilePortraitGuideTitle">핸드폰을 가로로 돌려서 사용해주세요</h2>
-      <p class="mobilePortraitGuideText">가로모드로 전환하면 연습 화면이 자동으로 맞춰져 보여요.</p>
+      <h2 class="mobilePortraitGuideTitle">가로모드 전용</h2>
+      <p class="mobilePortraitGuideText">기기를 가로로 돌려서 사용해주세요.</p>
     </div>
   </div>
   <div class="globalStarField" aria-hidden="true">
@@ -9326,7 +9326,7 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
                     <span class="practiceStaffSlotLabel">1번 가락</span>
                     <span id="practiceStaffTitle1" class="practiceStaffPatternTitle">카드를 놓아주세요</span>
                   </div>
-                  <div class="slotEmptyHint">가락 카드를 끌어다 놓으세요</div>
+                  <div class="slotEmptyHint"></div>
                   <canvas id="fingeringStaffCanvas1" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
 
@@ -9335,7 +9335,7 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
                     <span class="practiceStaffSlotLabel">2번 가락</span>
                     <span id="practiceStaffTitle2" class="practiceStaffPatternTitle">카드를 놓아주세요</span>
                   </div>
-                  <div class="slotEmptyHint">가락 카드를 끌어다 놓으세요</div>
+                  <div class="slotEmptyHint"></div>
                   <canvas id="fingeringStaffCanvas2" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
               </div>
@@ -13422,7 +13422,6 @@ function startBasicPractice() {
         ctx.fillStyle = "rgba(225, 242, 255, 0.68)";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("가락 카드를 끌어다 놓으세요", w * 0.54, staffTop + lineGap * 2);
         ctx.restore();
         return;
       }
