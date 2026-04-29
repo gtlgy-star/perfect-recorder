@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=5.0, user-scalable=yes">
   <title>도전! 퍼펙트 리코더!</title>
   <style>
     * { box-sizing: border-box; }
@@ -38,7 +38,7 @@
         linear-gradient(180deg, #071120 0%, #0a1933 24%, #0b1c38 52%, #09152a 100%);
       min-height: 100vh;
       position: relative;
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
     body::before,
@@ -116,6 +116,7 @@
       position: relative;
       z-index: 1;
       max-width: 1080px;
+      width: 100%;
       margin: 0 auto;
       padding: 32px 22px 76px;
     }
@@ -6710,25 +6711,6 @@ body.menu-title-active #screen-menu-title {
   transform: translateY(1px) scale(0.99);
 }
 
-#screen-menu .menuButtonGrid .btn-logout {
-  grid-column: span 2;
-  min-height: 48px;
-  padding: 10px;
-  align-self: center;
-  font-size: 14px;
-  opacity: 0.85;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
-  color: rgba(238, 248, 255, 0.82);
-  box-shadow:
-    0 8px 16px rgba(0,0,0,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.16);
-}
-
-#screen-menu .menuButtonGrid .btn-logout:hover {
-  opacity: 1;
-}
-
 body.theme-light .menuTitle {
   color: #1f5f99;
   background: linear-gradient(
@@ -6741,15 +6723,6 @@ body.theme-light .menuTitle {
     0 8px 20px rgba(93, 145, 214, 0.16),
     inset 0 1px 0 rgba(255,255,255,0.8);
   text-shadow: none;
-}
-
-body.theme-light #screen-menu .menuButtonGrid .btn-logout {
-  color: #486481;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(225, 240, 255, 0.62));
-  box-shadow:
-    0 8px 16px rgba(93, 145, 214, 0.1),
-    inset 0 1px 0 rgba(255,255,255,0.72);
 }
 
 #screen-menu {
@@ -6786,12 +6759,6 @@ body.theme-light #screen-menu .menuButtonGrid .btn-logout {
 #screen-menu .menuButtonGrid .btn-challenge {
   grid-column: auto;
   min-height: 86px;
-}
-
-#screen-menu .menuButtonGrid .btn-logout {
-  grid-column: auto;
-  min-height: 56px;
-  font-size: 15px;
 }
 
 #screen-menu .status-card {
@@ -7074,8 +7041,7 @@ body.theme-light #screen-menu #missionPanel {
   }
 
   #screen-menu .menuButtonGrid .menuBtn,
-  #screen-menu .menuButtonGrid .btn-challenge,
-  #screen-menu .menuButtonGrid .btn-logout {
+  #screen-menu .menuButtonGrid .btn-challenge {
     grid-column: auto;
   }
 }
@@ -8123,15 +8089,938 @@ body.theme-light .practiceStaffSlot {
   }
 }
 
+@media (orientation: landscape) and (max-height: 520px) {
+  .wrap {
+    min-width: min(1080px, 100%);
+    overflow: visible;
+  }
+
+  .wrap > .card,
+  .challengeScreen {
+    overflow: visible;
+  }
+}
+
 @media (max-width: 360px) {
   .pageTitle,
   .menuPageTitle {
     font-size: clamp(30px, 10vw, 40px);
   }
 }
+
+@media (max-width: 950px) and (orientation: landscape) {
+  .wrap {
+    max-width: none;
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px 18px;
+  }
+
+  .heroCard,
+  .menuTitle-main {
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border-radius: 22px;
+  }
+
+  .pageTitle,
+  .menuPageTitle {
+    font-size: clamp(28px, 4.8vw, 44px);
+    line-height: 1.05;
+  }
+
+  .pageDesc {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+  }
+
+  .cardTitle {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  button,
+  input,
+  select {
+    min-height: 38px;
+    font-size: 13px;
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+
+  .btnRow,
+  .btnRow3,
+  .grid2,
+  .songButtonGrid,
+  .gradeButtonGrid {
+    gap: 8px;
+  }
+
+  .gradeChoiceBtn {
+    min-height: 96px;
+    padding: 10px 8px;
+    border-radius: 18px;
+  }
+
+  .gradeChoiceEmoji {
+    font-size: 28px;
+    min-height: 34px;
+    margin-bottom: 4px;
+  }
+
+  .gradeChoiceTitle {
+    font-size: 16px;
+  }
+
+  .gradeChoiceSub {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  #step1Section {
+    min-height: 0;
+    padding: 16px 16px 12px;
+    border-radius: 22px;
+  }
+
+  #step1Section .sectionHeading {
+    gap: 8px 10px;
+    margin-bottom: 12px;
+  }
+
+  #step1Section .sectionTitle {
+    font-size: clamp(18px, 3vw, 24px);
+  }
+
+  #step1Section .sectionDesc {
+    font-size: clamp(13px, 2vw, 17px);
+  }
+
+  .loginRowThree {
+    gap: 8px;
+  }
+
+  .loginRowTwo,
+  .loginActionRow {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  #step1Section .label {
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  #step1Section input,
+  #step1Section .loginActionRow button,
+  #step1Section .loginActionRow button.sub {
+    min-height: 42px;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+
+  #step1Section .status,
+  .status {
+    min-height: 38px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  #screen-menu {
+    max-width: none;
+    margin: 0 auto 10px;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  #screen-menu-title {
+    margin-bottom: 10px;
+  }
+
+  #screen-menu-title.menuTitle-main {
+    padding: 14px 18px;
+    border-radius: 22px;
+  }
+
+  #screen-menu .status-card {
+    min-height: 0;
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 18px;
+    grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+  }
+
+  #screen-menu .avatar,
+  #screen-menu .level-gem {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+
+  #screen-menu .name {
+    font-size: 15px;
+  }
+
+  #screen-menu .exp-text,
+  #screen-menu .exp-desc,
+  #screen-menu .mission-item,
+  #screen-menu .mission-bonus {
+    font-size: 11px;
+  }
+
+  #screen-menu .menuButtonGrid,
+  #screen-menu .menuGrid {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  #screen-menu .menuButtonGrid .menuBtn,
+  #screen-menu .menuButtonGrid .btn-challenge {
+    min-height: 52px;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 16px;
+  }
+
+  #screen-menu .missionDock,
+  #screen-menu .missionDock.open {
+    max-width: none;
+    min-width: 0;
+  }
+
+  #screen-menu .missionDock.open {
+    grid-template-columns: auto minmax(180px, 1fr);
+    gap: 8px;
+  }
+
+  #screen-menu .mission-toggle,
+  #screen-menu .mission-header {
+    padding: 7px 10px;
+  }
+
+  #screen-menu .mission-main {
+    font-size: 12px;
+  }
+
+  #screen-menu .mission-bonus {
+    margin-top: 0;
+  }
+
+  #screen-menu #missionPanel,
+  #screen-menu .missionDock.open #missionPanel {
+    max-width: 220px;
+    max-height: 130px;
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  .fingering-select-wrap {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .fingering-card {
+    width: min(30vw, 210px);
+    min-height: 150px;
+    padding: 14px 12px;
+    border-radius: 18px;
+  }
+
+  .fingering-card .title {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .fingering-card .desc {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .basicPanelCard,
+  .songBox,
+  .practiceInfoBox,
+  .textbookSongPanel {
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .basicRecorderStage {
+    max-width: min(100%, 520px);
+  }
+
+  .basicRecorderStage img {
+    height: 190%;
+  }
+
+  .basicStaffPanel {
+    grid-template-rows: 170px auto;
+  }
+
+  #basicStaffCanvas,
+  canvas {
+    height: 170px;
+  }
+
+  .basicNoteScroller {
+    gap: 6px;
+    margin-top: 8px;
+    padding-bottom: 4px;
+  }
+
+  .basicNoteBtn {
+    min-height: 42px;
+    font-size: 11px;
+    border-radius: 12px;
+    padding: 6px 4px;
+  }
+
+  .basicPracticePanel {
+    margin-top: 12px;
+    padding: 10px;
+  }
+
+  .basicPracticeTitle {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .basicPracticeSteps {
+    gap: 8px;
+  }
+
+  .basicPracticeStep .icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .basicPracticeStep .label {
+    font-size: 11px;
+  }
+
+  .basic-practice-wrap {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .basic-practice-btn {
+    min-width: 170px;
+    padding: 10px 18px;
+    font-size: 16px;
+  }
+
+  .beat-display {
+    min-width: 72px;
+    height: 44px;
+    font-size: 22px;
+    border-radius: 12px;
+  }
+
+  #step34Section.fingeringTrainingMode {
+    padding: 12px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceGameShell {
+    gap: 10px;
+  }
+
+  #step34Section.fingeringTrainingMode .practicePatternGrid,
+  #step34Section.fingeringTrainingMode .fingering-practice-options {
+    gap: 8px;
+  }
+
+  #step34Section.fingeringTrainingMode .fingering-option-group {
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  #step34Section.fingeringTrainingMode .patternCard {
+    min-height: 52px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  #step34Section.fingeringTrainingMode .patternCard .patternName {
+    font-size: 12px;
+  }
+
+  #step34Section.fingeringTrainingMode .patternCard .patternDesc {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceMainCard {
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  #step34Section.fingeringTrainingMode .notePreviewRow {
+    gap: 6px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceSplit {
+    gap: 10px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceStaffSlot {
+    min-height: 46px;
+    border-radius: 12px;
+  }
+
+  #step34Section.fingeringTrainingMode .fingeringStaffCanvas {
+    height: 150px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceControlRow {
+    gap: 6px;
+  }
+
+  #step34Section.fingeringTrainingMode .practiceControlRow button,
+  #step34Section.fingeringTrainingMode .navBtn.small {
+    min-height: 34px;
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+
+  #step34Section.fingeringTrainingMode .nextPatternGuide {
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 14px;
+  }
+
+  .practiceTop {
+    margin-bottom: 8px;
+  }
+
+  .practiceMeta {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .metaCard {
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  .metaLabel {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+
+  .metaValue {
+    font-size: 14px;
+  }
+
+  .practiceControlPanel {
+    gap: 8px;
+    margin-top: 8px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+  }
+
+  .practiceMiniBtn {
+    min-height: 72px;
+    padding: 8px 6px;
+    border-radius: 16px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .practiceMiniBtn .icon {
+    font-size: 20px;
+  }
+
+  .practiceMiniBtn .label {
+    font-size: 11px;
+  }
+
+  .textbookSongPanelTitle {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .textbookSongButtons {
+    gap: 8px;
+  }
+
+  .textbookSongBtn {
+    min-width: 96px;
+    min-height: 40px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .songChoiceBtn {
+    min-height: 130px;
+    padding: 12px;
+    gap: 8px;
+    border-radius: 18px;
+  }
+
+  .songChoiceArt {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+    border-radius: 16px;
+    font-size: 26px;
+  }
+
+  .songChoiceTitle {
+    font-size: 16px;
+  }
+
+  .songChoiceMeta,
+  .songChoiceDesc {
+    font-size: 11px;
+  }
+
+  .challengeScreen {
+    max-width: none;
+    padding: 0;
+  }
+
+  .challenge-top {
+    margin-bottom: 10px;
+  }
+
+  .challenge-badge,
+  .mission-label {
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    font-size: 10px;
+  }
+
+  .challenge-title {
+    font-size: clamp(24px, 4vw, 34px);
+  }
+
+  .challenge-subtitle,
+  .mission-desc {
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .challenge-main-card {
+    padding: 16px 14px;
+    border-radius: 22px;
+  }
+
+  .mission-song-title {
+    margin: 4px 0;
+    font-size: clamp(28px, 6vw, 42px);
+  }
+
+  .mission-goal-row {
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .mission-goal {
+    padding: 8px 6px;
+    border-radius: 14px;
+  }
+
+  .mission-goal strong {
+    font-size: 14px;
+  }
+
+  .challenge-start-btn {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .challenge-info-grid,
+  .next-mission-grid,
+  .challenge-nav {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .challenge-info-card,
+  .challenge-record-block,
+  .challenge-ranking-item,
+  .challenge-my-ranking,
+  .next-mission-card {
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .challenge-info-card h4,
+  .next-mission-area h3 {
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+
+  .challenge-record-list,
+  .challenge-ranking-list {
+    gap: 8px;
+  }
+
+  .challenge-record-score {
+    font-size: 24px;
+  }
+
+  .challenge-grade-stamp {
+    min-width: 88px;
+    height: 42px;
+    padding: 0 10px;
+    font-size: 16px;
+  }
+
+  .challenge-ranking-item {
+    grid-template-columns: auto auto 1fr auto;
+    gap: 8px;
+  }
+
+  .next-mission-area {
+    margin-top: 10px;
+  }
+
+  .next-mission-card {
+    min-height: 82px;
+  }
+
+  .next-mission-card .lock-mark {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .next-mission-card strong {
+    margin: 4px 0;
+    font-size: 14px;
+  }
+
+  #screen-challenge-play {
+    padding: 10px;
+  }
+
+  .challenge-play-shell {
+    gap: 10px;
+  }
+
+  .challenge-play-head {
+    gap: 8px;
+  }
+
+  .challenge-play-copy {
+    gap: 4px;
+  }
+
+  .challenge-play-copy h3 {
+    font-size: clamp(22px, 4vw, 32px);
+  }
+
+  .challenge-play-copy p {
+    font-size: 12px;
+  }
+
+  .challenge-play-actions {
+    gap: 8px;
+  }
+
+  .challenge-play-actions button {
+    min-width: 104px;
+  }
+}
+
+.screen-nav-row {
+  --screen-nav-btn-width: 102px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(196, 238, 255, 0.28);
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  width: var(--screen-nav-btn-width);
+  min-width: var(--screen-nav-btn-width);
+  flex: 0 0 var(--screen-nav-btn-width);
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 13px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.36), transparent 36%),
+    linear-gradient(180deg, rgba(255, 230, 132, 0.98), rgba(209, 145, 45, 0.99));
+  color: #4d2f00;
+  border: 1px solid rgba(255, 238, 174, 0.62);
+  box-shadow:
+    0 10px 20px rgba(72, 42, 0, 0.22),
+    0 0 18px rgba(255, 211, 90, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.42),
+    inset 0 -8px 16px rgba(126, 71, 0, 0.16);
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.nav-btn:active {
+  transform: translateY(1px);
+}
+
+.nav-btn:disabled {
+  opacity: 0.64;
+  cursor: default;
+}
+
+.nav-logout {
+  color: #fff6f7;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.2), transparent 34%),
+    linear-gradient(180deg, rgba(190, 72, 96, 0.98), rgba(106, 34, 54, 0.99));
+  border-color: rgba(255, 190, 205, 0.52);
+  box-shadow:
+    0 10px 20px rgba(86, 12, 34, 0.28),
+    0 0 18px rgba(255, 120, 150, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -8px 16px rgba(80, 16, 32, 0.24);
+}
+
+#screen-menu .screen-nav-row .nav-btn,
+.screen-nav-row .nav-btn {
+  width: var(--screen-nav-btn-width);
+  min-width: var(--screen-nav-btn-width);
+  flex: 0 0 var(--screen-nav-btn-width);
+  margin: 0;
+  min-height: 38px;
+  padding: 8px 13px;
+  border-radius: 14px;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-align: center;
+  justify-content: center;
+}
+
+#screen-menu .screen-nav-row .nav-btn {
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.36), transparent 36%),
+    linear-gradient(180deg, rgba(255, 230, 132, 0.98), rgba(209, 145, 45, 0.99));
+  color: #4d2f00;
+  border-color: rgba(255, 238, 174, 0.62);
+  box-shadow:
+    0 10px 20px rgba(72, 42, 0, 0.22),
+    0 0 18px rgba(255, 211, 90, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.42),
+    inset 0 -8px 16px rgba(126, 71, 0, 0.16);
+}
+
+#screen-menu .screen-nav-row .nav-logout {
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.2), transparent 34%),
+    linear-gradient(180deg, rgba(190, 72, 96, 0.98), rgba(106, 34, 54, 0.99));
+  color: #fff6f7;
+  border-color: rgba(255, 190, 205, 0.52);
+  box-shadow:
+    0 10px 20px rgba(86, 12, 34, 0.28),
+    0 0 18px rgba(255, 120, 150, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -8px 16px rgba(80, 16, 32, 0.24);
+}
+
+#screen-menu .screen-nav-row .nav-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+#step2UnifiedNav,
+#step34UnifiedNav,
+#basicTypeUnifiedNav,
+#basicUnifiedNav {
+  display: none !important;
+}
+
+#step34Section.fingeringTrainingMode .practiceControlRow {
+  display: none;
+}
+
+body.theme-light .screen-nav-row {
+  border-top-color: rgba(96, 137, 184, 0.3);
+}
+
+body.theme-light .nav-btn {
+  color: #5a3600;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.82), transparent 38%),
+    linear-gradient(180deg, rgba(255, 241, 178, 0.98), rgba(231, 178, 82, 0.98));
+  border-color: rgba(207, 143, 36, 0.5);
+  box-shadow:
+    0 10px 18px rgba(166, 106, 14, 0.16),
+    0 0 16px rgba(255, 201, 82, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+body.theme-light .nav-logout {
+  color: #8a2037;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.82), transparent 38%),
+    linear-gradient(180deg, rgba(255, 245, 247, 0.98), rgba(248, 197, 211, 0.98));
+  border-color: rgba(210, 82, 112, 0.48);
+  box-shadow:
+    0 10px 18px rgba(168, 62, 90, 0.16),
+    0 0 16px rgba(255, 120, 150, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.82);
+}
+
+body.theme-light #screen-menu .screen-nav-row .nav-btn {
+  color: #5a3600;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.82), transparent 38%),
+    linear-gradient(180deg, rgba(255, 241, 178, 0.98), rgba(231, 178, 82, 0.98));
+  border-color: rgba(207, 143, 36, 0.5);
+  box-shadow:
+    0 10px 18px rgba(166, 106, 14, 0.16),
+    0 0 16px rgba(255, 201, 82, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+body.theme-light #screen-menu .screen-nav-row .nav-logout {
+  color: #8a2037;
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255,255,255,0.82), transparent 38%),
+    linear-gradient(180deg, rgba(255, 245, 247, 0.98), rgba(248, 197, 211, 0.98));
+  border-color: rgba(210, 82, 112, 0.48);
+  box-shadow:
+    0 10px 18px rgba(168, 62, 90, 0.16),
+    0 0 16px rgba(255, 120, 150, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.82);
+}
+
+@media (max-width: 640px) {
+  .screen-nav-row {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .nav-btn {
+    width: var(--screen-nav-btn-width);
+    min-width: var(--screen-nav-btn-width);
+    flex: 0 0 var(--screen-nav-btn-width);
+    min-height: 38px;
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 13px;
+  }
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+  #screen-menu .screen-nav-row .nav-btn,
+  .nav-btn {
+    width: var(--screen-nav-btn-width);
+    min-width: var(--screen-nav-btn-width);
+    flex: 0 0 var(--screen-nav-btn-width);
+    min-height: 34px;
+    padding: 7px 9px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+}
+
+.mobilePortraitGuide {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #f8fdff;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(126, 236, 255, 0.24), transparent 34%),
+    radial-gradient(circle at 50% 82%, rgba(255, 216, 106, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(7, 17, 32, 0.98), rgba(10, 25, 51, 0.98));
+  backdrop-filter: blur(8px);
+}
+
+.mobilePortraitGuideCard {
+  width: min(100%, 360px);
+  padding: 28px 24px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(34, 68, 126, 0.86), rgba(12, 28, 58, 0.94)),
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.18), transparent 46%);
+  border: 1px solid rgba(192, 236, 255, 0.36);
+  box-shadow:
+    0 24px 54px rgba(0, 8, 24, 0.42),
+    0 0 38px rgba(96, 219, 255, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.mobilePortraitGuideIcon {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 46px;
+  line-height: 1;
+}
+
+.mobilePortraitGuideTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 1000;
+  line-height: 1.28;
+  color: #ffffff;
+  text-shadow:
+    0 0 16px rgba(126, 236, 255, 0.32),
+    0 0 28px rgba(126, 236, 255, 0.16);
+}
+
+.mobilePortraitGuideText {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(230, 245, 255, 0.78);
+}
+
+@media (max-width: 950px) and (orientation: portrait) {
+  .mobilePortraitGuide {
+    display: flex;
+  }
+}
+
+:root {
+  --app-auto-scale: 1;
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+  .wrap {
+    transform: scale(var(--app-auto-scale));
+    transform-origin: top center;
+    width: calc(100% / var(--app-auto-scale));
+  }
+}
+
+@media not all and (max-width: 950px) and (orientation: landscape) {
+  .wrap {
+    transform: none;
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body class="theme-dark">
+  <div class="mobilePortraitGuide" aria-hidden="true">
+    <div class="mobilePortraitGuideCard">
+      <span class="mobilePortraitGuideIcon" aria-hidden="true">↻</span>
+      <h2 class="mobilePortraitGuideTitle">핸드폰을 가로로 돌려서 사용해주세요</h2>
+      <p class="mobilePortraitGuideText">가로모드로 전환하면 연습 화면이 자동으로 맞춰져 보여요.</p>
+    </div>
+  </div>
   <div class="globalStarField" aria-hidden="true">
     <span class="globalMiniStar" style="--global-star-left: 6%; --global-star-top: 72%; --global-star-size: 2px; --global-star-duration: 8.2s; --global-star-delay: -0.8s; --global-star-from-x: -10px; --global-star-from-y: 6px; --global-star-to-x: 12px; --global-star-to-y: -8px;"></span>
     <span class="globalMiniStar" style="--global-star-left: 12%; --global-star-top: 84%; --global-star-size: 3px; --global-star-duration: 7.1s; --global-star-delay: -2.7s; --global-star-from-x: 8px; --global-star-from-y: 11px; --global-star-to-x: -14px; --global-star-to-y: -10px;"></span>
@@ -8184,7 +9073,7 @@ body.theme-light .practiceStaffSlot {
     <!-- 홈 메뉴 -->
     <section id="screen-menu" class="card" style="display:none;">
       <div class="status-card">
-        
+
         <!-- 왼쪽 -->
         <div class="status-left">
           <div class="avatar level-gem gem-tier-1" id="levelGem" aria-label="레벨 보석">
@@ -8252,7 +9141,6 @@ body.theme-light .practiceStaffSlot {
           <span class="challenge-icon">🏆</span>
           <span class="challenge-text">도전! 퍼펙트 리코더</span>
         </button>
-        <button class="menuBtn btn-logout sub" onclick="logout()">🚪 로그아웃</button>
       </div>
     </section>
 
@@ -8355,11 +9243,9 @@ body.theme-light .practiceStaffSlot {
         <div id="songInfo" class="muted">곡을 불러오는 중입니다.</div>
       </div>
 
-      <div class="btnRow3">
-  <button onclick="goToPractice()">연습 시작</button>
-  <button class="sub" onclick="backToLogin()">이전</button>
-  <button class="sub" onclick="goHomeMenu()">홈</button>
-</div>
+      <div class="btnRow">
+        <button onclick="goToPractice()">연습 시작</button>
+      </div>
 
       <div id="songLoadStatus" class="status hidden">곡을 불러오는 중</div>
     </section>
@@ -8463,11 +9349,9 @@ body.theme-light .practiceStaffSlot {
         </div>
 
         <div class="practiceControlRow">
-          <button class="navBtn small" onclick="goPrevScreen()">←</button>
           <button onclick="resetPractice()">다시하기</button>
           <button onclick="startPractice()">시작하기</button>
           <button onclick="stopPractice()">일시정지</button>
-          <button class="navBtn small" onclick="goHomeMenu()">🏠</button>
         </div>
       </div>
 
@@ -8629,11 +9513,6 @@ body.theme-light .practiceStaffSlot {
     </button>
   </div>
 
-  <div class="btnRow" style="margin-top:12px;">
-    <button class="sub" onclick="goHomeMenu()">홈으로</button>
-    <button class="sub" onclick="backToLogin()">로그인으로</button>
-  </div>
-
   <div id="basicTypeStatus" class="status">운지 방식을 선택해 주세요.</div>
 </section>
 
@@ -8702,11 +9581,6 @@ body.theme-light .practiceStaffSlot {
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="btnRow" style="margin-top:12px;">
-    <button class="sub" onclick="goHomeMenu()">홈으로</button>
-    <button class="sub" onclick="backToLogin()">로그인으로</button>
   </div>
 
   <div id="basicRecorderStatus" class="status">기본 운지 화면 준비 완료</div>
@@ -9745,31 +10619,73 @@ function renderSongButtons() {
       });
     }
 
-    function createUnifiedNavRow() {
-      const row = document.createElement("div");
-      row.className = "btnRow3";
-      row.style.marginTop = "12px";
-      row.innerHTML = `
-        <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
-        <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
-        <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
-      `;
-      return row;
-    }
-
-    function createPracticeIconButton({ label, icon, className = "", onClick }) {
+    function createNavButton({ label, icon, className = "", onClick, disabled = false }) {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = className;
-      button.setAttribute("aria-label", label);
-      button.innerHTML = `
-        <span class="icon" aria-hidden="true">${icon}</span>
-        <span>${label}</span>
-      `;
+      button.className = `nav-btn ${className}`.trim();
+      button.innerHTML = `${icon ? `<span class="icon" aria-hidden="true">${icon}</span>` : ""}<span>${label}</span>`;
+      button.disabled = disabled;
       if (onClick) {
         button.onclick = onClick;
       }
       return button;
+    }
+
+    function removeScreenNavRows() {
+      document.querySelectorAll(".screen-nav-row").forEach((row) => row.remove());
+    }
+
+    function getScreenNavTarget(targetId) {
+      if (targetId === "screen-login" || targetId === "step1Section") return null;
+      if (targetId === "screen-song" || targetId === "screen-textbook") return document.getElementById("step2Section");
+      if (targetId === "screen-practice") return document.getElementById("step34Section");
+      if (targetId === "screen-basic") return document.getElementById("step-basic-typeSection");
+      if (targetId === "screen-challenge-play") return document.querySelector("#screen-challenge-play .challenge-play-shell");
+      return document.getElementById(targetId);
+    }
+
+    function updateAppControlBar(screenId) {
+      const targetId = screenId === "screen-login" ? "step1Section" : screenId;
+
+      removeScreenNavRows();
+
+      if (targetId === "step1Section") {
+        return;
+      }
+
+      const navTarget = getScreenNavTarget(targetId);
+      if (!navTarget) return;
+
+      const backHandler = targetId === "screen-challenge-play"
+        ? backFromChallengePlay
+        : goBackFromCurrentScreen;
+
+      const navRow = document.createElement("div");
+      navRow.className = "screen-nav-row";
+      navRow.setAttribute("aria-label", "화면 이동");
+      navRow.append(
+        createNavButton({
+          label: "이전",
+          icon: "←",
+          className: "nav-prev",
+          onClick: backHandler,
+          disabled: targetId === "screen-menu"
+        }),
+        createNavButton({
+          label: "홈",
+          icon: "⌂",
+          className: "nav-home",
+          onClick: goHomeMenu,
+          disabled: targetId === "screen-menu"
+        }),
+        createNavButton({
+          label: "로그아웃",
+          icon: "⏻",
+          className: "nav-logout",
+          onClick: logout
+        })
+      );
+      navTarget.appendChild(navRow);
     }
 
     function enhancePracticeLayout() {
@@ -9842,20 +10758,7 @@ function renderSongButtons() {
       leftGroup.className = "leftGroup";
       leftGroup.append(resetBtn, backSongBtn);
 
-      const rightGroupBox = document.createElement("div");
-      rightGroupBox.className = "rightGroupBox";
-
-      const rightGroup = document.createElement("div");
-      rightGroup.className = "rightGroup";
-      rightGroup.id = "step34UnifiedNav";
-      rightGroup.append(
-        createPracticeIconButton({ label: "\uC774\uC804", icon: "&#8617;", className: "practiceNavBtn button", onClick: goBackFromCurrentScreen }),
-        createPracticeIconButton({ label: "\uD648", icon: "&#127968;", className: "practiceNavBtn button", onClick: goHomeMenu }),
-        createPracticeIconButton({ label: "\uB85C\uADF8\uC544\uC6C3", icon: "&#128682;", className: "practiceNavBtn button", onClick: logout })
-      );
-      rightGroupBox.appendChild(rightGroup);
-
-      footerBar.append(leftGroup, rightGroupBox);
+      footerBar.append(leftGroup);
       controlPanel.insertAdjacentElement("afterend", footerBar);
 
       const statusStack = document.createElement("div");
@@ -9867,55 +10770,41 @@ function renderSongButtons() {
     }
 
     function setupUnifiedNavigation() {
+      document.querySelectorAll("#step2UnifiedNav, #step34UnifiedNav, #basicTypeUnifiedNav, #basicUnifiedNav").forEach((row) => row.remove());
+
       const songSection = document.getElementById("step2Section");
-      if (songSection && !document.getElementById("step2UnifiedNav")) {
+      if (songSection) {
         const actionRow = songSection.querySelector(".btnRow3");
         if (actionRow) {
           actionRow.className = "btnRow";
           actionRow.style.marginTop = "10px";
           actionRow.innerHTML = `<button onclick="goToPractice()">연습 시작</button>`;
-          const navRow = createUnifiedNavRow();
-          navRow.id = "step2UnifiedNav";
-          actionRow.insertAdjacentElement("afterend", navRow);
         }
       }
 
       const practiceSection = document.getElementById("step34Section");
-      if (practiceSection && !document.getElementById("step34UnifiedNav")) {
-        const saveRow = practiceSection.querySelector('button[onclick="save()"]')?.closest(".btnRow");
-        if (saveRow) {
-          const navRow = createUnifiedNavRow();
-          navRow.id = "step34UnifiedNav";
-          saveRow.insertAdjacentElement("afterend", navRow);
-        }
+      if (practiceSection) {
+        practiceSection.querySelector("#step34UnifiedNav")?.remove();
       }
 
       const basicTypeSection = document.getElementById("step-basic-typeSection");
-      if (basicTypeSection && !document.getElementById("basicTypeUnifiedNav")) {
+      if (basicTypeSection) {
         const rows = basicTypeSection.querySelectorAll(".btnRow");
         const navTarget = rows[rows.length - 1];
         if (navTarget) {
-          navTarget.className = "btnRow3";
-          navTarget.innerHTML = `
-            <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
-            <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
-            <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
-          `;
+          navTarget.innerHTML = "";
+          navTarget.classList.add("hidden");
           navTarget.id = "basicTypeUnifiedNav";
         }
       }
 
       const basicSection = document.getElementById("step-basicSection");
-      if (basicSection && !document.getElementById("basicUnifiedNav")) {
+      if (basicSection) {
         const rows = basicSection.querySelectorAll(".btnRow");
         const navTarget = rows[rows.length - 1];
         if (navTarget) {
-          navTarget.className = "btnRow3";
-          navTarget.innerHTML = `
-            <button class="sub" onclick="goBackFromCurrentScreen()"><span class="icon" aria-hidden="true">⬅️</span><span>이전</span></button>
-            <button class="sub" onclick="goHomeMenu()"><span class="icon" aria-hidden="true">🏠</span><span>홈</span></button>
-            <button class="sub" onclick="logout()"><span class="icon" aria-hidden="true">🚪</span><span>로그아웃</span></button>
-          `;
+          navTarget.innerHTML = "";
+          navTarget.classList.add("hidden");
           navTarget.id = "basicUnifiedNav";
         }
       }
@@ -9974,6 +10863,8 @@ function renderSongButtons() {
 
       appCurrentScreen = targetId;
       updatePageTitleByScreen(targetId);
+      updateAppControlBar(targetId);
+      setTimeout(applyMobileLandscapeAutoScale, 80);
     }
 
     function showStep(stepId, options = {}) {
@@ -10152,6 +11043,7 @@ function goHomeMenu() {
   pushAppHistory("screen-menu", { replace: true });
   appHistoryLocked = true;
   renderScreenOnly("screen-menu");
+  setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
 function goPrevScreen() {
@@ -12775,6 +13667,42 @@ function startBasicPractice() {
       });
     }
 
+    function applyMobileLandscapeAutoScale() {
+      const isMobileLandscape =
+        window.matchMedia("(max-width: 950px) and (orientation: landscape)").matches;
+
+      const root = document.documentElement;
+      const wrap = document.querySelector(".wrap");
+
+      if (!wrap) return;
+
+      if (!isMobileLandscape) {
+        root.style.setProperty("--app-auto-scale", "1");
+        return;
+      }
+
+      root.style.setProperty("--app-auto-scale", "1");
+
+      requestAnimationFrame(() => {
+        const contentHeight = wrap.scrollHeight;
+        const viewportHeight = window.innerHeight;
+
+        if (!contentHeight || !viewportHeight) return;
+
+        let scale = viewportHeight / contentHeight;
+
+        scale = Math.min(1, Math.max(0.68, scale));
+
+        root.style.setProperty("--app-auto-scale", scale.toFixed(3));
+      });
+    }
+
+    window.addEventListener("resize", applyMobileLandscapeAutoScale);
+    window.addEventListener("orientationchange", () => {
+      setTimeout(applyMobileLandscapeAutoScale, 120);
+    });
+    document.addEventListener("DOMContentLoaded", applyMobileLandscapeAutoScale);
+
     window.addEventListener("load", () => {
       initTheme();
       bindChallengeButtons();
@@ -12898,10 +13826,6 @@ function startBasicPractice() {
     </div>
   </div>
 
-  <div class="challenge-nav">
-    <button class="sub" onclick="goBackInApp()">← 이전</button>
-    <button class="sub" onclick="goHomeMenu()">🏠 홈</button>
-  </div>
 </section>
 
 <section id="screen-challenge-play" class="challengeScreen">
@@ -12914,7 +13838,6 @@ function startBasicPractice() {
       </div>
       <div class="challenge-play-actions">
         <button type="button" onclick="startPractice()">연주 시작</button>
-        <button type="button" class="sub" onclick="backFromChallengePlay()">이전</button>
       </div>
     </div>
 
@@ -12925,6 +13848,7 @@ function startBasicPractice() {
 <script>
 function goChallenge() {
   showScreen("screen-challenge");
+  setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
 function normalizeSongId(value) {
