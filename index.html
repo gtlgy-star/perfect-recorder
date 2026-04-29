@@ -7215,53 +7215,93 @@ body.theme-light .menuPageTitle {
   display: none;
 }
 
-.practicePatternGrid {
+#step34Section.fingeringTrainingMode .practicePatternGrid,
+#step34Section.fingeringTrainingMode .fingering-practice-options {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 0.72fr;
-  gap: 10px;
+  gap: 12px;
   align-items: stretch;
 }
 
-.patternColumn,
-.speedColumn {
+#step34Section.fingeringTrainingMode .patternColumn,
+#step34Section.fingeringTrainingMode .speedColumn,
+#step34Section.fingeringTrainingMode .fingering-option-group {
   display: grid;
   gap: 8px;
 }
 
-.patternColumn {
+#step34Section.fingeringTrainingMode .fingering-option-group {
+  --group-accent: 120, 238, 196;
+  --group-accent-strong: #7beec4;
+  position: relative;
+  padding: 10px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 22% 8%, rgba(var(--group-accent), 0.22), transparent 34%),
+    linear-gradient(180deg, rgba(var(--group-accent), 0.11), rgba(14, 27, 55, 0.52));
+  border: 1px solid rgba(var(--group-accent), 0.34);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.18),
+    0 0 20px rgba(var(--group-accent), 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+}
+
+#step34Section.fingeringTrainingMode .fingering-group-sequence {
+  --group-accent: 105, 236, 188;
+  --group-accent-strong: #72edc2;
+}
+
+#step34Section.fingeringTrainingMode .fingering-group-jump {
+  --group-accent: 106, 198, 255;
+  --group-accent-strong: #7fd4ff;
+}
+
+#step34Section.fingeringTrainingMode .fingering-group-mixed {
+  --group-accent: 232, 130, 255;
+  --group-accent-strong: #ef9aff;
+}
+
+#step34Section.fingeringTrainingMode .fingering-group-speed {
+  --group-accent: 154, 174, 210;
+  --group-accent-strong: #b8c7e4;
+}
+
+#step34Section.fingeringTrainingMode .patternColumn {
   grid-template-rows: auto 1fr 1fr;
 }
 
-.speedColumn {
+#step34Section.fingeringTrainingMode .speedColumn {
   grid-template-rows: auto auto auto auto;
 }
 
-.patternGroupTitle,
-.patternColumnTitle,
-.speedColumnTitle {
+#step34Section.fingeringTrainingMode .patternGroupTitle,
+#step34Section.fingeringTrainingMode .patternColumnTitle,
+#step34Section.fingeringTrainingMode .speedColumnTitle {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 34px;
-  border-radius: 14px;
+  border-radius: 13px;
   font-size: 14px;
   font-weight: 1000;
-  color: #dff8ff;
-  background: rgba(120, 215, 255, 0.12);
-  border: 1px solid rgba(150, 225, 255, 0.22);
+  color: #f1fbff;
+  background: rgba(var(--group-accent), 0.15);
+  border: 1px solid rgba(var(--group-accent), 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.patternCard,
-.speedBtn,
-.speedButton {
-  border: 1px solid rgba(150, 225, 255, 0.28);
-  border-radius: 16px;
+#step34Section.fingeringTrainingMode .patternCard,
+#step34Section.fingeringTrainingMode .speedBtn,
+#step34Section.fingeringTrainingMode .speedButton {
+  border: 1px solid rgba(var(--group-accent), 0.35);
+  border-radius: 14px;
   padding: 12px;
   cursor: pointer;
   color: #eaf8ff;
   background:
-    radial-gradient(circle at 24% 18%, rgba(160, 235, 255, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(45, 75, 130, 0.72), rgba(16, 32, 72, 0.86));
+    radial-gradient(circle at 24% 18%, rgba(var(--group-accent), 0.2), transparent 34%),
+    linear-gradient(180deg, rgba(45, 75, 130, 0.64), rgba(16, 32, 72, 0.8));
   box-shadow:
     0 10px 22px rgba(0,0,0,0.22),
     inset 0 1px 0 rgba(255,255,255,0.16);
@@ -7272,7 +7312,7 @@ body.theme-light .menuPageTitle {
     background 0.18s ease;
 }
 
-.patternCard {
+#step34Section.fingeringTrainingMode .patternCard {
   min-height: 82px;
   display: flex;
   flex-direction: column;
@@ -7280,29 +7320,74 @@ body.theme-light .menuPageTitle {
   align-items: center;
   gap: 2px;
   text-align: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
-.patternCard:hover,
-.speedBtn:hover,
-.speedButton:hover {
+#step34Section.fingeringTrainingMode .patternCard:active {
+  cursor: grabbing;
+}
+
+#step34Section.fingeringTrainingMode .patternCard.is-touch-dragging {
+  opacity: 0.58;
+}
+
+.patternDragGhost {
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  padding: 12px;
+  border: 1px solid rgba(210, 245, 255, 0.78);
+  border-radius: 14px;
+  color: #eaf8ff;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(160, 235, 255, 0.28), transparent 34%),
+    linear-gradient(180deg, rgba(45, 75, 130, 0.84), rgba(16, 32, 72, 0.94));
+  transform: translate(-50%, -50%) scale(1.04);
+  opacity: 0.94;
+  box-shadow:
+    0 18px 34px rgba(0,0,0,0.32),
+    0 0 24px rgba(120, 220, 255, 0.28);
+}
+
+#step34Section.fingeringTrainingMode .patternCard:hover,
+#step34Section.fingeringTrainingMode .speedBtn:hover,
+#step34Section.fingeringTrainingMode .speedButton:hover {
   transform: translateY(-1px);
+  border-color: rgba(var(--group-accent), 0.62);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,0.24),
+    0 0 18px rgba(var(--group-accent), 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
-.patternCard.selected,
-.patternCard.is-selected {
+#step34Section.fingeringTrainingMode .patternCard.selected,
+#step34Section.fingeringTrainingMode .patternCard.is-selected {
   transform: scale(1.025);
-  border-color: rgba(255, 232, 120, 0.9);
+  border-color: rgba(255, 255, 255, 0.86);
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.2), transparent 34%),
+    linear-gradient(180deg, rgba(var(--group-accent), 0.42), rgba(26, 48, 92, 0.9));
   box-shadow:
     0 14px 28px rgba(0,0,0,0.24),
-    0 0 24px rgba(255, 220, 95, 0.32),
+    0 0 22px rgba(var(--group-accent), 0.35),
+    0 0 10px rgba(255, 255, 255, 0.18),
     inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
-.patternCard.activeSlot1 {
+#step34Section.fingeringTrainingMode .patternCard.activeSlot1 {
   border-color: rgba(115, 235, 255, 0.88);
 }
 
-.patternCard.activeSlot2 {
+#step34Section.fingeringTrainingMode .patternCard.activeSlot2 {
   border-color: rgba(206, 160, 255, 0.9);
 }
 
@@ -7347,22 +7432,23 @@ body.theme-light .menuPageTitle {
   background: #ffe77a;
 }
 
-.speedBtn {
+#step34Section.fingeringTrainingMode .speedBtn {
   min-height: 52px;
   font-size: 14px;
   font-weight: 900;
 }
 
-.speedBtn.active,
-.speedBtn.is-selected,
-.speedButton.active,
-.speedButton.is-selected {
+#step34Section.fingeringTrainingMode .speedBtn.active,
+#step34Section.fingeringTrainingMode .speedBtn.is-selected,
+#step34Section.fingeringTrainingMode .speedButton.active,
+#step34Section.fingeringTrainingMode .speedButton.is-selected {
   background: linear-gradient(180deg, #6ecbff, #2f80ed);
   color: #fff;
-  border-color: rgba(210, 245, 255, 0.76);
+  border-color: rgba(240, 250, 255, 0.88);
   box-shadow:
     0 10px 24px rgba(47, 128, 237, 0.34),
-    0 0 20px rgba(110, 210, 255, 0.28);
+    0 0 20px rgba(110, 210, 255, 0.34),
+    0 0 9px rgba(255, 255, 255, 0.18);
 }
 
 .nextPatternGuide {
@@ -7447,7 +7533,7 @@ body.theme-light .menuPageTitle {
   min-height: 150px;
   padding: 12px;
   border-radius: 18px;
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
   background:
     radial-gradient(circle at 18% 16%, rgba(165, 235, 255, 0.16), transparent 36%),
@@ -7472,9 +7558,10 @@ body.theme-light .menuPageTitle {
 
 .practiceStaffSlot.is-drag-over {
   transform: translateY(-2px);
-  border-color: rgba(255,215,106,0.95);
+  border-color: rgba(245,255,255,0.96);
   box-shadow:
-    0 0 0 4px rgba(255,215,106,0.28),
+    0 0 0 4px rgba(110,210,255,0.28),
+    0 0 28px rgba(110,230,255,0.36),
     0 14px 28px rgba(0,0,0,0.18),
     inset 0 1px 0 rgba(255,255,255,0.18);
 }
@@ -7782,26 +7869,55 @@ body.theme-light .practiceInfoRow {
   color: #163b63;
 }
 
-body.theme-light .patternGroupTitle,
-body.theme-light .patternColumnTitle,
-body.theme-light .speedColumnTitle,
+body.theme-light #step34Section.fingeringTrainingMode .fingering-option-group {
+  background:
+    radial-gradient(circle at 22% 8%, rgba(var(--group-accent), 0.32), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(var(--group-accent), 0.16));
+  border-color: rgba(var(--group-accent), 0.42);
+  box-shadow:
+    0 12px 26px rgba(60, 120, 180, 0.13),
+    0 0 18px rgba(var(--group-accent), 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+}
+
+body.theme-light #step34Section.fingeringTrainingMode .patternGroupTitle,
+body.theme-light #step34Section.fingeringTrainingMode .patternColumnTitle,
+body.theme-light #step34Section.fingeringTrainingMode .speedColumnTitle {
+  color: #123e61;
+  background: rgba(255,255,255,0.68);
+  border-color: rgba(var(--group-accent), 0.36);
+}
+
 body.theme-light .nextPatternGuide {
   color: #17486f;
   background: rgba(255,255,255,0.72);
   border-color: rgba(78, 145, 205, 0.28);
 }
 
-body.theme-light .patternCard,
-body.theme-light .speedBtn,
-body.theme-light .speedButton {
+body.theme-light #step34Section.fingeringTrainingMode .patternCard,
+body.theme-light #step34Section.fingeringTrainingMode .speedBtn,
+body.theme-light #step34Section.fingeringTrainingMode .speedButton {
   color: #16415f;
   background:
-    radial-gradient(circle at 24% 18%, rgba(255,255,255,0.72), transparent 38%),
-    linear-gradient(180deg, rgba(230, 248, 255, 0.92), rgba(182, 218, 250, 0.9));
-  border-color: rgba(80, 150, 210, 0.32);
+    radial-gradient(circle at 24% 18%, rgba(255,255,255,0.76), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(var(--group-accent), 0.18));
+  border-color: rgba(var(--group-accent), 0.38);
   box-shadow:
     0 10px 22px rgba(60, 120, 180, 0.16),
     inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body.theme-light #step34Section.fingeringTrainingMode .patternCard.selected,
+body.theme-light #step34Section.fingeringTrainingMode .patternCard.is-selected {
+  color: #102f4b;
+  border-color: rgba(255, 255, 255, 0.95);
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.86), transparent 38%),
+    linear-gradient(180deg, rgba(var(--group-accent), 0.38), rgba(255, 255, 255, 0.74));
+  box-shadow:
+    0 13px 26px rgba(60, 120, 180, 0.18),
+    0 0 22px rgba(var(--group-accent), 0.34),
+    inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
 body.theme-light .patternCardNotes {
@@ -7891,31 +8007,38 @@ body.theme-light .practiceStaffSlot {
     flex-direction: column;
   }
 
-  .practicePatternGrid {
+  #step34Section.fingeringTrainingMode .practicePatternGrid,
+  #step34Section.fingeringTrainingMode .fingering-practice-options {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
 
-  .patternColumn,
-  .speedColumn {
+  #step34Section.fingeringTrainingMode .patternColumn,
+  #step34Section.fingeringTrainingMode .speedColumn,
+  #step34Section.fingeringTrainingMode .fingering-option-group {
     gap: 6px;
   }
 
-  .patternGroupTitle,
-  .patternColumnTitle,
-  .speedColumnTitle {
+  #step34Section.fingeringTrainingMode .fingering-option-group {
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  #step34Section.fingeringTrainingMode .patternGroupTitle,
+  #step34Section.fingeringTrainingMode .patternColumnTitle,
+  #step34Section.fingeringTrainingMode .speedColumnTitle {
     min-height: 30px;
     font-size: 12px;
   }
 
-  .patternCard,
-  .speedBtn,
-  .speedButton {
+  #step34Section.fingeringTrainingMode .patternCard,
+  #step34Section.fingeringTrainingMode .speedBtn,
+  #step34Section.fingeringTrainingMode .speedButton {
     padding: 9px;
     border-radius: 14px;
   }
 
-  .patternCard {
+  #step34Section.fingeringTrainingMode .patternCard {
     min-height: 68px;
   }
 
@@ -7933,13 +8056,13 @@ body.theme-light .practiceStaffSlot {
     padding: 10px;
   }
 
-  .speedColumn {
+  #step34Section.fingeringTrainingMode .speedColumn {
     grid-column: span 2;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto;
   }
 
-  .speedColumnTitle {
+  #step34Section.fingeringTrainingMode .speedColumnTitle {
     grid-column: span 3;
   }
 
@@ -7980,6 +8103,15 @@ body.theme-light .practiceStaffSlot {
 }
 
 @media (max-width: 480px) {
+  #step34Section.fingeringTrainingMode .practicePatternGrid,
+  #step34Section.fingeringTrainingMode .fingering-practice-options {
+    grid-template-columns: 1fr;
+  }
+
+  #step34Section.fingeringTrainingMode .speedColumn {
+    grid-column: auto;
+  }
+
   #step34Section.fingeringTrainingMode .practiceControlRow {
     grid-template-columns: 0.7fr 1fr 1fr 1fr 0.7fr;
     gap: 6px;
@@ -8234,8 +8366,8 @@ body.theme-light .practiceStaffSlot {
 
     <section id="step34Section" class="card hidden">
       <div class="practiceGameShell">
-        <div class="practicePatternGrid" aria-label="운지법 가락 선택">
-          <div class="patternColumn">
+        <div class="practicePatternGrid fingering-practice-options" aria-label="운지법 가락 선택">
+          <div class="patternColumn fingering-option-group fingering-group-sequence">
             <div class="patternGroupTitle patternColumnTitle">순차진행</div>
             <button type="button" class="patternCard" data-pattern="stepUp">
               <div class="patternTitle">위로 가는 가락</div>
@@ -8249,7 +8381,7 @@ body.theme-light .practiceStaffSlot {
             </button>
           </div>
 
-          <div class="patternColumn">
+          <div class="patternColumn fingering-option-group fingering-group-jump">
             <div class="patternGroupTitle patternColumnTitle">도약진행</div>
             <button type="button" class="patternCard" data-pattern="leapUp">
               <div class="patternTitle">위로 뛰는 가락</div>
@@ -8263,7 +8395,7 @@ body.theme-light .practiceStaffSlot {
             </button>
           </div>
 
-          <div class="patternColumn">
+          <div class="patternColumn fingering-option-group fingering-group-mixed">
             <div class="patternGroupTitle patternColumnTitle">혼합진행</div>
             <button type="button" class="patternCard" data-pattern="mixedUpDown">
               <div class="patternTitle">오르내리는 가락</div>
@@ -8275,7 +8407,7 @@ body.theme-light .practiceStaffSlot {
             </button>
           </div>
 
-          <div class="speedColumn">
+          <div class="speedColumn fingering-option-group fingering-group-speed">
             <div class="speedColumnTitle">속도</div>
             <button type="button" class="speedBtn speedButton" data-speed-key="slow" data-speed="1200">🐢 느림</button>
             <button type="button" class="speedBtn speedButton active is-selected" data-speed-key="normal" data-speed="800">🙂 보통</button>
@@ -8283,7 +8415,7 @@ body.theme-light .practiceStaffSlot {
           </div>
         </div>
 
-        <div id="nextPatternGuide" class="nextPatternGuide">다음 선택: 1번 가락</div>
+        <div id="nextPatternGuide" class="nextPatternGuide">가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.</div>
 
         <div class="practiceMainCard">
           <div class="notePreviewRow">
@@ -8301,23 +8433,23 @@ body.theme-light .practiceStaffSlot {
 
             <div class="practiceRight">
               <div class="practiceStaffStack">
-                <p class="practiceStaffGuide">카드를 눌러 넣거나, 끌어다 놓아도 됩니다. 1번 또는 2번 가락 칸을 먼저 선택할 수도 있어요.</p>
+                <p class="practiceStaffGuide">가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.</p>
 
                 <div class="practiceStaffSlot" data-slot="0">
                   <div class="practiceStaffSlotHead">
                     <span class="practiceStaffSlotLabel">1번 가락</span>
-                    <span id="practiceStaffTitle1" class="practiceStaffPatternTitle">카드를 선택하세요</span>
+                    <span id="practiceStaffTitle1" class="practiceStaffPatternTitle">카드를 놓아주세요</span>
                   </div>
-                  <div class="slotEmptyHint">+ 카드 넣기</div>
+                  <div class="slotEmptyHint">가락 카드를 끌어다 놓으세요</div>
                   <canvas id="fingeringStaffCanvas1" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
 
                 <div class="practiceStaffSlot" data-slot="1">
                   <div class="practiceStaffSlotHead">
                     <span class="practiceStaffSlotLabel">2번 가락</span>
-                    <span id="practiceStaffTitle2" class="practiceStaffPatternTitle">카드를 선택하세요</span>
+                    <span id="practiceStaffTitle2" class="practiceStaffPatternTitle">카드를 놓아주세요</span>
                   </div>
-                  <div class="slotEmptyHint">+ 카드 넣기</div>
+                  <div class="slotEmptyHint">가락 카드를 끌어다 놓으세요</div>
                   <canvas id="fingeringStaffCanvas2" class="fingeringStaffCanvas" width="720" height="170"></canvas>
                 </div>
               </div>
@@ -12069,12 +12201,12 @@ function startBasicPractice() {
 
     function updateNextPatternGuide() {
       const guide = document.getElementById("nextPatternGuide");
-      if (guide) guide.textContent = `현재 선택: ${activePatternSlot + 1}번 가락`;
+      if (guide) guide.textContent = "가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.";
     }
 
     function updateActivePatternSlotUI() {
       document.querySelectorAll(".practiceStaffSlot").forEach((slot, index) => {
-        slot.classList.toggle("is-active", index === activePatternSlot);
+        slot.classList.remove("is-active");
       });
       updateNextPatternGuide();
     }
@@ -12082,6 +12214,118 @@ function startBasicPractice() {
     function setActivePatternSlot(slotIndex) {
       activePatternSlot = slotIndex === 1 ? 1 : 0;
       updateActivePatternSlotUI();
+    }
+
+    let touchPatternDrag = null;
+
+    function getPracticeStaffSlotFromPoint(clientX, clientY) {
+      const target = document.elementFromPoint(clientX, clientY);
+      return target ? target.closest(".practiceStaffSlot") : null;
+    }
+
+    function setDragOverSlot(slot) {
+      document.querySelectorAll(".practiceStaffSlot.is-drag-over").forEach((activeSlot) => {
+        if (activeSlot !== slot) activeSlot.classList.remove("is-drag-over");
+      });
+      if (slot) slot.classList.add("is-drag-over");
+    }
+
+    function clearPatternTouchDrag() {
+      if (!touchPatternDrag) return;
+
+      if (touchPatternDrag.ghost) {
+        touchPatternDrag.ghost.remove();
+      }
+
+      if (touchPatternDrag.card) {
+        touchPatternDrag.card.classList.remove("is-touch-dragging");
+      }
+
+      setDragOverSlot(null);
+      touchPatternDrag = null;
+    }
+
+    function startPatternTouchDrag(event, card) {
+      if (event.pointerType === "mouse" || event.button !== 0) return;
+
+      touchPatternDrag = {
+        pointerId: event.pointerId,
+        card,
+        patternKey: card.dataset.pattern,
+        startX: event.clientX,
+        startY: event.clientY,
+        dragging: false,
+        ghost: null,
+        overSlot: null
+      };
+
+      card.setPointerCapture?.(event.pointerId);
+    }
+
+    function movePatternTouchDrag(event) {
+      if (!touchPatternDrag || touchPatternDrag.pointerId !== event.pointerId) return;
+
+      const deltaX = event.clientX - touchPatternDrag.startX;
+      const deltaY = event.clientY - touchPatternDrag.startY;
+      const distance = Math.hypot(deltaX, deltaY);
+
+      if (!touchPatternDrag.dragging && distance < 8) return;
+
+      if (!touchPatternDrag.dragging) {
+        const rect = touchPatternDrag.card.getBoundingClientRect();
+        const ghost = touchPatternDrag.card.cloneNode(true);
+        ghost.classList.add("patternDragGhost");
+        ghost.style.width = `${rect.width}px`;
+        ghost.style.height = `${rect.height}px`;
+        document.body.appendChild(ghost);
+
+        touchPatternDrag.ghost = ghost;
+        touchPatternDrag.dragging = true;
+        touchPatternDrag.card.classList.add("is-touch-dragging");
+      }
+
+      event.preventDefault();
+
+      touchPatternDrag.ghost.style.left = `${event.clientX}px`;
+      touchPatternDrag.ghost.style.top = `${event.clientY}px`;
+
+      const slot = getPracticeStaffSlotFromPoint(event.clientX, event.clientY);
+      touchPatternDrag.overSlot = slot;
+      setDragOverSlot(slot);
+    }
+
+    function endPatternTouchDrag(event) {
+      if (!touchPatternDrag || touchPatternDrag.pointerId !== event.pointerId) return;
+
+      if (touchPatternDrag.dragging) {
+        event.preventDefault();
+
+        const slot = touchPatternDrag.overSlot || getPracticeStaffSlotFromPoint(event.clientX, event.clientY);
+        const slotIndex = Number(slot?.dataset.slot);
+
+        if (slot && Number.isInteger(slotIndex)) {
+          assignFingeringPatternToSlot(slotIndex, touchPatternDrag.patternKey);
+        }
+      }
+
+      touchPatternDrag.card.releasePointerCapture?.(event.pointerId);
+      clearPatternTouchDrag();
+    }
+
+    function setupPatternTouchDrag(card) {
+      if (card.dataset.touchDragBound === "true") return;
+
+      card.addEventListener("pointerdown", (event) => startPatternTouchDrag(event, card));
+      card.addEventListener("pointermove", movePatternTouchDrag);
+      card.addEventListener("pointerup", endPatternTouchDrag);
+      card.addEventListener("pointercancel", (event) => {
+        if (touchPatternDrag?.pointerId === event.pointerId) {
+          card.releasePointerCapture?.(event.pointerId);
+          clearPatternTouchDrag();
+        }
+      });
+
+      card.dataset.touchDragBound = "true";
     }
 
     function updateSlotEmptyState(slotIndex) {
@@ -12153,7 +12397,7 @@ function startBasicPractice() {
       selectedPracticePatterns.forEach((patternKey, index) => {
         const titleEl = document.getElementById(`practiceStaffTitle${index + 1}`);
         const pattern = FINGERING_PRACTICE_PATTERNS[patternKey];
-        if (titleEl) titleEl.textContent = pattern ? pattern.fullTitle : "카드를 선택하세요";
+        if (titleEl) titleEl.textContent = pattern ? pattern.fullTitle : "카드를 놓아주세요";
       });
     }
 
@@ -12286,7 +12530,7 @@ function startBasicPractice() {
         ctx.fillStyle = "rgba(225, 242, 255, 0.68)";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("가락 카드를 선택하세요", w * 0.54, staffTop + lineGap * 2);
+        ctx.fillText("가락 카드를 끌어다 놓으세요", w * 0.54, staffTop + lineGap * 2);
         ctx.restore();
         return;
       }
@@ -12401,7 +12645,7 @@ function startBasicPractice() {
       if (!notes.length) {
         stopFingeringPracticeTimer();
         renderFingeringPracticeFrame();
-        setStatus("practiceStatus", "가락 카드 2장을 선택해 주세요", "");
+        setStatus("practiceStatus", "가락 카드 2장을 슬롯에 놓아주세요", "");
         return;
       }
 
@@ -12439,7 +12683,7 @@ function startBasicPractice() {
 
       if (selectedPracticePatterns.some((patternKey) => !patternKey)) {
         renderFingeringPracticeFrame();
-        setStatus("practiceStatus", "가락 카드 2장을 선택해 주세요", "");
+        setStatus("practiceStatus", "가락 카드 2장을 슬롯에 놓아주세요", "");
         return;
       }
 
@@ -12464,23 +12708,32 @@ function startBasicPractice() {
     function setupFingeringPracticeControls() {
       document.querySelectorAll(".patternCard").forEach((btn) => {
         btn.setAttribute("draggable", "true");
+        btn.onclick = null;
 
-        btn.onclick = () => {
-          selectFingeringPattern(btn.dataset.pattern);
-        };
+        if (btn.dataset.nativeDragBound !== "true") {
+          btn.addEventListener("dragstart", (event) => {
+            event.dataTransfer.setData("text/plain", btn.dataset.pattern || "");
+            event.dataTransfer.effectAllowed = "copy";
+          });
 
-        btn.addEventListener("dragstart", (event) => {
-          event.dataTransfer.setData("text/plain", btn.dataset.pattern || "");
-        });
+          btn.addEventListener("dragend", () => {
+            setDragOverSlot(null);
+          });
+
+          btn.dataset.nativeDragBound = "true";
+        }
+
+        setupPatternTouchDrag(btn);
       });
 
       document.querySelectorAll(".practiceStaffSlot").forEach((slot, index) => {
-        slot.addEventListener("click", () => {
-          setActivePatternSlot(index);
-        });
+        if (slot.dataset.dropBound === "true") return;
+
+        slot.onclick = null;
 
         slot.addEventListener("dragover", (event) => {
           event.preventDefault();
+          event.dataTransfer.dropEffect = "copy";
           slot.classList.add("is-drag-over");
         });
 
@@ -12496,9 +12749,9 @@ function startBasicPractice() {
           if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
           assignFingeringPatternToSlot(index, patternKey);
-          setActivePatternSlot(index);
-          nextPatternSlot = index === 0 ? 1 : 0;
         });
+
+        slot.dataset.dropBound = "true";
       });
 
       document.querySelectorAll(".speedBtn, .speedButton").forEach((btn) => {
