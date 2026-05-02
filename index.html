@@ -10023,6 +10023,52 @@ body.theme-light .readyCardHint {
     inset 0 1px 0 rgba(255,255,255,0.32);
 }
 
+/* 윗줄: 초록 → 파랑 → 보라 */
+.songChoiceBtn.row-top,
+.songChoiceBtn.row-bottom {
+  background-blend-mode: screen;
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -24px 50px rgba(0, 0, 0, 0.16),
+    0 14px 30px rgba(0, 0, 0, 0.22) !important;
+}
+
+.songChoiceBtn.row-top:nth-child(1) {
+  background: linear-gradient(135deg, rgba(34,197,94,0.62), rgba(74,222,128,0.36)) !important;
+}
+
+.songChoiceBtn.row-top:nth-child(2) {
+  background: linear-gradient(135deg, rgba(59,130,246,0.62), rgba(96,165,250,0.36)) !important;
+}
+
+.songChoiceBtn.row-top:nth-child(3) {
+  background: linear-gradient(135deg, rgba(99,102,241,0.62), rgba(139,92,246,0.36)) !important;
+}
+
+.songChoiceBtn.row-top:nth-child(4) {
+  background: linear-gradient(135deg, rgba(139,92,246,0.62), rgba(167,139,250,0.36)) !important;
+}
+
+/* 아랫줄: 노랑 → 주황 → 빨강 */
+.songChoiceBtn.row-bottom:nth-child(5) {
+  background: linear-gradient(135deg, rgba(250,204,21,0.62), rgba(253,224,71,0.34)) !important;
+}
+
+.songChoiceBtn.row-bottom:nth-child(6) {
+  background: linear-gradient(135deg, rgba(251,146,60,0.62), rgba(249,115,22,0.36)) !important;
+}
+
+.songChoiceBtn.row-bottom:nth-child(7) {
+  background: linear-gradient(135deg, rgba(239,68,68,0.62), rgba(220,38,38,0.36)) !important;
+}
+
+.songChoiceBtn.row-bottom:nth-child(8) {
+  background: linear-gradient(135deg, rgba(185,28,28,0.62), rgba(127,29,29,0.38)) !important;
+}
+
   </style>
 </head>
 <body class="theme-dark">
@@ -10831,14 +10877,14 @@ body.theme-light .readyCardHint {
     let loadingIndex = 0;
     let loadingInterval = null;
     const SHORT_SONG_TITLES = [
-      "나비야",
-      "비행기",
       "학교종",
-      "작은별",
-      "산토끼",
-      "거미가 줄을 타고",
+      "똑같아요",
       "환희의 송가",
-      "에델바이스"
+      "작은별",
+      "나비야",
+      "통통통통",
+      "잠자리",
+      "고향의 봄"
     ];
     const FALLBACK_CHALLENGE_SONGS = {
       JAGEUNBYEOL: {
@@ -11787,7 +11833,7 @@ function renderSongButtons() {
         return;
       }
 
-      songs.forEach((song) => {
+      songs.forEach((song, index) => {
         const ui = getSongCardPresentation(song);
         const storedScore = getSongStoredScore(song.songId);
         const score = Number.isFinite(storedScore) ? storedScore : 0;
@@ -11801,6 +11847,11 @@ function renderSongButtons() {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = `songChoiceBtn ${ui.themeClass}${String(song.songId) === selectedId ? " selected" : ""}`;
+        if (index < 4) {
+          btn.classList.add("row-top");
+        } else {
+          btn.classList.add("row-bottom");
+        }
         btn.onclick = () => selectSongById(song.songId);
         btn.innerHTML = `
           <span class="songChoicePattern" aria-hidden="true">${ui.pattern}</span>
@@ -13706,8 +13757,8 @@ function drawRest(ctx, x, staffTop, duration) {
         return;
       }
 
-      if (!song.notation) {
-        setStatus("practiceStatus", "notation 정보가 없습니다.", "bad");
+      if (!String(song.notation || "").trim()) {
+        setStatus("practiceStatus", "아직 악보가 준비 중입니다.", "");
         return;
       }
 

@@ -6,48 +6,16 @@ let songsRefreshPromise = null;
 
 const LOCAL_SHORT_SONGS = [
   {
-    songId: "NABIYA",
-    title: "나비야",
-    bpm: 88,
-    timeSignature: "4/4",
-    recorderImage: "",
-    notation: "G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 D5/1 E5/1 F5/1 G5/1 G5/1 G5/2 G5/1 E5/1 E5/1 E5/1 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2 D5/1 D5/1 D5/1 D5/1 D5/1 E5/1 F5/2 E5/1 E5/1 E5/1 E5/1 E5/1 F5/1 G5/2 G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2"
-  },
-  {
-    songId: "BIHAENGGI",
-    title: "\uBE44\uD589\uAE30",
-    bpm: 100,
-    timeSignature: "4/4",
-    recorderImage: "",
-    notation: "B5/1.5 A5/0.5 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 A5/2 B5/1 B5/1 B5/2 B5/1.5 A5/0.5 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 B5/1.5 A5/0.5 G5/3 R/1"
-  },
-  {
     songId: "HAKGYOJONG",
     title: "\uD559\uAD50\uC885",
     bpm: 84,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "G5/1 G5/1 A5/1 A5/1 G5/1 G5/1 E5/2 G5/1 G5/1 E5/1 E5/1 D5/3 R/1 G5/1 G5/1 A5/1 A5/1 G5/1 G5/1 E5/2 G5/1 E5/1 D5/1 E5/1 C5/3 R/1"
   },
   {
-    songId: "JAGEUNBYEOL",
-    title: "\uC791\uC740\uBCC4",
-    bpm: 90,
-    timeSignature: "4/4",
-    recorderImage: "",
-    notation: ""
-  },
-  {
-    songId: "SANTOKKI",
-    title: "\uC0B0\uD1A0\uB07C",
-    bpm: 88,
-    timeSignature: "4/4",
-    recorderImage: "",
-    notation: ""
-  },
-  {
-    songId: "SPIDER",
-    title: "\uAC70\uBBF8\uAC00 \uC904\uC744 \uD0C0\uACE0",
+    songId: "SAME_SAME",
+    title: "\uB611\uAC19\uC544\uC694",
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
@@ -59,12 +27,44 @@ const LOCAL_SHORT_SONGS = [
     bpm: 92,
     timeSignature: "4/4",
     recorderImage: "",
+    notation: "E5/1 E5/1 F5/1 G5/1 G5/1 F5/1 E5/1 D5/1 C5/1 C5/1 D5/1 E5/1 E5/1 D5/1 D5/2 E5/1 E5/1 F5/1 G5/1 G5/1 F5/1 E5/1 D5/1 C5/1 C5/1 D5/1 E5/1 D5/1 C5/1 C5/2"
+  },
+  {
+    songId: "JAGEUNBYEOL",
+    title: "\uC791\uC740\uBCC4",
+    bpm: 90,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: "C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2"
+  },
+  {
+    songId: "NABIYA",
+    title: "\uB098\uBE44\uC57C",
+    bpm: 88,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: "G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 D5/1 E5/1 F5/1 G5/1 G5/1 G5/2 G5/1 E5/1 E5/1 E5/1 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2 D5/1 D5/1 D5/1 D5/1 D5/1 E5/1 F5/2 E5/1 E5/1 E5/1 E5/1 E5/1 F5/1 G5/2 G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2"
+  },
+  {
+    songId: "TONGTONG",
+    title: "\uD1B5\uD1B5\uD1B5\uD1B5",
+    bpm: 90,
+    timeSignature: "4/4",
+    recorderImage: "",
     notation: ""
   },
   {
-    songId: "EDELWEISS",
-    title: "\uC5D0\uB378\uBC14\uC774\uC2A4",
-    bpm: 80,
+    songId: "DRAGONFLY",
+    title: "\uC7A0\uC790\uB9AC",
+    bpm: 90,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "HOMETOWN_SPRING",
+    title: "\uACE0\uD5A5\uC758 \uBD04",
+    bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
     notation: ""
