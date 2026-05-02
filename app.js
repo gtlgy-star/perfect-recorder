@@ -4,6 +4,77 @@ const SONGS_CACHE_TIME_KEY = "recorder_student_songs_cache_time_v1";
 const SONGS_CACHE_MAX_AGE_MS = 1000 * 60 * 10;
 let songsRefreshPromise = null;
 
+const LOCAL_SHORT_SONGS = [
+  {
+    songId: "NABIYA",
+    title: "\uB098\uBE44\uC57C",
+    bpm: 88,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "BIHAENGGI",
+    title: "\uBE44\uD589\uAE30",
+    bpm: 96,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "HAKGYOJONG",
+    title: "\uD559\uAD50\uC885",
+    bpm: 84,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "JAGEUNBYEOL",
+    title: "\uC791\uC740\uBCC4",
+    bpm: 90,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "SANTOKKI",
+    title: "\uC0B0\uD1A0\uB07C",
+    bpm: 88,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "SPIDER",
+    title: "\uAC70\uBBF8\uAC00 \uC904\uC744 \uD0C0\uACE0",
+    bpm: 90,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "ODE",
+    title: "\uD658\uD76C\uC758 \uC1A1\uAC00",
+    bpm: 92,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  },
+  {
+    songId: "EDELWEISS",
+    title: "\uC5D0\uB378\uBC14\uC774\uC2A4",
+    bpm: 80,
+    timeSignature: "4/4",
+    recorderImage: "",
+    notation: ""
+  }
+];
+
+function getLocalShortSongs() {
+  return LOCAL_SHORT_SONGS.map(song => ({ ...song }));
+}
+
 const app = {
   user: null,
   songs: [],
@@ -21,43 +92,13 @@ const app = {
   },
 
   async loadSongs() {
-    const cached = loadSongsCache();
-    if (cached.length) {
-      this.songs = cached;
-      const stale = isSongsCacheStale();
-      const refreshPromise = stale ? this.refreshSongs() : this.refreshSongs();
-      return { ok: true, songs: cached, fromCache: true, stale, refreshPromise };
-    }
-
-    try {
-      return await this.refreshSongs();
-    } catch (err) {
-      const mock = getMockSongs();
-      this.songs = mock;
-      return { ok: true, songs: mock, fromMock: true };
-    }
+    const songs = getLocalShortSongs();
+    this.songs = songs;
+    return { ok: true, songs, fromLocal: true };
   },
 
-  async refreshSongs({ force = false } = {}) {
-    if (!force && songsRefreshPromise) {
-      return songsRefreshPromise;
-    }
-
-    songsRefreshPromise = (async () => {
-      try {
-        const result = await this.api("getSongs", {});
-        const songs = Array.isArray(result?.songs) ? result.songs : [];
-
-        this.songs = songs;
-        saveSongsCache(songs);
-
-        return { ok: true, songs };
-      } finally {
-        songsRefreshPromise = null;
-      }
-    })();
-
-    return songsRefreshPromise;
+  async refreshSongs() {
+    return this.loadSongs();
   },
 
   selectSong(songId) {

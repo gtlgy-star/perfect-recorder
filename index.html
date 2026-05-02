@@ -976,6 +976,21 @@ button:disabled {
       gap: 10px;
     }
 
+    #step2Section .songPracticeStartRow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    #step2Section .songPracticeStartRow button {
+      grid-column: 3 / span 2;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      padding: 14px 26px;
+    }
+
     .btnRow3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -1480,7 +1495,6 @@ button:disabled {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.75) 0 16%, transparent 17%),
         radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.5) 0 12%, transparent 13%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 55%);
       pointer-events: none;
@@ -1512,7 +1526,7 @@ button:disabled {
 
     .songCardRow-top {
       gap: 14px;
-      align-items: center;
+      align-items: flex-start;
       margin-top: 4px;
     }
 
@@ -1703,17 +1717,32 @@ button:disabled {
     }
 
     .songChoiceTitle {
-      display: block;
-      flex: 1 1 auto;
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
       min-width: 0;
+      max-width: 100%;
       font-size: 22px;
       font-weight: 900;
       color: #15406e;
       letter-spacing: -0.02em;
-      line-height: 1.2;
-      white-space: nowrap;
+      line-height: 1.15;
+    }
+
+    .songChoiceTitleText {
+      display: -webkit-box;
+      flex: 1;
+      min-width: 0;
+      max-width: 100%;
+      line-height: 1.15;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: unset;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     .songChoiceMeta {
@@ -1959,7 +1988,8 @@ button:disabled {
       }
     }
 
-    .songTheme-butterfly {
+    .songTheme-butterfly,
+    .songTheme-nabi {
       background: linear-gradient(180deg, #fff3f1 0%, #ffc9c2 55%, #ff9f97 100%);
       border-color: #ff8f85;
     }
@@ -1969,17 +1999,20 @@ button:disabled {
       border-color: #ffad4d;
     }
 
-    .songTheme-bell {
+    .songTheme-bell,
+    .songTheme-school {
       background: linear-gradient(180deg, #fffef2 0%, #fff0a8 52%, #ffd85c 100%);
       border-color: #efc43d;
     }
 
-    .songTheme-star {
+    .songTheme-star,
+    .songTheme-twinkle {
       background: linear-gradient(180deg, #f4fff0 0%, #c8f3a9 52%, #87db71 100%);
       border-color: #67c65b;
     }
 
-    .songTheme-butterfly .songChoiceArt {
+    .songTheme-butterfly .songChoiceArt,
+    .songTheme-nabi .songChoiceArt {
       background:
         radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
         linear-gradient(180deg, #fffdfd 0%, #ffd7d1 100%);
@@ -1991,19 +2024,22 @@ button:disabled {
         linear-gradient(180deg, #fffdfa 0%, #ffe3b4 100%);
     }
 
-    .songTheme-bell .songChoiceArt {
+    .songTheme-bell .songChoiceArt,
+    .songTheme-school .songChoiceArt {
       background:
         radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
         linear-gradient(180deg, #fffef9 0%, #ffefb1 100%);
     }
 
-    .songTheme-star .songChoiceArt {
+    .songTheme-star .songChoiceArt,
+    .songTheme-twinkle .songChoiceArt {
       background:
         radial-gradient(circle at 28% 26%, rgba(255,255,255,0.95) 0 18%, transparent 19%),
         linear-gradient(180deg, #fcfff8 0%, #c9efb9 100%);
     }
 
-    .songTheme-butterfly .songChoiceEmoji {
+    .songTheme-butterfly .songChoiceEmoji,
+    .songTheme-nabi .songChoiceEmoji {
       background: linear-gradient(180deg, #fff4f2 0%, #ffd9d1 100%);
     }
 
@@ -2011,11 +2047,13 @@ button:disabled {
       background: linear-gradient(180deg, #fff8ef 0%, #ffe6c2 100%);
     }
 
-    .songTheme-bell .songChoiceEmoji {
+    .songTheme-bell .songChoiceEmoji,
+    .songTheme-school .songChoiceEmoji {
       background: linear-gradient(180deg, #fffdf0 0%, #fff0b8 100%);
     }
 
-    .songTheme-star .songChoiceEmoji {
+    .songTheme-star .songChoiceEmoji,
+    .songTheme-twinkle .songChoiceEmoji {
       background: linear-gradient(180deg, #f7fff2 0%, #d8f2c8 100%);
     }
 
@@ -2039,7 +2077,8 @@ button:disabled {
       border-color: #87ce6d;
     }
 
-    body.theme-light .songTheme-butterfly {
+    body.theme-light .songTheme-butterfly,
+    body.theme-light .songTheme-nabi {
       background: linear-gradient(180deg, #fff3f1 0%, #ffc9c2 55%, #ff9f97 100%);
       border-color: #ff8f85;
     }
@@ -2049,12 +2088,14 @@ button:disabled {
       border-color: #ffad4d;
     }
 
-    body.theme-light .songTheme-bell {
+    body.theme-light .songTheme-bell,
+    body.theme-light .songTheme-school {
       background: linear-gradient(180deg, #fffef2 0%, #fff0a8 52%, #ffd85c 100%);
       border-color: #efc43d;
     }
 
-    body.theme-light .songTheme-star {
+    body.theme-light .songTheme-star,
+    body.theme-light .songTheme-twinkle {
       background: linear-gradient(180deg, #f4fff0 0%, #c8f3a9 52%, #87db71 100%);
       border-color: #67c65b;
     }
@@ -2197,7 +2238,8 @@ button:disabled {
       color: rgba(214, 232, 255, 0.72);
     }
 
-    body.theme-dark .songTheme-butterfly {
+    body.theme-dark .songTheme-butterfly,
+    body.theme-dark .songTheme-nabi {
       background: linear-gradient(135deg, #6b2f4a 0%, #9a4d6d 100%);
       border-color: #bb6a8a;
     }
@@ -2207,18 +2249,22 @@ button:disabled {
       border-color: #cc9a5a;
     }
 
-    body.theme-dark .songTheme-bell {
+    body.theme-dark .songTheme-bell,
+    body.theme-dark .songTheme-school {
       background: linear-gradient(135deg, #3f3c88 0%, #6a66d9 100%);
       border-color: #8e8af0;
     }
 
-    body.theme-dark .songTheme-star {
+    body.theme-dark .songTheme-star,
+    body.theme-dark .songTheme-twinkle {
       background: linear-gradient(135deg, #1f5f66 0%, #2f8f9d 100%);
       border-color: #59b7c3;
     }
 
     body.theme-dark .songTheme-butterfly .songChoiceArt,
-    body.theme-dark .songTheme-butterfly .songChoiceEmoji {
+    body.theme-dark .songTheme-butterfly .songChoiceEmoji,
+    body.theme-dark .songTheme-nabi .songChoiceArt,
+    body.theme-dark .songTheme-nabi .songChoiceEmoji {
       background: linear-gradient(180deg, #b1708d 0%, #814761 100%);
     }
 
@@ -2228,12 +2274,16 @@ button:disabled {
     }
 
     body.theme-dark .songTheme-bell .songChoiceArt,
-    body.theme-dark .songTheme-bell .songChoiceEmoji {
+    body.theme-dark .songTheme-bell .songChoiceEmoji,
+    body.theme-dark .songTheme-school .songChoiceArt,
+    body.theme-dark .songTheme-school .songChoiceEmoji {
       background: linear-gradient(180deg, #8985ec 0%, #5752b2 100%);
     }
 
     body.theme-dark .songTheme-star .songChoiceArt,
-    body.theme-dark .songTheme-star .songChoiceEmoji {
+    body.theme-dark .songTheme-star .songChoiceEmoji,
+    body.theme-dark .songTheme-twinkle .songChoiceArt,
+    body.theme-dark .songTheme-twinkle .songChoiceEmoji {
       background: linear-gradient(180deg, #56aeb9 0%, #2c7680 100%);
     }
 
@@ -3904,6 +3954,14 @@ button:disabled {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      #step2Section .songPracticeStartRow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #step2Section .songPracticeStartRow button {
+        grid-column: 1 / -1;
+      }
+
       .gradeButtonGrid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -5291,7 +5349,6 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
 .songChoiceBtn::before {
   background:
     linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 24%, rgba(255,255,255,0) 40%),
-    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.75) 0 16%, transparent 17%),
     radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.5) 0 12%, transparent 13%),
     radial-gradient(circle at 82% 14%, rgba(255,255,255,0.54) 0 2px, transparent 3px),
     radial-gradient(circle at 88% 22%, rgba(255,255,255,0.32) 0 1.5px, transparent 3px),
@@ -5323,9 +5380,17 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
 .songChoiceTitle {
   position: relative;
   z-index: 2;
-  display: inline-flex;
   align-items: center;
   gap: 10px;
+}
+
+.gradeChoiceTitle {
+  display: inline-flex;
+}
+
+.songChoiceTitle {
+  display: inline-flex;
+  align-items: flex-start;
 }
 
 .gradeChoiceTitle {
@@ -5364,6 +5429,7 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
 
 .gradeTheme-3 .gradeChoiceTitle::before,
 .songTheme-butterfly .songChoiceTitle::before,
+.songTheme-nabi .songChoiceTitle::before,
 .textbookSongPanel.grade-3 .textbookSongBtn::before {
   content: "🌟";
 }
@@ -5376,12 +5442,14 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
 
 .gradeTheme-5 .gradeChoiceTitle::before,
 .songTheme-bell .songChoiceTitle::before,
+.songTheme-school .songChoiceTitle::before,
 .textbookSongPanel.grade-5 .textbookSongBtn::before {
   content: "🎶";
 }
 
 .gradeTheme-6 .gradeChoiceTitle::before,
 .songTheme-star .songChoiceTitle::before,
+.songTheme-twinkle .songChoiceTitle::before,
 .textbookSongPanel.grade-6 .textbookSongBtn::before {
   content: "👑";
 }
@@ -5526,6 +5594,105 @@ body.theme-dark .textbookSongBtn.selected::after {
   background: rgba(255,255,255,0.16);
   border-color: rgba(255,255,255,0.28);
   color: #f8fdff;
+}
+
+.songTheme-nabi {
+  --song-glass-rgb: 42, 190, 145;
+}
+
+.songTheme-airplane {
+  --song-glass-rgb: 54, 159, 230;
+}
+
+.songTheme-school {
+  --song-glass-rgb: 126, 105, 230;
+}
+
+.songTheme-twinkle {
+  --song-glass-rgb: 26, 170, 176;
+}
+
+.songTheme-rabbit {
+  --song-glass-rgb: 226, 175, 62;
+}
+
+.songTheme-spider {
+  --song-glass-rgb: 231, 126, 70;
+}
+
+.songTheme-ode {
+  --song-glass-rgb: 177, 75, 122;
+}
+
+.songTheme-edelweiss {
+  --song-glass-rgb: 210, 82, 108;
+}
+
+.songChoiceBtn {
+  background:
+    linear-gradient(135deg, rgba(var(--song-glass-rgb, 54, 159, 230), 0.48), rgba(var(--song-glass-rgb, 54, 159, 230), 0.22)),
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.22), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0.04)) !important;
+  border: 1px solid rgba(255,255,255,0.34) !important;
+  box-shadow:
+    0 18px 34px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.48),
+    inset 0 -18px 34px rgba(0,0,0,0.14),
+    0 0 24px rgba(var(--song-glass-rgb, 54, 159, 230), 0.22) !important;
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+
+.songChoiceBtn:hover,
+.songChoiceBtn.selected {
+  background:
+    linear-gradient(135deg, rgba(var(--song-glass-rgb, 54, 159, 230), 0.58), rgba(var(--song-glass-rgb, 54, 159, 230), 0.28)),
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.26), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.06)) !important;
+  box-shadow:
+    0 20px 36px rgba(0,0,0,0.3),
+    0 0 0 4px rgba(255,255,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    inset 0 -18px 34px rgba(0,0,0,0.14),
+    0 0 30px rgba(var(--song-glass-rgb, 54, 159, 230), 0.3) !important;
+}
+
+.songChoiceBtn::before {
+  opacity: 0.48;
+}
+
+.songChoiceBtn:hover::after,
+.songChoiceBtn.selected::after {
+  opacity: 0.52;
+}
+
+.songChoiceTitleText {
+  overflow: hidden;
+}
+
+.songTheme-rabbit .songChoiceTitle::before {
+  content: "🌕";
+}
+
+.songTheme-spider .songChoiceTitle::before {
+  content: "🎵";
+}
+
+.songTheme-ode .songChoiceTitle::before {
+  content: "🎼";
+}
+
+.songTheme-edelweiss .songChoiceTitle::before {
+  content: "🌹";
+}
+
+.songChoiceBtn .songChoiceTitle {
+  gap: 0;
+}
+
+.songChoiceBtn .songChoiceTitle::before {
+  content: none;
+  display: none;
 }
 
 body.theme-light {
@@ -10082,7 +10249,7 @@ body.theme-light .readyCardHint {
         <div id="songInfo" class="muted">곡을 불러오는 중입니다.</div>
       </div>
 
-      <div class="btnRow">
+      <div class="btnRow songPracticeStartRow">
         <button onclick="goToPractice()">연습 시작</button>
       </div>
 
@@ -10663,7 +10830,16 @@ body.theme-light .readyCardHint {
     ];
     let loadingIndex = 0;
     let loadingInterval = null;
-    const SHORT_SONG_TITLES = ["나비야", "비행기", "학교종", "작은별"];
+    const SHORT_SONG_TITLES = [
+      "나비야",
+      "비행기",
+      "학교종",
+      "작은별",
+      "산토끼",
+      "거미가 줄을 타고",
+      "환희의 송가",
+      "에델바이스"
+    ];
     const FALLBACK_CHALLENGE_SONGS = {
       JAGEUNBYEOL: {
         songId: "JAGEUNBYEOL",
@@ -11335,7 +11511,7 @@ function restorePracticeFromChallengePlay() {
         (song) => !prioritized.some((picked) => String(picked.songId) === String(song.songId))
       );
 
-      return prioritized.length ? prioritized : fallback.slice(0, 4);
+      return prioritized.length ? prioritized : fallback.slice(0, SHORT_SONG_TITLES.length);
     }
 
     function getCurrentSongCandidates() {
@@ -11496,7 +11672,7 @@ function restorePracticeFromChallengePlay() {
     function getSongCardPresentation(song) {
       const mapById = {
         NABIYA: {
-          themeClass: "songTheme-butterfly",
+          themeClass: "songTheme-nabi",
           icon: "🦋",
           pattern: "🦋  🌼\n🌿  🦋",
           level: "Lv.1",
@@ -11514,7 +11690,7 @@ function restorePracticeFromChallengePlay() {
           medal: "silver"
         },
         HAKGYOJONG: {
-          themeClass: "songTheme-bell",
+          themeClass: "songTheme-school",
           icon: "🔔",
           pattern: "🔔  🎵\n🎵  🔔",
           level: "Lv.2",
@@ -11523,12 +11699,44 @@ function restorePracticeFromChallengePlay() {
           medal: "bronze"
         },
         JAGEUNBYEOL: {
-          themeClass: "songTheme-star",
+          themeClass: "songTheme-twinkle",
           icon: "⭐",
           pattern: "⭐  ✨\n✨  ⭐",
           level: "Lv.3",
           desc: "반짝이는 별처럼 이어지는\n대표 연습 스테이지",
           bpm: 90
+        },
+        SANTOKKI: {
+          themeClass: "songTheme-rabbit",
+          icon: "🐇",
+          pattern: "🐇  🌿\n🌕  🐇",
+          level: "Lv.1",
+          desc: "짧고 반복되는\n기초 연습곡",
+          bpm: 88
+        },
+        SPIDER: {
+          themeClass: "songTheme-spider",
+          icon: "🕷️",
+          pattern: "🕸️  🌧️\n🌧️  🕸️",
+          level: "Lv.1",
+          desc: "리듬을 익히는\n재미있는 곡",
+          bpm: 90
+        },
+        ODE: {
+          themeClass: "songTheme-ode",
+          icon: "🎼",
+          pattern: "🎶  🎶\n🎵  🎶",
+          level: "Lv.1",
+          desc: "차분하게 이어지는\n멜로디 연습",
+          bpm: 92
+        },
+        EDELWEISS: {
+          themeClass: "songTheme-edelweiss",
+          icon: "🌼",
+          pattern: "🌼  ❄️\n❄️  🌼",
+          level: "Lv.1",
+          desc: "부드럽게 이어지는\n노래 연습",
+          bpm: 80
         }
       };
 
@@ -11536,7 +11744,11 @@ function restorePracticeFromChallengePlay() {
         "나비야": mapById.NABIYA,
         "비행기": mapById.BIHAENGGI,
         "학교종": mapById.HAKGYOJONG,
-        "작은별": mapById.JAGEUNBYEOL
+        "작은별": mapById.JAGEUNBYEOL,
+        "산토끼": mapById.SANTOKKI,
+        "거미가 줄을 타고": mapById.SPIDER,
+        "환희의 송가": mapById.ODE,
+        "에델바이스": mapById.EDELWEISS
       };
 
       const songId = String(song?.songId || "").trim().toUpperCase();
@@ -11598,7 +11810,7 @@ function renderSongButtons() {
             <span class="songChoiceArt">
               <span class="songChoiceEmoji">${ui.icon}</span>
             </span>
-            <span class="songChoiceTitle">${song.title}</span>
+            <span class="songChoiceTitle"><span class="songChoiceTitleText">${song.title}</span></span>
           </span>
 
           <!-- 2줄: 정보 + 메달 -->
@@ -11775,8 +11987,8 @@ function renderSongButtons() {
       if (songSection) {
         const actionRow = songSection.querySelector(".btnRow3");
         if (actionRow) {
-          actionRow.className = "btnRow";
-          actionRow.style.marginTop = "10px";
+          actionRow.className = "btnRow songPracticeStartRow";
+          actionRow.style.marginTop = "";
           actionRow.innerHTML = `<button onclick="goToPractice()">연습 시작</button>`;
         }
       }
@@ -12154,7 +12366,9 @@ window.addEventListener("popstate", function (event) {
             return;
           }
 
-          if (data.fromCache) {
+          if (data.fromLocal) {
+            setStatus("songLoadStatus", "\uC571\uC5D0 \uC800\uC7A5\uB41C \uC9E7\uC740 \uACE1\uC744 \uBD88\uB7EC\uC654\uC2B5\uB2C8\uB2E4.", "ok");
+          } else if (data.fromCache) {
             setStatus(
               "songLoadStatus",
               data.stale ? "캐시된 곡 목록을 먼저 보여주고 최신 목록을 확인 중입니다." : "저장된 곡 목록을 바로 불러왔습니다.",
@@ -12232,7 +12446,9 @@ window.addEventListener("popstate", function (event) {
         renderSongButtons();
         showSelectedSong();
 
-        if (data.fromCache) {
+        if (data.fromLocal) {
+          setStatus("songLoadStatus", "\uC571\uC5D0 \uC800\uC7A5\uB41C \uC9E7\uC740 \uACE1\uC744 \uBD88\uB7EC\uC654\uC2B5\uB2C8\uB2E4.", "ok");
+        } else if (data.fromCache) {
           setStatus("songLoadStatus", "서버 연결 실패 · 저장된 곡을 불러왔습니다.", "ok");
         } else if (data.fromMock) {
           setStatus("songLoadStatus", "테스트 곡을 불러왔습니다.", "ok");
