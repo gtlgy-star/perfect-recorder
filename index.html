@@ -115,9 +115,9 @@
     .wrap {
       position: relative;
       z-index: 1;
-      width: 100%;
-      max-width: none;
-      margin: 0;
+      width: min(100% - 32px, 1180px);
+      max-width: 1180px;
+      margin: 0 auto;
       padding: 32px 22px 76px;
     }
 
@@ -5019,7 +5019,6 @@ body.theme-light .challenge-play-mode .practiceMiniBtn {
 
 #screen-menu button:nth-of-type(3) {
   background: linear-gradient(135deg, #4fd1c5, #9f7aea);
-  color: #4f2c00;
 }
 
 #screen-menu button:nth-of-type(4) {
@@ -8093,7 +8092,7 @@ body.theme-light .practiceStaffSlot {
   }
 }
 
-@media (orientation: landscape) and (max-height: 520px) {
+@media (max-width: 950px) and (orientation: landscape) and (max-height: 520px) {
   .wrap {
     min-width: min(1080px, 100%);
     overflow: visible;
@@ -8963,6 +8962,212 @@ body.theme-light #screen-menu .screen-nav-row .nav-logout {
   }
 }
 
+/* =========================
+   공통 하단 네비 버튼 (강제 고정 스타일)
+========================= */
+
+.nav-btn {
+  all: unset !important;
+
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+
+  width: 132px !important;
+  min-width: 132px !important;
+  min-height: 42px !important;
+  flex: 0 0 132px !important;
+
+  padding: 10px 16px !important;
+  margin: 0 6px !important;
+
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 237, 158, 0.72) !important;
+  cursor: pointer !important;
+
+  font-size: 14px !important;
+  font-family: "Pretendard", "SUIT", "GmarketSansMedium", "CookieRun", "Malgun Gothic", system-ui, sans-serif !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  letter-spacing: 0.01em !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35) !important;
+
+  background:
+    radial-gradient(circle at 24% 14%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.25) 22%, transparent 42%),
+    linear-gradient(180deg, #fff3a8 0%, #ffd76a 42%, #d39c24 100%) !important;
+  color: #3a2a00 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.82),
+    inset 0 -10px 16px rgba(107, 70, 0, 0.18),
+    0 1px 0 rgba(255,255,255,0.22),
+    0 8px 18px rgba(67, 42, 0, 0.28),
+    0 0 18px rgba(255, 213, 94, 0.2) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease !important;
+
+  position: relative !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  overflow: hidden !important;
+}
+
+.nav-btn::before,
+.nav-btn::after {
+  content: "" !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+}
+
+.nav-btn::before {
+  inset: 1px 1px auto 1px !important;
+  height: 48% !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.06)) !important;
+  opacity: 0.82 !important;
+}
+
+.nav-btn::after {
+  top: -42% !important;
+  bottom: -42% !important;
+  left: -62% !important;
+  width: 38% !important;
+  border-radius: 0 !important;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.62), transparent) !important;
+  transform: translateX(0) rotate(18deg) !important;
+  opacity: 0 !important;
+  transition: transform 0.55s ease, opacity 0.28s ease !important;
+}
+
+.nav-btn .icon {
+  position: relative !important;
+  z-index: 1 !important;
+  font-size: 15px !important;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.35)) !important;
+}
+
+.nav-btn span {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px) !important;
+  filter: none !important;
+  border-color: rgba(255, 248, 192, 0.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -10px 16px rgba(107, 70, 0, 0.14),
+    0 1px 0 rgba(255,255,255,0.28),
+    0 12px 24px rgba(67, 42, 0, 0.34),
+    0 0 24px rgba(255, 222, 112, 0.32) !important;
+}
+
+.nav-btn:hover::after {
+  opacity: 1 !important;
+  transform: translateX(430%) rotate(18deg) !important;
+}
+
+.nav-btn:active {
+  transform: translateY(1px) scale(0.98) !important;
+  box-shadow:
+    inset 0 2px 8px rgba(79, 46, 0, 0.26),
+    inset 0 1px 0 rgba(255,255,255,0.54),
+    0 4px 10px rgba(67, 42, 0, 0.24) !important;
+}
+
+.nav-btn:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.86) !important;
+  outline-offset: 3px !important;
+}
+
+.nav-btn:disabled {
+  opacity: 1 !important;
+  cursor: default !important;
+}
+
+/* 로그아웃만 강조 */
+.nav-logout {
+  border-color: rgba(255, 192, 192, 0.72) !important;
+  background:
+    radial-gradient(circle at 24% 14%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.18) 24%, transparent 44%),
+    linear-gradient(180deg, #ff9b8f 0%, #ff5f64 42%, #b92925 100%) !important;
+  color: #fff !important;
+  text-shadow: 0 1px 1px rgba(76, 0, 0, 0.34) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.64),
+    inset 0 -10px 16px rgba(92, 0, 0, 0.22),
+    0 1px 0 rgba(255,255,255,0.18),
+    0 8px 18px rgba(80, 0, 0, 0.3),
+    0 0 18px rgba(255, 92, 92, 0.2) !important;
+}
+
+.nav-logout:hover {
+  border-color: rgba(255, 224, 224, 0.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.78),
+    inset 0 -10px 16px rgba(92, 0, 0, 0.18),
+    0 1px 0 rgba(255,255,255,0.22),
+    0 12px 24px rgba(80, 0, 0, 0.36),
+    0 0 24px rgba(255, 105, 105, 0.3) !important;
+}
+
+/* =========================
+   운지 방식 상단 안내 강조
+========================= */
+
+.recorder-guide {
+  margin-top: 8px;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.3px;
+  line-height: 1.45;
+}
+
+body:not(.theme-light):not(.light-mode) .recorder-guide {
+  color: #ffd76a;
+  text-shadow:
+    0 0 6px rgba(255, 215, 106, 0.6),
+    0 0 14px rgba(255, 215, 106, 0.4);
+}
+
+body.theme-light .recorder-guide,
+body.light-mode .recorder-guide {
+  color: #8a5a00;
+  text-shadow: none;
+}
+
+.fingering-card .desc {
+  color: #ffffff !important;
+  background: rgba(13, 42, 78, 0.42) !important;
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 6px 14px rgba(0,0,0,0.12) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.32) !important;
+  opacity: 1 !important;
+}
+
+body.theme-light .fingering-card .desc,
+body.light-mode .fingering-card .desc {
+  color: #ffffff !important;
+  background: rgba(22, 72, 122, 0.72) !important;
+  border-color: rgba(255,255,255,0.42) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.28) !important;
+}
+
 .fingeringPracticeActionRow {
   display: flex;
   justify-content: center;
@@ -9611,9 +9816,7 @@ body.theme-light .readyCardHint {
   <div class="pill">기본 운지 방법</div>
   <h2 class="cardTitle">운지 방식을 선택하세요</h2>
 
-  <div class="songBox basicTypeIntro">
-    <div class="muted">리코더의 뒷면 표기를 보고 운지 방식을 선택해 주세요.</div>
-  </div>
+  <div class="basicTypeIntro recorder-guide">리코더의 뒷면 표기를 보고 선택해 주세요.</div>
 
   <div class="fingering-select-wrap">
     <button class="fingering-card german" onclick="openBasicFingering('german')">
@@ -9629,8 +9832,6 @@ body.theme-light .readyCardHint {
       <div class="desc">연주할 때 좋아요</div>
     </button>
   </div>
-
-  <div id="basicTypeStatus" class="status">운지 방식을 선택해 주세요.</div>
 </section>
 
 <section id="step-basicSection" class="card hidden">
