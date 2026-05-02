@@ -12829,8 +12829,9 @@ window.addEventListener("popstate", function (event) {
 
    function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth) {
   const beat = Number(noteObj.beat || 1);
-  const noteColor = "#1d4ed8";
-  const lineColor = "#2563eb";
+  const NOTE_COLOR = "#1e2a44";
+  const NOTE_BAR_COLOR = "#93c5fd";
+  const DOTTED_NOTE_COLOR = "#111827";
 
   const headW = 15;
   const headH = 10;
@@ -12840,78 +12841,97 @@ window.addEventListener("popstate", function (event) {
   const isHalf = beat >= 2 && beat < 4;
   const isQuarter = beat >= 1 && beat < 2;
   const isEighth = beat < 1;
+  const isDotted = [0.75, 1.5, 3].some((value) => Math.abs(beat - value) < 0.001);
 
   const safeBodyWidth = Math.max(12, Number(bodyWidth) || 12);
+  const NOTE_NAME_Y = bottomLineY + 54;
+  const BAR_BOTTOM_LIMIT = NOTE_NAME_Y - 18;
+  const NOTE_MIN_Y = NOTE_NAME_Y - 24;
+  const barY = Math.min(y, BAR_BOTTOM_LIMIT);
+  const noteY = Math.min(y, NOTE_MIN_Y);
 
   // 湲몄씠 ?쒖떆??
-  ctx.strokeStyle = lineColor;
+  ctx.strokeStyle = NOTE_BAR_COLOR;
   ctx.lineWidth = 10;
   ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.moveTo(noteX + 18, y);
-  ctx.lineTo(noteX + 18 + safeBodyWidth, y);
+  ctx.moveTo(noteX + 18, barY);
+  ctx.lineTo(noteX + 18 + safeBodyWidth, barY);
   ctx.stroke();
 
   // ?뚰몴 癒몃━
   ctx.save();
-  ctx.translate(noteX, y);
+  ctx.translate(noteX, noteY);
   ctx.rotate(-0.4);
 
   if (isWhole || isHalf) {
     ctx.fillStyle = "#fff";
-    ctx.strokeStyle = noteColor;
+    ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.ellipse(0, 0, headW, headH, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
   } else {
-    ctx.fillStyle = noteColor;
+    ctx.fillStyle = NOTE_COLOR;
     ctx.beginPath();
     ctx.ellipse(0, 0, headW, headH, 0, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.restore();
 
+  if (isDotted) {
+    ctx.fillStyle = DOTTED_NOTE_COLOR;
+    ctx.beginPath();
+    ctx.arc(noteX + 27, noteY - 2, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   // 以꾧린
   if (!isWhole) {
-    ctx.strokeStyle = noteColor;
+    ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(noteX + 12, y);
-    ctx.lineTo(noteX + 12, y - stemHeight);
+    ctx.moveTo(noteX + 12, noteY);
+    ctx.lineTo(noteX + 12, noteY - stemHeight);
     ctx.stroke();
   }
 
   // 8遺꾩쓬??瑗щ━
   if (isEighth) {
-    ctx.strokeStyle = noteColor;
+    ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(noteX + 12, y - stemHeight);
+    ctx.moveTo(noteX + 12, noteY - stemHeight);
     ctx.quadraticCurveTo(
       noteX + 28,
-      y - stemHeight + 8,
+      noteY - stemHeight + 8,
       noteX + 17,
-      y - stemHeight + 24
+      noteY - stemHeight + 24
     );
     ctx.stroke();
   }
 
   // C5 蹂댁“??
   if (noteObj.note === "C5") {
-    ctx.strokeStyle = "#111";
+    ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(noteX - 18, y);
-    ctx.lineTo(noteX + 18, y);
+    ctx.moveTo(noteX - 18, noteY);
+    ctx.lineTo(noteX + 18, noteY);
     ctx.stroke();
   }
 
   // 怨꾩씠由??쒖떆
+  ctx.fillStyle = "rgba(255,255,255,0.8)";
+  ctx.fillRect(noteX - 13, NOTE_NAME_Y - 16, 26, 20);
   ctx.fillStyle = "#111";
-  ctx.font = "14px system-ui";
-  ctx.fillText(getKoreanNoteName(noteObj.note), noteX - 10, bottomLineY + 38);
+  ctx.font = "bold 16px system-ui";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(getKoreanNoteName(noteObj.note), noteX, NOTE_NAME_Y - 6);
+  ctx.textAlign = "start";
+  ctx.textBaseline = "alphabetic";
 }
 
 function getKoreanNoteName(note) {
@@ -12949,9 +12969,10 @@ function getNoteBodyWidthByBeat(beat) {
 function drawRest(ctx, x, staffTop, duration) {
   const centerY = staffTop + 40;
   const beat = Number(duration);
+  const NOTE_COLOR = "#1e2a44";
 
   ctx.save();
-  ctx.fillStyle = "#333";
+  ctx.fillStyle = NOTE_COLOR;
   ctx.font = "24px Arial, serif";
 
   if (beat === 1) {
@@ -13074,35 +13095,24 @@ function drawRest(ctx, x, staffTop, duration) {
       const sideOffset = 14;
       const leftX = JUDGMENT_LINE_X - sideOffset;
       const rightX = JUDGMENT_LINE_X + sideOffset;
-      const pulseRemaining = Math.max(0, judgmentZonePulseUntil - now);
-      const pulseRatio = judgmentZonePulseUntil ? Math.min(1, pulseRemaining / 260) : 0;
-      const pulsePower = pulseRatio * judgmentZonePulseStrength;
-      const breathe = 0.5 + 0.5 * Math.sin(now / 520);
-      const nearestGapMs = getNearestJudgmentApproach(elapsedMs, timeline);
-      const beatMs = Math.max(1, Number(timeline?.beatMs) || 600);
-      const approachRatio = nearestGapMs === Infinity
-        ? 0
-        : Math.max(0, 1 - (nearestGapMs / (beatMs * 0.9)));
-      const baseVisibility = 0.78;
-      const approachBoost = approachRatio * 0.18;
-      const pulseBoost = pulsePower * 0.22;
-      const zoneGlow = 0.48 + breathe * 0.04 + approachBoost + pulseBoost;
+      const baseVisibility = 1;
 
       ctx.save();
+      ctx.globalAlpha = 1;
 
-      ctx.fillStyle = `rgba(110, 223, 255, ${0.18 + approachBoost * 0.55 + pulseBoost * 0.32})`;
+      ctx.fillStyle = "rgba(110, 223, 255, 0.42)";
       ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
 
-      ctx.fillStyle = `rgba(255, 227, 124, ${0.16 + pulseBoost * 0.26})`;
+      ctx.fillStyle = "rgba(250, 204, 21, 0.46)";
       ctx.fillRect(JUDGMENT_LINE_X - 7, zoneTop, 14, zoneHeight);
 
-      ctx.shadowBlur = 22 + approachBoost * 22 + pulseBoost * 24;
-      ctx.shadowColor = `rgba(93, 214, 255, ${0.28 + zoneGlow * 0.34})`;
-      ctx.fillStyle = `rgba(173, 239, 255, ${0.16 + zoneGlow * 0.16})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#facc15";
+      ctx.fillStyle = "rgba(173, 239, 255, 0.28)";
       ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
 
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = `rgba(73, 193, 230, ${0.52 + approachBoost * 0.3 + pulseBoost * 0.16})`;
+      ctx.strokeStyle = "rgba(73, 193, 230, 0.9)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(leftX, zoneTop);
@@ -13111,10 +13121,10 @@ function drawRest(ctx, x, staffTop, duration) {
       ctx.lineTo(rightX, zoneBottom);
       ctx.stroke();
 
-      ctx.strokeStyle = `rgba(255, 221, 112, ${0.86 + approachBoost * 0.18 + pulseBoost * 0.14})`;
+      ctx.strokeStyle = "#facc15";
       ctx.lineWidth = 3.2;
-      ctx.shadowBlur = 22 + approachBoost * 16 + pulseBoost * 18;
-      ctx.shadowColor = `rgba(255, 221, 112, ${0.34 + approachBoost * 0.18 + pulseBoost * 0.2})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#facc15";
       ctx.beginPath();
       ctx.moveTo(JUDGMENT_LINE_X, zoneTop);
       ctx.lineTo(JUDGMENT_LINE_X, zoneBottom);
@@ -13125,21 +13135,6 @@ function drawRest(ctx, x, staffTop, duration) {
       ctx.font = "bold 14px system-ui";
       ctx.textAlign = "center";
       ctx.fillText("판정 존", JUDGMENT_LINE_X, zoneTop - 8);
-
-      if (pulsePower > 0.02) {
-        const ringRadius = 26 + (1 - pulseRatio) * 28;
-        ctx.strokeStyle = `rgba(255, 236, 168, ${pulsePower * 0.65})`;
-        ctx.lineWidth = 4 - Math.min(2.2, (1 - pulseRatio) * 2);
-        drawRoundedRectPath(
-          ctx,
-          JUDGMENT_LINE_X - ringRadius / 2,
-          zoneTop + zoneHeight / 2 - (zoneHeight - 12) / 2,
-          ringRadius,
-          zoneHeight - 12,
-          18
-        );
-        ctx.stroke();
-      }
 
       judgmentFeedbacks = judgmentFeedbacks.filter((item) => now - item.createdAt < 700);
       judgmentFeedbacks.forEach((item, index) => {
