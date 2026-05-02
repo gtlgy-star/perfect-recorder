@@ -7278,6 +7278,7 @@ body.theme-light .menuPageTitle {
 }
 
 #step34Section.fingeringTrainingMode .patternCard {
+  position: relative;
   min-height: 82px;
   display: flex;
   flex-direction: column;
@@ -7387,14 +7388,36 @@ body.theme-light .menuPageTitle {
 }
 
 .patternSlotBadge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
   display: inline-flex;
-  margin-top: 8px;
-  padding: 3px 8px;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 22px;
+  margin: 0;
+  padding: 0 8px;
   border-radius: 999px;
+  border: 1px solid rgba(255, 235, 150, 0.85);
   font-size: 11px;
-  font-weight: 1000;
-  color: #102044;
-  background: #ffe77a;
+  font-weight: 900;
+  line-height: 1;
+  color: #3a2a00;
+  background: linear-gradient(180deg, #fff1a8 0%, #ffd76a 100%);
+  box-shadow:
+    0 0 8px rgba(255, 215, 106, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  pointer-events: none;
+  z-index: 3;
+}
+
+body.theme-light #step34Section .patternSlotBadge,
+body.light-mode #step34Section .patternSlotBadge {
+  color: #5a3900;
+  background: linear-gradient(180deg, #fff3bd 0%, #e6b93f 100%);
+  border-color: rgba(138, 90, 0, 0.25);
+  box-shadow: 0 3px 8px rgba(138, 90, 0, 0.14);
 }
 
 #step34Section.fingeringTrainingMode .speedBtn {
@@ -9184,6 +9207,54 @@ body.light-mode .fingering-card .desc {
     0 0 12px rgba(255, 215, 106, 0.25);
 }
 
+#step34Section .pattern-guide-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#step34Section .pattern-guide-copy {
+  display: inline-block;
+}
+
+#step34Section .arrow {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  color: #ffd76a;
+  text-shadow:
+    0 0 6px rgba(255, 215, 106, 0.82),
+    0 0 14px rgba(255, 215, 106, 0.54),
+    0 0 24px rgba(255, 247, 190, 0.28);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 106, 0.46));
+  animation: arrowBounce 1.2s ease-in-out infinite;
+}
+
+#step34Section .arrow-left {
+  animation-delay: 0s;
+}
+
+#step34Section .arrow-right {
+  animation-delay: 0.3s;
+}
+
+@keyframes arrowBounce {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
 body.theme-light .melody-slot-guide,
 body.light-mode .melody-slot-guide {
   color: #8a5a00;
@@ -9205,6 +9276,15 @@ body.theme-light .guide-gold,
 body.light-mode .guide-gold {
   color: #8a5a00;
   text-shadow: none;
+}
+
+body.theme-light #step34Section .arrow,
+body.light-mode #step34Section .arrow {
+  color: #9a6400;
+  text-shadow:
+    0 0 6px rgba(154, 100, 0, 0.34),
+    0 0 13px rgba(214, 150, 38, 0.22);
+  filter: drop-shadow(0 3px 7px rgba(138, 90, 0, 0.16));
 }
 
 #step34Section .slot-row {
@@ -9585,14 +9665,29 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 }
 
 #step34Section .practiceStaffSlot:not(.has-pattern) .slotEmptyHint {
-  display: flex !important;
-  inset: 0 !important;
-  width: auto !important;
-  height: auto !important;
+  display: block !important;
+  position: absolute !important;
+  left: 16px !important;
+  right: 16px !important;
+  top: 50% !important;
+  height: 96px !important;
   margin: 0 !important;
-  padding: 0 !important;
-  align-items: center !important;
-  justify-content: center !important;
+  transform: translateY(-50%) !important;
+  background: rgba(150, 165, 185, 0.48) !important;
+  border: 1px solid rgba(190, 220, 255, 0.36) !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+#step34Section .practiceStaffSlot:not(.has-pattern) .fingeringStaffCanvas {
+  position: relative !important;
+  z-index: 2 !important;
+  display: block !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  background: transparent !important;
 }
 
 #step34Section .practiceStaffSlot:not(.has-pattern) > .fingeringStaffCanvas {
@@ -10045,8 +10140,10 @@ body.theme-light .readyCardHint {
           </div>
         </div>
 
-        <div class="melody-slot-guide guide-gold">
-          가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.
+        <div id="nextPatternGuide" class="melody-slot-guide guide-gold pattern-guide-text">
+          <span class="arrow arrow-left" aria-hidden="true">⬇</span>
+          <span class="pattern-guide-copy">가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.</span>
+          <span class="arrow arrow-right" aria-hidden="true">⬇</span>
         </div>
 
         <div class="practiceMainCard">
@@ -13996,7 +14093,13 @@ function startBasicPractice() {
 
     function updateNextPatternGuide() {
       const guide = document.getElementById("nextPatternGuide");
-      if (guide) guide.textContent = "가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.";
+      if (guide) {
+        guide.innerHTML = `
+          <span class="arrow arrow-left" aria-hidden="true">⬇</span>
+          <span class="pattern-guide-copy">가락 카드를 끌어서 1번 또는 2번 슬롯에 놓아주세요.</span>
+          <span class="arrow arrow-right" aria-hidden="true">⬇</span>
+        `;
+      }
     }
 
     function updateActivePatternSlotUI() {
@@ -14230,37 +14333,8 @@ function startBasicPractice() {
     }
 
     function updateFingeringStaffReadyCard(card) {
-      const target =
-        document.querySelector("#step34Section.fingeringTrainingMode .practiceMainCard") ||
-        document.querySelector("#step34Section.fingeringTrainingMode .staffPanel") ||
-        document.querySelector("#step34Section.fingeringTrainingMode canvas")?.parentElement;
-
-      if (!target || !card) return;
-
-      let readyCard = document.getElementById("selectedFingeringReadyCard");
-      if (!readyCard) {
-        readyCard = document.createElement("div");
-        readyCard.id = "selectedFingeringReadyCard";
-        readyCard.className = "selectedFingeringReadyCard";
-        target.prepend(readyCard);
-      }
-
-      const title =
-        card.querySelector(".patternTitle")?.textContent?.trim() ||
-        card.querySelector(".patternName")?.textContent?.trim() ||
-        "선택한 가락";
-
-      const range =
-        card.querySelector(".patternRange")?.textContent?.trim() ||
-        card.querySelector(".patternDesc")?.textContent?.trim() ||
-        "";
-
-      readyCard.innerHTML = `
-        <div class="readyCardBadge">선택 완료</div>
-        <div class="readyCardTitle">${title}</div>
-        <div class="readyCardRange">${range}</div>
-        <div class="readyCardHint">연습 시작을 누르면 오선보 연습이 시작돼요.</div>
-      `;
+      document.getElementById("selectedFingeringReadyCard")?.remove();
+      return;
     }
 
     function setFingeringPracticeSpeed(speedKey, speedValue, label) {
