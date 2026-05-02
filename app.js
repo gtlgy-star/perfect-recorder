@@ -17,9 +17,9 @@ const LOCAL_SHORT_SONGS = [
     songId: "SAME_SAME",
     title: "\uB611\uAC19\uC544\uC694",
     bpm: 90,
-    timeSignature: "4/4",
+    timeSignature: "3/4",
     recorderImage: "",
-    notation: ""
+    notation: "C5/1 E5/1 G5/1 C5/1 E5/1 G5/1 A5/1 A5/1 A5/1 G5/2 R/2 F5/1 F5/1 F5/1 E5/1 E5/1 E5/1 D5/1 D5/1 D5/1 C5/2 R/2"
   },
   {
     songId: "ODE",
@@ -51,7 +51,7 @@ const LOCAL_SHORT_SONGS = [
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "C5/1 C5/1 C5/1 C5/1 C5/0.5 D5/0.5 E5/0.5 D5/0.5 C5/1 R/1 D5/1 D5/1 D5/1 D5/1 D5/0.5 E5/0.5 F5/0.5 E5/0.5 D5/1 R/1 E5/1 E5/1 E5/1 E5/1 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/1 R/1 F5/1 F5/1 F5/1 F5/1 F5/0.5 E5/0.5 D5/0.5 E5/0.5 F5/1 R/1 G5/1 G5/1 G5/1 G5/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/1 F5/0.5 E5/0.5 D5/0.5 C5/1 R/1"
   },
   {
     songId: "DRAGONFLY",
@@ -59,7 +59,7 @@ const LOCAL_SHORT_SONGS = [
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "E5/1 C5/0.5 D5/0.5 E5/1 G5/1 D5/1 D5/1 D5/1 R/1 E5/1 C5/0.5 D5/0.5 E5/1 G5/1 A5/1 A5/1 A5/2 C6/2 B5/2 A5/2 G5/2 C6/2 B5/2 A5/2 G5/2 E5/1 C5/0.5 D5/0.5 E5/1 G5/1 D5/1 D5/1 D5/2 E5/1 C5/0.5 D5/0.5 E5/1 G5/1 A5/1 B5/1 C6/2 R/2"
   },
   {
     songId: "HOMETOWN_SPRING",
@@ -67,7 +67,7 @@ const LOCAL_SHORT_SONGS = [
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "G5/1 G5/1 E5/0.5 F5/0.5 G5/1 A5/1 A5/1 G5/2 G5/1 C6/1 E6/1 D6/0.5 C6/0.5 D6/3 R/1 E6/1 E6/1 D6/1 D6/1 C6/1 D6/0.5 C6/0.5 A5/2 G5/1 G5/1 G5/1 E5/0.5 D5/0.5 C5/3 R/1 D5/1 D5/1 E5/1 C5/1 D5/2 E5/1 G5/1 A5/1 C6/1 E6/1 D6/0.5 C6/0.5 D6/3 R/1 E6/1 E6/1 D6/1 D6/1 C6/1 D6/0.5 C6/0.5 A5/1 A5/1 G5/1 G5/1 G5/1 E5/0.5 D5/0.5 C5/3 R/1"
   }
 ];
 

@@ -10161,6 +10161,13 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   background: linear-gradient(135deg, #2f80ed, #6ee7ff);
 }
 
+#startFingeringPracticeBtn .start-label,
+#startPracticeBtn .start-label {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
 .fingeringPracticeStartBtn:disabled {
   opacity: 0.42;
   cursor: not-allowed;
@@ -10680,7 +10687,7 @@ body.theme-light .readyCardHint {
 
               <div class="fingeringPracticeActionRow practice-btn-area">
                 <button type="button" id="startFingeringPracticeBtn" class="fingeringPracticeStartBtn" disabled>
-                  ▶ 연습 시작
+                  ▶ <span class="start-label">연습 시작</span>
                 </button>
                 <button type="button" id="resetFingeringPracticeBtn" class="fingeringPracticeResetBtn">
                   ↺ 다시 하기
@@ -15262,21 +15269,47 @@ function startBasicPractice() {
         startBtn.addEventListener("click", () => {
           updateFingeringStartButtonState();
           if (startBtn.disabled) return;
+          if (startBtn.dataset.counting === "true") return;
 
-          document.getElementById("step34Section")?.classList.add("fingeringPracticeStarted");
-          practiceState.notes = getSelectedFingeringPracticeNotes();
-          practiceState.index = 0;
+          const startLabel = startBtn.querySelector(".start-label");
+          const originalLabel = startLabel ? startLabel.textContent : "";
+          const countdownMs = Number(practiceState.speed) || 800;
+          let count = 4;
 
-          if (!practiceState.notes.length) {
-            updateFingeringStartButtonState();
-            return;
-          }
+          startBtn.dataset.counting = "true";
+          if (startLabel) startLabel.textContent = String(count);
 
-          renderFingeringPracticeFrame();
+          const runFingeringPracticeStart = () => {
+            document.getElementById("step34Section")?.classList.add("fingeringPracticeStarted");
+            practiceState.notes = getSelectedFingeringPracticeNotes();
+            practiceState.index = 0;
 
-          if (typeof startPractice === "function") {
-            startPractice();
-          }
+            if (!practiceState.notes.length) {
+              if (startLabel) startLabel.textContent = originalLabel || "연습 시작";
+              startBtn.dataset.counting = "false";
+              updateFingeringStartButtonState();
+              return;
+            }
+
+            if (startLabel) startLabel.textContent = originalLabel || "연습 시작";
+            startBtn.dataset.counting = "false";
+
+            if (typeof startFingeringPractice === "function") {
+              startFingeringPractice();
+            }
+          };
+
+          const countdownTimer = setInterval(() => {
+            count -= 1;
+
+            if (count <= 0) {
+              clearInterval(countdownTimer);
+              runFingeringPracticeStart();
+              return;
+            }
+
+            if (startLabel) startLabel.textContent = String(count);
+          }, countdownMs);
         });
 
         startBtn.dataset.fingeringStartBound = "true";
