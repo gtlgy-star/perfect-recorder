@@ -3578,6 +3578,32 @@ button:disabled {
       text-shadow: 0 0 16px rgba(103, 220, 255, 0.14);
     }
 
+    .speedMetaControl {
+      display: grid;
+      grid-template-columns: auto minmax(88px, 50%);
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+    }
+
+    .speed-select {
+      width: 100%;
+      min-height: 32px;
+      padding: 4px 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(193, 235, 255, 0.22);
+      border-radius: 12px;
+      color: #f2fbff;
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      outline: none;
+    }
+
+    .speed-select option {
+      color: #12304d;
+    }
+
     .basicRecorderStage {
       position: relative;
       width: 100%;
@@ -3866,6 +3892,88 @@ button:disabled {
 
     #basicStaffCanvas {
       height: 260px;
+    }
+
+    #step-basicSection > div[style*="grid-template-columns"] {
+      align-items: start;
+    }
+
+    #step-basicSection .basicPanelCard {
+      height: auto;
+      min-height: 0;
+      align-self: flex-start;
+    }
+
+    #step-basicSection .basicPanelStaff {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: auto !important;
+      min-height: 0 !important;
+      padding-bottom: 8px;
+    }
+
+    #step-basicSection .basicPanelRecorder {
+      height: auto !important;
+      min-height: 0 !important;
+      flex: 0 0 auto;
+      align-self: flex-start;
+      padding-bottom: 6px;
+    }
+
+    #step-basicSection .basicRecorderStage,
+    #step-basicSection .basicRecorderImageWrap {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    #step-basicSection .basicRecorderStage img,
+    #step-basicSection #basicRecorderImage {
+      display: block;
+      margin-bottom: 0;
+    }
+
+    #step-basicSection .basicStaffPanel {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    #step-basicSection #basicStaffCanvas {
+      --basic-staff-bottom-crop: 112px;
+      width: 100%;
+      min-height: 340px;
+      height: 50%;
+      max-height: 100%;
+      object-fit: contain;
+      flex: 0 0 50%;
+      clip-path: inset(0 0 var(--basic-staff-bottom-crop) 0 round 16px);
+      margin-bottom: calc(var(--basic-staff-bottom-crop) * -1);
+    }
+
+    #step-basicSection .basicStaffButtons {
+      margin-top: 8px;
+      padding: 12px 16px 8px;
+    }
+
+    #step-basicSection .basicNoteScroller {
+      margin-top: 10px;
+    }
+
+    #step-basicSection .basic-practice-wrap {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+    }
+
+    #step-basicSection .basicPracticePanel {
+      margin-top: 8px;
+      margin-bottom: 0;
     }
 
     .basicHole {
@@ -5937,6 +6045,126 @@ body.theme-light .metaCard {
   background: linear-gradient(180deg, rgba(234, 244, 255, 0.86) 0%, rgba(224, 238, 252, 0.8) 100%);
   border-color: rgba(142, 187, 229, 0.34);
   box-shadow: 0 10px 24px rgba(96, 154, 218, 0.1);
+}
+
+body.theme-light .speed-select {
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(100, 150, 210, 0.34);
+  color: #23415f;
+}
+
+body.theme-light #step34Section,
+body.light-mode #step34Section,
+body.theme-light #screen-challenge-play,
+body.light-mode #screen-challenge-play {
+  color: #102033;
+}
+
+body.theme-light #step34Section .metaCard,
+body.light-mode #step34Section .metaCard,
+body.theme-light #step34Section .practiceInfoBox,
+body.light-mode #step34Section .practiceInfoBox,
+body.theme-light #step34Section .practiceInfoCompact,
+body.light-mode #step34Section .practiceInfoCompact,
+body.theme-light #step34Section .status,
+body.light-mode #step34Section .status,
+body.theme-light #step34Section .practiceBadge,
+body.light-mode #step34Section .practiceBadge,
+body.theme-light #screen-challenge-play .metaCard,
+body.light-mode #screen-challenge-play .metaCard,
+body.theme-light #screen-challenge-play .practiceInfoBox,
+body.light-mode #screen-challenge-play .practiceInfoBox,
+body.theme-light #screen-challenge-play .practiceInfoCompact,
+body.light-mode #screen-challenge-play .practiceInfoCompact,
+body.theme-light #screen-challenge-play .status,
+body.light-mode #screen-challenge-play .status,
+body.theme-light #screen-challenge-play .practiceBadge,
+body.light-mode #screen-challenge-play .practiceBadge {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(59, 130, 246, 0.38) !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10) !important;
+  color: #0f172a !important;
+}
+
+body.theme-light #step34Section .metaLabel,
+body.light-mode #step34Section .metaLabel,
+body.theme-light #step34Section .label,
+body.light-mode #step34Section .label,
+body.theme-light #screen-challenge-play .metaLabel,
+body.light-mode #screen-challenge-play .metaLabel,
+body.theme-light #screen-challenge-play .label,
+body.light-mode #screen-challenge-play .label {
+  color: #334155 !important;
+  font-weight: 700;
+}
+
+body.theme-light #step34Section .metaValue,
+body.light-mode #step34Section .metaValue,
+body.theme-light #step34Section .value,
+body.light-mode #step34Section .value,
+body.theme-light #step34Section #practiceInfo,
+body.light-mode #step34Section #practiceInfo,
+body.theme-light #screen-challenge-play .metaValue,
+body.light-mode #screen-challenge-play .metaValue,
+body.theme-light #screen-challenge-play .value,
+body.light-mode #screen-challenge-play .value,
+body.theme-light #screen-challenge-play #practiceInfo,
+body.light-mode #screen-challenge-play #practiceInfo {
+  color: #0f172a !important;
+  font-weight: 800;
+  text-shadow: none;
+}
+
+body.theme-light #step34Section select,
+body.light-mode #step34Section select,
+body.theme-light #screen-challenge-play select,
+body.light-mode #screen-challenge-play select,
+body.theme-light .speed-select,
+body.light-mode .speed-select {
+  color: #0f172a !important;
+  background: rgba(255, 255, 255, 0.90) !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+  font-weight: 800;
+}
+
+body.theme-light #step34Section select option,
+body.light-mode #step34Section select option,
+body.theme-light #screen-challenge-play select option,
+body.light-mode #screen-challenge-play select option {
+  color: #0f172a;
+  background: #ffffff;
+}
+
+body.theme-light #step34Section .muted,
+body.light-mode #step34Section .muted,
+body.theme-light #step34Section .hint,
+body.light-mode #step34Section .hint,
+body.theme-light #step34Section .guide-text,
+body.light-mode #step34Section .guide-text,
+body.theme-light #step34Section .mobile-guide,
+body.light-mode #step34Section .mobile-guide,
+body.theme-light #step34Section .status-message,
+body.light-mode #step34Section .status-message,
+body.theme-light #screen-challenge-play .muted,
+body.light-mode #screen-challenge-play .muted,
+body.theme-light #screen-challenge-play .hint,
+body.light-mode #screen-challenge-play .hint,
+body.theme-light #screen-challenge-play .guide-text,
+body.light-mode #screen-challenge-play .guide-text,
+body.theme-light #screen-challenge-play .mobile-guide,
+body.light-mode #screen-challenge-play .mobile-guide,
+body.theme-light #screen-challenge-play .status-message,
+body.light-mode #screen-challenge-play .status-message {
+  color: #334155 !important;
+  font-weight: 700;
+}
+
+body.theme-light #step34Section .practiceMiniBtn,
+body.light-mode #step34Section .practiceMiniBtn,
+body.theme-light #screen-challenge-play .practiceMiniBtn,
+body.light-mode #screen-challenge-play .practiceMiniBtn {
+  color: #0f172a !important;
+  text-shadow: none;
 }
 
 body.theme-light .practiceBadge {
@@ -10439,19 +10667,17 @@ body.theme-light .readyCardHint {
         </div>
         <div class="metaCard">
           <div class="metaLabel">배속</div>
-          <div id="practiceSpeedText" class="metaValue">1.0x</div>
+          <div class="speedMetaControl">
+            <div id="practiceSpeedText" class="metaValue">1.0x</div>
+            <select id="speedSelect" class="speed-select" onchange="updatePracticeSpeedInfo()" aria-label="속도 배속">
+              <option value="0.5">0.5배</option>
+              <option value="0.75">0.75배</option>
+              <option value="1" selected>1.0배</option>
+              <option value="1.25">1.25배</option>
+              <option value="1.5">1.5배</option>
+            </select>
+          </div>
         </div>
-      </div>
-
-      <div class="field">
-        <label class="label" for="speedSelect">속도(배속)</label>
-        <select id="speedSelect" onchange="updatePracticeSpeedInfo()">
-          <option value="0.5">0.5배</option>
-          <option value="0.75">0.75배</option>
-          <option value="1" selected>1.0배</option>
-          <option value="1.25">1.25배</option>
-          <option value="1.5">1.5배</option>
-        </select>
       </div>
 
       <div class="practiceMeta">
@@ -10494,12 +10720,10 @@ body.theme-light .readyCardHint {
       <div class="btnRow3" style="margin-top:10px;">
         <button onclick="startPractice()">연습 시작</button>
         <button class="sub" onclick="stopPractice()">연습 정지</button>
-        <button class="sub" onclick="resetPractice()">화면 초기화</button>
       </div>
 
       <div class="btnRow" style="margin-top:10px;">
         <button onclick="save()">저장하기</button>
-        <button class="sub" onclick="backToSongSelect()">곡 다시 선택</button>
       </div>
 
       <div id="practiceStatus" class="status">연습 전</div>
@@ -11971,11 +12195,9 @@ function renderSongButtons() {
 
       const startBtn = actionRow.querySelector('button[onclick="startPractice()"]');
       const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
-      const resetBtn = actionRow.querySelector('button[onclick="resetPractice()"]');
       const saveBtn = saveRow.querySelector('button[onclick="save()"]');
-      const backSongBtn = saveRow.querySelector('button[onclick="backToSongSelect()"]');
 
-      if (!startBtn || !stopBtn || !resetBtn || !saveBtn || !backSongBtn) {
+      if (!startBtn || !stopBtn || !saveBtn) {
         return;
       }
 
@@ -11984,7 +12206,7 @@ function renderSongButtons() {
       startBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC2DC\uC791");
 
       stopBtn.className = "practiceMiniBtn sub";
-      stopBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9208;</span><span class="label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
+      stopBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9632;</span><span class="label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
 
       saveBtn.className = "practiceMiniBtn";
@@ -12004,29 +12226,11 @@ function renderSongButtons() {
 
       actionRow.remove();
       saveRow.remove();
-      resetBtn.className = "practiceNavBtn sub";
-      resetBtn.innerHTML = '<span class="icon" aria-hidden="true">&#129533;</span><span>\uD654\uBA74 \uCD08\uAE30\uD654</span>';
-      resetBtn.setAttribute("aria-label", "\uD654\uBA74 \uCD08\uAE30\uD654");
-
-      backSongBtn.className = "practiceNavBtn sub";
-      backSongBtn.innerHTML = '<span class="icon" aria-hidden="true">&#127925;</span><span>\uACE1 \uB2E4\uC2DC \uC120\uD0DD</span>';
-      backSongBtn.setAttribute("aria-label", "\uACE1 \uB2E4\uC2DC \uC120\uD0DD");
-
-
-      const footerBar = document.createElement("div");
-      footerBar.className = "bottomBar";
-
-      const leftGroup = document.createElement("div");
-      leftGroup.className = "leftGroup";
-      leftGroup.append(resetBtn, backSongBtn);
-
-      footerBar.append(leftGroup);
-      controlPanel.insertAdjacentElement("afterend", footerBar);
 
       const statusStack = document.createElement("div");
       statusStack.className = "practiceStatusStack";
       statusStack.append(practiceStatus, saveStatus);
-      footerBar.insertAdjacentElement("afterend", statusStack);
+      controlPanel.insertAdjacentElement("afterend", statusStack);
 
       practiceSection.dataset.layoutEnhanced = "true";
     }
@@ -13863,14 +14067,14 @@ function drawBasicStaff(note = "G5") {
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, w, h);
 
-  const staffWidth = 360;
+  const staffWidth = 420;
   const startX = Math.round((w - staffWidth) / 2);
   const endX = startX + staffWidth;
-  const gap = 30;
-  const topY = 170;
+  const gap = 38;
+  const topY = 150;
 
   ctx.strokeStyle = "#111";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
 
   // ?ㅼ꽑
   for (let i = 0; i < 5; i++) {
@@ -13883,8 +14087,8 @@ function drawBasicStaff(note = "G5") {
 
   // ?믪??뚯옄由ы몴
   ctx.fillStyle = "#111";
-  ctx.font = "132px serif";
-  ctx.fillText("𝄞", startX - 26, topY + 96);
+  ctx.font = "158px serif";
+  ctx.fillText("𝄞", startX - 30, topY + 120);
 
   // 湲곗? ?꾩튂
   const line1 = topY + gap * 4;         // ?꾨옒 泥レ㎏??= E5
@@ -13920,28 +14124,28 @@ function drawBasicStaff(note = "G5") {
   // ??? ??蹂댁“??
   if (note === "C5") {
     ctx.strokeStyle = "#111";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(x - 28, ledgerD);
-    ctx.lineTo(x + 28, ledgerD);
+    ctx.moveTo(x - 36, ledgerD);
+    ctx.lineTo(x + 36, ledgerD);
     ctx.stroke();
   }
 
   if (note === "D6") {
     ctx.strokeStyle = "#111";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(x - 28, line4);
-    ctx.lineTo(x + 28, line4);
+    ctx.moveTo(x - 36, line4);
+    ctx.lineTo(x + 36, line4);
     ctx.stroke();
   }
 
   if (note === "E6") {
     ctx.strokeStyle = "#111";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(x - 28, line4);
-    ctx.lineTo(x + 28, line4);
+    ctx.moveTo(x - 36, line4);
+    ctx.lineTo(x + 36, line4);
     ctx.stroke();
   }
 
@@ -13951,33 +14155,33 @@ function drawBasicStaff(note = "G5") {
   ctx.rotate(-0.4);
   ctx.beginPath();
   ctx.fillStyle = "#1d4ed8";
-  ctx.ellipse(0, 0, 18, 13, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, 23, 17, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 
   // 以꾧린
   ctx.strokeStyle = "#1d4ed8";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 5;
   ctx.beginPath();
   if (isDownwardStem) {
-    ctx.moveTo(x - 16, y);
-    ctx.lineTo(x - 16, y + 78);
+    ctx.moveTo(x - 20, y);
+    ctx.lineTo(x - 20, y + 100);
   } else {
-    ctx.moveTo(x + 16, y);
-    ctx.lineTo(x + 16, y - 78);
+    ctx.moveTo(x + 20, y);
+    ctx.lineTo(x + 20, y - 100);
   }
   ctx.stroke();
 
   // ?쒕ぉ
   ctx.fillStyle = "#34506d";
-  ctx.font = "bold 18px system-ui";
-  ctx.fillText(`현재 음: ${data.name} (${getBasicFingeringLabel()})`, 220, 80);
+  ctx.font = "bold 22px system-ui";
+  ctx.fillText(`현재 음: ${data.name} (${getBasicFingeringLabel()})`, 175, 72);
 
   // ?ㅼ꽑蹂??꾨옒 ??怨꾩씠由?  ctx.fillStyle = "#163f7a";
-  ctx.font = "bold 28px system-ui";
+  ctx.font = "bold 34px system-ui";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(data.name, x, topY + gap * 6.1);
+  ctx.fillText(data.name, x, topY + gap * 6.25);
   ctx.textAlign = "start";
   ctx.textBaseline = "alphabetic";
 }
