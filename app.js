@@ -19,7 +19,7 @@ const LOCAL_SHORT_SONGS = [
     bpm: 90,
     timeSignature: "3/4",
     recorderImage: "",
-    notation: "C5/1 E5/1 G5/1 C5/1 E5/1 G5/1 A5/1 A5/1 A5/1 G5/2 R/2 F5/1 F5/1 F5/1 E5/1 E5/1 E5/1 D5/1 D5/1 D5/1 C5/2 R/2"
+    notation: "C5/1 E5/1 G5/1 C5/1 E5/1 G5/1 A5/1 A5/1 A5/1 G5/2 R/1 F5/1 F5/1 F5/1 E5/1 E5/1 E5/1 D5/1 D5/1 D5/1 C5/2 R/1"
   },
   {
     songId: "ODE",
@@ -51,7 +51,7 @@ const LOCAL_SHORT_SONGS = [
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: "C5/1 C5/1 C5/1 C5/1 C5/0.5 D5/0.5 E5/0.5 D5/0.5 C5/1 R/1 D5/1 D5/1 D5/1 D5/1 D5/0.5 E5/0.5 F5/0.5 E5/0.5 D5/1 R/1 E5/1 E5/1 E5/1 E5/1 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/1 R/1 F5/1 F5/1 F5/1 F5/1 F5/0.5 E5/0.5 D5/0.5 E5/0.5 F5/1 R/1 G5/1 G5/1 G5/1 G5/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/1 F5/0.5 E5/0.5 D5/0.5 C5/1 R/1"
+    notation: "C5/1 C5/1 C5/1 C5/1 C5/0.5 D5/0.5 E5/0.5 D5/0.5 C5/1 R/1 D5/1 D5/1 D5/1 D5/1 D5/0.5 E5/0.5 F5/0.5 E5/0.5 D5/1 R/1 E5/1 E5/1 E5/1 E5/1 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/1 R/1 F5/1 F5/1 F5/1 F5/1 F5/0.5 E5/0.5 D5/0.5 E5/0.5 F5/1 R/1 G5/1 G5/1 G5/1 G5/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/1 R/1 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/0.5 F5/0.5 G5/0.5 F5/0.5 E5/0.5 D5/0.5 C5/1 R/1"
   },
   {
     songId: "DRAGONFLY",
