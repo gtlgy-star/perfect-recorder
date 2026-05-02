@@ -12607,7 +12607,7 @@ window.addEventListener("popstate", function (event) {
       if (!m) return null;
 
       const rawNote = m[1].toUpperCase();
-      const beat = m[2] ? Number(m[2]) : 1;
+      const beat = m[2] ? parseFloat(m[2]) : 1;
 
       if (!Number.isFinite(beat) || beat <= 0) return null;
 
@@ -12680,6 +12680,9 @@ window.addEventListener("popstate", function (event) {
       if (!note) return 0;
 
       const order = {
+        G4: -3,
+        A4: -2,
+        B4: -1,
         C5: 0,
         D5: 1,
         E5: 2,
@@ -12692,9 +12695,6 @@ window.addEventListener("popstate", function (event) {
         E6: 9
       };
 
-      const step = order[note];
-      if (step === undefined) return 0;
-
       const canvas = document.getElementById("practiceCanvas");
       const h = canvas.height;
 
@@ -12702,6 +12702,8 @@ window.addEventListener("popstate", function (event) {
       const gap = 20;
       const bottomLineY = centerY + 60;
       const halfGap = gap / 2;
+      const step = order[note];
+      if (step === undefined) return bottomLineY;
 
       return bottomLineY - step * halfGap;
     }
@@ -12891,6 +12893,27 @@ function getNoteBodyWidthByBeat(beat) {
   const baseWidthForWhole = 160; // 4諛?湲곗? 湲몄씠
   const safeBeat = Math.max(0.25, Number(beat) || 1);
   return baseWidthForWhole * (safeBeat / 4);
+}
+
+function drawRest(ctx, x, staffTop, duration) {
+  const centerY = staffTop + 40;
+  const beat = Number(duration);
+
+  ctx.save();
+  ctx.fillStyle = "#333";
+  ctx.font = "24px Arial, serif";
+
+  if (beat === 1) {
+    ctx.fillText("𝄽", x - 7, centerY + 8);
+  } else if (beat === 0.5) {
+    ctx.fillText("𝄾", x - 7, centerY + 8);
+  } else if (beat === 2) {
+    ctx.fillRect(x - 9, centerY - 10, 18, 5);
+  } else {
+    ctx.fillText("𝄽", x - 7, centerY + 8);
+  }
+
+  ctx.restore();
 }
 
     function hexToRgba(hex, alpha) {
@@ -13124,30 +13147,20 @@ function getNoteBodyWidthByBeat(beat) {
       timeline.notes.forEach(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
+        const noteX = x + noteStartOffset;
 
         if (x > canvas.width + 80) return;
         if (x + w < judgeX - 20) return;
 
         if (!n.note) {
-          ctx.fillStyle = "#111";
-          ctx.font = "30px serif";
-          ctx.fillText("♩", x + noteStartOffset, centerY + 10);
-
-          ctx.strokeStyle = "#2563eb";
-          ctx.lineWidth = 9;
-          ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(x + noteStartOffset + 10, centerY);
-          ctx.lineTo(x + Math.max(noteStartOffset + 20, w - noteEndGap), centerY);
-          ctx.stroke();
+          drawRest(ctx, noteX, topLineY, n.beat);
           return;
         }
 
         const y = noteToY(n.note);
-const noteX = x + noteStartOffset;
-const bodyWidth = getNoteBodyWidthByBeat(n.beat);
+        const bodyWidth = getNoteBodyWidthByBeat(n.beat);
 
-drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
+        drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       });
 
       if (elapsedMs < 0) {

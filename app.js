@@ -7,19 +7,19 @@ let songsRefreshPromise = null;
 const LOCAL_SHORT_SONGS = [
   {
     songId: "NABIYA",
-    title: "\uB098\uBE44\uC57C",
+    title: "나비야",
     bpm: 88,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 D5/1 E5/1 F5/1 G5/1 G5/1 G5/2 G5/1 E5/1 E5/1 E5/1 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2 D5/1 D5/1 D5/1 D5/1 D5/1 E5/1 F5/2 E5/1 E5/1 E5/1 E5/1 E5/1 F5/1 G5/2 G5/1 E5/1 E5/2 F5/1 D5/1 D5/2 C5/1 E5/1 G5/1 G5/1 E5/1 E5/1 E5/2"
   },
   {
     songId: "BIHAENGGI",
     title: "\uBE44\uD589\uAE30",
-    bpm: 96,
+    bpm: 100,
     timeSignature: "4/4",
     recorderImage: "",
-    notation: ""
+    notation: "B5/1.5 A5/0.5 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 A5/2 B5/1 B5/1 B5/2 B5/1.5 A5/0.5 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 B5/1.5 A5/0.5 G5/3 R/1"
   },
   {
     songId: "HAKGYOJONG",
