@@ -2419,6 +2419,47 @@ button:disabled {
         inset 0 0 38px rgba(103, 220, 255, 0.06);
     }
 
+    .practicePauseOverlay {
+      position: absolute;
+      inset: 0;
+      z-index: 18;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 16, 34, 0.34);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      color: #ffffff;
+      pointer-events: none;
+    }
+
+    .practicePauseOverlay.visible {
+      display: flex;
+    }
+
+    .practicePauseOverlayInner {
+      display: grid;
+      place-items: center;
+      min-width: 148px;
+      min-height: 148px;
+      border-radius: 28px;
+      background: rgba(7, 20, 42, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow:
+        0 22px 46px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .practicePauseOverlayText {
+      font-size: clamp(56px, 11vw, 116px);
+      font-weight: 1000;
+      line-height: 1;
+      color: #ffffff;
+      text-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.42),
+        0 0 28px rgba(120, 228, 255, 0.54);
+    }
+
     .comboOverlay {
       --combo-tilt: -18deg;
       --combo-number-color: #e8ffd1;
@@ -2708,34 +2749,61 @@ button:disabled {
 
     .practiceControlPanel {
       display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.9fr);
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
       margin-top: 14px;
       align-items: stretch;
     }
 
+    .practiceInfoBox {
+      height: 90px;
+      min-height: 90px;
+      max-height: 90px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-self: stretch;
+    }
+
     .practiceInfoCompact {
-      min-height: 0;
+      height: 90px;
+      min-height: 90px;
+      max-height: 90px;
+      margin: 0;
       padding: 12px 14px;
       border-radius: 22px;
       box-shadow: 0 10px 24px rgba(77, 168, 255, 0.12);
     }
 
+    .practiceInfoBox #practiceInfo,
     .practiceInfoCompact #practiceInfo {
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 14px;
+      line-height: 1.65;
+      font-weight: 700;
     }
 
     .practiceActionStack {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
+      height: 90px;
+      min-height: 90px;
+      max-height: 90px;
+      align-items: stretch;
+      align-self: stretch;
+      margin: 0;
     }
 
-    .practiceMiniBtn {
-      min-height: 112px;
+    .practiceMiniBtn,
+    .practice-control-btn {
+      width: 100%;
+      height: 90px;
+      min-height: 90px;
+      max-height: 90px;
+      margin: 0;
       padding: 14px 10px;
-      border-radius: 24px;
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2743,8 +2811,28 @@ button:disabled {
       gap: 8px;
       text-align: center;
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 800;
       line-height: 1.2;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      align-self: stretch;
+    }
+
+    .practice-start-btn {
+      background: linear-gradient(180deg, #78e4ff, #2588f4);
+    }
+
+    .practice-pause-btn {
+      background: linear-gradient(180deg, #b9f7a5, #32b768);
+    }
+
+    .practice-stop-btn {
+      background: linear-gradient(180deg, #ffe47a, #ff9f3f);
+    }
+
+    .practice-save-btn {
+      background: linear-gradient(180deg, #8ee9ff, #1d8df2);
     }
 
     .practiceMiniBtn .icon {
@@ -4022,15 +4110,17 @@ button:disabled {
       }
 
       .practiceControlPanel {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       .practiceActionStack {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
       .practiceMiniBtn {
-        min-height: 92px;
+        height: 90px;
+        min-height: 90px;
+        max-height: 90px;
         border-radius: 20px;
         padding: 12px 8px;
       }
@@ -5085,7 +5175,7 @@ body.theme-light .challenge-play-mode .metaValue,
 body.theme-light .challenge-play-mode .cardTitle,
 body.theme-light .challenge-play-mode #practiceInfo,
 body.theme-light .challenge-play-mode .practiceNavBtn,
-body.theme-light .challenge-play-mode .practiceMiniBtn {
+body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn) {
   color: #1f3147;
   text-shadow: none;
 }
@@ -6159,10 +6249,10 @@ body.light-mode #screen-challenge-play .status-message {
   font-weight: 700;
 }
 
-body.theme-light #step34Section .practiceMiniBtn,
-body.light-mode #step34Section .practiceMiniBtn,
-body.theme-light #screen-challenge-play .practiceMiniBtn,
-body.light-mode #screen-challenge-play .practiceMiniBtn {
+body.theme-light #step34Section .practiceMiniBtn:not(.practice-control-btn),
+body.light-mode #step34Section .practiceMiniBtn:not(.practice-control-btn),
+body.theme-light #screen-challenge-play .practiceMiniBtn:not(.practice-control-btn),
+body.light-mode #screen-challenge-play .practiceMiniBtn:not(.practice-control-btn) {
   color: #0f172a !important;
   text-shadow: none;
 }
@@ -8985,11 +9075,13 @@ body.theme-light .practiceStaffSlot {
   .practiceControlPanel {
     gap: 8px;
     margin-top: 8px;
-    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    grid-template-columns: 1fr 1fr;
   }
 
   .practiceMiniBtn {
-    min-height: 72px;
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
     padding: 8px 6px;
     border-radius: 16px;
     font-size: 12px;
@@ -10354,6 +10446,23 @@ body.theme-light .readyCardHint {
   background: linear-gradient(135deg, rgba(185,28,28,0.62), rgba(127,29,29,0.38)) !important;
 }
 
+.fingering-count-pop {
+  display: inline-block;
+  animation: fingeringCountPop 0.28s ease-out;
+}
+
+@keyframes fingeringCountPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.45);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
   </style>
 </head>
 <body class="theme-dark">
@@ -10767,6 +10876,11 @@ body.theme-light .readyCardHint {
           <div class="comboLabel">COMBO</div>
           <div id="comboValue" class="comboValue">5</div>
         </div>
+        <div id="practicePauseOverlay" class="practicePauseOverlay" aria-hidden="true">
+          <div class="practicePauseOverlayInner">
+            <div id="practicePauseOverlayText" class="practicePauseOverlayText">일시정지</div>
+          </div>
+        </div>
         <canvas id="practiceCanvas" width="900" height="320"></canvas>
       </div>
 
@@ -10776,6 +10890,7 @@ body.theme-light .readyCardHint {
 
       <div class="btnRow3" style="margin-top:10px;">
         <button onclick="startPractice()">연습 시작</button>
+        <button type="button" class="practice-control-btn practice-pause-btn" onclick="pauseSongPractice()">일시정지</button>
         <button class="sub" onclick="stopPractice()">연습 정지</button>
       </div>
 
@@ -11074,6 +11189,12 @@ body.theme-light .readyCardHint {
 
     let practiceRunning = false;
     let practiceAnim = null;
+    let practicePaused = false;
+    let practicePausedAt = 0;
+    let practicePausedDuration = 0;
+    let practiceAnimationFrameId = null;
+    let practiceResumeCountdownTimer = null;
+    let practiceResumeCounting = false;
 
     let audioCtx = null;
     let micStream = null;
@@ -12265,6 +12386,7 @@ function renderSongButtons() {
       practiceInfoBox.classList.add("practiceInfoCompact");
 
       const startBtn = actionRow.querySelector('button[onclick="startPractice()"]');
+      const existingPauseBtn = actionRow.querySelector('button[onclick="pauseSongPractice()"]');
       const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
       const saveBtn = saveRow.querySelector('button[onclick="save()"]');
 
@@ -12272,16 +12394,23 @@ function renderSongButtons() {
         return;
       }
 
-      startBtn.className = "practiceMiniBtn";
-      startBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9654;</span><span class="label">\uC5F0\uC2B5 \uC2DC\uC791</span>';
+      startBtn.className = "practiceMiniBtn practice-control-btn practice-start-btn";
+      startBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9654;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC2DC\uC791</span>';
       startBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC2DC\uC791");
 
-      stopBtn.className = "practiceMiniBtn sub";
-      stopBtn.innerHTML = '<span class="icon" aria-hidden="true">&#9632;</span><span class="label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
+      const pauseBtn = existingPauseBtn || document.createElement("button");
+      pauseBtn.type = "button";
+      pauseBtn.className = "practiceMiniBtn practice-control-btn practice-pause-btn";
+      pauseBtn.setAttribute("onclick", "pauseSongPractice()");
+      pauseBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9208;</span><span class="label practice-btn-label">\uC77C\uC2DC\uC815\uC9C0</span>';
+      pauseBtn.setAttribute("aria-label", "\uC77C\uC2DC\uC815\uC9C0");
+
+      stopBtn.className = "practiceMiniBtn practice-control-btn practice-stop-btn";
+      stopBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9632;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
 
-      saveBtn.className = "practiceMiniBtn";
-      saveBtn.innerHTML = '<span class="icon" aria-hidden="true">&#128190;</span><span class="label">\uC800\uC7A5\uD558\uAE30</span>';
+      saveBtn.className = "practiceMiniBtn practice-control-btn practice-save-btn";
+      saveBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#128190;</span><span class="label practice-btn-label">\uC800\uC7A5\uD558\uAE30</span>';
       saveBtn.setAttribute("aria-label", "\uC800\uC7A5\uD558\uAE30");
 
       const controlPanel = document.createElement("div");
@@ -12289,7 +12418,7 @@ function renderSongButtons() {
       const actionStack = document.createElement("div");
       actionStack.className = "practiceActionStack";
       actionStack.setAttribute("aria-label", "\uC5F0\uC2B5 \uB3D9\uC791");
-      actionStack.append(startBtn, stopBtn, saveBtn);
+      actionStack.append(startBtn, pauseBtn, stopBtn, saveBtn);
 
 
       controlPanel.append(practiceInfoBox, actionStack);
@@ -12355,6 +12484,10 @@ function renderSongButtons() {
 
     function renderScreenOnly(screenId) {
       const targetId = screenId === "screen-login" ? "step1Section" : screenId;
+      if (appCurrentScreen === "step34Section" && targetId !== "step34Section" && currentPracticeMode === "fingering") {
+        stopFingeringMetronomeClick();
+      }
+
       const menuScreen = document.getElementById("screen-menu");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
@@ -12390,6 +12523,7 @@ function renderSongButtons() {
         setPracticeScreenMode("fingering");
         const practice = document.getElementById("step34Section");
         if (practice) practice.classList.remove("hidden");
+        primeFingeringMetronomeAudio();
       } else if (targetId === "screen-basic") {
         const basicType = document.getElementById("step-basic-typeSection");
         if (basicType) basicType.classList.remove("hidden");
@@ -12465,6 +12599,7 @@ function renderSongButtons() {
         currentActivityTitle = SCREEN_TITLES[screenId];
         setPracticeScreenMode("fingering");
         showStep("step34Section", { skipHistory: true });
+        primeFingeringMetronomeAudio();
         if (!skipHistory) pushAppHistory(screenId);
         resetPractice();
         return;
@@ -12570,6 +12705,7 @@ function backToLogin() {
 }
 
 function goHomeMenu() {
+  stopFingeringMetronomeClick();
   stopBasicPracticeSession();
   stopPractice();
   resetSongMenuState("short");
@@ -12589,6 +12725,9 @@ function goPrevScreen() {
 
 function goBackInApp() {
   if (appCurrentScreen === "screen-menu") return;
+  if (appCurrentScreen === "step34Section" && currentPracticeMode === "fingering") {
+    stopFingeringMetronomeClick();
+  }
   history.back();
 }
 
@@ -12882,8 +13021,9 @@ window.addEventListener("popstate", function (event) {
 
       if (song) {
         const actualBpm = Math.round((Number(song.bpm) || 80) * speed);
+        const timeline = buildSongTimeline(song, actualBpm);
         document.getElementById("practiceInfo").innerHTML =
-          `선택곡 <b>${song.title}</b><br>박자: ${song.timeSignature || "4/4"}<br>기준 BPM: ${song.bpm || 80}<br>적용 속도: ${speed.toFixed(2).replace(/\.00$/, "")}배 (${actualBpm} BPM)`;
+          `곡 제목: ${song.title || "-"}<br>박자: ${song.timeSignature || "4/4"} (BPM ${song.bpm || 80})<br>전체 음표수: ${timeline.notes.length}개`;
       }
     }
 
@@ -13248,16 +13388,18 @@ function drawRest(ctx, x, staffTop, duration) {
 
   ctx.save();
   ctx.fillStyle = NOTE_COLOR;
-  ctx.font = "24px Arial, serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = "48px Arial, serif";
 
   if (beat === 1) {
-    ctx.fillText("𝄽", x - 7, centerY + 8);
+    ctx.fillText("𝄽", x, centerY + 2);
   } else if (beat === 0.5) {
-    ctx.fillText("𝄾", x - 7, centerY + 8);
+    ctx.fillText("𝄾", x, centerY + 2);
   } else if (beat === 2) {
-    ctx.fillRect(x - 9, centerY - 10, 18, 5);
+    ctx.fillRect(x - 18, centerY - 8, 36, 10);
   } else {
-    ctx.fillText("𝄽", x - 7, centerY + 8);
+    ctx.fillText("𝄽", x, centerY + 2);
   }
 
   ctx.restore();
@@ -13979,6 +14121,11 @@ function drawRest(ctx, x, staffTop, duration) {
     function updatePitchLoop() {
       if (!micRunning || !analyser || !audioCtx) return;
 
+      if (practicePaused) {
+        pitchLoopHandle = requestAnimationFrame(updatePitchLoop);
+        return;
+      }
+
       analyser.getFloatTimeDomainData(pitchBuffer);
       currentInputLevel = getCurrentInputRms(pitchBuffer);
       const freq = currentInputLevel >= MIN_PERFORMANCE_INPUT_LEVEL
@@ -14007,7 +14154,7 @@ function drawRest(ctx, x, staffTop, duration) {
         if (el) el.textContent = "-";
       }
 
-      if (practiceRunning && currentTimeline) {
+      if (practiceRunning && !practicePaused && currentTimeline) {
         updateScoringFrame();
       }
 
@@ -14045,12 +14192,31 @@ function drawRest(ctx, x, staffTop, duration) {
       const selectedBpm = Math.max(40, Math.min(220, Math.round(baseBpm * speed)));
 
       const timeline = buildSongTimeline(song, selectedBpm);
-      const startedAt = performance.now();
+      let startedAt = performance.now();
       const countdownMs = 5000;
 
       currentTimeline = timeline;
       currentPracticeStartedAt = startedAt;
       currentCountdownMs = countdownMs;
+      practicePaused = false;
+      practicePausedAt = 0;
+      practicePausedDuration = 0;
+      if (practiceResumeCountdownTimer) {
+        clearInterval(practiceResumeCountdownTimer);
+        practiceResumeCountdownTimer = null;
+      }
+      practiceResumeCounting = false;
+      hidePracticePauseOverlay();
+
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      if (pauseBtn) {
+        pauseBtn.disabled = false;
+        const label = pauseBtn.querySelector(".practice-btn-label");
+        const icon = pauseBtn.querySelector(".practice-btn-icon");
+        if (label) label.textContent = "일시정지";
+        else pauseBtn.textContent = "일시정지";
+        if (icon) icon.textContent = "⏸";
+      }
 
       resetScoreState();
       resetJudgmentZoneState();
@@ -14062,14 +14228,20 @@ function drawRest(ctx, x, staffTop, duration) {
       document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
 
       document.getElementById("practiceInfo").innerHTML =
-        `<b>${song.title}</b><br>박자: ${timeline.timeSignature || "4/4"}<br>기준 BPM: ${baseBpm}<br>적용 속도: ${speed.toFixed(2).replace(/\.00$/, "")}배 (${selectedBpm} BPM)<br>총 음표 수: ${timeline.notes.length}개<br>총 길이: ${(timeline.totalMs / 1000).toFixed(1)}초`;
+        `곡 제목: ${song.title || "-"}<br>박자: ${timeline.timeSignature || "4/4"} (BPM ${baseBpm})<br>전체 음표수: ${timeline.notes.length}개`;
 
       setStatus("practiceStatus", "5초 카운트 후 시작 · 마이크 판정중", "ok");
 
       function loop(now) {
         if (!practiceRunning) return;
 
-        const elapsedMs = (now - startedAt) - countdownMs;
+        if (practicePaused) {
+          practiceAnimationFrameId = requestAnimationFrame(loop);
+          practiceAnim = practiceAnimationFrameId;
+          return;
+        }
+
+        const elapsedMs = (now - currentPracticeStartedAt) - countdownMs;
         drawTimelineNotes(elapsedMs, timeline, now);
 
         if (elapsedMs >= timeline.totalMs + 1500) {
@@ -14085,10 +14257,119 @@ function drawRest(ctx, x, staffTop, duration) {
           return;
         }
 
-        practiceAnim = requestAnimationFrame(loop);
+        practiceAnimationFrameId = requestAnimationFrame(loop);
+        practiceAnim = practiceAnimationFrameId;
       }
 
-      practiceAnim = requestAnimationFrame(loop);
+      practiceAnimationFrameId = requestAnimationFrame(loop);
+      practiceAnim = practiceAnimationFrameId;
+    }
+
+    function setPracticePauseOverlay(text, visible = true) {
+      const overlay = document.getElementById("practicePauseOverlay");
+      const overlayText = document.getElementById("practicePauseOverlayText");
+      if (!overlay || !overlayText) return;
+
+      overlayText.textContent = text;
+      overlay.classList.toggle("visible", visible);
+      overlay.setAttribute("aria-hidden", visible ? "false" : "true");
+    }
+
+    function hidePracticePauseOverlay() {
+      const overlay = document.getElementById("practicePauseOverlay");
+      if (!overlay) return;
+
+      overlay.classList.remove("visible");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function startResumeCountdown() {
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      const pauseLabel = pauseBtn ? pauseBtn.querySelector(".practice-btn-label") : null;
+      const pauseIcon = pauseBtn ? pauseBtn.querySelector(".practice-btn-icon") : null;
+
+      if (!pauseBtn || practiceResumeCounting) return;
+
+      practiceResumeCounting = true;
+      pauseBtn.disabled = true;
+
+      let count = 4;
+      const countdownMs = Math.max(120, Number(currentTimeline?.beatMs) || 800);
+
+      if (pauseIcon) pauseIcon.textContent = "▶";
+      if (pauseLabel) pauseLabel.textContent = "이어하기";
+      setPracticePauseOverlay(String(count));
+
+      practiceResumeCountdownTimer = setInterval(() => {
+        count -= 1;
+
+        if (count <= 0) {
+          clearInterval(practiceResumeCountdownTimer);
+          practiceResumeCountdownTimer = null;
+          practiceResumeCounting = false;
+          pauseBtn.disabled = false;
+
+          resumeSongPracticeAfterCountdown();
+          return;
+        }
+
+        setPracticePauseOverlay(String(count));
+      }, countdownMs);
+    }
+
+    function resumeSongPracticeAfterCountdown() {
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      const pauseLabel = pauseBtn ? pauseBtn.querySelector(".practice-btn-label") : null;
+      const pauseIcon = pauseBtn ? pauseBtn.querySelector(".practice-btn-icon") : null;
+
+      practicePaused = false;
+
+      if (practicePausedAt) {
+        practicePausedDuration += performance.now() - practicePausedAt;
+        currentPracticeStartedAt += practicePausedDuration;
+        practicePausedAt = 0;
+        practicePausedDuration = 0;
+      }
+
+      if (pauseBtn) pauseBtn.disabled = false;
+      if (pauseLabel) pauseLabel.textContent = "일시정지";
+      else if (pauseBtn) pauseBtn.textContent = "일시정지";
+      if (pauseIcon) pauseIcon.textContent = "⏸";
+
+      const statusEl = document.querySelector("#practiceStatus, .practice-status, .score-status");
+      if (statusEl) statusEl.textContent = "연습 진행 중";
+      hidePracticePauseOverlay();
+    }
+
+    function pauseSongPractice() {
+      if (isFingeringPracticeMode()) {
+        return;
+      }
+
+      if (!practiceRunning || !currentTimeline) {
+        return;
+      }
+
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      const pauseLabel = pauseBtn ? pauseBtn.querySelector(".practice-btn-label") : null;
+      const pauseIcon = pauseBtn ? pauseBtn.querySelector(".practice-btn-icon") : null;
+
+      if (!practicePaused) {
+        practicePaused = true;
+        practicePausedAt = performance.now();
+
+        if (pauseLabel) pauseLabel.textContent = "이어하기";
+        else if (pauseBtn) pauseBtn.textContent = "이어하기";
+        if (pauseIcon) pauseIcon.textContent = "▶";
+
+        const statusEl = document.querySelector("#practiceStatus, .practice-status, .score-status");
+        if (statusEl) statusEl.textContent = "일시정지 중";
+        setPracticePauseOverlay("일시정지");
+
+        return;
+      }
+
+      startResumeCountdown();
     }
 
     function stopPractice() {
@@ -14100,10 +14381,32 @@ function drawRest(ctx, x, staffTop, duration) {
         return;
       }
 
+      practicePaused = false;
+      practicePausedAt = 0;
+      practicePausedDuration = 0;
+      if (practiceResumeCountdownTimer) {
+        clearInterval(practiceResumeCountdownTimer);
+        practiceResumeCountdownTimer = null;
+      }
+      practiceResumeCounting = false;
+      hidePracticePauseOverlay();
+
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      if (pauseBtn) {
+        pauseBtn.disabled = false;
+        const label = pauseBtn.querySelector(".practice-btn-label");
+        const icon = pauseBtn.querySelector(".practice-btn-icon");
+        if (label) label.textContent = "일시정지";
+        else pauseBtn.textContent = "일시정지";
+        if (icon) icon.textContent = "⏸";
+      }
+
       practiceRunning = false;
 
       if (practiceAnim) cancelAnimationFrame(practiceAnim);
       practiceAnim = null;
+      if (practiceAnimationFrameId) cancelAnimationFrame(practiceAnimationFrameId);
+      practiceAnimationFrameId = null;
 
       stopMicMonitoring();
 
@@ -14572,6 +14875,10 @@ function startBasicPractice() {
     }
 
     function setPracticeScreenMode(mode) {
+      if (currentPracticeMode === "fingering" && mode !== "fingering") {
+        stopFingeringMetronomeClick();
+      }
+
       currentPracticeMode = mode === "fingering" ? "fingering" : "song";
       const practiceSection = document.getElementById("step34Section");
       if (!practiceSection) return;
@@ -14811,6 +15118,7 @@ function startBasicPractice() {
     function assignFingeringPatternToSlot(slotIndex, patternKey) {
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
+      stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
       selectedPracticePatterns[slotIndex] = patternKey;
       practiceState.index = 0;
@@ -14859,6 +15167,7 @@ function startBasicPractice() {
 
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
+      stopFingeringMetronomeClick();
       selectedFingeringPattern = patternKey;
       selectedPracticePatterns = [patternKey, null];
       practiceState.index = 0;
@@ -15111,6 +15420,84 @@ function startBasicPractice() {
       drawFingeringStaff();
     }
 
+    const fingeringMetronomeAudio = new Audio("audio/metronome.wav");
+    fingeringMetronomeAudio.preload = "auto";
+
+    let fingeringMetronomePrimed = false;
+
+    function primeFingeringMetronomeAudio() {
+      if (fingeringMetronomePrimed) return;
+
+      try {
+        fingeringMetronomeAudio.volume = 0;
+        fingeringMetronomeAudio.currentTime = 0;
+
+        const p = fingeringMetronomeAudio.play();
+
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            if (fingeringMetronomeAudio.volume === 0) {
+              fingeringMetronomeAudio.pause();
+              fingeringMetronomeAudio.currentTime = 0;
+            }
+            fingeringMetronomeAudio.volume = 1;
+            fingeringMetronomePrimed = true;
+          }).catch(() => {
+            fingeringMetronomeAudio.volume = 1;
+          });
+        }
+      } catch (e) {
+        fingeringMetronomeAudio.volume = 1;
+      }
+    }
+
+    function stopFingeringMetronomeClick() {
+      try {
+        if (practiceTimer) {
+          clearInterval(practiceTimer);
+          practiceTimer = null;
+        }
+
+        if (window.fingeringPracticeMetronomeTimer) {
+          clearInterval(window.fingeringPracticeMetronomeTimer);
+          window.fingeringPracticeMetronomeTimer = null;
+        }
+
+        if (window.fingeringPracticeCountdownTimer) {
+          clearInterval(window.fingeringPracticeCountdownTimer);
+          window.fingeringPracticeCountdownTimer = null;
+        }
+
+        if (typeof fingeringMetronomeAudio !== "undefined") {
+          fingeringMetronomeAudio.pause();
+          fingeringMetronomeAudio.currentTime = 0;
+        }
+
+        const startBtn = document.getElementById("startFingeringPracticeBtn");
+        const startLabel = startBtn?.querySelector(".start-label");
+        if (startBtn?.dataset.counting === "true") {
+          startBtn.dataset.counting = "false";
+          if (startLabel) startLabel.textContent = "연습 시작";
+          updateFingeringStartButtonState();
+        }
+      } catch (e) {}
+    }
+
+    function prepareFingeringMetronomeClick() {
+      try {
+        fingeringMetronomeAudio.load();
+      } catch (e) {}
+    }
+
+    function playFingeringCountdownClick() {
+      try {
+        fingeringMetronomeAudio.volume = 1;
+        fingeringMetronomeAudio.pause();
+        fingeringMetronomeAudio.currentTime = 0;
+        fingeringMetronomeAudio.play().catch(() => {});
+      } catch (e) {}
+    }
+
     function nextNote() {
       const notes = practiceState.notes;
       if (!notes.length) {
@@ -15138,6 +15525,7 @@ function startBasicPractice() {
 
       updateRecorderImageByNote(current);
       drawFingeringStaff();
+      playFingeringCountdownClick();
 
       practiceState.index++;
 
@@ -15169,11 +15557,13 @@ function startBasicPractice() {
     }
 
     function stopFingeringPractice() {
+      stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
       setStatus("practiceStatus", "운지법 훈련 일시정지", "");
     }
 
     function resetFingeringPractice() {
+      stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
       selectedFingeringPattern = null;
       selectedPracticePatterns = [null, null];
@@ -15274,12 +15664,25 @@ function startBasicPractice() {
           if (startBtn.dataset.counting === "true") return;
 
           const startLabel = startBtn.querySelector(".start-label");
+          function animateFingeringCountdownLabel() {
+            if (!startLabel) return;
+
+            startLabel.classList.remove("fingering-count-pop");
+            void startLabel.offsetWidth;
+            startLabel.classList.add("fingering-count-pop");
+          }
+
           const originalLabel = startLabel ? startLabel.textContent : "";
           const countdownMs = Number(practiceState.speed) || 800;
           let count = 4;
 
+          stopFingeringMetronomeClick();
+          primeFingeringMetronomeAudio();
+          prepareFingeringMetronomeClick();
           startBtn.dataset.counting = "true";
           if (startLabel) startLabel.textContent = String(count);
+          animateFingeringCountdownLabel();
+          playFingeringCountdownClick();
 
           const runFingeringPracticeStart = () => {
             document.getElementById("step34Section")?.classList.add("fingeringPracticeStarted");
@@ -15301,16 +15704,19 @@ function startBasicPractice() {
             }
           };
 
-          const countdownTimer = setInterval(() => {
+          window.fingeringPracticeCountdownTimer = setInterval(() => {
             count -= 1;
 
             if (count <= 0) {
-              clearInterval(countdownTimer);
+              clearInterval(window.fingeringPracticeCountdownTimer);
+              window.fingeringPracticeCountdownTimer = null;
               runFingeringPracticeStart();
               return;
             }
 
             if (startLabel) startLabel.textContent = String(count);
+            animateFingeringCountdownLabel();
+            playFingeringCountdownClick();
           }, countdownMs);
         });
 
@@ -15332,6 +15738,7 @@ function startBasicPractice() {
     }
 
     function resetFingeringPracticeSelection() {
+      stopFingeringMetronomeClick();
       selectedFingeringPattern = null;
       selectedPracticePatterns = [null, null];
       activePatternSlot = 0;
