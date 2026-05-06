@@ -13677,7 +13677,7 @@ function drawRest(ctx, x, staffTop, duration) {
       ctx.strokeStyle = "#111";
       ctx.lineWidth = 2;
 
-      for (let t = 0; t <= timeline.totalMs + 1; t += measureMs) {
+      for (let t = 0; t < timeline.totalMs - 1; t += measureMs) {
         const barX = judgeX + (t - elapsedMs) * pxPerMs;
         if (barX < 0 || barX > canvas.width) continue;
 
@@ -13685,6 +13685,23 @@ function drawRest(ctx, x, staffTop, duration) {
         ctx.moveTo(barX, topLineY - 10);
         ctx.lineTo(barX, bottomLineY + 10);
         ctx.stroke();
+      }
+
+      const finalBarX = judgeX + (timeline.totalMs - elapsedMs) * pxPerMs;
+      if (finalBarX >= -12 && finalBarX <= canvas.width + 12) {
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(finalBarX - 6, topLineY - 10);
+        ctx.lineTo(finalBarX - 6, bottomLineY + 10);
+        ctx.stroke();
+
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.moveTo(finalBarX, topLineY - 10);
+        ctx.lineTo(finalBarX, bottomLineY + 10);
+        ctx.stroke();
+
+        ctx.lineWidth = 2;
       }
 
       timeline.notes.forEach(n => {
