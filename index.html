@@ -13322,6 +13322,31 @@ window.addEventListener("popstate", function (event) {
       );
     }
 
+    function shouldStemDown(noteName) {
+      if (!noteName || noteName === "R") return false;
+
+      const match = String(noteName).match(/^([A-G])(#|b)?(\d)$/);
+      if (!match) return false;
+
+      const pitchOrder = {
+        C: 0,
+        D: 1,
+        E: 2,
+        F: 3,
+        G: 4,
+        A: 5,
+        B: 6
+      };
+
+      const letter = match[1];
+      const octave = Number(match[3]);
+
+      const value = octave * 7 + pitchOrder[letter];
+      const border = 5 * 7 + pitchOrder.B;
+
+      return value >= border;
+    }
+
    function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth) {
   const beat = Number(noteObj.beat || 1);
   const NOTE_COLOR = "#1e2a44";
@@ -13331,12 +13356,17 @@ window.addEventListener("popstate", function (event) {
   const headW = 15;
   const headH = 10;
   const stemHeight = 52;
+  const staffLineGap = 20;
+  const extraStemLength = staffLineGap;
+  const stemLength = stemHeight + extraStemLength;
 
   const isWhole = beat >= 4;
   const isHalf = beat >= 2 && beat < 4;
   const isQuarter = beat >= 1 && beat < 2;
   const isEighth = beat < 1;
+  const isSixteenth = beat < 0.5;
   const isDotted = [0.75, 1.5, 3].some((value) => Math.abs(beat - value) < 0.001);
+  const stemDown = shouldStemDown(noteObj.note);
 
   const safeBodyWidth = Math.max(12, Number(bodyWidth) || 12);
   const NOTE_NAME_Y = bottomLineY + 54;
@@ -13384,27 +13414,89 @@ window.addEventListener("popstate", function (event) {
 
   // 以꾧린
   if (!isWhole) {
+    const stemX = stemDown ? noteX - 12 : noteX + 12;
+    const stemEndY = stemDown ? noteY + stemLength : noteY - stemLength;
     ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(noteX + 12, noteY);
-    ctx.lineTo(noteX + 12, noteY - stemHeight);
+    ctx.moveTo(stemX, noteY);
+    ctx.lineTo(stemX, stemEndY);
     ctx.stroke();
   }
 
   // 8遺꾩쓬??瑗щ━
   if (isEighth) {
+    const stemX = stemDown ? noteX - 12 : noteX + 12;
+    const stemEndY = stemDown ? noteY + stemLength : noteY - stemLength;
     ctx.strokeStyle = NOTE_COLOR;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(noteX + 12, noteY - stemHeight);
-    ctx.quadraticCurveTo(
-      noteX + 28,
-      noteY - stemHeight + 8,
-      noteX + 17,
-      noteY - stemHeight + 24
-    );
-    ctx.stroke();
+    ctx.moveTo(stemX, stemEndY);
+    if (stemDown) {
+      ctx.save();
+      const drawDownFlag = (stemBottomY) => {
+        ctx.fillStyle = NOTE_COLOR;
+        ctx.beginPath();
+        ctx.moveTo(stemX + 1, stemBottomY - 2);
+        ctx.bezierCurveTo(
+          stemX + 22,
+          stemBottomY - 2,
+          stemX + 30,
+          stemBottomY - 24,
+          stemX + 16,
+          stemBottomY - 42
+        );
+        ctx.bezierCurveTo(
+          stemX + 18,
+          stemBottomY - 24,
+          stemX + 10,
+          stemBottomY - 8,
+          stemX + 4,
+          stemBottomY + 2
+        );
+        ctx.closePath();
+        ctx.fill();
+      };
+
+      const stemBottomY = stemEndY - 1;
+      drawDownFlag(stemBottomY);
+      if (isSixteenth) {
+        drawDownFlag(stemBottomY + 10);
+      }
+      ctx.restore();
+    } else {
+      ctx.save();
+      const drawUpFlag = (stemTopY) => {
+        ctx.fillStyle = NOTE_COLOR;
+        ctx.beginPath();
+        ctx.moveTo(stemX + 1, stemTopY + 2);
+        ctx.bezierCurveTo(
+          stemX + 22,
+          stemTopY + 2,
+          stemX + 30,
+          stemTopY + 24,
+          stemX + 16,
+          stemTopY + 42
+        );
+        ctx.bezierCurveTo(
+          stemX + 18,
+          stemTopY + 24,
+          stemX + 10,
+          stemTopY + 8,
+          stemX + 4,
+          stemTopY - 2
+        );
+        ctx.closePath();
+        ctx.fill();
+      };
+
+      const stemTopY = stemEndY + 1;
+      drawUpFlag(stemTopY);
+      if (isSixteenth) {
+        drawUpFlag(stemTopY - 10);
+      }
+      ctx.restore();
+    }
   }
 
   // C5 蹂댁“??
@@ -13662,6 +13754,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const noteStartOffset = 22;
       const noteEndGap = 14;
+      const noteRightSafePadding = 24;
 
       drawPracticeBase(timeline.timeSignature || "4/4");
 
@@ -13707,15 +13800,21 @@ function drawRest(ctx, x, staffTop, duration) {
       timeline.notes.forEach(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
-        const noteX = x + noteStartOffset;
+        const rawNoteX = x + noteStartOffset;
 
         if (x > canvas.width + 80) return;
         if (x + w < judgeX - 20) return;
 
         if (!n.note) {
-          drawRest(ctx, noteX, topLineY, n.beat);
+          drawRest(ctx, rawNoteX, topLineY, n.beat);
           return;
         }
+
+        const measureIndex = Math.floor((Number(n.startMs) || 0) / measureMs);
+        const measureEndMs = Math.min((measureIndex + 1) * measureMs, timeline.totalMs);
+        const measureEndX = judgeX + (measureEndMs - elapsedMs) * pxPerMs;
+        const maxNoteX = measureEndX - noteRightSafePadding;
+        const noteX = Math.min(rawNoteX, maxNoteX);
 
         const y = noteToY(n.note);
         const bodyWidth = getNoteBodyWidthByBeat(n.beat);
@@ -14589,8 +14688,7 @@ function drawBasicStaff(note = "G5") {
   const data = noteMap[note] || noteMap["G5"];
   const x = Math.round((startX + endX) / 2) + 10;
   const y = data.y;
-  const downwardStemNotes = ["B5", "C6", "D6", "E6"];
-  const isDownwardStem = downwardStemNotes.includes(note);
+  const isDownwardStem = shouldStemDown(note);
 
   // ??? ??蹂댁“??
   if (note === "C5") {
@@ -15454,11 +15552,16 @@ function startBasicPractice() {
         ctx.stroke();
         ctx.restore();
 
+        const stemDown = shouldStemDown(note);
+        const stemX = stemDown ? x - 8 : x + 8;
+        const stemStartY = stemDown ? y + 2 : y - 2;
+        const stemEndY = stemDown ? y + 40 : y - 42;
+
         ctx.strokeStyle = isCurrent ? "#ffe66d" : "rgba(235, 248, 255, 0.68)";
         ctx.lineWidth = isCurrent ? 3 : 2;
         ctx.beginPath();
-        ctx.moveTo(x + 8, y - 2);
-        ctx.lineTo(x + 8, y - 42);
+        ctx.moveTo(stemX, stemStartY);
+        ctx.lineTo(stemX, stemEndY);
         ctx.stroke();
 
         if (isPast) {
