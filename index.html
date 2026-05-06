@@ -11188,7 +11188,7 @@ body.theme-light .readyCardHint {
       </div>
     </div>
 
-    <button class="challenge-start-btn" onclick="startChallengeMission('twinkle')">
+    <button id="challengeStartBtn" class="challenge-start-btn" onclick="startChallengeMission('current')">
       ✨ 도전 시작
     </button>
   </div>
@@ -11252,14 +11252,14 @@ body.theme-light .readyCardHint {
     <h3>다음 미션 예고</h3>
 
     <div class="next-mission-grid">
-      <div class="next-mission-card locked">
+      <div class="next-mission-card locked" data-challenge-slot="2">
         <div class="lock-mark">🔒</div>
         <span>Next Mission 01</span>
         <strong>준비중</strong>
         <em>COMING SOON</em>
       </div>
 
-      <div class="next-mission-card locked">
+      <div class="next-mission-card locked" data-challenge-slot="3">
         <div class="lock-mark">🔒</div>
         <span>Next Mission 02</span>
         <strong>준비중</strong>
@@ -12675,6 +12675,9 @@ function renderSongButtons() {
         currentActivityTitle = DEFAULT_PAGE_TITLE;
         renderScreenOnly(screenId);
         if (!skipHistory) pushAppHistory(screenId);
+        if (typeof preloadChallengeSongs === "function") {
+          preloadChallengeSongs().catch(() => {});
+        }
         return;
       }
 
@@ -12784,6 +12787,9 @@ function renderSongButtons() {
 
       history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
       renderScreenOnly("screen-menu");
+      if (typeof preloadChallengeSongs === "function") {
+        preloadChallengeSongs().catch(() => {});
+      }
     }
 
     async function login() {
@@ -12833,6 +12839,7 @@ appHistoryLocked = false;
 pushAppHistory("screen-menu", { replace: true });
 showScreen("screen-menu", { skipHistory: true });
 app.refreshSongs().catch(() => {});
+preloadChallengeSongs().catch(() => {});
       } catch (e) {
         hideLoadingScreen();
         showStep("step1Section");
@@ -12861,6 +12868,9 @@ function goHomeMenu() {
   pushAppHistory("screen-menu", { replace: true });
   appHistoryLocked = true;
   renderScreenOnly("screen-menu");
+  if (typeof preloadChallengeSongs === "function") {
+    preloadChallengeSongs().catch(() => {});
+  }
   setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
@@ -16263,8 +16273,28 @@ function startBasicPractice() {
   </script>
 
 <script>
+let challengeSongsCache = [];
+let challengeSongsLoadedAt = 0;
+let challengeSongsLoadingPromise = null;
+let challengeFallbackActive = false;
+
 function goChallenge() {
   showScreen("screen-challenge");
+
+  if (challengeSongsCache.some((song) => Number(song.slot) === 1)) {
+    renderChallengeMissionScreen(challengeSongsCache);
+  } else if (challengeSongsCache.length) {
+    renderChallengeMissionScreen(challengeSongsCache);
+  } else {
+    renderChallengeMissionScreen([], { loading: true });
+  }
+
+  preloadChallengeSongs({ force: true, render: true }).catch((error) => {
+    console.warn("[challenge] mission songs load skipped:", error);
+    if (!challengeSongsCache.length) {
+      renderChallengeFallbackMissionScreen();
+    }
+  });
   setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
@@ -16272,58 +16302,199 @@ function normalizeSongId(value) {
   return String(value || "").trim().toUpperCase();
 }
 
-async function startChallengeSong(songId) {
-  const challengeSongId = normalizeSongId(songId || "JAGEUNBYEOL");
+function normalizeChallengeSlot(value) {
+  const slot = Number(value);
+  return Number.isInteger(slot) && slot >= 1 && slot <= 5 ? slot : null;
+}
+
+function getChallengeRoleLabel(role) {
+  const key = String(role || "").toLowerCase();
+  if (key === "current") return "현재 미션곡";
+  if (key === "upcoming") return "다음 미션 예정곡";
+  if (key === "reserve") return "예비곡";
+  return "미션곡";
+}
+
+function normalizeChallengeSong(song) {
+  if (!song) return null;
+
+  const slot = normalizeChallengeSlot(song.slot);
+  if (!slot) return null;
+
+  return {
+    ...song,
+    slot,
+    role: song.role || (slot === 1 ? "current" : slot <= 3 ? "upcoming" : "reserve"),
+    bpm: Number(song.bpm) || 80,
+    timeSignature: song.timeSignature || "4/4",
+    notation: String(song.notation || "")
+  };
+}
+
+function getCurrentChallengeSong() {
+  return challengeSongsCache.find((song) => Number(song.slot) === 1)
+    || challengeSongsCache.find((song) => String(song.role || "").toLowerCase() === "current")
+    || challengeSongsCache[0]
+    || null;
+}
+
+function renderChallengeMissionScreen(songs = challengeSongsCache, options = {}) {
+  const list = Array.isArray(songs) ? songs : [];
+  const currentSong = list.find((song) => Number(song.slot) === 1) || list[0] || null;
+  const loading = options.loading === true;
+  const titleEl = document.querySelector("#screen-challenge .mission-song-title");
+  const descEl = document.querySelector("#screen-challenge .mission-desc");
+  const startBtn = document.getElementById("challengeStartBtn");
+
+  challengeFallbackActive = false;
+
+  if (titleEl) {
+    titleEl.textContent = currentSong
+      ? currentSong.title || "도전 미션곡"
+      : loading ? "미션곡 불러오는 중" : "미션곡 준비중";
+  }
+  if (descEl) {
+    descEl.textContent = currentSong
+      ? `${currentSong.timeSignature || "4/4"} 박자 · BPM ${currentSong.bpm || 80} · 퍼펙트 점수에 도전하세요.`
+      : loading ? "선생님이 등록한 도전 미션곡을 확인하고 있습니다." : "선생님이 도전 미션곡을 준비하고 있습니다.";
+  }
+  if (startBtn) {
+    startBtn.disabled = !currentSong;
+    startBtn.textContent = currentSong ? "✨ 도전 시작" : loading ? "불러오는 중" : "미션 준비중";
+  }
+
+  [2, 3].forEach((slot, index) => {
+    const card = document.querySelector(`#screen-challenge [data-challenge-slot="${slot}"]`);
+    if (!card) return;
+
+    const song = list.find((item) => Number(item.slot) === slot);
+    const label = card.querySelector("span");
+    const strong = card.querySelector("strong");
+    const em = card.querySelector("em");
+
+    card.classList.toggle("locked", !song);
+    if (label) label.textContent = `Next Mission ${String(index + 1).padStart(2, "0")}`;
+    if (strong) strong.textContent = song ? song.title || "미션곡" : "준비중";
+    if (em) em.textContent = song ? getChallengeRoleLabel(song.role) : "COMING SOON";
+  });
+}
+
+function renderChallengeFallbackMissionScreen() {
+  const fallbackSong = FALLBACK_CHALLENGE_SONGS.JAGEUNBYEOL;
+  if (!fallbackSong) {
+    renderChallengeMissionScreen([]);
+    return;
+  }
+
+  challengeFallbackActive = true;
+
+  const titleEl = document.querySelector("#screen-challenge .mission-song-title");
+  const descEl = document.querySelector("#screen-challenge .mission-desc");
+  const startBtn = document.getElementById("challengeStartBtn");
+
+  if (titleEl) titleEl.textContent = fallbackSong.title || "작은별";
+  if (descEl) {
+    descEl.textContent = "미션곡을 불러오지 못해 임시 도전곡을 표시합니다. 네트워크 연결 후 다시 시도해 주세요.";
+  }
+  if (startBtn) {
+    startBtn.disabled = false;
+    startBtn.textContent = "✨ 도전 시작";
+  }
+
+  [2, 3].forEach((slot, index) => {
+    const card = document.querySelector(`#screen-challenge [data-challenge-slot="${slot}"]`);
+    if (!card) return;
+
+    const label = card.querySelector("span");
+    const strong = card.querySelector("strong");
+    const em = card.querySelector("em");
+
+    card.classList.add("locked");
+    if (label) label.textContent = `Next Mission ${String(index + 1).padStart(2, "0")}`;
+    if (strong) strong.textContent = "준비중";
+    if (em) em.textContent = "COMING SOON";
+  });
+}
+
+async function preloadChallengeSongs({ force = false, render = false } = {}) {
+  const cacheFresh = challengeSongsCache.length && Date.now() - challengeSongsLoadedAt < 1000 * 60 * 5;
+  if (!force && cacheFresh) {
+    if (render) renderChallengeMissionScreen(challengeSongsCache);
+    return challengeSongsCache;
+  }
+
+  if (challengeSongsLoadingPromise) {
+    return challengeSongsLoadingPromise.then((songs) => {
+      if (render) renderChallengeMissionScreen(songs);
+      return songs;
+    });
+  }
+
+  challengeSongsLoadingPromise = app.api("getSongs", {})
+    .then((data) => {
+      const songs = (Array.isArray(data?.songs) ? data.songs : [])
+        .map(normalizeChallengeSong)
+        .filter(Boolean)
+        .sort((a, b) => Number(a.slot) - Number(b.slot));
+
+      challengeSongsCache = songs;
+      challengeSongsLoadedAt = Date.now();
+      if (render) renderChallengeMissionScreen(challengeSongsCache);
+      return challengeSongsCache;
+    })
+    .catch((error) => {
+      if (challengeSongsCache.length) return challengeSongsCache;
+      throw error;
+    })
+    .finally(() => {
+      challengeSongsLoadingPromise = null;
+    });
+
+  return challengeSongsLoadingPromise;
+}
+
+async function loadChallengeSongsForScreen({ force = false } = {}) {
   try {
-    console.log("[challenge] start:", challengeSongId);
+    return await preloadChallengeSongs({ force, render: true });
+  } catch (error) {
+    if (!challengeSongsCache.length) {
+      renderChallengeFallbackMissionScreen();
+    }
+    return challengeSongsCache;
+  }
+}
+
+async function startChallengeSong(songId) {
+  const requestedSongId = normalizeSongId(songId || "");
+  try {
+    console.log("[challenge] start:", requestedSongId || "current");
 
     window.isChallengePlayMode = true;
 
-    if (!app.songs || app.songs.length === 0) {
-      await app.loadSongs();
-    }
+    const songs = await loadChallengeSongsForScreen({ force: !challengeSongsCache.length });
 
-    let matchedSong = (app.songs || []).find(
-      (song) => normalizeSongId(song.songId) === challengeSongId
-    );
-
-    if (!matchedSong && typeof app.refreshSongs === "function") {
-      const refreshed = await app.refreshSongs({ force: true });
-      renderShortSongList((refreshed && refreshed.songs) || []);
-      matchedSong = (app.songs || []).find(
-        (song) => normalizeSongId(song.songId) === challengeSongId
-      );
-    }
+    let matchedSong = requestedSongId
+      ? songs.find((song) => normalizeSongId(song.songId) === requestedSongId)
+      : getCurrentChallengeSong();
 
     if (!matchedSong) {
-      matchedSong = FALLBACK_CHALLENGE_SONGS[challengeSongId];
+      matchedSong = getCurrentChallengeSong();
+    }
+
+    if (!matchedSong && requestedSongId) {
+      matchedSong = FALLBACK_CHALLENGE_SONGS[requestedSongId];
       console.warn("[challenge] fallback song used:", matchedSong);
     }
 
     if (!matchedSong) {
       window.isChallengePlayMode = false;
       setChallengePlayMode(false);
-      console.error("[challenge] song not found", challengeSongId, app.songs);
-      alert("작은별 곡 정보를 찾을 수 없습니다.");
+      console.error("[challenge] song not found", requestedSongId, challengeSongsCache);
+      alert("도전 미션곡 정보를 찾을 수 없습니다. 선생님이 미션곡을 등록한 뒤 다시 시도해 주세요.");
       return;
     }
 
     app.currentSong = matchedSong;
-
-    if (typeof app.selectSong === "function") {
-      const selected = app.selectSong(matchedSong.songId);
-      if (!selected) {
-        app.currentSong = matchedSong;
-      }
-    }
-
-    if (typeof selectSongById === "function") {
-      try {
-        selectSongById(matchedSong.songId);
-      } catch (e) {
-        console.warn("[challenge] selectSongById skipped:", e);
-      }
-    }
 
     console.log("[challenge] selected:", matchedSong);
     console.log("[challenge] app.currentSong:", app.currentSong);
@@ -16373,11 +16544,16 @@ function backFromChallengePlay() {
 }
 
 async function startChallengeMission(missionId) {
-  const challengeSongMap = {
-    twinkle: "JAGEUNBYEOL"
-  };
+  const missionKey = String(missionId || "");
+  if (missionKey === "twinkle") {
+    return startChallengeSong("JAGEUNBYEOL");
+  }
 
-  return startChallengeSong(challengeSongMap[String(missionId)] || "JAGEUNBYEOL");
+  if (challengeFallbackActive && !getCurrentChallengeSong()) {
+    return startChallengeSong("JAGEUNBYEOL");
+  }
+
+  return startChallengeSong("");
 }
 </script>
 
