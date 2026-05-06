@@ -1128,6 +1128,10 @@ button:disabled {
     }
 
     .gradeChoiceBtn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
       min-height: 150px;
       border-radius: 28px;
       border: 3px solid #d8ebff;
@@ -1138,6 +1142,23 @@ button:disabled {
         0 14px 26px rgba(77, 168, 255, 0.14),
         inset 0 3px 0 rgba(255,255,255,0.78),
         inset 0 -4px 0 rgba(31,49,71,0.06);
+    }
+
+    .gradeChoiceMain {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .gradeTop {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gradeTop .gradeChoiceTitle {
+      margin-bottom: 0;
     }
 
     .gradeChoiceBtn:hover {
@@ -1174,6 +1195,15 @@ button:disabled {
       line-height: 1;
       position: relative;
       min-height: 54px;
+    }
+
+    .gradeTop .gradeChoiceEmoji {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 54px;
+      width: 54px;
+      margin-bottom: 0;
     }
 
     .gradeChoiceEmoji.growth-blossom {
@@ -1271,10 +1301,13 @@ button:disabled {
 
     .gradeChoiceSub {
       display: block;
+      margin-top: 10px;
       font-size: 13px;
       color: #5f7691;
-      line-height: 1.45;
-      white-space: pre-line;
+      line-height: 1.4;
+      text-align: left;
+      white-space: normal;
+      opacity: 0.92;
     }
 
     .gradeTheme-3 {
@@ -5672,11 +5705,16 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
   flex-basis: 28px;
 }
 
+.gradeChoiceBtn.selected .gradeChoiceTitle {
+  position: static;
+}
+
 .gradeChoiceBtn.selected .gradeChoiceTitle::after {
   content: "선택";
   position: absolute;
-  top: -18px;
-  right: 0;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -5684,15 +5722,18 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
   height: 22px;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.96);
+  background:
+    linear-gradient(180deg, #fff3a8 0%, #f7c948 100%);
+  border: 1px solid rgba(255,255,255,0.75);
+  color: #5b3b00;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.04em;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.45);
   box-shadow:
-    0 8px 16px rgba(0,0,0,0.14),
-    0 0 18px rgba(255,255,255,0.08);
+    0 4px 10px rgba(255, 215, 106, 0.38),
+    inset 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .songChoiceBtn.selected .songChoiceArt {
@@ -5764,7 +5805,6 @@ body.theme-light .textbookSongBtn.selected {
     0 0 24px rgba(103, 191, 255, 0.14);
 }
 
-body.theme-light .gradeChoiceBtn.selected .gradeChoiceTitle::after,
 body.theme-light .textbookSongBtn.selected::after {
   background: rgba(103, 189, 248, 0.16);
   border-color: rgba(103, 189, 248, 0.34);
@@ -5788,7 +5828,6 @@ body.theme-dark .textbookSongBtn.selected {
     inset 0 -4px 0 rgba(0, 0, 0, 0.14);
 }
 
-body.theme-dark .gradeChoiceBtn.selected .gradeChoiceTitle::after,
 body.theme-dark .textbookSongBtn.selected::after {
   background: rgba(255,255,255,0.16);
   border-color: rgba(255,255,255,0.28);
@@ -10663,7 +10702,7 @@ body.theme-light .readyCardHint {
 
       <div class="btnRow loginActionRow">
         <button onclick="login()"><span class="glassBtnLabel">🎮 도전 시작!</span></button>
-        <button class="sub" onclick="fillTestData()"><span class="glassBtnLabel">예시 입력</span></button>
+        <button class="sub" onclick="betaLogin()"><span class="glassBtnLabel">🚀 테스트 입장하기</span></button>
       </div>
 
       <div id="loginStatus" class="status">로그인 전</div>
@@ -12010,9 +12049,13 @@ function restorePracticeFromChallengePlay() {
         btn.className = `gradeChoiceBtn ${item.theme}${currentTextbookGrade === String(item.grade) ? " selected" : ""}`;
         btn.onclick = () => openTextbookGrade(item.grade);
         btn.innerHTML = `
-          <span class="gradeChoiceEmoji ${item.emojiClass || ""}">${item.emoji || ""}${item.subEmoji ? `<span class="gradeFlowerAccent">${item.subEmoji}</span>` : ""}</span>
-          <span class="gradeChoiceTitle">${item.grade}학년</span>
-          <span class="gradeChoiceSub">${item.sub}</span>
+          <div class="gradeChoiceMain">
+            <div class="gradeTop">
+              <span class="gradeChoiceEmoji ${item.emojiClass || ""}">${item.emoji || ""}${item.subEmoji ? `<span class="gradeFlowerAccent">${item.subEmoji}</span>` : ""}</span>
+              <span class="gradeChoiceTitle">${item.grade}학년</span>
+            </div>
+            <div class="gradeChoiceSub">${item.sub}</div>
+          </div>
         `;
         grid.appendChild(btn);
       });
@@ -12640,6 +12683,36 @@ function renderSongButtons() {
       document.getElementById("class").value = "1";
       document.getElementById("number").value = "1";
       document.getElementById("name").value = "홍길동";
+    }
+
+    function betaLogin() {
+      app.user = {
+        userId: "BETA_TESTER",
+        loginCode: "BETA",
+        role: "STUDENT",
+        name: "베타테스터",
+        grade: "3",
+        class: "1",
+        number: "0",
+        points: 0,
+        level: 1,
+        exp: 0
+      };
+
+      const gradeEl = document.getElementById("grade");
+      const classEl = document.getElementById("class");
+      const numberEl = document.getElementById("number");
+      const nameEl = document.getElementById("name");
+
+      if (gradeEl) gradeEl.value = app.user.grade;
+      if (classEl) classEl.value = app.user.class;
+      if (numberEl) numberEl.value = app.user.number;
+      if (nameEl) nameEl.value = app.user.name;
+
+      setStatus("loginStatus", "테스트 계정으로 입장합니다.", "ok");
+
+      history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
+      renderScreenOnly("screen-menu");
     }
 
     async function login() {
