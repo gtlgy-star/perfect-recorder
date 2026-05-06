@@ -13754,7 +13754,6 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const noteStartOffset = 22;
       const noteEndGap = 14;
-      const noteRightSafePadding = 24;
 
       drawPracticeBase(timeline.timeSignature || "4/4");
 
@@ -13800,21 +13799,15 @@ function drawRest(ctx, x, staffTop, duration) {
       timeline.notes.forEach(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
-        const rawNoteX = x + noteStartOffset;
+        const noteX = x + noteStartOffset;
 
         if (x > canvas.width + 80) return;
         if (x + w < judgeX - 20) return;
 
         if (!n.note) {
-          drawRest(ctx, rawNoteX, topLineY, n.beat);
+          drawRest(ctx, noteX, topLineY, n.beat);
           return;
         }
-
-        const measureIndex = Math.floor((Number(n.startMs) || 0) / measureMs);
-        const measureEndMs = Math.min((measureIndex + 1) * measureMs, timeline.totalMs);
-        const measureEndX = judgeX + (measureEndMs - elapsedMs) * pxPerMs;
-        const maxNoteX = measureEndX - noteRightSafePadding;
-        const noteX = Math.min(rawNoteX, maxNoteX);
 
         const y = noteToY(n.note);
         const bodyWidth = getNoteBodyWidthByBeat(n.beat);
