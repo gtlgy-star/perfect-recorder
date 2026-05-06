@@ -2460,9 +2460,9 @@ button:disabled {
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(5, 16, 34, 0.34);
-      backdrop-filter: blur(7px);
-      -webkit-backdrop-filter: blur(7px);
+      background: rgba(5, 12, 24, 0.22);
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
       color: #ffffff;
       pointer-events: none;
     }
@@ -2513,7 +2513,7 @@ button:disabled {
       transform: rotate(var(--combo-tilt)) scale(0.7);
       opacity: 0;
       pointer-events: none;
-      z-index: 5;
+      z-index: 20;
       transition:
         opacity 180ms ease,
         transform 260ms cubic-bezier(.2,.9,.22,1.18),
@@ -2665,6 +2665,68 @@ button:disabled {
 
     .comboOverlay.pop {
       transform: rotate(calc(var(--combo-tilt) - 2deg)) scale(1.16);
+    }
+
+    .judgmentFeedbackLayer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    .judgmentText {
+      position: absolute;
+      left: min(72%, 650px);
+      top: 52px;
+      transform: translate(-50%, 0) scale(0.86);
+      opacity: 0;
+      font-size: clamp(30px, 5vw, 58px);
+      font-weight: 1000;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+      text-shadow:
+        0 3px 0 rgba(0, 0, 0, 0.22),
+        0 0 14px rgba(255, 255, 255, 0.55),
+        0 0 24px currentColor;
+      animation: judgmentTextPop 720ms cubic-bezier(.18,.9,.22,1) forwards;
+    }
+
+    .judgmentText.perfect {
+      color: #ff1744;
+    }
+
+    .judgmentText.great {
+      color: #1565ff;
+    }
+
+    .judgmentText.good {
+      color: #ff9800;
+    }
+
+    .judgmentText.miss {
+      color: #6b7280;
+    }
+
+    @keyframes judgmentTextPop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 12px) scale(0.76);
+      }
+      16% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1.08);
+      }
+      42% {
+        opacity: 1;
+        transform: translate(-50%, -4px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -30px) scale(0.92);
+      }
     }
 
     .comboOverlay.combo-tier-2 {
@@ -3513,6 +3575,13 @@ button:disabled {
         left: 28px;
         top: 6px;
         width: 78px;
+      }
+
+      .judgmentText {
+        left: 68%;
+        top: 44px;
+        font-size: clamp(26px, 8vw, 40px);
+        -webkit-text-stroke-width: 1.5px;
       }
 
       .comboOverlay.visible {
@@ -10854,7 +10923,7 @@ body.theme-light .readyCardHint {
         <div class="practiceControlRow">
           <button onclick="resetPractice()">다시하기</button>
           <button onclick="startPractice()">시작하기</button>
-          <button onclick="stopPractice()">일시정지</button>
+          <button onclick="stopPractice()">■ 연습 정지</button>
         </div>
       </div>
 
@@ -10916,6 +10985,7 @@ body.theme-light .readyCardHint {
           <div class="comboLabel">COMBO</div>
           <div id="comboValue" class="comboValue">5</div>
         </div>
+        <div id="judgmentFeedbackLayer" class="judgmentFeedbackLayer" aria-hidden="true"></div>
         <div id="practicePauseOverlay" class="practicePauseOverlay" aria-hidden="true">
           <div class="practicePauseOverlayInner">
             <div id="practicePauseOverlayText" class="practicePauseOverlayText">일시정지</div>
@@ -12448,6 +12518,7 @@ function renderSongButtons() {
       pauseBtn.setAttribute("onclick", "pauseSongPractice()");
       pauseBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9208;</span><span class="label practice-btn-label">\uC77C\uC2DC\uC815\uC9C0</span>';
       pauseBtn.setAttribute("aria-label", "\uC77C\uC2DC\uC815\uC9C0");
+      pauseBtn.disabled = true;
 
       stopBtn.className = "practiceMiniBtn practice-control-btn practice-stop-btn";
       stopBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9632;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
@@ -13592,11 +13663,11 @@ function drawRest(ctx, x, staffTop, duration) {
     function getJudgmentFeedbackStyle(kind) {
       switch (kind) {
         case "perfect":
-          return { label: "PERFECT", color: "#f4c542", glow: "rgba(255, 214, 77, 0.52)" };
+          return { label: "PERFECT", color: "#ff1744", glow: "rgba(255, 23, 68, 0.58)" };
         case "great":
-          return { label: "GREAT", color: "#34c3ff", glow: "rgba(52, 195, 255, 0.42)" };
+          return { label: "GREAT", color: "#1565ff", glow: "rgba(21, 101, 255, 0.5)" };
         case "good":
-          return { label: "GOOD", color: "#45c96b", glow: "rgba(69, 201, 107, 0.34)" };
+          return { label: "GOOD", color: "#ff9800", glow: "rgba(255, 152, 0, 0.42)" };
         default:
           return { label: "MISS", color: "#6f7c8f", glow: "rgba(111, 124, 143, 0.24)" };
       }
@@ -13612,15 +13683,33 @@ function drawRest(ctx, x, staffTop, duration) {
       return "miss";
     }
 
+    function showJudgmentText(kind, label) {
+      const layer = document.getElementById("judgmentFeedbackLayer");
+      if (!layer) return;
+
+      const safeKind = ["perfect", "great", "good", "miss"].includes(kind) ? kind : "miss";
+      const node = document.createElement("div");
+      node.className = `judgmentText ${safeKind}`;
+      node.textContent = label;
+      layer.appendChild(node);
+
+      const existing = Array.from(layer.querySelectorAll(".judgmentText"));
+      existing.slice(0, -3).forEach((item) => item.remove());
+
+      node.addEventListener("animationend", () => node.remove(), { once: true });
+    }
+
     function enqueueJudgmentFeedback(kind) {
       const style = getJudgmentFeedbackStyle(kind);
       judgmentFeedbacks.push({
         label: style.label,
+        kind,
         color: style.color,
         glow: style.glow,
         createdAt: performance.now()
       });
       judgmentFeedbacks = judgmentFeedbacks.slice(-4);
+      showJudgmentText(kind, style.label);
     }
 
     function triggerJudgmentZonePulse(kind) {
@@ -13639,6 +13728,8 @@ function drawRest(ctx, x, staffTop, duration) {
       judgmentZonePulseStrength = 0;
       judgmentFeedbacks = [];
       lastJudgedNoteSignature = "";
+      const layer = document.getElementById("judgmentFeedbackLayer");
+      if (layer) layer.innerHTML = "";
     }
 
     function drawRoundedRectPath(ctx, x, y, width, height, radius) {
@@ -13739,13 +13830,17 @@ function drawRest(ctx, x, staffTop, duration) {
         const progress = Math.min(age / 700, 1);
         const alpha = 1 - progress;
         const rise = progress * 24;
-        const baseY = zoneTop - 26 - index * 18;
+        const baseX = Math.min(canvas.width - 118, JUDGMENT_LINE_X + 158);
+        const baseY = zoneTop - 34 - index * 20;
 
         ctx.shadowBlur = 12;
         ctx.shadowColor = item.glow;
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;
+        ctx.font = "1000 20px system-ui";
+        ctx.strokeText(item.label, baseX, baseY - rise);
         ctx.fillStyle = hexToRgba(item.color, alpha);
-        ctx.font = "900 16px system-ui";
-        ctx.fillText(item.label, JUDGMENT_LINE_X, baseY - rise);
+        ctx.fillText(item.label, baseX, baseY - rise);
       });
 
       ctx.restore();
@@ -14161,26 +14256,86 @@ function drawRest(ctx, x, staffTop, duration) {
       return freq;
     }
 
+    function getPracticeMicConstraints() {
+      return {
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      };
+    }
+
+    function hasActiveMicStream() {
+      return !!(
+        micStream &&
+        typeof micStream.getAudioTracks === "function" &&
+        micStream.getAudioTracks().some((track) => track.readyState === "live")
+      );
+    }
+
+    async function ensureAudioContextRunning() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) {
+        throw new Error("AudioContext is not supported.");
+      }
+
+      if (!audioCtx || audioCtx.state === "closed") {
+        audioCtx = new AudioContextClass();
+      }
+
+      if (audioCtx.state === "suspended") {
+        await audioCtx.resume();
+      }
+
+      return audioCtx;
+    }
+
+    async function requestPracticeMicStream() {
+      try {
+        return await navigator.mediaDevices.getUserMedia(getPracticeMicConstraints());
+      } catch (error) {
+        return navigator.mediaDevices.getUserMedia({ audio: true });
+      }
+    }
+
+    async function ensureMicReadyForIOS() {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("getUserMedia is not supported.");
+        }
+
+        const audioReady = ensureAudioContextRunning();
+        const streamReady = hasActiveMicStream()
+          ? Promise.resolve(micStream)
+          : requestPracticeMicStream();
+
+        await audioReady;
+        micStream = await streamReady;
+        await ensureAudioContextRunning();
+        return true;
+      } catch (error) {
+        setStatus(
+          "practiceStatus",
+          "마이크 권한이 필요합니다. iPhone/iPad에서는 설정 → Safari → 마이크 → 허용으로 변경한 뒤 다시 시도해 주세요.",
+          "bad"
+        );
+        return false;
+      }
+    }
+
     async function startMicMonitoring() {
       if (micRunning) return;
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        });
-
-        micStream = stream;
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        if (audioCtx.state === "suspended") {
-          await audioCtx.resume();
+        if (!hasActiveMicStream()) {
+          micStream = await requestPracticeMicStream();
         }
 
-        micSource = audioCtx.createMediaStreamSource(stream);
+        await ensureAudioContextRunning();
+
+        micSource = audioCtx.createMediaStreamSource(micStream);
+
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 2048;
         analyser.smoothingTimeConstant = 0.1;
@@ -14380,8 +14535,15 @@ function drawRest(ctx, x, staffTop, duration) {
       stopPractice();
 
       try {
+        const micReady = await ensureMicReadyForIOS();
+        if (!micReady) return;
         await startMicMonitoring();
       } catch (e) {
+        setStatus(
+          "practiceStatus",
+          "마이크 권한이 필요합니다. iPhone/iPad에서는 설정 → Safari → 마이크 → 허용으로 변경한 뒤 다시 시도해 주세요.",
+          "bad"
+        );
         return;
       }
 
@@ -14443,15 +14605,16 @@ function drawRest(ctx, x, staffTop, duration) {
         drawTimelineNotes(elapsedMs, timeline, now);
 
         if (elapsedMs >= timeline.totalMs + 1500) {
+          const completedScoreState = { ...scoreState };
           stopPractice();
-          const finalScore = scoreState.finalScore || 0;
+          const finalScore = completedScoreState.finalScore || 0;
           const grade = getScoreGrade(finalScore);
           setStatus(
             "practiceStatus",
-            `연습 완료 · ${finalScore}점 · ${grade.label} · 음정 ${scoreState.pitchAccuracy}% · 리듬 ${scoreState.rhythmAccuracy}%`,
+            `연습 완료 · ${finalScore}점 · ${grade.label} · 음정 ${completedScoreState.pitchAccuracy}% · 리듬 ${completedScoreState.rhythmAccuracy}%`,
             "ok"
           );
-          showPracticeResultSequence(scoreState);
+          showPracticeResultSequence(completedScoreState);
           return;
         }
 
@@ -14573,12 +14736,7 @@ function drawRest(ctx, x, staffTop, duration) {
     function stopPractice() {
       stopFingeringPracticeTimer();
 
-      if (isFingeringPracticeMode()) {
-        practiceRunning = false;
-        setStatus("practiceStatus", "운지법 훈련 일시정지", "");
-        return;
-      }
-
+      practiceRunning = false;
       practicePaused = false;
       practicePausedAt = 0;
       practicePausedDuration = 0;
@@ -14589,18 +14747,6 @@ function drawRest(ctx, x, staffTop, duration) {
       practiceResumeCounting = false;
       hidePracticePauseOverlay();
 
-      const pauseBtn = document.querySelector(".practice-pause-btn");
-      if (pauseBtn) {
-        pauseBtn.disabled = false;
-        const label = pauseBtn.querySelector(".practice-btn-label");
-        const icon = pauseBtn.querySelector(".practice-btn-icon");
-        if (label) label.textContent = "일시정지";
-        else pauseBtn.textContent = "일시정지";
-        if (icon) icon.textContent = "⏸";
-      }
-
-      practiceRunning = false;
-
       if (practiceAnim) cancelAnimationFrame(practiceAnim);
       practiceAnim = null;
       if (practiceAnimationFrameId) cancelAnimationFrame(practiceAnimationFrameId);
@@ -14608,12 +14754,64 @@ function drawRest(ctx, x, staffTop, duration) {
 
       stopMicMonitoring();
 
-      setStatus("practiceStatus", "연습 정지", "");
       currentTimeline = null;
+      currentPracticeStartedAt = 0;
+      currentCountdownMs = 0;
       currentInputLevel = 0;
+
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      if (pauseBtn) {
+        pauseBtn.disabled = true;
+        const label = pauseBtn.querySelector(".practice-btn-label");
+        const icon = pauseBtn.querySelector(".practice-btn-icon");
+        if (label) label.textContent = "일시정지";
+        else pauseBtn.textContent = "일시정지";
+        if (icon) icon.textContent = "⏸";
+        pauseBtn.setAttribute("aria-label", "일시정지");
+      }
+
+      const startBtn = document.querySelector(".practice-start-btn");
+      if (startBtn) startBtn.disabled = false;
+
       resetNoteJudgmentState();
       resetComboState();
+      resetScoreState();
       resetJudgmentZoneState();
+
+      const song = app.currentSong || getSelectedSong();
+      const timeSignature = song?.timeSignature || "4/4";
+      drawPracticeBase(timeSignature);
+
+      const practiceBadgeEl = document.getElementById("practiceBadge");
+      const practiceInfoEl = document.getElementById("practiceInfo");
+      const practiceSongTitleEl = document.getElementById("practiceSongTitle");
+      const practiceTimeSignatureEl = document.getElementById("practiceTimeSignature");
+      const liveTargetEl = document.getElementById("liveTargetNote");
+
+      if (practiceBadgeEl) {
+        practiceBadgeEl.textContent = song ? "연습 준비 완료" : "곡을 선택하고 시작하세요";
+      }
+
+      if (practiceInfoEl) {
+        practiceInfoEl.textContent = "연습을 시작해 주세요.";
+      }
+
+      if (practiceSongTitleEl) {
+        practiceSongTitleEl.textContent = song?.title || "-";
+      }
+
+      if (practiceTimeSignatureEl) {
+        practiceTimeSignatureEl.textContent = song?.timeSignature || "-";
+      }
+
+      if (liveTargetEl) liveTargetEl.textContent = "-";
+
+      if (isFingeringPracticeMode()) {
+        setStatus("practiceStatus", "운지법 훈련 정지", "");
+        return;
+      }
+
+      setStatus("practiceStatus", "연습 시작 전", "");
     }
 function drawBasicRecorderImage(note = "G5") {
   const wrap = document.getElementById("basicRecorderImageWrap");
