@@ -13680,17 +13680,24 @@ function drawRest(ctx, x, staffTop, duration) {
       const zoneTop = topLineY - 24;
       const zoneBottom = bottomLineY + 24;
       const zoneHeight = zoneBottom - zoneTop;
-      const zoneWidth = 44;
       const sideOffset = 14;
       const leftX = JUDGMENT_LINE_X - sideOffset;
       const rightX = JUDGMENT_LINE_X + sideOffset;
+      const visualZoneLeftX = leftX;
+      const visualZoneRightX = rightX;
+      const visualZoneWidth = visualZoneRightX - visualZoneLeftX;
       const baseVisibility = 1;
 
       ctx.save();
       ctx.globalAlpha = 1;
 
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(visualZoneLeftX, zoneTop, visualZoneWidth, zoneHeight);
+      ctx.clip();
+
       ctx.fillStyle = "rgba(110, 223, 255, 0.42)";
-      ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
+      ctx.fillRect(visualZoneLeftX, zoneTop, visualZoneWidth, zoneHeight);
 
       ctx.fillStyle = "rgba(250, 204, 21, 0.46)";
       ctx.fillRect(JUDGMENT_LINE_X - 7, zoneTop, 14, zoneHeight);
@@ -13698,7 +13705,8 @@ function drawRest(ctx, x, staffTop, duration) {
       ctx.shadowBlur = 10;
       ctx.shadowColor = "#facc15";
       ctx.fillStyle = "rgba(173, 239, 255, 0.28)";
-      ctx.fillRect(JUDGMENT_LINE_X - zoneWidth / 2, zoneTop, zoneWidth, zoneHeight);
+      ctx.fillRect(visualZoneLeftX, zoneTop, visualZoneWidth, zoneHeight);
+      ctx.restore();
 
       ctx.shadowBlur = 0;
       ctx.strokeStyle = "rgba(73, 193, 230, 0.9)";
@@ -13749,7 +13757,8 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const judgeX = JUDGMENT_LINE_X;
       const beatMs = timeline.beatMs;
-      const pxPerBeat = 80;
+      const STAFF_X_SCALE = 1.2;
+      const pxPerBeat = 80 * STAFF_X_SCALE;
       const pxPerMs = pxPerBeat / beatMs;
 
       const noteStartOffset = 22;
