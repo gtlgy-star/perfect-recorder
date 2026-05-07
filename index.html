@@ -2845,7 +2845,7 @@ button:disabled {
 
     .practiceControlPanel {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.6fr);
       gap: 10px;
       margin-top: 14px;
       align-items: stretch;
@@ -2881,7 +2881,7 @@ button:disabled {
 
     .practiceActionStack {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
       height: 90px;
       min-height: 90px;
@@ -2927,8 +2927,31 @@ button:disabled {
       background: linear-gradient(180deg, #ffe47a, #ff9f3f);
     }
 
+    .practice-record-btn {
+      position: relative;
+    }
+
+    .practice-record-btn.recording-active {
+      box-shadow: 0 0 18px rgba(255, 80, 80, 0.55);
+      animation: recordingPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes recordingPulse {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-1px) scale(1.03);
+      }
+    }
+
+    .practice-record-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
     .practice-save-btn {
-      background: linear-gradient(180deg, #8ee9ff, #1d8df2);
+      background: linear-gradient(180deg, #ffcf68 0%, #ff9f2f 52%, #f06f1f 100%);
     }
 
     .practiceMiniBtn .icon {
@@ -4213,11 +4236,11 @@ button:disabled {
       }
 
       .practiceControlPanel {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(200px, 0.75fr) minmax(0, 1.65fr);
       }
 
       .practiceActionStack {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
 
       .practiceMiniBtn {
@@ -9184,7 +9207,11 @@ body.theme-light .practiceStaffSlot {
   .practiceControlPanel {
     gap: 8px;
     margin-top: 8px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.7fr);
+  }
+
+  .practiceActionStack {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .practiceMiniBtn {
@@ -11000,6 +11027,7 @@ body.theme-light .readyCardHint {
 
       <div class="btnRow3" style="margin-top:10px;">
         <button onclick="startPractice()">연습 시작</button>
+        <button id="practiceRecordBtn" type="button" class="sub" onclick="togglePracticeRecording()" disabled>🔴 녹음하기</button>
         <button type="button" class="practice-control-btn practice-pause-btn" onclick="pauseSongPractice()">일시정지</button>
         <button class="sub" onclick="stopPractice()">연습 정지</button>
       </div>
@@ -11313,6 +11341,10 @@ body.theme-light .readyCardHint {
     let pitchBuffer = null;
     let micRunning = false;
     let pitchLoopHandle = null;
+    let practiceRecorder = null;
+    let practiceRecordingChunks = [];
+    let practiceRecordingActive = false;
+    let practiceRecordingStartedAt = 0;
 
     let livePitchHz = 0;
     let liveDetectedNote = null;
@@ -12502,7 +12534,16 @@ function renderSongButtons() {
       const startBtn = actionRow.querySelector('button[onclick="startPractice()"]');
       const existingPauseBtn = actionRow.querySelector('button[onclick="pauseSongPractice()"]');
       const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
+      let recordBtn = actionRow.querySelector("#practiceRecordBtn");
       const saveBtn = saveRow.querySelector('button[onclick="save()"]');
+
+      if (!recordBtn) {
+        recordBtn = document.createElement("button");
+        recordBtn.id = "practiceRecordBtn";
+        recordBtn.type = "button";
+        recordBtn.setAttribute("onclick", "togglePracticeRecording()");
+        recordBtn.disabled = true;
+      }
 
       if (!startBtn || !stopBtn || !saveBtn) {
         return;
@@ -12524,6 +12565,11 @@ function renderSongButtons() {
       stopBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9632;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
 
+      recordBtn.className = "practiceMiniBtn practice-control-btn practice-record-btn";
+      recordBtn.disabled = true;
+      recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">🔴</span><span class="label practice-btn-label">녹음하기</span>';
+      recordBtn.setAttribute("aria-label", "녹음하기");
+
       saveBtn.className = "practiceMiniBtn practice-control-btn practice-save-btn";
       saveBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#127942;</span><span class="label practice-btn-label">\uAE30\uB85D \uC800\uC7A5</span>';
       saveBtn.setAttribute("aria-label", "\uAE30\uB85D \uC800\uC7A5");
@@ -12533,7 +12579,7 @@ function renderSongButtons() {
       const actionStack = document.createElement("div");
       actionStack.className = "practiceActionStack";
       actionStack.setAttribute("aria-label", "\uC5F0\uC2B5 \uB3D9\uC791");
-      actionStack.append(startBtn, pauseBtn, stopBtn, saveBtn);
+      actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn);
 
 
       controlPanel.append(practiceInfoBox, actionStack);
@@ -14596,6 +14642,7 @@ function drawRest(ctx, x, staffTop, duration) {
       resetJudgmentZoneState();
 
       practiceRunning = true;
+      updatePracticeRecordButton();
       document.getElementById("practiceBadge").textContent = `${song.title} 연습 중`;
       document.getElementById("practiceSongTitle").textContent = song.title;
       document.getElementById("practiceTimeSignature").textContent = timeline.timeSignature || "4/4";
@@ -14747,6 +14794,157 @@ function drawRest(ctx, x, staffTop, duration) {
       startResumeCountdown();
     }
 
+    function updatePracticeRecordButton() {
+      const recordBtn = document.getElementById("practiceRecordBtn");
+      if (!recordBtn) return;
+
+      const canRecord = practiceRunning && !isFingeringPracticeMode();
+
+      recordBtn.disabled = !canRecord && !practiceRecordingActive;
+
+      if (practiceRecordingActive) {
+        recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">⏹</span><span class="label practice-btn-label">녹음 종료</span>';
+        recordBtn.setAttribute("aria-label", "녹음 종료");
+        recordBtn.classList.add("recording-active");
+      } else {
+        recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">🔴</span><span class="label practice-btn-label">녹음하기</span>';
+        recordBtn.setAttribute("aria-label", "녹음하기");
+        recordBtn.classList.remove("recording-active");
+      }
+    }
+
+    function getRecordingMimeType() {
+      const candidates = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/mp4",
+        "audio/aac"
+      ];
+
+      if (!window.MediaRecorder) return "";
+
+      for (const type of candidates) {
+        if (MediaRecorder.isTypeSupported(type)) {
+          return type;
+        }
+      }
+
+      return "";
+    }
+
+    function getRecordingFileExtension(mimeType) {
+      if (mimeType.includes("mp4")) return "m4a";
+      if (mimeType.includes("aac")) return "aac";
+      return "webm";
+    }
+
+    function makeSafeFileName(text) {
+      return String(text || "recorder")
+        .replace(/[\\/:*?"<>|]/g, "_")
+        .replace(/\s+/g, "_")
+        .slice(0, 60);
+    }
+
+    async function startPracticeRecording() {
+      if (practiceRecordingActive) return;
+
+      if (!window.MediaRecorder) {
+        setStatus("practiceStatus", "이 브라우저에서는 녹음 기능을 지원하지 않습니다.", "bad");
+        return;
+      }
+
+      if (!practiceRunning) {
+        setStatus("practiceStatus", "연습을 시작한 뒤 녹음할 수 있습니다.", "bad");
+        return;
+      }
+
+      try {
+        if (!micStream) {
+          await startMicMonitoring();
+        }
+
+        const mimeType = getRecordingMimeType();
+        const options = mimeType ? { mimeType } : undefined;
+
+        practiceRecordingChunks = [];
+        practiceRecorder = new MediaRecorder(micStream, options);
+        practiceRecordingStartedAt = Date.now();
+
+        practiceRecorder.ondataavailable = (event) => {
+          if (event.data && event.data.size > 0) {
+            practiceRecordingChunks.push(event.data);
+          }
+        };
+
+        practiceRecorder.onstop = () => {
+          const usedMimeType = practiceRecorder?.mimeType || mimeType || "audio/webm";
+          const blob = new Blob(practiceRecordingChunks, { type: usedMimeType });
+          const song = app.currentSong || getSelectedSong();
+          const extension = getRecordingFileExtension(usedMimeType);
+
+          const now = new Date();
+          const dateText = [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, "0"),
+            String(now.getDate()).padStart(2, "0"),
+            String(now.getHours()).padStart(2, "0"),
+            String(now.getMinutes()).padStart(2, "0"),
+            String(now.getSeconds()).padStart(2, "0")
+          ].join("");
+
+          const fileName = `${makeSafeFileName(song?.title || "recorder-practice")}_${dateText}.${extension}`;
+
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+
+          practiceRecordingChunks = [];
+          practiceRecorder = null;
+          practiceRecordingActive = false;
+          updatePracticeRecordButton();
+          setStatus("practiceStatus", `녹음 저장 완료 · ${fileName}`, "ok");
+        };
+
+        practiceRecorder.start();
+        practiceRecordingActive = true;
+        updatePracticeRecordButton();
+        setStatus("practiceStatus", "녹음 중입니다. 다시 누르면 녹음이 저장됩니다.", "ok");
+      } catch (e) {
+        practiceRecordingActive = false;
+        updatePracticeRecordButton();
+        setStatus("practiceStatus", "녹음을 시작할 수 없습니다. 마이크 권한을 확인해 주세요.", "bad");
+      }
+    }
+
+    function stopPracticeRecording() {
+      if (!practiceRecorder || !practiceRecordingActive) {
+        practiceRecordingActive = false;
+        updatePracticeRecordButton();
+        return;
+      }
+
+      try {
+        practiceRecorder.stop();
+      } catch (e) {
+        practiceRecordingActive = false;
+        practiceRecorder = null;
+        updatePracticeRecordButton();
+      }
+    }
+
+    function togglePracticeRecording() {
+      if (practiceRecordingActive) {
+        stopPracticeRecording();
+      } else {
+        startPracticeRecording();
+      }
+    }
+
     function stopPractice() {
       stopFingeringPracticeTimer();
 
@@ -14765,6 +14963,10 @@ function drawRest(ctx, x, staffTop, duration) {
       practiceAnim = null;
       if (practiceAnimationFrameId) cancelAnimationFrame(practiceAnimationFrameId);
       practiceAnimationFrameId = null;
+
+      if (practiceRecordingActive) {
+        stopPracticeRecording();
+      }
 
       stopMicMonitoring();
 
@@ -14786,6 +14988,8 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const startBtn = document.querySelector(".practice-start-btn");
       if (startBtn) startBtn.disabled = false;
+
+      updatePracticeRecordButton();
 
       resetNoteJudgmentState();
       resetComboState();
