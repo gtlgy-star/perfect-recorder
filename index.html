@@ -10692,7 +10692,7 @@ body.theme-light .readyCardHint {
         <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
-        <button class="menuBtn menu-btn btn-challenge" onclick="goChallenge()">
+        <button class="menuBtn menu-btn btn-challenge">
           <span class="challenge-icon">🏆</span>
           <span class="challenge-text">도전! 퍼펙트 리코더</span>
         </button>
@@ -11005,7 +11005,7 @@ body.theme-light .readyCardHint {
       </div>
 
       <div class="btnRow" style="margin-top:10px;">
-        <button onclick="save()">저장하기</button>
+        <button onclick="save()">🏆 기록 저장</button>
       </div>
 
       <div id="practiceStatus" class="status">연습 전</div>
@@ -12525,8 +12525,8 @@ function renderSongButtons() {
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
 
       saveBtn.className = "practiceMiniBtn practice-control-btn practice-save-btn";
-      saveBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#128190;</span><span class="label practice-btn-label">\uC800\uC7A5\uD558\uAE30</span>';
-      saveBtn.setAttribute("aria-label", "\uC800\uC7A5\uD558\uAE30");
+      saveBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#127942;</span><span class="label practice-btn-label">\uAE30\uB85D \uC800\uC7A5</span>';
+      saveBtn.setAttribute("aria-label", "\uAE30\uB85D \uC800\uC7A5");
 
       const controlPanel = document.createElement("div");
       controlPanel.className = "practiceControlPanel";
@@ -12928,6 +12928,10 @@ window.addEventListener("popstate", function (event) {
   const screenId = event.state && event.state.screen
     ? event.state.screen
     : "screen-menu";
+
+  if (appCurrentScreen === "screen-challenge-play" && screenId !== "screen-challenge-play") {
+    cleanupChallengePlayState();
+  }
 
   if (screenId === "screen-login" || screenId === "step1Section") {
     history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
@@ -16535,12 +16539,15 @@ function initChallengePlay(song) {
   setStatus("practiceStatus", "연주를 시작하세요!", "");
 }
 
-function backFromChallengePlay() {
+function cleanupChallengePlayState() {
   stopPractice();
   restorePracticeFromChallengePlay();
-  window.isChallengePlayMode = false;
-  document.getElementById("screen-challenge-play")?.classList.remove("challenge-play-mode");
-  showScreen("screen-challenge");
+  setChallengePlayMode(false);
+}
+
+function backFromChallengePlay() {
+  cleanupChallengePlayState();
+  history.back();
 }
 
 async function startChallengeMission(missionId) {
