@@ -2499,6 +2499,105 @@ button:disabled {
       opacity: 1;
     }
 
+    .tonguingGuideWrap {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(125, 190, 255, 0.35);
+      background: rgba(8, 24, 52, 0.72);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .tonguingGuideImageCard {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(125,190,255,0.32);
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+    }
+
+    .tonguingGuideImageCard::after {
+      content: "";
+      position: absolute;
+      left: 20.0%;
+      top: 1.4%;
+      width: 8.0%;
+      height: 10.4%;
+      border-radius: 999px;
+      background: #ffffff;
+      pointer-events: none;
+    }
+
+    .tonguingGuideImageCard img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .tonguingGuideButtonRow {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .tonguingListenBtn,
+    .tonguingPracticeBtn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 76px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      color: #ffffff;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .tonguingListenBtn {
+      background: rgba(10, 34, 70, 0.88);
+      border: 1px solid rgba(125,190,255,0.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .tonguingPracticeBtn {
+      background: linear-gradient(135deg, rgba(39, 228, 214, 0.96), rgba(34, 151, 255, 0.96));
+      box-shadow: 0 0 22px rgba(67,255,228,0.35);
+    }
+
+    .tonguingListenBtn:hover,
+    .tonguingPracticeBtn:hover {
+      transform: translateY(-2px);
+    }
+
+    .tonguingBtnIcon {
+      font-size: 1.65rem;
+      flex-shrink: 0;
+    }
+
+    .tonguingBtnTexts strong {
+      display: block;
+      font-size: 1.04rem;
+      font-weight: 950;
+    }
+
+    .tonguingBtnTexts span {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.82rem;
+      opacity: 0.82;
+    }
+
+    @media (max-width: 860px) {
+      .tonguingGuideButtonRow {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .canvasWrap {
       position: relative;
       border: 1px solid rgba(194, 237, 255, 0.2);
@@ -7358,6 +7457,39 @@ body.menu-title-active #screen-menu-title {
   text-align: center;
 }
 
+#screen-menu .menuButtonGrid .menuBtn:nth-child(1) {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.38), transparent 12%),
+    linear-gradient(135deg, #9ae8ff 0%, #67c9ff 100%);
+}
+
+#screen-menu .menuButtonGrid .menuTonguingBtn {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.36), transparent 12%),
+    linear-gradient(135deg, #6fe6ff 0%, #4aa8ff 100%);
+  box-shadow:
+    0 8px 20px rgba(40, 190, 226, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+#screen-menu .menuButtonGrid .menuBtn:nth-child(3) {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.34), transparent 12%),
+    linear-gradient(135deg, #56b9ff 0%, #5f8dff 100%);
+}
+
+#screen-menu .menuButtonGrid .menuBtn:nth-child(4) {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.32), transparent 12%),
+    linear-gradient(135deg, #6a8cff 0%, #746fe8 100%);
+}
+
+#screen-menu .menuButtonGrid .menuBtn:nth-child(5) {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255,255,255,0.32), transparent 12%),
+    linear-gradient(135deg, #7a72e8 0%, #9b6de3 100%);
+}
+
 #screen-menu .menuButtonGrid .btn-challenge {
   grid-column: span 4;
   min-height: 72px;
@@ -10783,6 +10915,7 @@ body.theme-light .readyCardHint {
       <hr style="margin:6px 0 8px;">
       <div class="menuButtonGrid">
         <button class="menuBtn" onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
+        <button class="menuBtn menu-btn menuTonguingBtn" onclick="goTonguingGuide()">🪈 텅잉 주법 배우기</button>
         <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
@@ -11258,6 +11391,58 @@ body.theme-light .readyCardHint {
   <div id="basicRecorderStatus" class="status">기본 운지 화면 준비 완료</div>
 </section>
 
+<section id="screen-tonguing-guide" class="screen hidden">
+  <div class="tonguingGuideWrap">
+    <div class="tonguingGuideImageCard">
+      <img
+        src="images/tonguing-guide.png"
+        alt="텅잉 주법 설명 이미지"
+      >
+    </div>
+
+    <div class="tonguingGuideButtonRow">
+      <button
+        type="button"
+        class="tonguingListenBtn"
+        onclick="playTonguingNormalExample()"
+      >
+        <span class="tonguingBtnIcon">▶</span>
+
+        <div class="tonguingBtnTexts">
+          <strong>일반 소리 듣기</strong>
+          <span>텅잉 없이 부는 소리</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="tonguingListenBtn"
+        onclick="playTonguingExample()"
+      >
+        <span class="tonguingBtnIcon">🎵</span>
+
+        <div class="tonguingBtnTexts">
+          <strong>텅잉 소리 듣기</strong>
+          <span>“두 두 두” 텅잉 소리</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="tonguingPracticeBtn"
+        onclick="goTonguingPracticeMenu()"
+      >
+        <span class="tonguingBtnIcon">🎶</span>
+
+        <div class="tonguingBtnTexts">
+          <strong>실습하기</strong>
+          <span>텅잉 연습 메뉴로 이동</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</section>
+
 <section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
   <div class="challenge-top">
     <div class="challenge-badge">SPECIAL MISSION</div>
@@ -11716,6 +11901,7 @@ const SCREEN_TITLES = {
   step1Section: DEFAULT_PAGE_TITLE,
   "screen-menu": DEFAULT_PAGE_TITLE,
   "screen-basic": "기본 운지 방법",
+  "screen-tonguing-guide": "텅잉 주법 배우기",
   "step-basic-typeSection": "기본 운지 방법",
   "step-basicSection": "기본 운지 방법",
   "screen-practice": "운지법 연습",
@@ -12727,6 +12913,7 @@ function renderSongButtons() {
       }
 
       const menuScreen = document.getElementById("screen-menu");
+      const tonguingGuideScreen = document.getElementById("screen-tonguing-guide");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
       const stepIds = [
@@ -12739,6 +12926,7 @@ function renderSongButtons() {
 
       setMenuTitleMode(false);
       if (menuScreen) menuScreen.style.display = "none";
+      if (tonguingGuideScreen) tonguingGuideScreen.classList.add("hidden");
       if (challengeScreen) challengeScreen.style.display = "none";
       if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
@@ -12818,6 +13006,13 @@ function renderSongButtons() {
         return;
       }
 
+      if (screenId === "screen-tonguing-guide") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
+
       if (screenId === "screen-song") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         resetSongMenuState("short");
@@ -12856,6 +13051,22 @@ function renderSongButtons() {
 
     function getBasicFingeringLabel(system = currentBasicFingeringSystem) {
       return system === "baroque" ? "바로크식" : "저먼식";
+    }
+
+    function goTonguingGuide() {
+      showScreen("screen-tonguing-guide");
+    }
+
+    function playTonguingNormalExample() {
+      alert("일반 소리 예시는 다음 단계에서 연결합니다.");
+    }
+
+    function playTonguingExample() {
+      alert("텅잉 소리 예시는 다음 단계에서 연결합니다.");
+    }
+
+    function goTonguingPracticeMenu() {
+      alert("텅잉 실습 메뉴는 다음 단계에서 제작합니다.");
     }
 
     function openBasicFingering(system) {
