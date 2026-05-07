@@ -2441,6 +2441,64 @@ button:disabled {
         0 10px 18px rgba(0,0,0,0.14);
     }
 
+    .noiseGuardToggle {
+      display: inline-grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      column-gap: 7px;
+      max-width: 330px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 216, 106, 0.82);
+      background: rgba(12, 35, 68, 0.72);
+      color: #eaf6ff;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(255, 244, 184, 0.32),
+        0 0 16px rgba(255, 199, 71, 0.34),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .noiseGuardIcon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.1rem;
+      line-height: 1;
+    }
+
+    .noiseGuardCopy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .noiseGuardToggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 235, 142, 0.98);
+    }
+
+    .noiseGuardToggle.is-on {
+      border-color: rgba(61, 255, 214, 0.9);
+      background: linear-gradient(180deg, rgba(18, 132, 115, 0.92) 0%, rgba(8, 84, 82, 0.94) 100%);
+      color: #f8fffd;
+      box-shadow: 0 0 18px rgba(61, 255, 214, 0.35), inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .noiseGuardTitle {
+      font-weight: 900;
+      font-size: 0.86rem;
+    }
+
+    .noiseGuardDesc {
+      color: #ffd86a;
+      font-size: 0.7rem;
+      opacity: 1;
+    }
+
     .canvasWrap {
       position: relative;
       border: 1px solid rgba(194, 237, 255, 0.2);
@@ -4257,6 +4315,10 @@ button:disabled {
 
       .practiceMiniBtn .label {
         font-size: 12px;
+      }
+
+      .noiseGuardToggle {
+        max-width: 100%;
       }
 
       .leftGroup,
@@ -9185,6 +9247,11 @@ body.theme-light .practiceStaffSlot {
     margin-bottom: 8px;
   }
 
+  .noiseGuardToggle {
+    max-width: min(330px, 100%);
+    padding: 7px 12px;
+  }
+
   .practiceMeta {
     gap: 8px;
     margin-bottom: 8px;
@@ -10998,7 +11065,13 @@ body.theme-light .readyCardHint {
       </div>
 
       <div class="practiceTop">
-        <div class="practiceBadge" id="practiceBadge">곡을 선택하고 시작하세요</div>
+        <button id="noiseGuardToggle" type="button" class="noiseGuardToggle" onclick="toggleNoiseGuard()">
+          <span class="noiseGuardIcon" aria-hidden="true">🎙</span>
+          <span class="noiseGuardCopy">
+            <span class="noiseGuardTitle">주변 소음 차단 켜기</span>
+            <span class="noiseGuardDesc">누르면 주변 소음 기준을 자동으로 맞춥니다.</span>
+          </span>
+        </button>
         <div class="muted">휴대폰에서는 버튼을 눌러 마이크 권한을 허용해야 합니다.</div>
       </div>
 
@@ -11405,6 +11478,10 @@ body.theme-light .readyCardHint {
     const STAMP_AUDIO_SRC = "audio/stamp.mp3";
     const JUDGMENT_LINE_X = 170;
     const MIN_PERFORMANCE_INPUT_LEVEL = 0.018;
+    let noiseGuardEnabled = false;
+    let noiseGuardBaseline = 0;
+    const NOISE_GUARD_MULTIPLIER = 2.5;
+    const NOISE_GUARD_MINIMUM = 0.035;
     const GRADE_RULES = [
       { min: 90, key: "perfect", label: "PERFECT!!" },
       { min: 80, key: "great", label: "GREAT!" },
@@ -13244,7 +13321,6 @@ window.addEventListener("popstate", function (event) {
       const songInfoBox = infoEl ? infoEl.closest(".songBox") : null;
       const practiceSongTitleEl = document.getElementById("practiceSongTitle");
       const practiceTimeSignatureEl = document.getElementById("practiceTimeSignature");
-      const practiceBadgeEl = document.getElementById("practiceBadge");
 
       renderSongButtons();
 
@@ -13253,7 +13329,6 @@ window.addEventListener("popstate", function (event) {
         if (infoEl) infoEl.textContent = "선택된 곡이 없습니다.";
         if (practiceSongTitleEl) practiceSongTitleEl.textContent = "-";
         if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = "-";
-        if (practiceBadgeEl) practiceBadgeEl.textContent = "곡을 선택하고 시작하세요";
         return;
       }
 
@@ -13271,7 +13346,6 @@ window.addEventListener("popstate", function (event) {
 
       if (practiceSongTitleEl) practiceSongTitleEl.textContent = song.title || "-";
       if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = song.timeSignature || "-";
-      if (practiceBadgeEl) practiceBadgeEl.textContent = "연습 준비 완료";
 
       updatePracticeSpeedInfo();
     }
@@ -14044,7 +14118,7 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function hasValidPerformanceInput() {
-      return livePitchHz > 0 && currentInputLevel >= MIN_PERFORMANCE_INPUT_LEVEL;
+      return livePitchHz > 0 && currentInputLevel >= getActiveInputThreshold();
     }
 
     function getNoteSignature(note) {
@@ -14531,6 +14605,91 @@ function drawRest(ctx, x, staffTop, duration) {
       if (liveScoreEl) liveScoreEl.textContent = String(scoreState.finalScore);
     }
 
+    function getActiveInputThreshold() {
+      if (!noiseGuardEnabled) {
+        return MIN_PERFORMANCE_INPUT_LEVEL;
+      }
+
+      return Math.max(
+        MIN_PERFORMANCE_INPUT_LEVEL,
+        NOISE_GUARD_MINIMUM,
+        noiseGuardBaseline * NOISE_GUARD_MULTIPLIER
+      );
+    }
+
+    function updateNoiseGuardButton() {
+      const btn = document.getElementById("noiseGuardToggle");
+      if (!btn) return;
+
+      btn.classList.toggle("is-on", noiseGuardEnabled);
+
+      const title = btn.querySelector(".noiseGuardTitle");
+      if (title) {
+        title.textContent = noiseGuardEnabled
+          ? "주변 소음 차단 ON"
+          : "주변 소음 차단 켜기";
+      }
+
+      const icon = btn.querySelector(".noiseGuardIcon");
+      if (icon) {
+        icon.textContent = noiseGuardEnabled ? "✅" : "🎙";
+      }
+
+      const desc = btn.querySelector(".noiseGuardDesc");
+      if (desc) {
+        desc.textContent = noiseGuardEnabled
+          ? "작은 주변 소리는 판정에서 제외합니다."
+          : "누르면 주변 소음 기준을 자동으로 맞춥니다.";
+      }
+    }
+
+    async function calibrateNoiseGuard() {
+      if (!analyser || !pitchBuffer) return;
+
+      const samples = [];
+      const startedAt = performance.now();
+
+      while (performance.now() - startedAt < 900) {
+        analyser.getFloatTimeDomainData(pitchBuffer);
+        samples.push(getCurrentInputRms(pitchBuffer));
+        await new Promise((resolve) => setTimeout(resolve, 60));
+      }
+
+      const avg = samples.length
+        ? samples.reduce((sum, value) => sum + value, 0) / samples.length
+        : 0;
+
+      noiseGuardBaseline = avg;
+    }
+
+    async function toggleNoiseGuard() {
+      noiseGuardEnabled = !noiseGuardEnabled;
+      updateNoiseGuardButton();
+
+      if (!noiseGuardEnabled) {
+        noiseGuardBaseline = 0;
+        setStatus("practiceStatus", "소음 차단 OFF", "");
+        return;
+      }
+
+      setStatus("practiceStatus", "소음 차단 기준을 확인하는 중입니다.", "ok");
+
+      try {
+        if (!micRunning) {
+          await startMicMonitoring();
+        }
+
+        await calibrateNoiseGuard();
+        updateNoiseGuardButton();
+        setStatus("practiceStatus", "소음 차단 ON · 기기 가까이에서 또렷하게 연주해 주세요.", "ok");
+      } catch (e) {
+        noiseGuardEnabled = false;
+        noiseGuardBaseline = 0;
+        updateNoiseGuardButton();
+        setStatus("practiceStatus", "마이크 권한이 필요합니다. 소음 차단을 켤 수 없습니다.", "bad");
+      }
+    }
+
     function updatePitchLoop() {
       if (!micRunning || !analyser || !audioCtx) return;
 
@@ -14541,7 +14700,8 @@ function drawRest(ctx, x, staffTop, duration) {
 
       analyser.getFloatTimeDomainData(pitchBuffer);
       currentInputLevel = getCurrentInputRms(pitchBuffer);
-      const freq = currentInputLevel >= MIN_PERFORMANCE_INPUT_LEVEL
+      const activeInputThreshold = getActiveInputThreshold();
+      const freq = currentInputLevel >= activeInputThreshold
         ? autoCorrelate(pitchBuffer, audioCtx.sampleRate)
         : -1;
 
@@ -14643,7 +14803,6 @@ function drawRest(ctx, x, staffTop, duration) {
 
       practiceRunning = true;
       updatePracticeRecordButton();
-      document.getElementById("practiceBadge").textContent = `${song.title} 연습 중`;
       document.getElementById("practiceSongTitle").textContent = song.title;
       document.getElementById("practiceTimeSignature").textContent = timeline.timeSignature || "4/4";
       document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
@@ -15000,15 +15159,10 @@ function drawRest(ctx, x, staffTop, duration) {
       const timeSignature = song?.timeSignature || "4/4";
       drawPracticeBase(timeSignature);
 
-      const practiceBadgeEl = document.getElementById("practiceBadge");
       const practiceInfoEl = document.getElementById("practiceInfo");
       const practiceSongTitleEl = document.getElementById("practiceSongTitle");
       const practiceTimeSignatureEl = document.getElementById("practiceTimeSignature");
       const liveTargetEl = document.getElementById("liveTargetNote");
-
-      if (practiceBadgeEl) {
-        practiceBadgeEl.textContent = song ? "연습 준비 완료" : "곡을 선택하고 시작하세요";
-      }
 
       if (practiceInfoEl) {
         practiceInfoEl.textContent = "연습을 시작해 주세요.";
@@ -15388,7 +15542,6 @@ function startBasicPractice() {
       resetJudgmentZoneState();
       drawPracticeBase(getSelectedSong()?.timeSignature || "4/4");
 
-      document.getElementById("practiceBadge").textContent = "곡을 선택하고 시작하세요";
       document.getElementById("practiceInfo").textContent = "아직 연습을 시작하지 않았습니다.";
 
       const liveDetected = document.getElementById("liveDetectedNote");
