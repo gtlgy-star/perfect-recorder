@@ -10637,68 +10637,138 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   padding: 12px 18px 22px;
 }
 
+.tonguingPracticeStage {
+  padding: 18px;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(8, 24, 48, 0.68), rgba(10, 22, 42, 0.56)),
+    radial-gradient(circle at 18% 0%, rgba(77,168,255,0.18), transparent 38%),
+    radial-gradient(circle at 88% 12%, rgba(124,92,255,0.14), transparent 34%);
+  border: 1px solid rgba(189,232,255,0.22);
+  box-shadow:
+    0 22px 44px rgba(0,0,0,0.24),
+    0 0 34px rgba(77,168,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+}
+
 .tonguingTitleCard {
+  margin-bottom: 16px;
+}
+
+.tonguingFlowCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 22px;
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+}
+
+.tonguingFlowTitle {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 16px;
-  padding: 18px 22px;
-  border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(80,160,255,0.10)),
-    radial-gradient(circle at 12% 0%, rgba(129,230,255,0.22), transparent 42%);
-  border: 1px solid rgba(210,245,255,0.30);
-  box-shadow:
-    0 14px 30px rgba(0,0,0,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.20);
+  min-width: 220px;
 }
 
-.practiceTitleEmoji {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
+.tonguingFlowIcon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 18px;
   font-size: 2rem;
-  background: rgba(77,168,255,0.18);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.24), rgba(120,80,255,0.18));
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.18);
 }
 
-.tonguingTitleCard h2 {
-  margin: 0 0 5px;
-  font-size: 1.42rem;
+.tonguingFlowMain {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
 }
 
-.tonguingTitleCard p {
-  margin: 0;
-  color: rgba(235,248,255,0.82);
-  font-weight: 700;
+.tonguingFlowSub {
+  margin-top: 4px;
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.74);
 }
 
-.tonguingStatusPanel {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.tonguingFlowSteps {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.tonguingStep {
+  flex: 1;
+  display: flex;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  padding: 14px 18px;
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+  border: 1px solid rgba(255,255,255,0.14);
+  min-height: 82px;
 }
 
-.tonguingStatusItem {
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(255,255,255,0.55);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+.stepSpeak {
+  box-shadow:
+    0 0 18px rgba(140,100,255,0.18);
 }
 
-.tonguingStatusItem .label {
-  display: block;
+.stepListen {
+  box-shadow:
+    0 0 18px rgba(80,170,255,0.18);
+}
+
+.tonguingStepNumber {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 900;
+  color: white;
+  background:
+    linear-gradient(135deg, #7f5cff, #4da8ff);
+  box-shadow:
+    0 6px 14px rgba(77,168,255,0.28);
+}
+
+.tonguingStepTitle {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.tonguingStepDesc {
+  margin-top: 4px;
   font-size: 0.82rem;
-  opacity: 0.72;
-  margin-bottom: 4px;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.72);
 }
 
-.tonguingStatusItem strong {
-  font-size: 1.05rem;
+.tonguingFlowArrow {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.78);
 }
 
 .tonguingMainGrid {
@@ -10706,6 +10776,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   grid-template-columns: 1.05fr 1.35fr;
   gap: 16px;
   align-items: stretch;
+  margin-top: 16px;
 }
 
 .tonguingRhythmList {
@@ -10714,30 +10785,54 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 }
 
 .tonguingRhythmCard {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 22px;
   padding: 14px;
-  border: 2px solid transparent;
-  background: rgba(255,255,255,0.72);
-  box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.tonguingRhythmCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+  pointer-events: none;
 }
 
 .tonguingRhythmCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.14);
+  box-shadow:
+    0 0 24px rgba(255,255,255,0.10),
+    0 16px 32px rgba(0,0,0,0.22);
 }
 
 .tonguingRhythmCard.selected {
-  border-color: rgba(77,168,255,0.95);
-  box-shadow: 0 0 0 4px rgba(77,168,255,0.18), 0 18px 36px rgba(0,0,0,0.16);
+  transform: translateY(-2px) scale(1.01);
+  border-color: rgba(255,255,255,0.52);
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,0.10),
+    0 0 26px rgba(255,255,255,0.14),
+    0 16px 36px rgba(0,0,0,0.24);
 }
 
 .tonguingRhythmInfo {
+  position: relative;
+  z-index: 1;
   min-width: 0;
 }
 
@@ -10753,11 +10848,13 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   padding: 4px 9px;
   border-radius: 999px;
   font-weight: 800;
-  color: #123;
-  background: rgba(255,255,255,0.72);
+  color: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.18);
 }
 
 .tonguingRhythmName {
+  color: #ffffff;
   font-weight: 900;
   font-size: 1.03rem;
 }
@@ -10766,18 +10863,31 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   width: 100%;
   height: 74px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.92);
 }
 
 .tonguingSelectBtn {
+  position: relative;
+  z-index: 1;
   border: none;
   border-radius: 999px;
   padding: 10px 14px;
   font-weight: 900;
   cursor: pointer;
-  background: linear-gradient(135deg, #4da8ff, #7c5cff);
-  color: white;
-  box-shadow: 0 8px 18px rgba(77,168,255,0.28);
+  background: linear-gradient(135deg, #c8f3ff, #77d7ff);
+  color: #12416d;
+  box-shadow:
+    0 8px 18px rgba(119,215,255,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.55);
+}
+
+.tonguingRhythmCard.selected .tonguingSelectBtn {
+  background: linear-gradient(135deg, #0b63d8, #0645a8);
+  color: #ffffff;
+  box-shadow:
+    0 0 16px rgba(77,168,255,0.42),
+    0 8px 18px rgba(0,62,150,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.24);
 }
 
 .tonguingPracticePanel {
@@ -10790,21 +10900,293 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   overflow: hidden;
 }
 
-.tonguingBigGuide {
-  min-height: 48px;
+.tonguingLearningPanel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tonguingLearningHeader {
   border-radius: 18px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
+  padding: 10px 16px;
+  background:
+    linear-gradient(135deg, rgba(77,168,255,0.18), rgba(124,92,255,0.12));
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.tonguingLearningEyebrow {
+  font-size: 1.22rem;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  color: #ffe66d;
+  text-shadow:
+    0 0 12px rgba(255,230,109,0.34),
+    0 2px 8px rgba(0,0,0,0.22);
+  margin-bottom: 0;
+}
+
+.tonguingLearningHeader h3 {
+  margin: 0;
+  font-size: 1.18rem;
   font-weight: 900;
-  text-align: center;
-  background: rgba(77,168,255,0.12);
+  color: #ffffff;
+}
+
+.tonguingLearningStep {
+  position: relative;
+  border-radius: 22px;
+  padding: 12px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.045));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 8px 20px rgba(0,0,0,0.12);
+}
+
+.tonguingStepHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.tonguingStepBadge {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 1000;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, #4da8ff, #7c5cff);
+  box-shadow: 0 6px 14px rgba(77,168,255,0.26);
+}
+
+.tonguingStepHead h4 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.tonguingStepHead p {
+  margin: 4px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.68);
+}
+
+.stepSelectRhythm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stepSelectRhythm .tonguingStepHead {
+  margin-bottom: 0;
+}
+
+.selectedRhythmPreview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 220px;
+  border-radius: 16px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.selectedRhythmLabel {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.68);
+  font-weight: 800;
+}
+
+#tonguingSelectedRhythmName {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 900;
+  text-align: right;
+}
+
+.tonguingStepControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: nowrap;
+}
+
+.tonguingStepControls label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255,230,109,0.26), rgba(255,190,68,0.12));
+  border: 1px solid rgba(255,230,109,0.24);
+  color: rgba(255,246,210,0.94);
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 6px 12px rgba(255,205,80,0.08);
+}
+
+.tonguingStepControls select {
+  border: none;
+  border-radius: 999px;
+  min-width: 72px;
+  height: 30px;
+  padding: 0 28px 0 12px;
+  font-weight: 900;
+  color: #f8fbff;
+  background: #102238;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 6px 12px rgba(0,0,0,0.16);
+  appearance: auto;
+}
+
+.tonguingStepControls select option {
+  color: #102238;
+  background: #ffffff;
+  font-weight: 800;
+}
+
+.tonguingStartBtn,
+.tonguingStopBtn {
+  flex: 1 1 0;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  min-width: 88px;
+  min-height: 40px;
+  padding: 9px 16px;
+  color: #ffffff;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 10px 18px rgba(0,0,0,0.18);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+}
+
+.tonguingStartBtn {
+  background:
+    linear-gradient(135deg, #4fc3ff 0%, #2f80ed 48%, #775cff 100%);
+  box-shadow:
+    0 0 18px rgba(77,168,255,0.28),
+    0 10px 18px rgba(47,128,237,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+}
+
+.tonguingStopBtn {
+  background:
+    linear-gradient(135deg, rgba(255,206,132,0.92), rgba(255,142,82,0.78));
+  color: #4a2608;
+  border-color: rgba(255,220,170,0.34);
+  box-shadow:
+    0 0 14px rgba(255,178,92,0.22),
+    0 10px 18px rgba(120,62,12,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.42);
+}
+
+.tonguingStartBtn:hover,
+.tonguingStopBtn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.tonguingStartBtn:active,
+.tonguingStopBtn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.22),
+    0 5px 10px rgba(0,0,0,0.16);
+}
+
+.tonguingRepeatLights {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  margin: 8px 2px 0 auto;
+}
+
+.tonguingRepeatLights span {
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.tonguingRepeatLights span.on {
+  background:
+    linear-gradient(135deg, #ffe66d, #4da8ff);
+  box-shadow:
+    0 0 12px rgba(77,168,255,0.55),
+    0 0 18px rgba(255,230,109,0.22);
+}
+
+.tonguingSpeakGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
+.tonguingSpeakCell {
+  min-height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 1000;
+  color: rgba(255,255,255,0.84);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.tonguingSpeakCell.active {
+  transform: translateY(-2px);
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(77,168,255,0.75), rgba(124,92,255,0.72));
+  box-shadow:
+    0 0 16px rgba(77,168,255,0.48),
+    0 8px 18px rgba(0,0,0,0.20);
+}
+
+.tonguingSpeakCell.empty {
+  color: rgba(255,255,255,0.28);
 }
 
 #tonguingPracticeCanvas {
   width: 100%;
   height: auto;
   border-radius: 18px;
-  background: rgba(255,255,255,0.86);
+  background: rgba(255,255,255,0.92);
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
 }
 
@@ -10830,81 +11212,79 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-.tonguingProgressDots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 14px 0;
-}
-
-.tonguingProgressDots span {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: rgba(120,130,150,0.28);
-}
-
-.tonguingProgressDots span.active {
-  background: linear-gradient(135deg, #4da8ff, #7c5cff);
-  box-shadow: 0 0 12px rgba(77,168,255,0.5);
-}
-
-.tonguingControlRow {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.tonguingControlRow button {
-  width: auto !important;
-  flex: 1 1 132px;
-  max-width: 180px;
-  min-width: 132px;
-  min-height: 44px;
-  border-radius: 999px;
-  padding: 11px 14px;
-  font-weight: 900;
-  cursor: pointer;
-  font-size: 0.92rem;
-}
-
-.tonguingSmallHelp {
-  text-align: center;
-  opacity: 0.78;
-  font-size: 0.92rem;
-  margin: 12px 0 0;
-}
-
-.tonguingBottomNav {
-  display: none;
-}
-
 .tonguingRhythmCard.level-basic {
-  background: linear-gradient(135deg, rgba(152,245,196,0.78), rgba(255,255,255,0.72));
+  background:
+    linear-gradient(135deg, rgba(40,120,255,0.34), rgba(18,38,88,0.88));
+  box-shadow:
+    0 0 24px rgba(77,168,255,0.16),
+    0 10px 24px rgba(0,0,0,0.18);
 }
 
 .tonguingRhythmCard.level-mix {
-  background: linear-gradient(135deg, rgba(151,211,255,0.78), rgba(255,255,255,0.72));
+  background:
+    linear-gradient(135deg, rgba(60,210,140,0.30), rgba(20,62,44,0.90));
+  box-shadow:
+    0 0 24px rgba(90,255,180,0.14),
+    0 10px 24px rgba(0,0,0,0.18);
 }
 
 .tonguingRhythmCard.level-rest {
-  background: linear-gradient(135deg, rgba(255,213,134,0.82), rgba(255,255,255,0.72));
+  background:
+    linear-gradient(135deg, rgba(255,215,90,0.32), rgba(86,58,12,0.90));
+  box-shadow:
+    0 0 24px rgba(255,220,120,0.14),
+    0 10px 24px rgba(0,0,0,0.18);
 }
 
 .tonguingRhythmCard.level-fast {
-  background: linear-gradient(135deg, rgba(255,142,142,0.80), rgba(255,255,255,0.72));
+  background:
+    linear-gradient(135deg, rgba(255,90,90,0.34), rgba(88,18,28,0.92));
+  box-shadow:
+    0 0 24px rgba(255,120,120,0.16),
+    0 10px 24px rgba(0,0,0,0.18);
 }
 
-body.theme-dark .tonguingStatusItem,
-body.theme-dark .tonguingRhythmCard,
 body.theme-dark .tonguingPracticePanel,
-body.dark .tonguingStatusItem,
-body.dark .tonguingRhythmCard,
 body.dark .tonguingPracticePanel {
   background: rgba(20, 26, 44, 0.78);
   border-color: rgba(255,255,255,0.12);
   color: #f4f7ff;
+}
+
+body.theme-light .tonguingRhythmCard.level-basic,
+body.light .tonguingRhythmCard.level-basic {
+  background:
+    linear-gradient(135deg, rgba(110,180,255,0.62), rgba(220,238,255,0.94));
+}
+
+body.theme-light .tonguingRhythmCard.level-mix,
+body.light .tonguingRhythmCard.level-mix {
+  background:
+    linear-gradient(135deg, rgba(120,230,170,0.58), rgba(232,255,240,0.94));
+}
+
+body.theme-light .tonguingRhythmCard.level-rest,
+body.light .tonguingRhythmCard.level-rest {
+  background:
+    linear-gradient(135deg, rgba(255,230,120,0.58), rgba(255,249,218,0.95));
+}
+
+body.theme-light .tonguingRhythmCard.level-fast,
+body.light .tonguingRhythmCard.level-fast {
+  background:
+    linear-gradient(135deg, rgba(255,150,150,0.58), rgba(255,232,232,0.95));
+}
+
+body.theme-light .tonguingRhythmName,
+body.light .tonguingRhythmName {
+  color: #183153;
+}
+
+body.theme-light .tonguingDifficulty,
+body.light .tonguingDifficulty {
+  color: rgba(24,49,83,0.86);
+  background: rgba(255,255,255,0.50);
+  border-color: rgba(80,120,170,0.18);
 }
 
 body.theme-dark .tonguingMiniStaff,
@@ -10914,24 +11294,169 @@ body.dark #tonguingPracticeCanvas {
   background: rgba(245,248,255,0.92);
 }
 
-body.theme-dark .tonguingBigGuide,
-body.dark .tonguingBigGuide {
-  background: rgba(77,168,255,0.18);
-  color: #f4f7ff;
+body.theme-light .tonguingFlowCard,
+body.light .tonguingFlowCard {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(240,246,255,0.82));
+  border: 1px solid rgba(120,160,220,0.24);
+}
+
+body.theme-light .tonguingPracticeStage,
+body.light .tonguingPracticeStage {
+  background:
+    linear-gradient(180deg, rgba(236,247,255,0.78), rgba(222,238,255,0.66)),
+    radial-gradient(circle at 18% 0%, rgba(77,168,255,0.18), transparent 38%),
+    radial-gradient(circle at 88% 12%, rgba(124,92,255,0.10), transparent 34%);
+  border-color: rgba(120,160,220,0.28);
+  box-shadow:
+    0 20px 38px rgba(80,120,180,0.18),
+    0 0 28px rgba(77,168,255,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.60);
+}
+
+body.theme-light .tonguingFlowMain,
+body.theme-light .tonguingStepTitle,
+body.light .tonguingFlowMain,
+body.light .tonguingStepTitle {
+  color: #183153;
+}
+
+body.theme-light .tonguingFlowSub,
+body.theme-light .tonguingStepDesc,
+body.light .tonguingFlowSub,
+body.light .tonguingStepDesc {
+  color: #4b5f7c;
+}
+
+body.theme-light .tonguingFlowArrow,
+body.light .tonguingFlowArrow {
+  color: rgba(24,49,83,0.68);
+}
+
+body.theme-light .tonguingLearningHeader,
+body.theme-light .tonguingLearningStep,
+body.light .tonguingLearningHeader,
+body.light .tonguingLearningStep {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.88), rgba(240,246,255,0.82));
+  border-color: rgba(120,160,220,0.24);
+}
+
+body.theme-light .tonguingLearningEyebrow,
+body.theme-light .tonguingStepHead p,
+body.theme-light .selectedRhythmLabel,
+body.light .tonguingLearningEyebrow,
+body.light .tonguingStepHead p,
+body.light .selectedRhythmLabel {
+  color: #4b5f7c;
+}
+
+body.theme-light .tonguingLearningEyebrow,
+body.light .tonguingLearningEyebrow {
+  color: #a46d00;
+  text-shadow: 0 0 10px rgba(255,200,70,0.22);
+}
+
+body.theme-light .tonguingLearningHeader h3,
+body.theme-light .tonguingStepHead h4,
+body.theme-light #tonguingSelectedRhythmName,
+body.light .tonguingLearningHeader h3,
+body.light .tonguingStepHead h4,
+body.light #tonguingSelectedRhythmName {
+  color: #183153;
+}
+
+body.theme-light .selectedRhythmPreview,
+body.theme-light .tonguingSpeakCell,
+body.light .selectedRhythmPreview,
+body.light .tonguingSpeakCell {
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(120,160,220,0.20);
+}
+
+body.theme-light .tonguingStepControls label,
+body.light .tonguingStepControls label {
+  background:
+    linear-gradient(135deg, rgba(255,223,105,0.46), rgba(255,247,211,0.84));
+  border-color: rgba(210,155,36,0.24);
+  color: #7a5310;
+}
+
+body.theme-light .tonguingStepControls select,
+body.light .tonguingStepControls select {
+  color: #183153;
+  background: #ffffff;
+}
+
+body.theme-light .tonguingStepControls select option,
+body.light .tonguingStepControls select option {
+  color: #183153;
+  background: #ffffff;
+}
+
+body.theme-light .tonguingStopBtn,
+body.light .tonguingStopBtn {
+  background:
+    linear-gradient(135deg, #ffe4bd, #ffbd87);
+  color: #5a2c08;
+  border-color: rgba(220,132,48,0.26);
+  box-shadow:
+    0 8px 16px rgba(205,108,34,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body.theme-light .tonguingSpeakCell,
+body.light .tonguingSpeakCell {
+  color: #2c405f;
+}
+
+body.theme-light .tonguingSpeakCell.empty,
+body.light .tonguingSpeakCell.empty {
+  color: rgba(44,64,95,0.32);
+}
+
+@media (max-width: 920px) {
+  .tonguingFlowCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tonguingFlowTitle {
+    min-width: auto;
+  }
+
+  .tonguingFlowSteps {
+    flex-direction: column;
+  }
+
+  .tonguingFlowArrow {
+    transform: rotate(90deg);
+  }
 }
 
 @media (max-width: 840px) {
-  .tonguingStatusPanel {
-    grid-template-columns: 1fr;
-  }
-
   .tonguingMainGrid {
     grid-template-columns: 1fr;
   }
 
-  .tonguingControlRow button {
-    max-width: none;
+  .tonguingSpeakGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
+
+  .tonguingStepControls {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .stepSelectRhythm {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .selectedRhythmPreview {
+    min-width: 0;
+  }
+
 }
 
 .readyCardBadge {
@@ -11748,65 +12273,161 @@ body.theme-light .readyCardHint {
 
 <section id="screen-tonguing-practice" class="screen hidden">
   <div class="tonguingPracticeWrap">
+    <div class="tonguingPracticeStage">
 
-    <div class="practiceTitleCard tonguingTitleCard">
-      <div class="practiceTitleEmoji">🎵</div>
-      <div>
-        <h2>솔 음 리듬 훈련</h2>
-        <p>전문가 소리를 듣고 바로 이어서 따라 연주해요</p>
-      </div>
-    </div>
+      <div class="tonguingTitleCard">
+        <div class="tonguingFlowCard">
+          <div class="tonguingFlowTitle">
+            <div class="tonguingFlowIcon">🎵</div>
 
-    <div class="tonguingStatusPanel">
-      <div class="tonguingStatusItem">
-        <span class="label">현재 리듬</span>
-        <strong id="tonguingCurrentName">리듬을 선택하세요</strong>
-      </div>
-      <div class="tonguingStatusItem">
-        <span class="label">연습 단계</span>
-        <strong id="tonguingPhaseText">대기 중</strong>
-      </div>
-      <div class="tonguingStatusItem">
-        <span class="label">반복</span>
-        <strong id="tonguingRepeatText">0 / 4</strong>
-      </div>
-    </div>
+            <div class="tonguingFlowText">
+              <div class="tonguingFlowMain">텅잉 연습</div>
+              <div class="tonguingFlowSub">
+                말로 읽고 → 듣고 → 따라 연주해요
+              </div>
+            </div>
+          </div>
 
-    <div class="tonguingMainGrid">
+          <div class="tonguingFlowSteps">
+            <div class="tonguingStep stepSpeak">
+              <div class="tonguingStepNumber">1</div>
 
-      <div class="tonguingRhythmList" id="tonguingRhythmList">
-        <!-- JS에서 리듬 카드 생성 -->
+              <div class="tonguingStepContent">
+                <div class="tonguingStepTitle">
+                  👄 말로 소리내기
+                </div>
+
+                <div class="tonguingStepDesc">
+                  리듬을 먼저 말로 읽어요
+                </div>
+              </div>
+            </div>
+
+            <div class="tonguingFlowArrow">
+              →
+            </div>
+
+            <div class="tonguingStep stepListen">
+              <div class="tonguingStepNumber">2</div>
+
+              <div class="tonguingStepContent">
+                <div class="tonguingStepTitle">
+                  🎧 전문가 연주 듣고 따라하기
+                </div>
+
+                <div class="tonguingStepDesc">
+                  전문가 소리를 듣고 이어서 연주해요
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="tonguingPracticePanel">
-        <div class="tonguingBigGuide" id="tonguingBigGuide">
-          연습할 리듬을 선택하세요
+      <div class="tonguingMainGrid">
+
+        <div class="tonguingRhythmList" id="tonguingRhythmList">
+          <!-- JS에서 리듬 카드 생성 -->
         </div>
 
-        <canvas id="tonguingPracticeCanvas" width="760" height="220"></canvas>
+        <div class="tonguingPracticePanel tonguingLearningPanel">
+          <div class="tonguingLearningHeader">
+            <div>
+              <div class="tonguingLearningEyebrow">학습 순서</div>
+            </div>
+          </div>
+
+          <section class="tonguingLearningStep stepSelectRhythm">
+            <div class="tonguingStepHead">
+              <div class="tonguingStepBadge">1</div>
+              <div>
+                <h4>연습할 리듬을 선택하세요</h4>
+              </div>
+            </div>
+
+            <div class="selectedRhythmPreview">
+              <span class="selectedRhythmLabel">선택한 리듬꼴</span>
+              <strong id="tonguingSelectedRhythmName">리듬을 선택하세요</strong>
+            </div>
+          </section>
+
+        <section class="tonguingLearningStep stepSpeakPractice">
+          <div class="tonguingStepHead">
+            <div class="tonguingStepBadge">2</div>
+            <div>
+              <h4>말소리 연습</h4>
+              <p>메트로놈 박자에 맞춰 리듬을 먼저 말로 읽어요.</p>
+            </div>
+          </div>
+
+          <div class="tonguingStepControls">
+            <label>
+              횟수
+              <select id="tonguingSpeakRepeatSelect">
+                <option value="1">1회</option>
+                <option value="2">2회</option>
+                <option value="3">3회</option>
+                <option value="4" selected>4회</option>
+              </select>
+            </label>
+
+            <button type="button" class="tonguingStartBtn" id="btnStartTonguingSpeak">
+              ▶ 시작
+            </button>
+
+            <button type="button" class="tonguingStopBtn" id="btnStopTonguingSpeak">
+              ■ 정지
+            </button>
+          </div>
+
+          <div class="tonguingSpeakGrid" id="tonguingSpeakGrid">
+            <!-- JS에서 8칸 생성 -->
+          </div>
+
+          <div class="tonguingRepeatLights" id="tonguingSpeakLights">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </section>
+
+        <section class="tonguingLearningStep stepListenPractice">
+          <div class="tonguingStepHead">
+            <div class="tonguingStepBadge">3</div>
+            <div>
+              <h4>듣고 따라하기</h4>
+              <p>전문가 연주를 듣고 이어서 같은 리듬으로 따라 연주해요.</p>
+            </div>
+          </div>
+
+          <div class="tonguingStepControls">
+            <label>
+              횟수
+              <select id="tonguingListenRepeatSelect">
+                <option value="1">1회</option>
+                <option value="2">2회</option>
+                <option value="3">3회</option>
+                <option value="4" selected>4회</option>
+              </select>
+            </label>
+
+            <button type="button" class="tonguingStartBtn" id="btnStartTonguingListen">
+              ▶ 시작
+            </button>
+
+            <button type="button" class="tonguingStopBtn" id="btnStopTonguingListen">
+              ■ 정지
+            </button>
+          </div>
+
+          <canvas id="tonguingPracticeCanvas" width="760" height="220"></canvas>
+
+          <div class="tonguingRepeatLights" id="tonguingListenLights">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </section>
 
         <div class="tonguingCount" id="tonguingCount"></div>
-
-        <div class="tonguingProgressDots" id="tonguingProgressDots">
-          <span></span><span></span><span></span><span></span>
-        </div>
-
-        <div class="tonguingControlRow">
-          <button class="primaryBtn" id="btnStartTonguingPractice" type="button">
-            ▶ 연습 시작
-          </button>
-          <button class="secondaryBtn" id="btnRandomTonguingPractice" type="button">
-            🎲 랜덤 섞기
-          </button>
-          <button class="secondaryBtn" id="btnStopTonguingPractice" type="button">
-            ■ 정지
-          </button>
-        </div>
-
-        <p class="tonguingSmallHelp">
-          먼저 리듬을 말로 읽고, 전문가 소리를 들은 뒤 이어서 따라 연주해요.
-        </p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -13455,6 +14076,7 @@ function renderSongButtons() {
         difficulty: "기본",
         levelClass: "level-basic",
         syllables: "두  두  두  두",
+        speakCells: ["두", "", "두", "", "두", "", "두", ""],
         units: [
           { type: "note", dur: 1 },
           { type: "note", dur: 1 },
@@ -13468,6 +14090,7 @@ function renderSongButtons() {
         difficulty: "혼합",
         levelClass: "level-mix",
         syllables: "두  두두두  두두",
+        speakCells: ["두", "", "두", "두", "두", "", "두", "두"],
         units: [
           { type: "note", dur: 1 },
           { type: "note", dur: 0.5 },
@@ -13479,10 +14102,11 @@ function renderSongButtons() {
       },
       {
         id: "rest1",
-        name: "두두두웃 두두두웃",
+        name: "두두두웃두두두웃",
         difficulty: "쉼표 포함",
         levelClass: "level-rest",
-        syllables: "두두두웃  두두두웃",
+        syllables: "두두두웃두두두웃",
+        speakCells: ["두", "두", "두", "", "두", "두", "두", ""],
         units: [
           { type: "note", dur: 0.5 },
           { type: "note", dur: 0.5 },
@@ -13500,6 +14124,7 @@ function renderSongButtons() {
         difficulty: "빠른 텅잉",
         levelClass: "level-fast",
         syllables: "두두두두 두두두두",
+        speakCells: ["두", "두", "두", "두", "두", "두", "두", "두"],
         units: [
           { type: "note", dur: 0.5 },
           { type: "note", dur: 0.5 },
@@ -13517,6 +14142,10 @@ function renderSongButtons() {
     let tonguingAudioCtx = null;
     let tonguingStopFlag = false;
     let tonguingRunning = false;
+    let tonguingSpeakRunning = false;
+    let tonguingSpeakStopFlag = false;
+    let tonguingListenRunning = false;
+    let tonguingListenStopFlag = false;
     let tonguingHighlightIndex = -1;
 
     function goTonguingPractice() {
@@ -13539,24 +14168,49 @@ function renderSongButtons() {
       setTonguingGuide("연습할 리듬을 선택하세요");
       drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
 
-      const startBtn = document.getElementById("btnStartTonguingPractice");
-      const randomBtn = document.getElementById("btnRandomTonguingPractice");
-      const stopBtn = document.getElementById("btnStopTonguingPractice");
+      const speakStartBtn = document.getElementById("btnStartTonguingSpeak");
+      const speakStopBtn = document.getElementById("btnStopTonguingSpeak");
+      const listenStartBtn = document.getElementById("btnStartTonguingListen");
+      const listenStopBtn = document.getElementById("btnStopTonguingListen");
+      const speakRepeatSelect = document.getElementById("tonguingSpeakRepeatSelect");
+      const listenRepeatSelect = document.getElementById("tonguingListenRepeatSelect");
 
-      if (startBtn && !startBtn.dataset.bound) {
-        startBtn.addEventListener("click", () => startTonguingPractice(false));
-        startBtn.dataset.bound = "true";
+      if (speakStartBtn && !speakStartBtn.dataset.bound) {
+        speakStartBtn.addEventListener("click", startTonguingSpeakPractice);
+        speakStartBtn.dataset.bound = "true";
       }
 
-      if (randomBtn && !randomBtn.dataset.bound) {
-        randomBtn.addEventListener("click", () => startTonguingPractice(true));
-        randomBtn.dataset.bound = "true";
+      if (speakStopBtn && !speakStopBtn.dataset.bound) {
+        speakStopBtn.addEventListener("click", stopTonguingSpeakPractice);
+        speakStopBtn.dataset.bound = "true";
       }
 
-      if (stopBtn && !stopBtn.dataset.bound) {
-        stopBtn.addEventListener("click", stopTonguingPractice);
-        stopBtn.dataset.bound = "true";
+      if (listenStartBtn && !listenStartBtn.dataset.bound) {
+        listenStartBtn.addEventListener("click", startTonguingListenPractice);
+        listenStartBtn.dataset.bound = "true";
       }
+
+      if (listenStopBtn && !listenStopBtn.dataset.bound) {
+        listenStopBtn.addEventListener("click", stopTonguingListenPractice);
+        listenStopBtn.dataset.bound = "true";
+      }
+
+      if (speakRepeatSelect && !speakRepeatSelect.dataset.bound) {
+        speakRepeatSelect.addEventListener("change", () => {
+          setTonguingLights("tonguingSpeakLights", getTonguingRepeatValue("tonguingSpeakRepeatSelect"), 0);
+        });
+        speakRepeatSelect.dataset.bound = "true";
+      }
+
+      if (listenRepeatSelect && !listenRepeatSelect.dataset.bound) {
+        listenRepeatSelect.addEventListener("change", () => {
+          setTonguingLights("tonguingListenLights", getTonguingRepeatValue("tonguingListenRepeatSelect"), 0);
+        });
+        listenRepeatSelect.dataset.bound = "true";
+      }
+
+      setTonguingLights("tonguingSpeakLights", getTonguingRepeatValue("tonguingSpeakRepeatSelect"), 0);
+      setTonguingLights("tonguingListenLights", getTonguingRepeatValue("tonguingListenRepeatSelect"), 0);
     }
 
     function renderTonguingRhythmCards() {
@@ -13609,10 +14263,52 @@ function renderSongButtons() {
         nameEl.textContent = selectedTonguingRhythm.name;
       }
 
+      const selectedNameEl = document.getElementById("tonguingSelectedRhythmName");
+      if (selectedNameEl && selectedTonguingRhythm) {
+        selectedNameEl.textContent = selectedTonguingRhythm.name;
+      }
+
       const phaseEl = document.getElementById("tonguingPhaseText");
       if (phaseEl && !tonguingRunning) {
         phaseEl.textContent = "대기 중";
       }
+
+      renderTonguingSpeakGrid(selectedTonguingRhythm);
+
+      if (selectedTonguingRhythm) {
+        drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
+      }
+    }
+
+    function renderTonguingSpeakGrid(rhythm) {
+      const grid = document.getElementById("tonguingSpeakGrid");
+      if (!grid || !rhythm) return;
+
+      const cells = rhythm.speakCells || ["", "", "", "", "", "", "", ""];
+
+      grid.innerHTML = "";
+
+      cells.forEach((text, index) => {
+        const cell = document.createElement("div");
+        cell.className = "tonguingSpeakCell";
+        if (!text) cell.classList.add("empty");
+        cell.dataset.index = String(index);
+        cell.textContent = text || "";
+        grid.appendChild(cell);
+      });
+    }
+
+    function setTonguingSpeakActiveCell(index) {
+      const cells = document.querySelectorAll(".tonguingSpeakCell");
+      cells.forEach((cell, i) => {
+        cell.classList.toggle("active", i === index);
+      });
+    }
+
+    function clearTonguingSpeakActiveCell() {
+      document.querySelectorAll(".tonguingSpeakCell").forEach((cell) => {
+        cell.classList.remove("active");
+      });
     }
 
     function drawTonguingMiniStaff(canvas, rhythm) {
@@ -13671,26 +14367,55 @@ function renderSongButtons() {
       }
 
       ctx.fillStyle = "#233";
-      ctx.font = "bold 22px sans-serif";
-      ctx.fillText("𝄞", 58, staffTop + gap * 3.4);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "bold 95px serif";
+      ctx.fillText("𝄞", 76, staffTop + gap * 1.68);
 
-      ctx.font = "bold 16px sans-serif";
-      ctx.fillText("4", 96, staffTop + gap * 1.35);
-      ctx.fillText("4", 96, staffTop + gap * 2.55);
+      ctx.font = "bold 36px sans-serif";
+      ctx.fillText("4", 108, staffTop + gap * 1.12);
+      ctx.fillText("4", 108, staffTop + gap * 2.52);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
 
       drawTonguingRhythmSymbols(ctx, rhythm, {
-        x: 140,
+        x: 148,
         y: staffTop + gap * 2,
-        width: w - 210,
+        width: w - 218,
         mini: false,
         highlightIndex
       });
 
+      drawTonguingSyllables(ctx, rhythm, {
+        x: 148,
+        y: h - 28,
+        width: w - 218
+      });
+    }
+
+    function drawTonguingSyllables(ctx, rhythm, opt) {
+      const units = rhythm.units || [];
+      const total = units.reduce((sum, unit) => sum + unit.dur, 0);
+      if (!total) return;
+
+      const unitWidth = opt.width / total;
+      let x = opt.x;
+
+      ctx.save();
       ctx.fillStyle = "#405060";
-      ctx.font = "bold 19px sans-serif";
+      ctx.font = "900 32px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(rhythm.syllables, w / 2, h - 28);
-      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+
+      units.forEach((unit) => {
+        const centerX = x + unitWidth * unit.dur * 0.5;
+        if (unit.type === "note") {
+          ctx.fillText("두", centerX, opt.y);
+        }
+        x += unitWidth * unit.dur;
+      });
+
+      ctx.restore();
     }
 
     function drawTonguingRhythmSymbols(ctx, rhythm, opt) {
@@ -13757,11 +14482,131 @@ function renderSongButtons() {
       ctx.restore();
     }
 
+    function setTonguingLights(containerId, total, currentRemaining) {
+      const lights = document.querySelectorAll(`#${containerId} span`);
+
+      lights.forEach((light, index) => {
+        light.style.display = index < total ? "inline-block" : "none";
+        light.classList.toggle("on", index < currentRemaining);
+      });
+    }
+
+    function getTonguingRepeatValue(selectId) {
+      const select = document.getElementById(selectId);
+      const value = select ? parseInt(select.value, 10) : 4;
+      return Math.max(1, Math.min(4, value || 4));
+    }
+
+    async function startTonguingSpeakPractice() {
+      if (tonguingSpeakRunning || tonguingListenRunning) return;
+
+      const rhythm = selectedTonguingRhythm || TONGUING_RHYTHMS[0];
+      const repeatTotal = getTonguingRepeatValue("tonguingSpeakRepeatSelect");
+
+      tonguingSpeakRunning = true;
+      tonguingSpeakStopFlag = false;
+      tonguingListenStopFlag = false;
+      tonguingStopFlag = false;
+
+      await ensureTonguingAudio();
+
+      setTonguingLights("tonguingSpeakLights", repeatTotal, repeatTotal);
+      await runTonguingCountdown();
+
+      for (let repeat = 1; repeat <= repeatTotal; repeat++) {
+        if (tonguingSpeakStopFlag) break;
+
+        const remaining = repeatTotal - repeat + 1;
+        setTonguingLights("tonguingSpeakLights", repeatTotal, remaining);
+
+        await runTonguingSpeakCells(rhythm);
+      }
+
+      clearTonguingSpeakActiveCell();
+      setTonguingLights("tonguingSpeakLights", repeatTotal, 0);
+
+      tonguingSpeakRunning = false;
+    }
+
+    async function runTonguingSpeakCells(rhythm) {
+      const beatMs = 640;
+
+      for (let i = 0; i < 8; i++) {
+        if (tonguingSpeakStopFlag) break;
+
+        setTonguingSpeakActiveCell(i);
+        playTonguingClick();
+
+        await tonguingSleep(beatMs * 0.5);
+      }
+
+      clearTonguingSpeakActiveCell();
+    }
+
+    function stopTonguingSpeakPractice() {
+      tonguingSpeakStopFlag = true;
+      tonguingSpeakRunning = false;
+      clearTonguingCount();
+      clearTonguingSpeakActiveCell();
+
+      const repeatTotal = getTonguingRepeatValue("tonguingSpeakRepeatSelect");
+      setTonguingLights("tonguingSpeakLights", repeatTotal, 0);
+    }
+
+    async function startTonguingListenPractice() {
+      if (tonguingListenRunning || tonguingSpeakRunning) return;
+
+      const rhythm = selectedTonguingRhythm || TONGUING_RHYTHMS[0];
+      const repeatTotal = getTonguingRepeatValue("tonguingListenRepeatSelect");
+
+      tonguingListenRunning = true;
+      tonguingListenStopFlag = false;
+      tonguingSpeakStopFlag = false;
+      tonguingStopFlag = false;
+
+      await ensureTonguingAudio();
+
+      setTonguingLights("tonguingListenLights", repeatTotal, repeatTotal);
+      await runTonguingCountdown();
+
+      for (let repeat = 1; repeat <= repeatTotal; repeat++) {
+        if (tonguingListenStopFlag) break;
+
+        const remaining = repeatTotal - repeat + 1;
+        setTonguingLights("tonguingListenLights", repeatTotal, remaining);
+
+        await playTonguingRhythm(rhythm, true);
+
+        if (tonguingListenStopFlag) break;
+
+        await playTonguingRhythm(rhythm, false);
+      }
+
+      setTonguingLights("tonguingListenLights", repeatTotal, 0);
+      tonguingListenRunning = false;
+    }
+
+    function stopTonguingListenPractice() {
+      tonguingListenStopFlag = true;
+      tonguingStopFlag = true;
+      tonguingListenRunning = false;
+      clearTonguingCount();
+
+      const repeatTotal = getTonguingRepeatValue("tonguingListenRepeatSelect");
+      setTonguingLights("tonguingListenLights", repeatTotal, 0);
+
+      if (selectedTonguingRhythm) {
+        drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
+      }
+    }
+
     async function startTonguingPractice(randomMode) {
       if (tonguingRunning) return;
 
       tonguingRunning = true;
       tonguingStopFlag = false;
+      tonguingSpeakStopFlag = false;
+      tonguingListenStopFlag = false;
 
       const rhythmQueue = randomMode
         ? makeTonguingRandomQueue()
@@ -13823,9 +14668,10 @@ function renderSongButtons() {
 
     async function runTonguingCountdown() {
       const countEl = document.getElementById("tonguingCount");
+      const beatMs = 640;
 
       for (let n = 4; n >= 1; n--) {
-        if (tonguingStopFlag) break;
+        if (tonguingStopFlag || tonguingSpeakStopFlag || tonguingListenStopFlag) break;
 
         if (countEl) {
           countEl.textContent = String(n);
@@ -13835,7 +14681,7 @@ function renderSongButtons() {
         }
 
         playTonguingClick();
-        await tonguingSleep(600);
+        await tonguingSleep(beatMs);
       }
 
       clearTonguingCount();
@@ -13846,7 +14692,7 @@ function renderSongButtons() {
       tonguingHighlightIndex = -1;
 
       for (let i = 0; i < rhythm.units.length; i++) {
-        if (tonguingStopFlag) break;
+        if (tonguingStopFlag || tonguingListenStopFlag) break;
 
         const unit = rhythm.units[i];
         tonguingHighlightIndex = i;
@@ -13863,7 +14709,6 @@ function renderSongButtons() {
 
       tonguingHighlightIndex = -1;
       drawTonguingPracticeStaff(rhythm, -1);
-      await tonguingSleep(300);
     }
 
     async function ensureTonguingAudio() {
@@ -13922,10 +14767,18 @@ function renderSongButtons() {
 
     function stopTonguingPractice() {
       tonguingStopFlag = true;
+      tonguingSpeakStopFlag = true;
+      tonguingListenStopFlag = true;
       tonguingRunning = false;
+      tonguingSpeakRunning = false;
+      tonguingListenRunning = false;
       clearTonguingCount();
+      clearTonguingSpeakActiveCell();
       setTonguingPhase("정지");
       setTonguingGuide("연습이 정지되었어요. 다시 시작할 수 있어요.");
+
+      setTonguingLights("tonguingSpeakLights", getTonguingRepeatValue("tonguingSpeakRepeatSelect"), 0);
+      setTonguingLights("tonguingListenLights", getTonguingRepeatValue("tonguingListenRepeatSelect"), 0);
 
       if (selectedTonguingRhythm) {
         drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
