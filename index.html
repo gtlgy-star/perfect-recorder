@@ -11582,6 +11582,7 @@ body.theme-light .readyCardHint {
     if (location.protocol === "file:") {
       alert("Live Server 또는 웹 서버 주소로 실행해 주세요.");
     }
+    console.log("Perfect Recorder version: mic-debug-2026-05-08");
 
     let practiceRunning = false;
     let practiceAnim = null;
@@ -14603,11 +14604,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
     function getPracticeMicConstraints() {
       return {
-        audio: {
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: false
-        }
+        audio: true
       };
     }
 
@@ -14636,33 +14633,86 @@ function drawRest(ctx, x, staffTop, duration) {
       return audioCtx;
     }
 
+    function logMicDebugError(error) {
+      if (error && error.__micDebugLogged) return;
+      console.error("[MIC ERROR]", error);
+      console.log("[MIC DEBUG]", {
+        href: location.href,
+        protocol: location.protocol,
+        isSecureContext: window.isSecureContext,
+        hasMediaDevices: !!navigator.mediaDevices,
+        hasGetUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+        userAgent: navigator.userAgent
+      });
+      if (error) {
+        try {
+          Object.defineProperty(error, "__micDebugLogged", { value: true });
+        } catch (_) {}
+      }
+    }
+
+    function ensureMicApiAvailable() {
+      if (!window.isSecureContext) {
+        throw new Error("마이크는 HTTPS 또는 localhost 환경에서만 사용할 수 있습니다.");
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("이 브라우저에서는 마이크 API를 사용할 수 없습니다.");
+      }
+    }
+
     async function requestPracticeMicStream() {
+      ensureMicApiAvailable();
+
       try {
         return await navigator.mediaDevices.getUserMedia(getPracticeMicConstraints());
       } catch (error) {
-        return navigator.mediaDevices.getUserMedia({ audio: true });
+        logMicDebugError(error);
+        throw error;
       }
+    }
+
+    function getMicPermissionGuideMessage(error) {
+      const ua = navigator.userAgent || "";
+      const isIOS = /iPad|iPhone|iPod/.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+      const isIOSLikeSafari = isIOS || isSafari;
+
+      if (isIOSLikeSafari) {
+        return "마이크 권한이 필요합니다. iPhone/iPad에서는 설정 → Safari → 마이크 → 허용으로 변경한 뒤 다시 시도해 주세요.";
+      }
+
+      if (error && error.name === "NotAllowedError") {
+        return "마이크 권한이 차단되어 있습니다. 주소창 왼쪽의 자물쇠/사이트 설정에서 마이크를 허용한 뒤 다시 시도해 주세요.";
+      }
+
+      if (error && error.name === "NotFoundError") {
+        return "사용 가능한 마이크를 찾을 수 없습니다. 마이크가 연결되어 있는지 확인해 주세요.";
+      }
+
+      return "마이크를 사용할 수 없습니다. 브라우저의 사이트 설정에서 마이크 권한을 허용한 뒤 다시 시도해 주세요.";
+    }
+
+    function getMicPermissionGuideMessageWithError(error) {
+      const errorName = error && error.name ? error.name : "UnknownError";
+      return getMicPermissionGuideMessage(error) + " (" + errorName + ")";
     }
 
     async function ensureMicReadyForIOS() {
       try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error("getUserMedia is not supported.");
-        }
-
-        const audioReady = ensureAudioContextRunning();
-        const streamReady = hasActiveMicStream()
-          ? Promise.resolve(micStream)
-          : requestPracticeMicStream();
-
-        await audioReady;
-        micStream = await streamReady;
+        ensureMicApiAvailable();
+        micStream = hasActiveMicStream()
+          ? micStream
+          : await requestPracticeMicStream();
         await ensureAudioContextRunning();
         return true;
       } catch (error) {
+        logMicDebugError(error);
+        const guideMessage = getMicPermissionGuideMessageWithError(error);
         setStatus(
           "practiceStatus",
-          "마이크 권한이 필요합니다. iPhone/iPad에서는 설정 → Safari → 마이크 → 허용으로 변경한 뒤 다시 시도해 주세요.",
+          guideMessage,
           "bad"
         );
         return false;
@@ -14694,7 +14744,8 @@ function drawRest(ctx, x, staffTop, duration) {
         setStatus("practiceStatus", "마이크 연결 완료", "ok");
       } catch (e) {
         micRunning = false;
-        setStatus("practiceStatus", "마이크 권한이 거부되었거나 연결에 실패했습니다.", "bad");
+        logMicDebugError(e);
+        setStatus("practiceStatus", getMicPermissionGuideMessageWithError(e), "bad");
         throw e;
       }
     }
@@ -14897,7 +14948,8 @@ function drawRest(ctx, x, staffTop, duration) {
         noiseGuardEnabled = false;
         noiseGuardBaseline = 0;
         updateNoiseGuardButton();
-        setStatus("practiceStatus", "마이크 권한이 필요합니다. 소음 차단을 켤 수 없습니다.", "bad");
+        logMicDebugError(e);
+        setStatus("practiceStatus", getMicPermissionGuideMessageWithError(e), "bad");
       }
     }
 
@@ -14970,9 +15022,11 @@ function drawRest(ctx, x, staffTop, duration) {
         if (!micReady) return;
         await startMicMonitoring();
       } catch (e) {
+        logMicDebugError(e);
+        const guideMessage = getMicPermissionGuideMessageWithError(e);
         setStatus(
           "practiceStatus",
-          "마이크 권한이 필요합니다. iPhone/iPad에서는 설정 → Safari → 마이크 → 허용으로 변경한 뒤 다시 시도해 주세요.",
+          guideMessage,
           "bad"
         );
         return;
@@ -15287,7 +15341,8 @@ function drawRest(ctx, x, staffTop, duration) {
       } catch (e) {
         practiceRecordingActive = false;
         updatePracticeRecordButton();
-        setStatus("practiceStatus", "녹음을 시작할 수 없습니다. 마이크 권한을 확인해 주세요.", "bad");
+        logMicDebugError(e);
+        setStatus("practiceStatus", getMicPermissionGuideMessageWithError(e), "bad");
       }
     }
 
