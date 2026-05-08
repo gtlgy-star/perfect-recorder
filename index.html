@@ -10631,6 +10631,309 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   color: #f5fbff;
 }
 
+.tonguingPracticeWrap {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 12px 18px 22px;
+}
+
+.tonguingTitleCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 18px 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(80,160,255,0.10)),
+    radial-gradient(circle at 12% 0%, rgba(129,230,255,0.22), transparent 42%);
+  border: 1px solid rgba(210,245,255,0.30);
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.20);
+}
+
+.practiceTitleEmoji {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  font-size: 2rem;
+  background: rgba(77,168,255,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+.tonguingTitleCard h2 {
+  margin: 0 0 5px;
+  font-size: 1.42rem;
+}
+
+.tonguingTitleCard p {
+  margin: 0;
+  color: rgba(235,248,255,0.82);
+  font-weight: 700;
+}
+
+.tonguingStatusPanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.tonguingStatusItem {
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}
+
+.tonguingStatusItem .label {
+  display: block;
+  font-size: 0.82rem;
+  opacity: 0.72;
+  margin-bottom: 4px;
+}
+
+.tonguingStatusItem strong {
+  font-size: 1.05rem;
+}
+
+.tonguingMainGrid {
+  display: grid;
+  grid-template-columns: 1.05fr 1.35fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.tonguingRhythmList {
+  display: grid;
+  gap: 12px;
+}
+
+.tonguingRhythmCard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border-radius: 20px;
+  padding: 14px;
+  border: 2px solid transparent;
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tonguingRhythmCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.14);
+}
+
+.tonguingRhythmCard.selected {
+  border-color: rgba(77,168,255,0.95);
+  box-shadow: 0 0 0 4px rgba(77,168,255,0.18), 0 18px 36px rgba(0,0,0,0.16);
+}
+
+.tonguingRhythmInfo {
+  min-width: 0;
+}
+
+.tonguingRhythmTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tonguingDifficulty {
+  font-size: 0.78rem;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-weight: 800;
+  color: #123;
+  background: rgba(255,255,255,0.72);
+}
+
+.tonguingRhythmName {
+  font-weight: 900;
+  font-size: 1.03rem;
+}
+
+.tonguingMiniStaff {
+  width: 100%;
+  height: 74px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.55);
+}
+
+.tonguingSelectBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4da8ff, #7c5cff);
+  color: white;
+  box-shadow: 0 8px 18px rgba(77,168,255,0.28);
+}
+
+.tonguingPracticePanel {
+  position: relative;
+  border-radius: 24px;
+  padding: 18px;
+  background: rgba(255,255,255,0.74);
+  border: 1px solid rgba(255,255,255,0.56);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+.tonguingBigGuide {
+  min-height: 48px;
+  border-radius: 18px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-weight: 900;
+  text-align: center;
+  background: rgba(77,168,255,0.12);
+}
+
+#tonguingPracticeCanvas {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.86);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+.tonguingCount {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  font-weight: 1000;
+  color: #2f80ed;
+  text-shadow: 0 8px 24px rgba(47,128,237,0.35);
+  pointer-events: none;
+}
+
+.tonguingCount.pop {
+  animation: tonguingCountPop 0.42s ease;
+}
+
+@keyframes tonguingCountPop {
+  0% { transform: translate(-50%, -50%) scale(0.72); opacity: 0; }
+  45% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.tonguingProgressDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.tonguingProgressDots span {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(120,130,150,0.28);
+}
+
+.tonguingProgressDots span.active {
+  background: linear-gradient(135deg, #4da8ff, #7c5cff);
+  box-shadow: 0 0 12px rgba(77,168,255,0.5);
+}
+
+.tonguingControlRow {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tonguingControlRow button {
+  width: auto !important;
+  flex: 1 1 132px;
+  max-width: 180px;
+  min-width: 132px;
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 11px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.tonguingSmallHelp {
+  text-align: center;
+  opacity: 0.78;
+  font-size: 0.92rem;
+  margin: 12px 0 0;
+}
+
+.tonguingBottomNav {
+  display: none;
+}
+
+.tonguingRhythmCard.level-basic {
+  background: linear-gradient(135deg, rgba(152,245,196,0.78), rgba(255,255,255,0.72));
+}
+
+.tonguingRhythmCard.level-mix {
+  background: linear-gradient(135deg, rgba(151,211,255,0.78), rgba(255,255,255,0.72));
+}
+
+.tonguingRhythmCard.level-rest {
+  background: linear-gradient(135deg, rgba(255,213,134,0.82), rgba(255,255,255,0.72));
+}
+
+.tonguingRhythmCard.level-fast {
+  background: linear-gradient(135deg, rgba(255,142,142,0.80), rgba(255,255,255,0.72));
+}
+
+body.theme-dark .tonguingStatusItem,
+body.theme-dark .tonguingRhythmCard,
+body.theme-dark .tonguingPracticePanel,
+body.dark .tonguingStatusItem,
+body.dark .tonguingRhythmCard,
+body.dark .tonguingPracticePanel {
+  background: rgba(20, 26, 44, 0.78);
+  border-color: rgba(255,255,255,0.12);
+  color: #f4f7ff;
+}
+
+body.theme-dark .tonguingMiniStaff,
+body.theme-dark #tonguingPracticeCanvas,
+body.dark .tonguingMiniStaff,
+body.dark #tonguingPracticeCanvas {
+  background: rgba(245,248,255,0.92);
+}
+
+body.theme-dark .tonguingBigGuide,
+body.dark .tonguingBigGuide {
+  background: rgba(77,168,255,0.18);
+  color: #f4f7ff;
+}
+
+@media (max-width: 840px) {
+  .tonguingStatusPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .tonguingMainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tonguingControlRow button {
+    max-width: none;
+  }
+}
+
 .readyCardBadge {
   display: inline-block;
   margin-bottom: 6px;
@@ -11409,8 +11712,8 @@ body.theme-light .readyCardHint {
         <span class="tonguingBtnIcon">▶</span>
 
         <div class="tonguingBtnTexts">
-          <strong>일반 소리 듣기</strong>
-          <span>텅잉 없이 부는 소리</span>
+          <strong>텅잉없이 연주하는</strong>
+          <span>리코더 소리 듣기</span>
         </div>
       </button>
 
@@ -11422,15 +11725,15 @@ body.theme-light .readyCardHint {
         <span class="tonguingBtnIcon">🎵</span>
 
         <div class="tonguingBtnTexts">
-          <strong>텅잉 소리 듣기</strong>
-          <span>“두 두 두” 텅잉 소리</span>
+          <strong>텅잉하며 연주하는</strong>
+          <span>리코더 소리 듣기</span>
         </div>
       </button>
 
       <button
         type="button"
         class="tonguingPracticeBtn"
-        onclick="goTonguingPracticeMenu()"
+        onclick="goTonguingPractice()"
       >
         <span class="tonguingBtnIcon">🎶</span>
 
@@ -11439,6 +11742,71 @@ body.theme-light .readyCardHint {
           <span>텅잉 연습 메뉴로 이동</span>
         </div>
       </button>
+    </div>
+  </div>
+</section>
+
+<section id="screen-tonguing-practice" class="screen hidden">
+  <div class="tonguingPracticeWrap">
+
+    <div class="practiceTitleCard tonguingTitleCard">
+      <div class="practiceTitleEmoji">🎵</div>
+      <div>
+        <h2>솔 음 리듬 훈련</h2>
+        <p>전문가 소리를 듣고 바로 이어서 따라 연주해요</p>
+      </div>
+    </div>
+
+    <div class="tonguingStatusPanel">
+      <div class="tonguingStatusItem">
+        <span class="label">현재 리듬</span>
+        <strong id="tonguingCurrentName">리듬을 선택하세요</strong>
+      </div>
+      <div class="tonguingStatusItem">
+        <span class="label">연습 단계</span>
+        <strong id="tonguingPhaseText">대기 중</strong>
+      </div>
+      <div class="tonguingStatusItem">
+        <span class="label">반복</span>
+        <strong id="tonguingRepeatText">0 / 4</strong>
+      </div>
+    </div>
+
+    <div class="tonguingMainGrid">
+
+      <div class="tonguingRhythmList" id="tonguingRhythmList">
+        <!-- JS에서 리듬 카드 생성 -->
+      </div>
+
+      <div class="tonguingPracticePanel">
+        <div class="tonguingBigGuide" id="tonguingBigGuide">
+          연습할 리듬을 선택하세요
+        </div>
+
+        <canvas id="tonguingPracticeCanvas" width="760" height="220"></canvas>
+
+        <div class="tonguingCount" id="tonguingCount"></div>
+
+        <div class="tonguingProgressDots" id="tonguingProgressDots">
+          <span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="tonguingControlRow">
+          <button class="primaryBtn" id="btnStartTonguingPractice" type="button">
+            ▶ 연습 시작
+          </button>
+          <button class="secondaryBtn" id="btnRandomTonguingPractice" type="button">
+            🎲 랜덤 섞기
+          </button>
+          <button class="secondaryBtn" id="btnStopTonguingPractice" type="button">
+            ■ 정지
+          </button>
+        </div>
+
+        <p class="tonguingSmallHelp">
+          먼저 리듬을 말로 읽고, 전문가 소리를 들은 뒤 이어서 따라 연주해요.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -11903,6 +12271,7 @@ const SCREEN_TITLES = {
   "screen-menu": DEFAULT_PAGE_TITLE,
   "screen-basic": "기본 운지 방법",
   "screen-tonguing-guide": "텅잉 주법 배우기",
+  "screen-tonguing-practice": "텅잉 실습하기",
   "step-basic-typeSection": "기본 운지 방법",
   "step-basicSection": "기본 운지 방법",
   "screen-practice": "운지법 연습",
@@ -12912,9 +13281,13 @@ function renderSongButtons() {
       if (appCurrentScreen === "step34Section" && targetId !== "step34Section" && currentPracticeMode === "fingering") {
         stopFingeringMetronomeClick();
       }
+      if (appCurrentScreen === "screen-tonguing-practice" && targetId !== "screen-tonguing-practice") {
+        stopTonguingPractice();
+      }
 
       const menuScreen = document.getElementById("screen-menu");
       const tonguingGuideScreen = document.getElementById("screen-tonguing-guide");
+      const tonguingPracticeScreen = document.getElementById("screen-tonguing-practice");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
       const stepIds = [
@@ -12928,6 +13301,7 @@ function renderSongButtons() {
       setMenuTitleMode(false);
       if (menuScreen) menuScreen.style.display = "none";
       if (tonguingGuideScreen) tonguingGuideScreen.classList.add("hidden");
+      if (tonguingPracticeScreen) tonguingPracticeScreen.classList.add("hidden");
       if (challengeScreen) challengeScreen.style.display = "none";
       if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
@@ -13014,6 +13388,14 @@ function renderSongButtons() {
         return;
       }
 
+      if (screenId === "screen-tonguing-practice") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        initTonguingPracticeScreen();
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
+
       if (screenId === "screen-song") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         resetSongMenuState("short");
@@ -13066,8 +13448,520 @@ function renderSongButtons() {
       alert("텅잉 소리 예시는 다음 단계에서 연결합니다.");
     }
 
+    const TONGUING_RHYTHMS = [
+      {
+        id: "basic4",
+        name: "두-두-두-두",
+        difficulty: "기본",
+        levelClass: "level-basic",
+        syllables: "두  두  두  두",
+        units: [
+          { type: "note", dur: 1 },
+          { type: "note", dur: 1 },
+          { type: "note", dur: 1 },
+          { type: "note", dur: 1 }
+        ]
+      },
+      {
+        id: "mix1",
+        name: "두-두두두-두두",
+        difficulty: "혼합",
+        levelClass: "level-mix",
+        syllables: "두  두두두  두두",
+        units: [
+          { type: "note", dur: 1 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 1 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 }
+        ]
+      },
+      {
+        id: "rest1",
+        name: "두두두웃 두두두웃",
+        difficulty: "쉼표 포함",
+        levelClass: "level-rest",
+        syllables: "두두두웃  두두두웃",
+        units: [
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "rest", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "rest", dur: 0.5 }
+        ]
+      },
+      {
+        id: "fast8",
+        name: "두두두두두두두두",
+        difficulty: "빠른 텅잉",
+        levelClass: "level-fast",
+        syllables: "두두두두 두두두두",
+        units: [
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 },
+          { type: "note", dur: 0.5 }
+        ]
+      }
+    ];
+
+    let selectedTonguingRhythm = null;
+    let tonguingAudioCtx = null;
+    let tonguingStopFlag = false;
+    let tonguingRunning = false;
+    let tonguingHighlightIndex = -1;
+
+    function goTonguingPractice() {
+      showScreen("screen-tonguing-practice");
+    }
+
     function goTonguingPracticeMenu() {
-      alert("텅잉 실습 메뉴는 다음 단계에서 제작합니다.");
+      goTonguingPractice();
+    }
+
+    function initTonguingPracticeScreen() {
+      renderTonguingRhythmCards();
+
+      if (!selectedTonguingRhythm) {
+        selectedTonguingRhythm = TONGUING_RHYTHMS[0];
+      }
+
+      updateTonguingSelectionUI();
+      updateTonguingRepeatUI(0);
+      setTonguingGuide("연습할 리듬을 선택하세요");
+      drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
+
+      const startBtn = document.getElementById("btnStartTonguingPractice");
+      const randomBtn = document.getElementById("btnRandomTonguingPractice");
+      const stopBtn = document.getElementById("btnStopTonguingPractice");
+
+      if (startBtn && !startBtn.dataset.bound) {
+        startBtn.addEventListener("click", () => startTonguingPractice(false));
+        startBtn.dataset.bound = "true";
+      }
+
+      if (randomBtn && !randomBtn.dataset.bound) {
+        randomBtn.addEventListener("click", () => startTonguingPractice(true));
+        randomBtn.dataset.bound = "true";
+      }
+
+      if (stopBtn && !stopBtn.dataset.bound) {
+        stopBtn.addEventListener("click", stopTonguingPractice);
+        stopBtn.dataset.bound = "true";
+      }
+    }
+
+    function renderTonguingRhythmCards() {
+      const list = document.getElementById("tonguingRhythmList");
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      TONGUING_RHYTHMS.forEach((rhythm) => {
+        const card = document.createElement("div");
+        card.className = `tonguingRhythmCard ${rhythm.levelClass}`;
+        card.dataset.rhythmId = rhythm.id;
+
+        card.innerHTML = `
+          <div class="tonguingRhythmInfo">
+            <div class="tonguingRhythmTop">
+              <span class="tonguingDifficulty">${rhythm.difficulty}</span>
+              <span class="tonguingRhythmName">${rhythm.name}</span>
+            </div>
+            <canvas class="tonguingMiniStaff" width="420" height="90"></canvas>
+          </div>
+          <button class="tonguingSelectBtn" type="button">선택</button>
+        `;
+
+        card.addEventListener("click", () => {
+          selectedTonguingRhythm = rhythm;
+          updateTonguingSelectionUI();
+          updateTonguingRepeatUI(0);
+          setTonguingGuide("연습할 리듬을 선택하세요");
+          drawTonguingPracticeStaff(rhythm, -1);
+        });
+
+        list.appendChild(card);
+
+        const canvas = card.querySelector("canvas");
+        drawTonguingMiniStaff(canvas, rhythm);
+      });
+    }
+
+    function updateTonguingSelectionUI() {
+      document.querySelectorAll(".tonguingRhythmCard").forEach((card) => {
+        card.classList.toggle(
+          "selected",
+          selectedTonguingRhythm && card.dataset.rhythmId === selectedTonguingRhythm.id
+        );
+      });
+
+      const nameEl = document.getElementById("tonguingCurrentName");
+      if (nameEl && selectedTonguingRhythm) {
+        nameEl.textContent = selectedTonguingRhythm.name;
+      }
+
+      const phaseEl = document.getElementById("tonguingPhaseText");
+      if (phaseEl && !tonguingRunning) {
+        phaseEl.textContent = "대기 중";
+      }
+    }
+
+    function drawTonguingMiniStaff(canvas, rhythm) {
+      if (!canvas || !rhythm) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const staffTop = 24;
+      const gap = 8;
+      ctx.strokeStyle = "#334";
+      ctx.lineWidth = 1.4;
+
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(18, staffTop + i * gap);
+        ctx.lineTo(w - 18, staffTop + i * gap);
+        ctx.stroke();
+      }
+
+      drawTonguingRhythmSymbols(ctx, rhythm, {
+        x: 48,
+        y: staffTop + gap * 2,
+        width: w - 90,
+        mini: true,
+        highlightIndex: -1
+      });
+    }
+
+    function drawTonguingPracticeStaff(rhythm, highlightIndex = -1) {
+      const canvas = document.getElementById("tonguingPracticeCanvas");
+      if (!canvas || !rhythm) return;
+
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+
+      const staffTop = 72;
+      const gap = 16;
+
+      ctx.strokeStyle = "#233";
+      ctx.lineWidth = 2;
+
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(44, staffTop + i * gap);
+        ctx.lineTo(w - 44, staffTop + i * gap);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = "#233";
+      ctx.font = "bold 22px sans-serif";
+      ctx.fillText("𝄞", 58, staffTop + gap * 3.4);
+
+      ctx.font = "bold 16px sans-serif";
+      ctx.fillText("4", 96, staffTop + gap * 1.35);
+      ctx.fillText("4", 96, staffTop + gap * 2.55);
+
+      drawTonguingRhythmSymbols(ctx, rhythm, {
+        x: 140,
+        y: staffTop + gap * 2,
+        width: w - 210,
+        mini: false,
+        highlightIndex
+      });
+
+      ctx.fillStyle = "#405060";
+      ctx.font = "bold 19px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(rhythm.syllables, w / 2, h - 28);
+      ctx.textAlign = "left";
+    }
+
+    function drawTonguingRhythmSymbols(ctx, rhythm, opt) {
+      const units = rhythm.units;
+      const total = units.reduce((sum, unit) => sum + unit.dur, 0);
+      const unitWidth = opt.width / total;
+      let x = opt.x;
+      const noteY = opt.y;
+      const stemH = opt.mini ? 26 : 48;
+
+      units.forEach((unit, index) => {
+        const centerX = x + unitWidth * unit.dur * 0.5;
+
+        if (index === opt.highlightIndex) {
+          ctx.fillStyle = "rgba(77,168,255,0.24)";
+          ctx.fillRect(x + 2, noteY - stemH - 12, unitWidth * unit.dur - 4, stemH + 38);
+        }
+
+        if (unit.type === "rest") {
+          drawTonguingRest(ctx, centerX, noteY, opt.mini);
+        } else {
+          drawTonguingNote(ctx, centerX, noteY, unit.dur, stemH, opt.mini);
+        }
+
+        x += unitWidth * unit.dur;
+      });
+    }
+
+    function drawTonguingNote(ctx, x, y, dur, stemH, mini) {
+      ctx.save();
+      ctx.fillStyle = "#111827";
+      ctx.strokeStyle = "#111827";
+      ctx.lineWidth = mini ? 2 : 3;
+
+      const rx = mini ? 7 : 11;
+      const ry = mini ? 5 : 8;
+
+      ctx.beginPath();
+      ctx.ellipse(x, y, rx, ry, -0.35, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(x + rx, y);
+      ctx.lineTo(x + rx, y - stemH);
+      ctx.stroke();
+
+      if (dur === 0.5) {
+        ctx.beginPath();
+        ctx.moveTo(x + rx, y - stemH);
+        ctx.quadraticCurveTo(x + rx + 18, y - stemH + 8, x + rx + 10, y - stemH + 22);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawTonguingRest(ctx, x, y, mini) {
+      ctx.save();
+      ctx.fillStyle = "#374151";
+      ctx.font = mini ? "bold 24px serif" : "bold 42px serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("𝄾", x, y - (mini ? 4 : 8));
+      ctx.restore();
+    }
+
+    async function startTonguingPractice(randomMode) {
+      if (tonguingRunning) return;
+
+      tonguingRunning = true;
+      tonguingStopFlag = false;
+
+      const rhythmQueue = randomMode
+        ? makeTonguingRandomQueue()
+        : [selectedTonguingRhythm || TONGUING_RHYTHMS[0]];
+
+      await ensureTonguingAudio();
+
+      for (let repeat = 1; repeat <= 4; repeat++) {
+        if (tonguingStopFlag) break;
+
+        const rhythm = randomMode
+          ? rhythmQueue[repeat - 1]
+          : (selectedTonguingRhythm || TONGUING_RHYTHMS[0]);
+
+        selectedTonguingRhythm = rhythm;
+        updateTonguingSelectionUI();
+        updateTonguingRepeatUI(repeat);
+        setTonguingPhase(`말로 읽기: ${rhythm.syllables}`);
+        setTonguingGuide(`먼저 말로 읽어보세요: ${rhythm.syllables}`);
+        drawTonguingPracticeStaff(rhythm, -1);
+
+        await tonguingSleep(1400);
+        if (tonguingStopFlag) break;
+
+        setTonguingPhase("준비 박자");
+        setTonguingGuide("메트로놈에 맞춰 준비해요");
+        await runTonguingCountdown();
+
+        if (tonguingStopFlag) break;
+
+        setTonguingPhase("전문가 연주 듣기");
+        setTonguingGuide("전문가 소리를 잘 들어보세요");
+        await playTonguingRhythm(rhythm, true);
+
+        if (tonguingStopFlag) break;
+
+        setTonguingPhase("학생 따라하기");
+        setTonguingGuide("같은 리듬으로 따라 연주해요");
+        await playTonguingRhythm(rhythm, false);
+      }
+
+      if (!tonguingStopFlag) {
+        setTonguingPhase("완료");
+        setTonguingGuide("잘했어요! 텅잉 리듬 연습을 마쳤어요.");
+      }
+
+      clearTonguingCount();
+      tonguingRunning = false;
+    }
+
+    function makeTonguingRandomQueue() {
+      const queue = [];
+      for (let i = 0; i < 4; i++) {
+        const picked = TONGUING_RHYTHMS[Math.floor(Math.random() * TONGUING_RHYTHMS.length)];
+        queue.push(picked);
+      }
+      return queue;
+    }
+
+    async function runTonguingCountdown() {
+      const countEl = document.getElementById("tonguingCount");
+
+      for (let n = 4; n >= 1; n--) {
+        if (tonguingStopFlag) break;
+
+        if (countEl) {
+          countEl.textContent = String(n);
+          countEl.classList.remove("pop");
+          void countEl.offsetWidth;
+          countEl.classList.add("pop");
+        }
+
+        playTonguingClick();
+        await tonguingSleep(600);
+      }
+
+      clearTonguingCount();
+    }
+
+    async function playTonguingRhythm(rhythm, withSound) {
+      const beatMs = 640;
+      tonguingHighlightIndex = -1;
+
+      for (let i = 0; i < rhythm.units.length; i++) {
+        if (tonguingStopFlag) break;
+
+        const unit = rhythm.units[i];
+        tonguingHighlightIndex = i;
+        drawTonguingPracticeStaff(rhythm, i);
+
+        if (withSound && unit.type === "note") {
+          playTonguingTone(784, Math.max(90, beatMs * unit.dur * 0.72));
+        } else if (!withSound && unit.type === "note") {
+          playTonguingClick(0.035);
+        }
+
+        await tonguingSleep(beatMs * unit.dur);
+      }
+
+      tonguingHighlightIndex = -1;
+      drawTonguingPracticeStaff(rhythm, -1);
+      await tonguingSleep(300);
+    }
+
+    async function ensureTonguingAudio() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      if (!tonguingAudioCtx) {
+        tonguingAudioCtx = new AudioContextClass();
+      }
+
+      if (tonguingAudioCtx.state === "suspended") {
+        await tonguingAudioCtx.resume();
+      }
+    }
+
+    function playTonguingTone(freq, durationMs) {
+      if (!tonguingAudioCtx) return;
+
+      const now = tonguingAudioCtx.currentTime;
+      const osc = tonguingAudioCtx.createOscillator();
+      const gain = tonguingAudioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + durationMs / 1000);
+
+      osc.connect(gain);
+      gain.connect(tonguingAudioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + durationMs / 1000 + 0.03);
+    }
+
+    function playTonguingClick(volume = 0.08) {
+      if (!tonguingAudioCtx) return;
+
+      const now = tonguingAudioCtx.currentTime;
+      const osc = tonguingAudioCtx.createOscillator();
+      const gain = tonguingAudioCtx.createGain();
+
+      osc.type = "square";
+      osc.frequency.setValueAtTime(1000, now);
+
+      gain.gain.setValueAtTime(volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+      osc.connect(gain);
+      gain.connect(tonguingAudioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.05);
+    }
+
+    function stopTonguingPractice() {
+      tonguingStopFlag = true;
+      tonguingRunning = false;
+      clearTonguingCount();
+      setTonguingPhase("정지");
+      setTonguingGuide("연습이 정지되었어요. 다시 시작할 수 있어요.");
+
+      if (selectedTonguingRhythm) {
+        drawTonguingPracticeStaff(selectedTonguingRhythm, -1);
+      }
+    }
+
+    function setTonguingPhase(text) {
+      const el = document.getElementById("tonguingPhaseText");
+      if (el) el.textContent = text;
+    }
+
+    function setTonguingGuide(text) {
+      const el = document.getElementById("tonguingBigGuide");
+      if (el) el.textContent = text;
+    }
+
+    function updateTonguingRepeatUI(current) {
+      const repeatEl = document.getElementById("tonguingRepeatText");
+      if (repeatEl) repeatEl.textContent = `${current} / 4`;
+
+      const dots = document.querySelectorAll("#tonguingProgressDots span");
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index < current);
+      });
+    }
+
+    function clearTonguingCount() {
+      const countEl = document.getElementById("tonguingCount");
+      if (countEl) {
+        countEl.textContent = "";
+        countEl.classList.remove("pop");
+      }
+    }
+
+    function tonguingSleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     function openBasicFingering(system) {
