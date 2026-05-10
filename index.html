@@ -741,6 +741,94 @@
       margin-top: 14px;
     }
 
+    .loginRecorderTypeGroup {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(177, 231, 255, 0.34);
+      background:
+        radial-gradient(circle at 70% 50%, rgba(94, 220, 255, 0.18), transparent 58%),
+        rgba(255, 255, 255, 0.1);
+      box-shadow:
+        0 0 18px rgba(100, 220, 255, 0.22),
+        0 0 36px rgba(80, 180, 255, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.24),
+        0 10px 22px rgba(4, 20, 44, 0.18);
+    }
+
+    .loginRecorderTypeLabel {
+      color: rgba(255, 255, 255, 0.98);
+      font-size: 17px;
+      font-weight: 1000;
+      white-space: nowrap;
+      line-height: 1;
+      letter-spacing: 0;
+      text-shadow:
+        0 1px 3px rgba(0, 18, 42, 0.42),
+        0 0 10px rgba(151, 234, 255, 0.32);
+    }
+
+    .loginRecorderTypeHint {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow:
+        0 1px 3px rgba(0, 18, 42, 0.36),
+        0 0 8px rgba(151, 234, 255, 0.18);
+    }
+
+    .loginRecorderToggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(8, 30, 58, 0.42);
+      border: 1px solid rgba(177, 231, 255, 0.26);
+      gap: 5px;
+      flex-shrink: 0;
+      box-shadow:
+        0 0 16px rgba(98, 224, 255, 0.24),
+        0 0 30px rgba(58, 144, 255, 0.14),
+        inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    .loginRecorderToggle button {
+      min-width: 104px;
+      min-height: 34px;
+      border: 0;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 6px 20px;
+      background: transparent;
+      color: rgba(238, 247, 255, 0.76);
+      font-size: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .loginRecorderToggle button.active {
+      background: linear-gradient(180deg, #55bcff 0%, #1f6fe0 100%);
+      border-color: rgba(223, 250, 255, 0.7);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow:
+        0 8px 16px rgba(23, 103, 215, 0.42),
+        0 0 18px rgba(96, 224, 255, 0.42),
+        inset 0 1px 0 rgba(255,255,255,0.38);
+    }
+
     .loginActionRow {
       margin-top: 20px;
       display: grid;
@@ -4178,6 +4266,8 @@ button:disabled {
     }
 
     .fingering-card {
+      position: relative;
+      overflow: hidden;
       width: 230px;
       min-height: 240px;
       padding: 22px 18px 20px;
@@ -4198,6 +4288,53 @@ button:disabled {
         transform 0.16s ease,
         box-shadow 0.16s ease,
         filter 0.16s ease;
+    }
+
+    .fingering-card.my-recorder {
+      border-color: rgba(255, 248, 174, 0.96);
+      box-shadow:
+        0 20px 36px rgba(31, 49, 71, 0.22),
+        0 0 0 5px rgba(255, 248, 174, 0.2),
+        inset 0 3px 0 rgba(255,255,255,0.5),
+        inset 0 -4px 0 rgba(0,0,0,0.08);
+    }
+
+    .fingering-card.my-recorder::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.24), transparent 44%);
+      pointer-events: none;
+    }
+
+    .myRecorderBadge {
+      display: none;
+    }
+
+    .myRecorderCheck {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      z-index: 1;
+      width: auto;
+      height: auto;
+      background: transparent;
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 1000;
+      line-height: 1;
+      text-shadow:
+        0 2px 4px rgba(5, 20, 44, 0.5),
+        0 0 10px rgba(255,255,255,0.65);
+      opacity: 0;
+      transform: scale(0.86);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      pointer-events: none;
+    }
+
+    .fingering-card.my-recorder .myRecorderCheck {
+      opacity: 1;
+      transform: none;
     }
 
     .fingering-card:hover {
@@ -5832,6 +5969,15 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
     0 0 38px rgba(103, 220, 255, 0.14) !important;
 }
 
+.fingering-card.my-recorder {
+  border-color: rgba(255, 248, 174, 0.96) !important;
+  box-shadow:
+    0 20px 36px rgba(31, 49, 71, 0.22),
+    0 0 0 5px rgba(255, 248, 174, 0.2),
+    inset 0 3px 0 rgba(255,255,255,0.5),
+    inset 0 -4px 0 rgba(0,0,0,0.08) !important;
+}
+
 .gradeChoiceTitle,
 .fingering-card .title,
 .basicPracticeTitle {
@@ -6642,6 +6788,52 @@ body:not(.theme-light):not(.light-mode) .basicFingeringToggle button.active {
 body.theme-light .gradeChoiceSub,
 body.theme-light .fingering-card .desc {
   color: #4f6784 !important;
+}
+
+body.theme-light .loginRecorderTypeGroup {
+  background:
+    radial-gradient(circle at 72% 50%, rgba(45, 150, 226, 0.16), transparent 58%),
+    rgba(235, 246, 255, 0.96);
+  border-color: rgba(68, 132, 205, 0.46);
+  box-shadow:
+    0 0 18px rgba(49, 150, 220, 0.2),
+    0 0 34px rgba(55, 118, 200, 0.14),
+    0 10px 22px rgba(70, 122, 190, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body.theme-light .loginRecorderTypeLabel {
+  color: #18395f;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+}
+
+body.theme-light .loginRecorderTypeHint {
+  color: rgba(32, 69, 108, 0.92);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.66);
+}
+
+body.theme-light .loginRecorderToggle {
+  background: rgba(203, 224, 245, 0.95);
+  border-color: rgba(57, 122, 194, 0.42);
+  box-shadow:
+    0 0 14px rgba(45, 144, 220, 0.22),
+    0 0 28px rgba(42, 112, 190, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body.theme-light .loginRecorderToggle button {
+  color: #27486d;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+body.theme-light .loginRecorderToggle button.active {
+  color: #ffffff;
+  background: linear-gradient(180deg, #2f8cff 0%, #1456c8 100%);
+  border-color: rgba(255, 255, 255, 0.86);
+  box-shadow:
+    0 8px 16px rgba(21, 86, 200, 0.32),
+    0 0 18px rgba(35, 128, 255, 0.36),
+    inset 0 1px 0 rgba(255,255,255,0.48);
 }
 
 /* Login first-screen polish: glass buttons, neon edges, readable panels */
@@ -9149,16 +9341,36 @@ body.theme-light .practiceStaffSlot {
     gap: 8px;
   }
 
-  .loginRowTwo,
-  .loginActionRow {
-    gap: 8px;
-    margin-top: 8px;
-  }
+      .loginRowTwo,
+      .loginActionRow,
+      .loginRecorderTypeGroup {
+        gap: 8px;
+        margin-top: 8px;
+      }
 
-  #step1Section .label {
-    margin-bottom: 4px;
-    font-size: 12px;
-  }
+      .loginRecorderTypeGroup {
+        padding: 7px 10px;
+      }
+
+      .loginRecorderTypeLabel {
+        font-size: 14px;
+      }
+
+      .loginRecorderTypeHint {
+        display: none;
+      }
+
+      .loginRecorderToggle button {
+        min-width: 86px;
+        min-height: 30px;
+        padding: 4px 12px;
+        font-size: 13px;
+      }
+
+      #step1Section .label {
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
 
   #step1Section input,
   #step1Section .loginActionRow button,
@@ -11887,6 +12099,15 @@ body.theme-light .readyCardHint {
         </div>
       </div>
 
+      <div id="recorderTypeLoginGroup" class="loginRecorderTypeGroup" role="group" aria-label="내 리코더 종류 선택">
+        <span class="loginRecorderTypeLabel">🎵 내 리코더 종류(운지법 기준)</span>
+        <span class="loginRecorderTypeHint">리코더의 뒷면 표시를 보고 선택해 주세요.</span>
+        <div class="loginRecorderToggle">
+          <button type="button" id="loginRecorderGermanBtn" onclick="selectLoginRecorderType('german')">저먼식(G)</button>
+          <button type="button" id="loginRecorderBaroqueBtn" onclick="selectLoginRecorderType('baroque')">바로크식(B)</button>
+        </div>
+      </div>
+
       <div class="btnRow loginActionRow">
         <button onclick="login()"><span class="glassBtnLabel">🎮 도전 시작!</span></button>
         <button class="sub" onclick="betaLogin()"><span class="glassBtnLabel">🚀 테스트 입장하기</span></button>
@@ -12197,13 +12418,17 @@ body.theme-light .readyCardHint {
   <div class="basicTypeIntro recorder-guide">리코더의 뒷면 표기를 보고 선택해 주세요.</div>
 
   <div class="fingering-select-wrap">
-    <button class="fingering-card german" onclick="openBasicFingering('german')">
+    <button id="basicTypeGermanCard" class="fingering-card german" onclick="openBasicFingering('german')">
+      <span class="myRecorderCheck" aria-hidden="true">✓</span>
+      <span class="myRecorderBadge">내 리코더</span>
       <div class="title">저먼식 (G)</div>
       <div class="desc">운지법이 쉬워요</div>
       <div class="desc">처음 배우기 좋아요</div>
       <div class="desc">학교에서 많이 사용해요</div>
     </button>
-    <button class="fingering-card baroque" onclick="openBasicFingering('baroque')">
+    <button id="basicTypeBaroqueCard" class="fingering-card baroque" onclick="openBasicFingering('baroque')">
+      <span class="myRecorderCheck" aria-hidden="true">✓</span>
+      <span class="myRecorderBadge">내 리코더</span>
       <div class="title">바로크식 (B)</div>
       <div class="desc">운지법이 조금 어려워요</div>
       <div class="desc">음이 더 정확해요</div>
@@ -12677,6 +12902,7 @@ body.theme-light .readyCardHint {
     let currentPracticeStartedAt = 0;
     let currentCountdownMs = 5000;
     let currentBasicFingeringSystem = "german";
+    let selectedFingeringSystem = localStorage.getItem("selectedFingeringSystem") === "baroque" ? "baroque" : "german";
     let currentBasicNote = "C5";
     let currentSongMenuMode = "short";
     let currentPracticeMode = "song";
@@ -14025,9 +14251,11 @@ function renderSongButtons() {
       } else if (targetId === "screen-basic") {
         const basicType = document.getElementById("step-basic-typeSection");
         if (basicType) basicType.classList.remove("hidden");
+        updateBasicTypeRecorderCards();
       } else {
         const target = document.getElementById(targetId);
         if (target) target.classList.remove("hidden");
+        if (targetId === "step-basic-typeSection") updateBasicTypeRecorderCards();
       }
 
       appCurrentScreen = targetId;
@@ -14124,6 +14352,7 @@ function renderSongButtons() {
       if (screenId === "screen-basic") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         showStep("step-basic-typeSection", { skipHistory: true });
+        updateBasicTypeRecorderCards();
         if (!skipHistory) pushAppHistory(screenId);
         setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
       }
@@ -14131,6 +14360,53 @@ function renderSongButtons() {
 
     function getBasicFingeringLabel(system = currentBasicFingeringSystem) {
       return system === "baroque" ? "바로크식" : "저먼식";
+    }
+
+    function normalizeFingeringSystem(system) {
+      return system === "baroque" ? "baroque" : "german";
+    }
+
+    function setSelectedFingeringSystem(system) {
+      selectedFingeringSystem = normalizeFingeringSystem(system);
+      localStorage.setItem("selectedFingeringSystem", selectedFingeringSystem);
+      updateLoginRecorderTypeUI();
+      updateBasicTypeRecorderCards();
+    }
+
+    function selectLoginRecorderType(system) {
+      setSelectedFingeringSystem(system);
+    }
+
+    function updateLoginRecorderTypeUI() {
+      const germanBtn = document.getElementById("loginRecorderGermanBtn");
+      const baroqueBtn = document.getElementById("loginRecorderBaroqueBtn");
+      const isBaroque = selectedFingeringSystem === "baroque";
+
+      if (germanBtn) {
+        germanBtn.classList.toggle("active", !isBaroque);
+        germanBtn.setAttribute("aria-pressed", String(!isBaroque));
+      }
+
+      if (baroqueBtn) {
+        baroqueBtn.classList.toggle("active", isBaroque);
+        baroqueBtn.setAttribute("aria-pressed", String(isBaroque));
+      }
+    }
+
+    function updateBasicTypeRecorderCards() {
+      const germanCard = document.getElementById("basicTypeGermanCard");
+      const baroqueCard = document.getElementById("basicTypeBaroqueCard");
+      const isBaroque = selectedFingeringSystem === "baroque";
+
+      if (germanCard) {
+        germanCard.classList.toggle("my-recorder", !isBaroque);
+        germanCard.setAttribute("aria-pressed", String(!isBaroque));
+      }
+
+      if (baroqueCard) {
+        baroqueCard.classList.toggle("my-recorder", isBaroque);
+        baroqueCard.setAttribute("aria-pressed", String(isBaroque));
+      }
     }
 
     function goTonguingGuide() {
@@ -14894,7 +15170,7 @@ function renderSongButtons() {
     }
 
     function openBasicFingering(system) {
-      currentBasicFingeringSystem = system === "baroque" ? "baroque" : "german";
+      currentBasicFingeringSystem = normalizeFingeringSystem(system);
 
       resetBasicPracticeState("C5");
 
@@ -17287,8 +17563,10 @@ function drawBasicRecorderImage(note = "G5") {
   img.alt = `${note} 리코더 운지 이미지`;
 }
 
-function getBasicNoteImagePath(note, cropped = false) {
-  if (currentBasicFingeringSystem === "baroque" && note === "F5") {
+function getBasicNoteImagePath(note, cropped = false, system = currentBasicFingeringSystem) {
+  const targetSystem = normalizeFingeringSystem(system);
+
+  if (targetSystem === "baroque" && note === "F5") {
     return cropped
       ? BAROQUE_FINGERING_PRACTICE_NOTE_IMAGE_PATHS[note]
       : BAROQUE_NOTE_IMAGE_PATHS[note];
@@ -17803,7 +18081,10 @@ function startBasicPractice() {
       if (!note) return;
 
       const img = document.getElementById("practiceRecorderImage");
-      const recorderImagePath = getBasicNoteImagePath(note, true) || getBasicNoteImagePath(note) || "images/recorder-base-cropped.png";
+      const recorderImagePath =
+        getBasicNoteImagePath(note, true, selectedFingeringSystem) ||
+        getBasicNoteImagePath(note, false, selectedFingeringSystem) ||
+        "images/recorder-base-cropped.png";
       if (img) {
         img.src = recorderImagePath;
         img.alt = `${getPracticeNoteLabel(note)} 리코더 운지`;
@@ -18749,6 +19030,7 @@ function startBasicPractice() {
 
     window.addEventListener("load", () => {
       initTheme();
+      setSelectedFingeringSystem(selectedFingeringSystem);
       bindChallengeButtons();
       setupFingeringPracticeControls();
       bindFingeringStartButton();
