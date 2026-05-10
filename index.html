@@ -4079,7 +4079,7 @@ button:disabled {
 
     .basicPracticePanel {
       margin-top: 24px;
-      padding: 14px;
+      padding: 7px 12px 10px;
       border-radius: 18px;
       background: linear-gradient(180deg, #fbfef5 0%, #eef8df 100%);
       border: 1px solid #cfe4b5;
@@ -4088,16 +4088,62 @@ button:disabled {
 
     .basicPracticeTitle {
       text-align: center;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 900;
       color: #5a7443;
-      margin-bottom: 12px;
+      margin-bottom: 2px;
+    }
+
+    .basicGuideToggleRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 22px;
+      margin-top: -14px;
+      margin-bottom: 3px;
+      color: #5f7550;
+      font-size: 12px;
+      font-weight: 800;
+      transform: translateY(-4px);
+    }
+
+    .basicFingeringToggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      min-width: 176px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(129, 180, 101, 0.48);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .basicFingeringToggle button {
+      flex: 1 1 0;
+      min-width: 82px;
+      border: 0;
+      border-radius: 999px;
+      padding: 3px 16px;
+      background: transparent;
+      color: #607456;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .basicFingeringToggle button.active {
+      background: linear-gradient(180deg, #2f80ed 0%, #1550bd 100%);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(24, 78, 188, 0.24);
     }
 
     .basicPracticeSteps {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
+      gap: 8px;
     }
 
     .basicPracticeStep {
@@ -4105,13 +4151,13 @@ button:disabled {
     }
 
     .basicPracticeStep .icon {
-      font-size: 24px;
-      margin-bottom: 4px;
+      font-size: 20px;
+      margin-bottom: 2px;
       opacity: 0.9;
     }
 
     .basicPracticeStep .label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #5f7550;
       line-height: 1.35;
@@ -6574,6 +6620,23 @@ body.theme-light .fingering-card .title,
 body.theme-light .basicPracticeTitle {
   color: #355070 !important;
   text-shadow: none;
+}
+
+body:not(.theme-light):not(.light-mode) .basicGuideToggleRow {
+  color: rgba(232, 248, 255, 0.86);
+}
+
+body:not(.theme-light):not(.light-mode) .basicFingeringToggle {
+  background: rgba(12, 32, 58, 0.62);
+  border-color: rgba(131, 222, 255, 0.34);
+}
+
+body:not(.theme-light):not(.light-mode) .basicFingeringToggle button {
+  color: rgba(232, 248, 255, 0.78);
+}
+
+body:not(.theme-light):not(.light-mode) .basicFingeringToggle button.active {
+  color: #fff;
 }
 
 body.theme-light .gradeChoiceSub,
@@ -12195,6 +12258,13 @@ body.theme-light .readyCardHint {
           </div>
           <div class="basicPracticePanel">
             <div class="basicPracticeTitle">리코더 연습 순서</div>
+            <div class="basicGuideToggleRow">
+              <span>운지 방식</span>
+              <div class="basicFingeringToggle" aria-label="기본 운지 방식 선택">
+                <button type="button" id="basicFingeringGermanBtn" onclick="switchBasicFingeringSystem('german')">저먼식</button>
+                <button type="button" id="basicFingeringBaroqueBtn" onclick="switchBasicFingeringSystem('baroque')">바로크식</button>
+              </div>
+            </div>
 
             <div class="basicPracticeSteps">
               <div class="basicPracticeStep">
@@ -12715,6 +12785,12 @@ body.theme-light .readyCardHint {
       C6: "images/basic-notes/cropped/C6-cropped.png",
       D6: "images/basic-notes/cropped/D6-cropped.png",
       E6: "images/basic-notes/cropped/E6-cropped.png"
+    };
+    const BAROQUE_NOTE_IMAGE_PATHS = {
+      F5: "images/basic-notes/F5-baroque.png"
+    };
+    const BAROQUE_FINGERING_PRACTICE_NOTE_IMAGE_PATHS = {
+      F5: "images/basic-notes/cropped/F5-baroque-cropped.png"
     };
     const PRACTICE_MODES = {
       up: ["C5","D5","E5","F5","G5","A5","B5","C6"],
@@ -14831,6 +14907,7 @@ function renderSongButtons() {
 
       drawBasicRecorderImage("C5");
       drawBasicStaff("C5");
+      updateBasicFingeringToggle();
       setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} 운지 화면 표시 완료`, "ok");
     }
 
@@ -17206,8 +17283,20 @@ function drawBasicRecorderImage(note = "G5") {
   const img = document.getElementById("basicRecorderImage");
   if (!img) return;
 
-  img.src = BASIC_NOTE_IMAGE_PATHS[note] || "images/recorder-base.png";
+  img.src = getBasicNoteImagePath(note) || "images/recorder-base.png";
   img.alt = `${note} 리코더 운지 이미지`;
+}
+
+function getBasicNoteImagePath(note, cropped = false) {
+  if (currentBasicFingeringSystem === "baroque" && note === "F5") {
+    return cropped
+      ? BAROQUE_FINGERING_PRACTICE_NOTE_IMAGE_PATHS[note]
+      : BAROQUE_NOTE_IMAGE_PATHS[note];
+  }
+
+  return cropped
+    ? FINGERING_PRACTICE_NOTE_IMAGE_PATHS[note]
+    : BASIC_NOTE_IMAGE_PATHS[note];
 }
 
 function drawBasicStaff(note = "G5") {
@@ -17343,6 +17432,7 @@ function drawBasicStaff(note = "G5") {
 function renderBasicNoteDisplay(note) {
   drawBasicRecorderImage(note);
   drawBasicStaff(note);
+  updateBasicFingeringToggle();
 
   const nameMap = {
     "C5": "도",
@@ -17362,6 +17452,30 @@ function renderBasicNoteDisplay(note) {
     `${getBasicFingeringLabel()} ${nameMap[note] || note} 운지 표시 완료`,
     "ok"
   );
+}
+
+function updateBasicFingeringToggle() {
+  const germanBtn = document.getElementById("basicFingeringGermanBtn");
+  const baroqueBtn = document.getElementById("basicFingeringBaroqueBtn");
+  if (!germanBtn || !baroqueBtn) return;
+
+  const isBaroque = currentBasicFingeringSystem === "baroque";
+  germanBtn.classList.toggle("active", !isBaroque);
+  baroqueBtn.classList.toggle("active", isBaroque);
+  germanBtn.setAttribute("aria-pressed", String(!isBaroque));
+  baroqueBtn.setAttribute("aria-pressed", String(isBaroque));
+}
+
+function switchBasicFingeringSystem(system) {
+  const nextSystem = system === "baroque" ? "baroque" : "german";
+  if (currentBasicFingeringSystem === nextSystem) {
+    updateBasicFingeringToggle();
+    return;
+  }
+
+  currentBasicFingeringSystem = nextSystem;
+  stopBasicPracticeSession();
+  renderBasicNoteDisplay(currentBasicNote || "C5");
 }
 
 function resetBasicPracticeState(defaultNote = "C5") {
@@ -17689,7 +17803,7 @@ function startBasicPractice() {
       if (!note) return;
 
       const img = document.getElementById("practiceRecorderImage");
-      const recorderImagePath = FINGERING_PRACTICE_NOTE_IMAGE_PATHS[note] || BASIC_NOTE_IMAGE_PATHS[note] || "images/recorder-base-cropped.png";
+      const recorderImagePath = getBasicNoteImagePath(note, true) || getBasicNoteImagePath(note) || "images/recorder-base-cropped.png";
       if (img) {
         img.src = recorderImagePath;
         img.alt = `${getPracticeNoteLabel(note)} 리코더 운지`;
