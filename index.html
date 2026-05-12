@@ -13094,6 +13094,7 @@ body.theme-light .readyCardHint {
   </div>
   </div>
 
+  <script src="songs.js"></script>
   <script src="app.js"></script>
 
   <script>
@@ -13335,32 +13336,6 @@ body.theme-light .readyCardHint {
       startBtn.disabled = !hasPattern;
       startBtn.classList.toggle("is-active", hasPattern);
     }
-    const TEXTBOOK_SONGS_BY_GRADE = {
-      "3": [
-  { songId: "TB3_CUCKOO", title: "뻐꾸기", bpm: 84, timeSignature: "3/4", notation: "D6/1 B5/1 R/1 D6/1 B5/1 R/1 A5/1 G5/1 A5/1 G5/2 R/1 A5/1 A5/1 B5/1 C6/2 A5/1 B5/1 B5/1 C6/1 D6/2 B5/1 D6/2 B5/1 D6/2 B5/1 C6/1 B5/1 A5/1 G5/2 R/1" },
-  { songId: "TB3_MORNING", title: "아침", bpm: 88, timeSignature: "3/4", notation: "B5/1 B5/1 A5/1 G5/2 R/1 B5/1 B5/1 A5/1 G5/2 R/1 B5/1 C6/1 D6/1 D6/1 C6/1 B5/1 C6/1 A5/1 B5/1 C6/1 C6/1 B5/1 A5/1 G5/2 R/1 B5/1 B5/1 C6/1 D6/2 R/1 B5/1 B5/1 A5/1 G5/2 R/1" },
-  { songId: "TB3_RAIN", title: "구슬비", bpm: 88, timeSignature: "2/4", notation: "E5/0.5 G5/0.5 G5/0.5 F5/0.5 E5/0.5 G5/0.5 G5/0.5 F5/0.5 E5/1 G5/1 F5/1.5 R/0.5 D5/0.5 F5/0.5 F5/0.5 E5/0.5 D5/0.5 F5/0.5 F5/0.5 E5/0.5 D5/1 F5/1 E5/1.5 R/0.5 C5/0.5 C5/0.5 E5/0.5 G5/0.5 C6/1 A5/1 G5/0.5 G5/0.5 A5/1 G5/1.5 R/0.5 E5/0.5 G5/0.5 G5/0.5 F5/0.5 E5/0.5 G5/0.5 G5/0.5 F5/0.5 E5/1 D5/1 C5/1.5 R/0.5" },
-  { songId: "TB3_PLANE", title: "비행기", bpm: 96, timeSignature: "4/4", notation: "B5/1 A5/1 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 A5/2 B5/1 B5/1 B5/2 B5/1 A5/1 G5/1 A5/1 B5/1 B5/1 B5/2 A5/1 A5/1 B5/1 A5/1 G5/2" },
-  { songId: "TB3_AUTUMN", title: "가을길", bpm: 100, timeSignature: "4/4", notation: "E5/1 E5/0.5 E5/0.5 E5/1 F5/0.5 G5/0.5 A5/1 G5/0.5 F5/0.5 E5/1 R/1 G5/1 G5/0.5 G5/0.5 G5/1 A5/0.5 B5/0.5 C6/1 B5/0.5 A5/0.5 G5/1 R/1 E5/1 E5/0.5 E5/0.5 E5/1 F5/0.5 G5/0.5 A5/1 G5/0.5 F5/0.5 E5/1 R/1 A5/1 C6/1 B5/1 D6/1 C6/1 C6/1 C6/1 R/1 A5/1 C6/0.5 C6/0.5 C6/1 R/1 A5/1 C6/0.5 C6/0.5 C6/1 R/1 A5/1 C6/0.5 C6/0.5 C6/1 C6/1 C6/1 B5/0.5 A5/0.5 G5/1 F5/1 E5/1 E5/0.5 E5/0.5 E5/1 F5/0.5 G5/0.5 A5/1 G5/0.5 F5/0.5 E5/1 R/1 A5/1 C6/1 B5/1 D6/1 C6/1 C6/1 C6/1 R/1" }
-],
-      "4": [
-        { songId: "TB4_RIVER", title: "시냇물", bpm: 86, timeSignature: "4/4", notation: "E5/1 F5/1 G5/1 A5/1 G5/1 F5/1 E5/2" },
-        { songId: "TB4_TRAVEL", title: "즐거운 여행", bpm: 96, timeSignature: "4/4", notation: "C5/1 D5/1 E5/1 G5/1 A5/1 G5/1 E5/2" },
-        { songId: "TB4_FRIEND", title: "우리 친구", bpm: 90, timeSignature: "4/4", notation: "G5/1 E5/1 F5/1 G5/1 A5/1 G5/1 D5/2" },
-        { songId: "TB4_PUFF_JACKY", title: "퍼프와 재키", bpm: 90, timeSignature: "4/4", notation: "G5/1 A5/1 G5/1 E5/1 D5/1 E5/1 G5/2" }
-      ],
-      "5": [
-        { songId: "TB5_FOREST", title: "숲속 이야기", bpm: 88, timeSignature: "3/4", notation: "E5/1 G5/1 A5/1 G5/1 E5/1 D5/1" },
-        { songId: "TB5_DREAM", title: "꿈을 향해", bpm: 94, timeSignature: "4/4", notation: "C5/1 E5/1 G5/1 C6/1 B5/1 G5/1 E5/2" },
-        { songId: "TB5_SUMMER", title: "여름 바다", bpm: 98, timeSignature: "4/4", notation: "G5/1 A5/1 B5/1 A5/1 G5/1 E5/1 D5/2" }
-      ],
-      "6": [
-        { songId: "TB6_MORNING", title: "아침 햇살", bpm: 90, timeSignature: "4/4", notation: "C5/1 D5/1 G5/1 A5/1 G5/1 E5/1 C5/2" },
-        { songId: "TB6_WORLD", title: "넓은 세상", bpm: 100, timeSignature: "4/4", notation: "E5/1 G5/1 A5/1 C6/1 B5/1 A5/1 G5/2" },
-        { songId: "TB6_HOPE", title: "희망의 노래", bpm: 92, timeSignature: "4/4", notation: "D5/1 F5/1 A5/1 B5/1 A5/1 F5/1 D5/2" }
-      ]
-    };
-
     let scoreState = {
       totalFrames: 0,
       judgedFrames: 0,
@@ -15942,6 +15917,7 @@ window.addEventListener("popstate", function (event) {
           totalMs: 0,
           totalBeats: 0,
           notes: [],
+          keySignature: song?.keySignature || "C",
           timeSignature: timeSig.text,
           measureBeats: timeSig.measureBeats
         };
@@ -15982,6 +15958,7 @@ window.addEventListener("popstate", function (event) {
         totalMs: cursorMs,
         totalBeats: cursorBeat,
         notes,
+        keySignature: song?.keySignature || "C",
         timeSignature: timeSig.text,
         measureBeats: timeSig.measureBeats
       };
@@ -16019,7 +15996,40 @@ window.addEventListener("popstate", function (event) {
       return bottomLineY - step * halfGap;
     }
 
-    function drawPracticeBase(timeSignatureText = "4/4") {
+    function drawKeySignature(ctx, keySignature, topLineY, gap) {
+      const key = String(keySignature || "C").toUpperCase();
+
+      if (key === "C") {
+        return 0;
+      }
+
+      ctx.save();
+      ctx.fillStyle = "#111";
+      ctx.font = "34px serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const x = 98;
+
+      if (key === "G") {
+        const y = topLineY + gap * 3.5;
+        ctx.fillText("♯", x, y);
+        ctx.restore();
+        return 28;
+      }
+
+      if (key === "F") {
+        const y = topLineY + gap * 2;
+        ctx.fillText("♭", x, y);
+        ctx.restore();
+        return 28;
+      }
+
+      ctx.restore();
+      return 0;
+    }
+
+    function drawPracticeBase(timeSignatureText = "4/4", keySignature = "C") {
       const canvas = document.getElementById("practiceCanvas");
       const ctx = canvas.getContext("2d");
       const w = canvas.width;
@@ -16070,11 +16080,16 @@ window.addEventListener("popstate", function (event) {
         ctx.fillText("𝄞", 20, topLineY + 58);
       }
 
+      const keyOffset = drawKeySignature(ctx, keySignature, topLineY, gap);
+
+      const timeSigX = keyOffset > 0 ? 124 : 90;
       const parts = timeSignatureText.split("/");
       ctx.fillStyle = "#111";
       ctx.font = "26px system-ui";
-      ctx.fillText(parts[0] || "4", 90, topLineY + 34);
-      ctx.fillText(parts[1] || "4", 90, topLineY + 66);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(parts[0] || "4", timeSigX, topLineY + 34);
+      ctx.fillText(parts[1] || "4", timeSigX, topLineY + 66);
 
       drawJudgmentZone(
         ctx,
@@ -16553,7 +16568,7 @@ function drawRest(ctx, x, staffTop, duration) {
       const noteStartOffset = 22;
       const noteEndGap = 14;
 
-      drawPracticeBase(timeline.timeSignature || "4/4");
+      drawPracticeBase(timeline.timeSignature || "4/4", timeline.keySignature || "C");
 
       const h = canvas.height;
       const centerY = h / 2;
@@ -17771,7 +17786,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const song = app.currentSong || getSelectedSong();
       const timeSignature = song?.timeSignature || "4/4";
-      drawPracticeBase(timeSignature);
+      drawPracticeBase(timeSignature, song?.keySignature || "C");
 
       const practiceInfoEl = document.getElementById("practiceInfo");
       const practiceSongTitleEl = document.getElementById("practiceSongTitle");
@@ -18193,7 +18208,11 @@ function startBasicPractice() {
 
       stopPractice();
       resetJudgmentZoneState();
-      drawPracticeBase(getSelectedSong()?.timeSignature || "4/4");
+      const selectedSong = getSelectedSong?.();
+      drawPracticeBase(
+        selectedSong?.timeSignature || "4/4",
+        selectedSong?.keySignature || "C"
+      );
 
       document.getElementById("practiceInfo").textContent = "아직 연습을 시작하지 않았습니다.";
 
@@ -19551,7 +19570,7 @@ function initChallengePlay(song) {
   resetPractice();
 
   if (typeof drawPracticeBase === "function") {
-    drawPracticeBase(song.timeSignature || "4/4");
+    drawPracticeBase(song.timeSignature || "4/4", song.keySignature || "C");
   }
 
   setStatus("practiceStatus", "연주를 시작하세요!", "");
