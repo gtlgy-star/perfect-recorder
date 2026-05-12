@@ -11145,7 +11145,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
   padding: 18px 22px;
   border-radius: 26px;
   background:
@@ -11161,7 +11161,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: 220px;
+  min-width: 205px;
 }
 
 .tonguingFlowIcon {
@@ -11202,7 +11202,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 14px 16px;
   border-radius: 22px;
   background:
     linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
@@ -11211,11 +11211,13 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 }
 
 .stepSpeak {
+  flex: 0.96;
   box-shadow:
     0 0 18px rgba(140,100,255,0.18);
 }
 
 .stepListen {
+  flex: 1.14;
   box-shadow:
     0 0 18px rgba(80,170,255,0.18);
 }
@@ -11241,6 +11243,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   font-size: 1rem;
   font-weight: 800;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .tonguingStepDesc {
@@ -12823,11 +12826,11 @@ body.theme-light .readyCardHint {
 
               <div class="tonguingStepContent">
                 <div class="tonguingStepTitle">
-                  🎧 전문가 연주 듣고 따라하기
+                  🎧 선생님의 연주 듣고 따라하기
                 </div>
 
                 <div class="tonguingStepDesc">
-                  전문가 소리를 듣고 이어서 연주해요
+                  선생님의 연주를 듣고 이어서 연주해요
                 </div>
               </div>
             </div>
@@ -12905,7 +12908,7 @@ body.theme-light .readyCardHint {
             <div class="tonguingStepBadge">3</div>
             <div>
               <h4>듣고 따라하기</h4>
-              <p>전문가 연주를 듣고 이어서 같은 리듬으로 따라 연주해요.</p>
+              <p>선생님의 연주를 듣고 이어서 같은 리듬으로 따라 연주해요.</p>
             </div>
           </div>
 
@@ -15232,8 +15235,8 @@ function renderSongButtons() {
 
         if (tonguingStopFlag) break;
 
-        setTonguingPhase("전문가 연주 듣기");
-        setTonguingGuide("전문가 소리를 잘 들어보세요");
+        setTonguingPhase("선생님의 연주 듣기");
+        setTonguingGuide("선생님의 연주를 잘 들어보세요");
         await playTonguingRhythm(rhythm, true);
 
         if (tonguingStopFlag) break;
