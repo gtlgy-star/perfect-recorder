@@ -4710,6 +4710,135 @@ button:disabled {
       }
     }
 
+#screen-bonus-map {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #fff;
+}
+
+.bonusMapPlaceholder {
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+  padding: clamp(24px, 5vw, 42px);
+  border-radius: 30px;
+  border: 1px solid rgba(180, 245, 255, 0.36);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 220, 120, 0.24), transparent 16%),
+    radial-gradient(circle at 82% 22%, rgba(111, 236, 218, 0.22), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(27, 137, 118, 0.34), transparent 42%),
+    linear-gradient(180deg, rgba(12, 32, 74, 0.94), rgba(4, 21, 43, 0.96));
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.36),
+    0 0 30px rgba(96, 221, 213, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.bonusMapPlaceholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 16% 30%, rgba(255,255,255,0.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 76% 16%, rgba(255,255,255,0.6) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 46%, rgba(255,242,184,0.72) 0 1px, transparent 2px),
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 32%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.bonusMapPlaceholder > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bonusMapBadge {
+  display: inline-block;
+  padding: 8px 15px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #113d42;
+  background: linear-gradient(135deg, #fff1a8, #8ff4dc);
+  box-shadow:
+    0 0 18px rgba(147, 244, 220, 0.34),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+.bonusMapTitle {
+  margin: 0 0 10px;
+  font-size: clamp(30px, 6vw, 44px);
+  font-weight: 1000;
+  color: #fff2a9;
+  text-shadow:
+    0 0 14px rgba(255, 226, 128, 0.72),
+    0 0 28px rgba(90, 230, 210, 0.34);
+}
+
+.bonusMapDesc {
+  max-width: 620px;
+  margin: 0 auto 24px;
+  color: rgba(236, 250, 255, 0.84);
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 800;
+}
+
+.bonusMapPlaceholderCard {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(216, 248, 255, 0.3);
+  background: rgba(8, 30, 62, 0.64);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 22px rgba(106, 255, 217, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+
+.bonusMapPlaceholderCard strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #b9fff0;
+  font-size: 20px;
+  font-weight: 1000;
+  text-shadow: 0 0 12px rgba(100, 255, 220, 0.42);
+}
+
+.bonusMapPlaceholderCard p {
+  margin: 0;
+  color: rgba(238, 248, 255, 0.82);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 800;
+}
+
+@media (max-width: 520px) {
+  #screen-bonus-map {
+    padding: 14px;
+  }
+
+  .bonusMapPlaceholder {
+    min-height: 340px;
+    border-radius: 24px;
+  }
+
+  .bonusMapDesc {
+    font-size: 15px;
+  }
+
+  .bonusMapPlaceholderCard {
+    padding: 18px;
+    border-radius: 18px;
+  }
+}
+
 .challengeScreen {
   max-width: 760px;
   margin: 0 auto;
@@ -7708,8 +7837,13 @@ body.menu-title-active #screen-menu-title {
   grid-column: span 3;
   min-height: 72px;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
   justify-content: center;
   text-align: center;
+  white-space: nowrap;
 }
 
 #screen-menu .menuButtonGrid .menuBtn:nth-child(1) {
@@ -7745,34 +7879,67 @@ body.menu-title-active #screen-menu-title {
     linear-gradient(135deg, #7a72e8 0%, #9b6de3 100%);
 }
 
-#screen-menu .menuButtonGrid .btn-challenge {
-  grid-column: span 4;
-  min-height: 72px;
-  margin: 0;
-  padding: 18px;
-  border-radius: 24px;
-  font-size: 18px;
+#screen-menu .menuButtonGrid .menuBonusBtn {
   background:
-    radial-gradient(circle at 18% 28%, rgba(255,255,255,0.38), transparent 10%),
-    linear-gradient(135deg, #ff3c6a, #ff7a00);
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.46), transparent 12%),
+    radial-gradient(circle at 82% 30%, rgba(200,255,230,0.34), transparent 18%),
+    linear-gradient(135deg, #9eea7d 0%, #55d8b4 52%, #20aeb8 100%);
+  border-color: rgba(210, 255, 235, 0.45);
   box-shadow:
-    0 8px 20px rgba(255,80,80,0.4),
-    0 0 16px rgba(255,120,80,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.45),
-    inset 0 -12px 24px rgba(80,20,0,0.24);
+    0 8px 20px rgba(74, 215, 175, 0.32),
+    0 0 18px rgba(109, 245, 207, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.44),
+    inset 0 -10px 22px rgba(7, 89, 88, 0.18);
+}
+
+#screen-menu .menuBonusBtn .menuBtnSub {
+  display: block;
+  max-width: 100%;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: rgba(248, 255, 252, 0.86);
+  text-shadow: 0 1px 4px rgba(0, 56, 58, 0.38);
+  white-space: normal;
+}
+
+#screen-menu .challengeWideButton {
+  width: 100%;
+  margin-top: 14px;
+}
+
+#screen-menu .challengeWideButton .btn-challenge {
+  width: 100%;
+  min-height: 88px;
+  margin: 0;
+  padding: 20px 24px;
+  border-radius: 24px;
+  font-size: 23px;
+  background:
+    radial-gradient(circle at 16% 24%, rgba(255,255,255,0.46), transparent 9%),
+    radial-gradient(circle at 82% 26%, rgba(255,215,160,0.34), transparent 14%),
+    radial-gradient(circle at 44% 88%, rgba(255,75,80,0.46), transparent 24%),
+    linear-gradient(135deg, #ff315f 0%, #bd1556 48%, #ff7a00 100%);
+  box-shadow:
+    0 12px 28px rgba(255,80,80,0.44),
+    0 0 26px rgba(255,80,120,0.46),
+    0 0 42px rgba(255,138,48,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -12px 24px rgba(80,20,0,0.26);
   transform: none;
 }
 
-#screen-menu .menuButtonGrid .btn-challenge:hover {
-  transform: translateY(-4px) scale(1.02);
+#screen-menu .challengeWideButton .btn-challenge:hover {
+  transform: translateY(-4px) scale(1.018);
   box-shadow:
-    0 14px 26px rgba(255,80,80,0.46),
-    0 0 28px rgba(255,120,80,0.48),
+    0 16px 32px rgba(255,80,80,0.5),
+    0 0 34px rgba(255,80,120,0.58),
+    0 0 58px rgba(255,138,48,0.36),
     inset 0 1px 0 rgba(255,255,255,0.52),
     inset 0 -12px 24px rgba(80,20,0,0.26);
 }
 
-#screen-menu .menuButtonGrid .btn-challenge:active {
+#screen-menu .challengeWideButton .btn-challenge:active {
   transform: translateY(1px) scale(0.99);
 }
 
@@ -7803,6 +7970,7 @@ body.theme-light .menuTitle {
 
 #screen-menu .status-card,
 #screen-menu .menuButtonGrid,
+#screen-menu .challengeWideButton,
 #screen-menu .menuGrid {
   width: 100%;
   max-width: none;
@@ -7818,12 +7986,11 @@ body.theme-light .menuTitle {
 #screen-menu .menuButtonGrid .menuBtn {
   grid-column: auto;
   min-height: 82px;
-  font-size: 18px;
+  font-size: 20px;
 }
 
-#screen-menu .menuButtonGrid .btn-challenge {
-  grid-column: auto;
-  min-height: 86px;
+#screen-menu .challengeWideButton .btn-challenge {
+  min-height: 88px;
 }
 
 #screen-menu .status-card {
@@ -8044,14 +8211,43 @@ body.theme-light #screen-menu #missionPanel {
     gap: 10px;
   }
 
+  #screen-menu .challengeWideButton {
+    margin-top: 10px;
+  }
+
   #screen-menu .menuButtonGrid .menuBtn {
     min-height: 68px;
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  #screen-menu .menuBonusBtn .menuBtnSub {
+    font-size: 12px;
+  }
+
+  #screen-menu .challengeWideButton .btn-challenge {
+    min-height: 70px;
+    padding: 16px 18px;
+    font-size: 19px;
   }
 
   #screen-menu .status-card {
     min-height: 110px;
     padding: 14px;
+  }
+}
+
+@media (max-width: 430px) {
+  #screen-menu .menuButtonGrid,
+  #screen-menu .menuGrid {
+    grid-template-columns: 1fr;
+  }
+
+  #screen-menu .menuButtonGrid .menuBtn {
+    font-size: 16px;
+  }
+
+  #screen-menu .menuBonusBtn .menuBtnSub {
+    font-size: 12px;
   }
 }
 
@@ -9437,12 +9633,26 @@ body.theme-light .practiceStaffSlot {
     margin-top: 8px;
   }
 
-  #screen-menu .menuButtonGrid .menuBtn,
-  #screen-menu .menuButtonGrid .btn-challenge {
+  #screen-menu .menuButtonGrid .menuBtn {
     min-height: 52px;
     padding: 10px 12px;
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 16px;
+  }
+
+  #screen-menu .menuBonusBtn .menuBtnSub {
+    font-size: 11px;
+  }
+
+  #screen-menu .challengeWideButton {
+    margin-top: 8px;
+  }
+
+  #screen-menu .challengeWideButton .btn-challenge {
+    min-height: 56px;
+    padding: 11px 14px;
+    font-size: 16px;
+    border-radius: 18px;
   }
 
   #screen-menu .missionDock,
@@ -12022,6 +12232,12 @@ body.theme-light .readyCardHint {
         <button class="menuBtn" onclick="showScreen('screen-practice')">🎯 운지법 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-song')">✨ 짧은 곡 연습</button>
         <button class="menuBtn" onclick="showScreen('screen-textbook')">📘 교과서 수록곡</button>
+        <button class="menuBtn menu-btn menuBonusBtn" onclick="goBonusMap()">
+          <span>💎 성장 보너스 연주곡</span>
+          <span class="menuBtnSub">열심히 연습하여 보너스 곡을 연주해 보세요!!</span>
+        </button>
+      </div>
+      <div class="challengeWideButton">
         <button class="menuBtn menu-btn btn-challenge">
           <span class="challenge-icon">🏆</span>
           <span class="challenge-text">도전! 퍼펙트 리코더</span>
@@ -12727,6 +12943,21 @@ body.theme-light .readyCardHint {
   </div>
 </section>
 
+<section id="screen-bonus-map" class="screen hidden">
+  <div class="bonusMapPlaceholder">
+    <div class="bonusMapBadge">BONUS ISLAND</div>
+    <h2 class="bonusMapTitle">성장 보너스 연주곡</h2>
+    <p class="bonusMapDesc">
+      레벨을 올려 보물섬의 보너스 연주곡을 연주해 보세요.
+    </p>
+
+    <div class="bonusMapPlaceholderCard">
+      <strong>보물섬 지도를 준비하고 있어요.</strong>
+      <p>다음 단계에서 6개의 보물섬 스테이지가 추가됩니다.</p>
+    </div>
+  </div>
+</section>
+
 <section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
   <div class="challenge-top">
     <div class="challenge-badge">SPECIAL MISSION</div>
@@ -13200,6 +13431,7 @@ const SCREEN_TITLES = {
   "screen-practice": "운지법 연습",
   "screen-song": "짧은 곡 연습",
   "screen-textbook": "교과서 수록곡",
+  "screen-bonus-map": "성장 보너스 연주곡",
   "screen-challenge": "도전! 퍼펙트 리코더",
   "screen-challenge-play": "도전! 퍼펙트 리코더"
 };
@@ -14211,6 +14443,7 @@ function renderSongButtons() {
       const menuScreen = document.getElementById("screen-menu");
       const tonguingGuideScreen = document.getElementById("screen-tonguing-guide");
       const tonguingPracticeScreen = document.getElementById("screen-tonguing-practice");
+      const bonusMapScreen = document.getElementById("screen-bonus-map");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
       const stepIds = [
@@ -14225,6 +14458,7 @@ function renderSongButtons() {
       if (menuScreen) menuScreen.style.display = "none";
       if (tonguingGuideScreen) tonguingGuideScreen.classList.add("hidden");
       if (tonguingPracticeScreen) tonguingPracticeScreen.classList.add("hidden");
+      if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
       if (challengeScreen) challengeScreen.style.display = "none";
       if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
@@ -14240,6 +14474,8 @@ function renderSongButtons() {
         if (challengeScreen) challengeScreen.style.display = "block";
       } else if (targetId === "screen-challenge-play") {
         if (challengePlayScreen) challengePlayScreen.style.display = "block";
+      } else if (targetId === "screen-bonus-map") {
+        if (bonusMapScreen) bonusMapScreen.classList.remove("hidden");
       } else if (targetId === "screen-song" || targetId === "screen-textbook") {
         const step2 = document.getElementById("step2Section");
         if (step2) step2.classList.remove("hidden");
@@ -14300,6 +14536,13 @@ function renderSongButtons() {
       }
 
       if (screenId === "screen-challenge-play") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
+
+      if (screenId === "screen-bonus-map") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
         if (!skipHistory) pushAppHistory(screenId);
@@ -15266,6 +15509,8 @@ const challengeScreen = document.getElementById("screen-challenge");
 if (challengeScreen) challengeScreen.style.display = "none";
 const challengePlayScreen = document.getElementById("screen-challenge-play");
 if (challengePlayScreen) challengePlayScreen.style.display = "none";
+const bonusMapScreen = document.getElementById("screen-bonus-map");
+if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
 restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
@@ -19066,6 +19311,10 @@ function goChallenge() {
     }
   });
   setTimeout(applyMobileLandscapeAutoScale, 80);
+}
+
+function goBonusMap() {
+  showScreen("screen-bonus-map");
 }
 
 function normalizeSongId(value) {
