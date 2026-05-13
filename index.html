@@ -4711,132 +4711,207 @@ button:disabled {
     }
 
 #screen-bonus-map {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 20px;
-  color: #fff;
-}
-
-.bonusMapPlaceholder {
-  position: relative;
-  overflow: hidden;
-  min-height: 420px;
-  padding: clamp(24px, 5vw, 42px);
-  border-radius: 30px;
-  border: 1px solid rgba(180, 245, 255, 0.36);
+  padding: 0;
   background:
-    radial-gradient(circle at 18% 18%, rgba(255, 220, 120, 0.24), transparent 16%),
-    radial-gradient(circle at 82% 22%, rgba(111, 236, 218, 0.22), transparent 24%),
-    radial-gradient(circle at 50% 100%, rgba(27, 137, 118, 0.34), transparent 42%),
-    linear-gradient(180deg, rgba(12, 32, 74, 0.94), rgba(4, 21, 43, 0.96));
-  box-shadow:
-    0 22px 46px rgba(0, 0, 0, 0.36),
-    0 0 30px rgba(96, 221, 213, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    radial-gradient(circle at top, #8fe9ff 0%, #3fb7f3 38%, #1f7bc9 100%);
+  overflow-x: hidden;
 }
 
-.bonusMapPlaceholder::before {
-  content: "";
+.bonusMapPage {
+  width: 100%;
+  padding: 18px;
+}
+
+.bonusMapFrame {
+  position: relative;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 34px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #69d6ff 0%, #38a9eb 42%, #176fc2 100%);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.18);
+}
+
+.bonusMapBg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 16% 30%, rgba(255,255,255,0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 76% 16%, rgba(255,255,255,0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 88% 46%, rgba(255,242,184,0.72) 0 1px, transparent 2px),
-    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 32%);
-  opacity: 0.9;
-  pointer-events: none;
-}
-
-.bonusMapPlaceholder > * {
-  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 1;
 }
 
-.bonusMapBadge {
-  display: inline-block;
-  padding: 8px 15px;
-  margin-bottom: 14px;
-  border-radius: 999px;
-  font-size: 12px;
+.bonusMapBg.is-missing {
+  opacity: 0;
+}
+
+.bonusMapFallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: white;
+  text-align: center;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 20%),
+    radial-gradient(circle at 80% 10%, rgba(255,255,255,0.14), transparent 18%),
+    linear-gradient(180deg, #66d8ff 0%, #3aa7ea 50%, #166fbe 100%);
+}
+
+.bonusMapFallbackIcon {
+  font-size: clamp(70px, 8vw, 130px);
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,0.3));
+}
+
+.bonusMapFallbackTitle {
+  font-size: clamp(22px, 2.2vw, 40px);
   font-weight: 900;
-  letter-spacing: 0.12em;
-  color: #113d42;
-  background: linear-gradient(135deg, #fff1a8, #8ff4dc);
+  text-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.bonusMapFallbackText {
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.bonusMapOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+
+.bonusMapTitleOverlay {
+  position: absolute;
+  left: 2.5%;
+  top: 3%;
+  min-width: 340px;
+  padding: 18px 26px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, #9b5d1d 0%, #714112 100%);
+  border: 5px solid rgba(255, 240, 195, 0.95);
   box-shadow:
-    0 0 18px rgba(147, 244, 220, 0.34),
-    inset 0 1px 0 rgba(255,255,255,0.72);
+    0 10px 0 rgba(79, 42, 7, 0.9),
+    0 18px 30px rgba(0,0,0,0.3);
+  text-align: center;
 }
 
-.bonusMapTitle {
-  margin: 0 0 10px;
-  font-size: clamp(30px, 6vw, 44px);
-  font-weight: 1000;
-  color: #fff2a9;
-  text-shadow:
-    0 0 14px rgba(255, 226, 128, 0.72),
-    0 0 28px rgba(90, 230, 210, 0.34);
+.bonusMapTitleText {
+  color: #fff6bf;
+  font-size: clamp(22px, 2.5vw, 38px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-shadow: 0 4px 0 rgba(0,0,0,0.28);
 }
 
-.bonusMapDesc {
-  max-width: 620px;
-  margin: 0 auto 24px;
-  color: rgba(236, 250, 255, 0.84);
-  font-size: 17px;
-  line-height: 1.6;
+.bonusMapSubText {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.92);
+  color: #4a2d0c;
+  font-size: clamp(12px, 1vw, 16px);
   font-weight: 800;
 }
 
-.bonusMapPlaceholderCard {
-  max-width: 560px;
-  margin: 0 auto;
-  padding: 22px;
-  border-radius: 22px;
-  border: 1px solid rgba(216, 248, 255, 0.3);
-  background: rgba(8, 30, 62, 0.64);
+.bonusLevelBadge {
+  position: absolute;
+  right: 3%;
+  top: 4%;
+  min-width: 240px;
+  min-height: 58px;
+  border-radius: 999px;
+  background: rgba(18, 81, 160, 0.92);
+  border: 4px solid rgba(255,255,255,0.92);
   box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.28),
-    0 0 22px rgba(106, 255, 217, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
+    0 10px 20px rgba(0,0,0,0.25);
 }
 
-.bonusMapPlaceholderCard strong {
-  display: block;
-  margin-bottom: 8px;
-  color: #b9fff0;
-  font-size: 20px;
-  font-weight: 1000;
-  text-shadow: 0 0 12px rgba(100, 255, 220, 0.42);
+.bonusTrainImg,
+.bonusTrainFallback {
+  position: absolute;
+  z-index: 9;
+  left: 68%;
+  top: 72%;
+  transform: translate(-50%, -50%);
 }
 
-.bonusMapPlaceholderCard p {
-  margin: 0;
-  color: rgba(238, 248, 255, 0.82);
-  font-size: 15px;
-  line-height: 1.55;
-  font-weight: 800;
+.bonusTrainImg {
+  width: clamp(90px, 12vw, 170px);
+  filter: drop-shadow(0 12px 16px rgba(0,0,0,0.35));
 }
 
-@media (max-width: 520px) {
-  #screen-bonus-map {
-    padding: 14px;
-  }
+.bonusTrainImg.is-missing {
+  opacity: 0;
+}
 
-  .bonusMapPlaceholder {
-    min-height: 340px;
-    border-radius: 24px;
-  }
+.bonusTrainFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(90px, 10vw, 140px);
+  height: clamp(90px, 10vw, 140px);
+  font-size: clamp(44px, 5vw, 80px);
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.3));
+}
 
-  .bonusMapDesc {
-    font-size: 15px;
-  }
+.bonusIslandLabel {
+  position: absolute;
+  z-index: 8;
+  width: clamp(130px, 13vw, 220px);
+  min-height: 74px;
+  border-radius: 18px;
+  background: rgba(255,248,223,0.95);
+  border: 4px solid rgba(118, 70, 17, 0.92);
+  box-shadow:
+    0 8px 0 rgba(80, 45, 8, 0.7),
+    0 14px 22px rgba(0,0,0,0.24);
+  transform: translate(-50%, -50%);
+}
 
-  .bonusMapPlaceholderCard {
-    padding: 18px;
-    border-radius: 18px;
-  }
+.bonusIslandLabel.is-locked {
+  filter: grayscale(1);
+  opacity: 0.65;
+}
+
+.bonusIslandLabel-1 { left: 49%; top: 20%; }
+.bonusIslandLabel-2 { left: 76%; top: 33%; }
+.bonusIslandLabel-3 { left: 72%; top: 66%; }
+.bonusIslandLabel-4 { left: 28%; top: 72%; }
+.bonusIslandLabel-5 { left: 19%; top: 42%; }
+.bonusIslandLabel-6 { left: 48%; top: 49%; }
+
+.bonusIslandHit {
+  position: absolute;
+  z-index: 12;
+  width: 15%;
+  height: 18%;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bonusIslandHit:hover {
+  background:
+    radial-gradient(circle, rgba(255,255,120,0.28), transparent 65%);
+}
+
+.bonusIslandHit-1 { left: 41%; top: 11%; }
+.bonusIslandHit-2 { left: 67%; top: 24%; }
+.bonusIslandHit-3 { left: 64%; top: 57%; }
+.bonusIslandHit-4 { left: 18%; top: 62%; }
+.bonusIslandHit-5 { left: 10%; top: 31%; }
+.bonusIslandHit-6 { left: 40%; top: 39%; }
 }
 
 .challengeScreen {
@@ -12947,16 +13022,53 @@ body.theme-light .readyCardHint {
 </section>
 
 <section id="screen-bonus-map" class="screen hidden">
-  <div class="bonusMapPlaceholder">
-    <div class="bonusMapBadge">BONUS ISLAND</div>
-    <h2 class="bonusMapTitle">성장 보너스 연주곡</h2>
-    <p class="bonusMapDesc">
-      레벨을 올려 보물섬의 보너스 연주곡을 연주해 보세요.
-    </p>
+  <div class="bonusMapPage">
+    <div class="bonusMapFrame">
+      <img
+        class="bonusMapBg"
+        src="images/bonus-map-bg.png"
+        alt="성장 보너스 연주곡 보물섬 지도"
+        onerror="this.classList.add('is-missing')"
+      >
 
-    <div class="bonusMapPlaceholderCard">
-      <strong>보물섬 지도를 준비하고 있어요.</strong>
-      <p>다음 단계에서 6개의 보물섬 스테이지가 추가됩니다.</p>
+      <div class="bonusMapFallback">
+        <div class="bonusMapFallbackIcon">🗺️</div>
+        <div class="bonusMapFallbackTitle">성장 보너스 지도 이미지를 준비하고 있어요</div>
+        <div class="bonusMapFallbackText">images/bonus-map-bg.png 파일을 넣으면 보물섬 지도가 표시됩니다.</div>
+      </div>
+
+      <div class="bonusMapOverlay" id="bonusMapOverlay">
+        <div class="bonusMapTitleOverlay">
+          <div class="bonusMapTitleText">🎵 성장 보너스 연주곡 🎵</div>
+          <div class="bonusMapSubText">레벨을 올리면 새로운 보너스 연주곡이 열려요!</div>
+        </div>
+
+        <div class="bonusLevelBadge" id="bonusLevelBadge"></div>
+
+        <img
+          class="bonusTrainImg"
+          id="bonusTrainImg"
+          src="images/bonus-train.png"
+          alt="현재 위치 기차"
+          onerror="this.classList.add('is-missing')"
+        >
+
+        <div class="bonusTrainFallback" id="bonusTrainFallback">🚂</div>
+
+        <div class="bonusIslandLabel bonusIslandLabel-1" data-island-id="1"></div>
+        <div class="bonusIslandLabel bonusIslandLabel-2" data-island-id="2"></div>
+        <div class="bonusIslandLabel bonusIslandLabel-3" data-island-id="3"></div>
+        <div class="bonusIslandLabel bonusIslandLabel-4" data-island-id="4"></div>
+        <div class="bonusIslandLabel bonusIslandLabel-5" data-island-id="5"></div>
+        <div class="bonusIslandLabel bonusIslandLabel-6" data-island-id="6"></div>
+
+        <button type="button" class="bonusIslandHit bonusIslandHit-1" data-island-id="1" aria-label="1번 보물섬"></button>
+        <button type="button" class="bonusIslandHit bonusIslandHit-2" data-island-id="2" aria-label="2번 보물섬"></button>
+        <button type="button" class="bonusIslandHit bonusIslandHit-3" data-island-id="3" aria-label="3번 보물섬"></button>
+        <button type="button" class="bonusIslandHit bonusIslandHit-4" data-island-id="4" aria-label="4번 보물섬"></button>
+        <button type="button" class="bonusIslandHit bonusIslandHit-5" data-island-id="5" aria-label="5번 보물섬"></button>
+        <button type="button" class="bonusIslandHit bonusIslandHit-6" data-island-id="6" aria-label="6번 보물섬"></button>
+      </div>
     </div>
   </div>
 </section>
@@ -19335,8 +19447,144 @@ function goChallenge() {
   setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
+const BONUS_TEST_LEVEL = 27;
+
+const BONUS_ISLANDS = [
+  {
+    id: 1,
+    name: "새싹 보물섬",
+    levelText: "LV 1~10",
+    minLevel: 1,
+    maxLevel: 10,
+    trainX: 49,
+    trainY: 28
+  },
+  {
+    id: 2,
+    name: "꿈빛 보물섬",
+    levelText: "LV 11~20",
+    minLevel: 11,
+    maxLevel: 20,
+    trainX: 76,
+    trainY: 42
+  },
+  {
+    id: 3,
+    name: "멜로디 보물섬",
+    levelText: "LV 21~30",
+    minLevel: 21,
+    maxLevel: 30,
+    trainX: 72,
+    trainY: 76
+  },
+  {
+    id: 4,
+    name: "스타 보물섬",
+    levelText: "LV 31~40",
+    minLevel: 31,
+    maxLevel: 40,
+    trainX: 28,
+    trainY: 82
+  },
+  {
+    id: 5,
+    name: "마스터 보물섬",
+    levelText: "LV 41~49",
+    minLevel: 41,
+    maxLevel: 49,
+    trainX: 19,
+    trainY: 52
+  },
+  {
+    id: 6,
+    name: "레전드 보물섬",
+    levelText: "LV 50",
+    minLevel: 50,
+    maxLevel: 50,
+    trainX: 48,
+    trainY: 60
+  }
+];
+
+function getBonusCurrentLevel() {
+  // 현재는 테스트용 레벨입니다.
+  // 나중에 실제 학생 레벨 시스템이 연결되면 이 함수의 반환값만 바꾸면 됩니다.
+  return BONUS_TEST_LEVEL;
+}
+
+function getCurrentBonusIsland(level) {
+  let currentIsland = BONUS_ISLANDS[0];
+
+  BONUS_ISLANDS.forEach((island) => {
+    if (level >= island.minLevel) {
+      currentIsland = island;
+    }
+  });
+
+  return currentIsland;
+}
+
+function renderBonusMap() {
+  const level = getBonusCurrentLevel();
+  const currentIsland = getCurrentBonusIsland(level);
+  const levelBadge = document.getElementById("bonusLevelBadge");
+  const trainImg = document.getElementById("bonusTrainImg");
+  const trainFallback = document.getElementById("bonusTrainFallback");
+
+  if (levelBadge) {
+    levelBadge.textContent = `현재 LV ${level} · ${currentIsland.name}`;
+  }
+
+  if (trainImg) {
+    trainImg.style.left = `${currentIsland.trainX}%`;
+    trainImg.style.top = `${currentIsland.trainY}%`;
+  }
+
+  if (trainFallback) {
+    trainFallback.style.left = `${currentIsland.trainX}%`;
+    trainFallback.style.top = `${currentIsland.trainY}%`;
+  }
+
+  BONUS_ISLANDS.forEach((island) => {
+    const isOpen = level >= island.minLevel;
+    const isCurrent = island.id === currentIsland.id;
+
+    const label = document.querySelector(`.bonusIslandLabel-${island.id}`);
+    if (label) {
+      label.innerHTML = `
+        <div class="bonusIslandLevel">${island.levelText}</div>
+        <div class="bonusIslandName">${island.name}</div>
+        <div class="bonusIslandState">${
+          isCurrent ? "현재 위치" : isOpen ? "이동 가능" : "아직 열리지 않았어요"
+        }</div>
+      `;
+
+      label.classList.toggle("is-open", isOpen);
+      label.classList.toggle("is-locked", !isOpen);
+      label.classList.toggle("is-current", isCurrent);
+    }
+
+    const hit = document.querySelector(`.bonusIslandHit-${island.id}`);
+    if (hit) {
+      hit.classList.toggle("is-open", isOpen);
+      hit.classList.toggle("is-locked", !isOpen);
+      hit.classList.toggle("is-current", isCurrent);
+
+      hit.onclick = () => {
+        if (!isOpen) {
+          alert(`${island.name}은 ${island.levelText}에 도달하면 열려요.`);
+          return;
+        }
+
+        alert(`${island.name} 보너스 연주곡은 다음 단계에서 연결합니다.`);
+      };
+    }
+  });
+}
+
 function goBonusMap() {
   showScreen("screen-bonus-map");
+  renderBonusMap();
 }
 
 function normalizeSongId(value) {
