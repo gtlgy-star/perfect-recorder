@@ -4712,28 +4712,43 @@ button:disabled {
 
 #screen-bonus-map {
   padding: 0;
-  background:
-    radial-gradient(circle at top, #8fe9ff 0%, #3fb7f3 38%, #1f7bc9 100%);
+  background: transparent;
   overflow-x: hidden;
 }
 
 .bonusMapPage {
   width: 100%;
-  padding: 18px;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bonusMapPanel,
+.bonusMapFrame {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent !important;
+  box-shadow: none;
 }
 
 .bonusMapFrame {
+  border-radius: 24px;
+  overflow: visible;
+}
+
+.bonusMapStage {
   position: relative;
-  width: min(100%, 1400px);
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 16 / 10;
   margin: 0 auto;
-  aspect-ratio: 16 / 9;
-  border-radius: 34px;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, #69d6ff 0%, #38a9eb 42%, #176fc2 100%);
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.35),
-    inset 0 0 0 5px rgba(255, 255, 255, 0.18);
+  border-radius: 22px;
+  background: transparent;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
 }
 
 .bonusMapBg {
@@ -4742,176 +4757,189 @@ button:disabled {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: left top;
+  display: block;
   z-index: 1;
+  filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.28));
 }
 
-.bonusMapBg.is-missing {
-  opacity: 0;
-}
-
-.bonusMapFallback {
+.bonusBoat {
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  z-index: 3;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  color: white;
-  text-align: center;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 20%),
-    radial-gradient(circle at 80% 10%, rgba(255,255,255,0.14), transparent 18%),
-    linear-gradient(180deg, #66d8ff 0%, #3aa7ea 50%, #166fbe 100%);
+  gap: 4px;
+  pointer-events: none;
 }
 
-.bonusMapFallbackIcon {
-  font-size: clamp(70px, 8vw, 130px);
-  filter: drop-shadow(0 10px 16px rgba(0,0,0,0.3));
-}
-
-.bonusMapFallbackTitle {
-  font-size: clamp(22px, 2.2vw, 40px);
-  font-weight: 900;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.25);
-}
-
-.bonusMapFallbackText {
-  font-size: clamp(14px, 1.2vw, 18px);
-  font-weight: 700;
-  opacity: 0.92;
-}
-
-.bonusMapOverlay {
+.bonusCurrentGlow {
   position: absolute;
-  inset: 0;
-  z-index: 5;
-}
-
-.bonusMapTitleOverlay {
-  position: absolute;
-  left: 2.5%;
-  top: 3%;
-  min-width: 340px;
-  padding: 18px 26px;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, #9b5d1d 0%, #714112 100%);
-  border: 5px solid rgba(255, 240, 195, 0.95);
-  box-shadow:
-    0 10px 0 rgba(79, 42, 7, 0.9),
-    0 18px 30px rgba(0,0,0,0.3);
-  text-align: center;
-}
-
-.bonusMapTitleText {
-  color: #fff6bf;
-  font-size: clamp(22px, 2.5vw, 38px);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  text-shadow: 0 4px 0 rgba(0,0,0,0.28);
-}
-
-.bonusMapSubText {
-  margin-top: 10px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.92);
-  color: #4a2d0c;
-  font-size: clamp(12px, 1vw, 16px);
-  font-weight: 800;
-}
-
-.bonusLevelBadge {
-  position: absolute;
-  right: 3%;
-  top: 4%;
-  min-width: 240px;
-  min-height: 58px;
-  border-radius: 999px;
-  background: rgba(18, 81, 160, 0.92);
-  border: 4px solid rgba(255,255,255,0.92);
-  box-shadow:
-    0 10px 20px rgba(0,0,0,0.25);
-}
-
-.bonusTrainImg,
-.bonusTrainFallback {
-  position: absolute;
-  z-index: 9;
-  left: 68%;
-  top: 72%;
   transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle,
+      rgba(255, 245, 140, 0) 0%,
+      rgba(255, 245, 140, 0) 48%,
+      rgba(255, 238, 90, 0.46) 62%,
+      rgba(255, 238, 90, 0.24) 72%,
+      rgba(255, 238, 90, 0) 86%);
+  filter:
+    drop-shadow(0 0 16px rgba(255, 238, 120, 0.72))
+    drop-shadow(0 0 28px rgba(255, 214, 64, 0.42));
+  animation: bonusGlowPulse 1.8s ease-in-out infinite;
+  z-index: 2;
 }
 
-.bonusTrainImg {
-  width: clamp(90px, 12vw, 170px);
-  filter: drop-shadow(0 12px 16px rgba(0,0,0,0.35));
+.bonusLockOverlay {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 44% 44% 50% 50%;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(circle, rgba(15, 22, 35, 0.42) 0%, rgba(15, 22, 35, 0.32) 48%, rgba(15, 22, 35, 0.05) 76%, rgba(15, 22, 35, 0) 100%);
+  backdrop-filter: grayscale(0.75) brightness(0.82);
 }
 
-.bonusTrainImg.is-missing {
-  opacity: 0;
-}
-
-.bonusTrainFallback {
+.bonusLockIcon {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(90px, 10vw, 140px);
-  height: clamp(90px, 10vw, 140px);
-  font-size: clamp(44px, 5vw, 80px);
-  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.3));
+  background: rgba(20, 26, 40, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: white;
+  font-size: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-.bonusIslandLabel {
-  position: absolute;
-  z-index: 8;
-  width: clamp(130px, 13vw, 220px);
-  min-height: 74px;
-  border-radius: 18px;
-  background: rgba(255,248,223,0.95);
-  border: 4px solid rgba(118, 70, 17, 0.92);
+@keyframes bonusGlowPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+.bonusBoatIcon {
+  display: grid;
+  place-items: center;
+  width: clamp(42px, 6.8vw, 74px);
+  height: clamp(42px, 6.8vw, 74px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 3px solid rgba(57, 129, 190, 0.62);
   box-shadow:
-    0 8px 0 rgba(80, 45, 8, 0.7),
-    0 14px 22px rgba(0,0,0,0.24);
-  transform: translate(-50%, -50%);
+    0 8px 18px rgba(0, 0, 0, 0.24),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9);
+  font-size: clamp(28px, 4.8vw, 52px);
+  line-height: 1;
 }
 
-.bonusIslandLabel.is-locked {
-  filter: grayscale(1);
-  opacity: 0.65;
+.bonusBoatName {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 2px solid rgba(75, 139, 192, 0.45);
+  color: #115584;
+  font-size: clamp(13px, 1.9vw, 17px);
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
 }
 
-.bonusIslandLabel-1 { left: 49%; top: 20%; }
-.bonusIslandLabel-2 { left: 76%; top: 33%; }
-.bonusIslandLabel-3 { left: 72%; top: 66%; }
-.bonusIslandLabel-4 { left: 28%; top: 72%; }
-.bonusIslandLabel-5 { left: 19%; top: 42%; }
-.bonusIslandLabel-6 { left: 48%; top: 49%; }
+.bonusProgressCard {
+  width: 100%;
+  margin: 10px auto 0;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background: rgba(12, 38, 78, 0.72);
+  border: 1px solid rgba(142, 215, 255, 0.42);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+  color: #f5fbff;
+}
 
-.bonusIslandHit {
-  position: absolute;
-  z-index: 12;
-  width: 15%;
-  height: 18%;
+.bonusProgressMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 16px;
+}
+
+.bonusProgressInfo {
+  min-width: 0;
+}
+
+.bonusProgressLocation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.bonusLevelBadge {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffe779, #ffaf3d);
+  color: #472600;
+  font-weight: 900;
+}
+
+.bonusProgressText {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff3b0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.bonusSongList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.bonusSongChip {
   border: 0;
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
+  border-radius: 999px;
+  padding: 5px 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 172px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.92);
+  color: #12345a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
-.bonusIslandHit:hover {
-  background:
-    radial-gradient(circle, rgba(255,255,120,0.28), transparent 65%);
+.bonusSongPlay {
+  font-size: 11px;
+  color: #1f79c9;
 }
 
-.bonusIslandHit-1 { left: 41%; top: 11%; }
-.bonusIslandHit-2 { left: 67%; top: 24%; }
-.bonusIslandHit-3 { left: 64%; top: 57%; }
-.bonusIslandHit-4 { left: 18%; top: 62%; }
-.bonusIslandHit-5 { left: 10%; top: 31%; }
-.bonusIslandHit-6 { left: 40%; top: 39%; }
+.bonusProgressHint {
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(230, 247, 255, 0.86);
 }
 
 .challengeScreen {
@@ -13023,53 +13051,7 @@ body.theme-light .readyCardHint {
 
 <section id="screen-bonus-map" class="screen hidden">
   <div class="bonusMapPage">
-    <div class="bonusMapFrame">
-      <img
-        class="bonusMapBg"
-        src="images/bonus-map-bg.png"
-        alt="성장 보너스 연주곡 보물섬 지도"
-        onerror="this.classList.add('is-missing')"
-      >
-
-      <div class="bonusMapFallback">
-        <div class="bonusMapFallbackIcon">🗺️</div>
-        <div class="bonusMapFallbackTitle">성장 보너스 지도 이미지를 준비하고 있어요</div>
-        <div class="bonusMapFallbackText">images/bonus-map-bg.png 파일을 넣으면 보물섬 지도가 표시됩니다.</div>
-      </div>
-
-      <div class="bonusMapOverlay" id="bonusMapOverlay">
-        <div class="bonusMapTitleOverlay">
-          <div class="bonusMapTitleText">🎵 성장 보너스 연주곡 🎵</div>
-          <div class="bonusMapSubText">레벨을 올리면 새로운 보너스 연주곡이 열려요!</div>
-        </div>
-
-        <div class="bonusLevelBadge" id="bonusLevelBadge"></div>
-
-        <img
-          class="bonusTrainImg"
-          id="bonusTrainImg"
-          src="images/bonus-train.png"
-          alt="현재 위치 기차"
-          onerror="this.classList.add('is-missing')"
-        >
-
-        <div class="bonusTrainFallback" id="bonusTrainFallback">🚂</div>
-
-        <div class="bonusIslandLabel bonusIslandLabel-1" data-island-id="1"></div>
-        <div class="bonusIslandLabel bonusIslandLabel-2" data-island-id="2"></div>
-        <div class="bonusIslandLabel bonusIslandLabel-3" data-island-id="3"></div>
-        <div class="bonusIslandLabel bonusIslandLabel-4" data-island-id="4"></div>
-        <div class="bonusIslandLabel bonusIslandLabel-5" data-island-id="5"></div>
-        <div class="bonusIslandLabel bonusIslandLabel-6" data-island-id="6"></div>
-
-        <button type="button" class="bonusIslandHit bonusIslandHit-1" data-island-id="1" aria-label="1번 보물섬"></button>
-        <button type="button" class="bonusIslandHit bonusIslandHit-2" data-island-id="2" aria-label="2번 보물섬"></button>
-        <button type="button" class="bonusIslandHit bonusIslandHit-3" data-island-id="3" aria-label="3번 보물섬"></button>
-        <button type="button" class="bonusIslandHit bonusIslandHit-4" data-island-id="4" aria-label="4번 보물섬"></button>
-        <button type="button" class="bonusIslandHit bonusIslandHit-5" data-island-id="5" aria-label="5번 보물섬"></button>
-        <button type="button" class="bonusIslandHit bonusIslandHit-6" data-island-id="6" aria-label="6번 보물섬"></button>
-      </div>
-    </div>
+    <div class="bonusMapFrame" id="bonusMapFrame"></div>
   </div>
 </section>
 
@@ -19449,62 +19431,71 @@ function goChallenge() {
 
 const BONUS_TEST_LEVEL = 27;
 
-const BONUS_ISLANDS = [
-  {
-    id: 1,
+const BONUS_BOAT_POSITIONS = {
+  1: { x: 36, y: 35 },
+  2: { x: 64, y: 24 },
+  3: { x: 87, y: 35 },
+  4: { x: 86, y: 60 },
+  5: { x: 39, y: 58 },
+  6: { x: 67, y: 47 }
+};
+
+const BONUS_GLOW_POSITIONS = {
+  1: { x: 26, y: 42, size: 22 },
+  2: { x: 53, y: 30, size: 22 },
+  3: { x: 76, y: 42, size: 22 },
+  4: { x: 75, y: 69, size: 22 },
+  5: { x: 26, y: 68, size: 22 },
+  6: { x: 53, y: 54, size: 24 }
+};
+
+const BONUS_LOCK_OVERLAYS = {
+  1: { x: 24, y: 43, w: 21, h: 20 },
+  2: { x: 50, y: 33, w: 21, h: 20 },
+  3: { x: 73, y: 43, w: 21, h: 20 },
+  4: { x: 76, y: 74, w: 22, h: 21 },
+  5: { x: 22, y: 74, w: 22, h: 21 },
+  6: { x: 50, y: 58, w: 24, h: 22 }
+};
+
+const BONUS_STAGE_INFO = {
+  1: {
     name: "새싹 보물섬",
-    levelText: "LV 1~10",
     minLevel: 1,
     maxLevel: 10,
-    trainX: 49,
-    trainY: 28
+    songs: ["BONUS_EDELWEISS", "BONUS_RUDOLPH"]
   },
-  {
-    id: 2,
+  2: {
     name: "꿈빛 보물섬",
-    levelText: "LV 11~20",
     minLevel: 11,
     maxLevel: 20,
-    trainX: 76,
-    trainY: 42
+    songs: ["BONUS_FLOWERS", "BONUS_GRANDFATHER_CLOCK"]
   },
-  {
-    id: 3,
+  3: {
     name: "멜로디 보물섬",
-    levelText: "LV 21~30",
     minLevel: 21,
     maxLevel: 30,
-    trainX: 72,
-    trainY: 76
+    songs: ["BONUS_BALLOON", "BONUS_OVER_THE_RAINBOW"]
   },
-  {
-    id: 4,
+  4: {
     name: "스타 보물섬",
-    levelText: "LV 31~40",
     minLevel: 31,
     maxLevel: 40,
-    trainX: 28,
-    trainY: 82
+    songs: ["BONUS_ALWAYS_WITH_ME", "BONUS_TOWN_WITH_AN_OCEAN_VIEW"]
   },
-  {
-    id: 5,
-    name: "마스터 보물섬",
-    levelText: "LV 41~49",
+  5: {
+    name: "무지개 보물섬",
     minLevel: 41,
     maxLevel: 49,
-    trainX: 19,
-    trainY: 52
+    songs: ["BONUS_SUMMER", "BONUS_HES_A_PIRATE"]
   },
-  {
-    id: 6,
+  6: {
     name: "레전드 보물섬",
-    levelText: "LV 50",
     minLevel: 50,
     maxLevel: 50,
-    trainX: 48,
-    trainY: 60
+    songs: ["BONUS_CANON", "BONUS_MERRY_GO_ROUND_OF_LIFE"]
   }
-];
+};
 
 function getBonusCurrentLevel() {
   // 현재는 테스트용 레벨입니다.
@@ -19512,74 +19503,105 @@ function getBonusCurrentLevel() {
   return BONUS_TEST_LEVEL;
 }
 
-function getCurrentBonusIsland(level) {
-  let currentIsland = BONUS_ISLANDS[0];
+function getCurrentBonusIslandId(level) {
+  if (level >= 50) return 6;
+  if (level >= 41) return 5;
+  if (level >= 31) return 4;
+  if (level >= 21) return 3;
+  if (level >= 11) return 2;
+  return 1;
+}
 
-  BONUS_ISLANDS.forEach((island) => {
-    if (level >= island.minLevel) {
-      currentIsland = island;
-    }
-  });
+function getBonusSongById(songId) {
+  if (!Array.isArray(window.BONUS_SONGS) && typeof BONUS_SONGS === "undefined") return null;
+  const list = window.BONUS_SONGS || BONUS_SONGS;
+  return list.find(function(song) {
+    return song.songId === songId;
+  }) || null;
+}
 
-  return currentIsland;
+function prepareBonusSong(songId) {
+  const song = getBonusSongById(songId);
+
+  if (!song) {
+    alert("곡 정보를 아직 찾을 수 없어요.");
+    return;
+  }
+
+  if (!song.notation || !song.notation.trim()) {
+    alert(song.title + " 곡은 아직 준비 중인 보너스곡이에요.");
+    return;
+  }
+
+  console.log("선택한 성장 보너스곡:", song);
+  alert(song.title + " 곡을 연주 화면으로 연결할 준비가 되었어요.");
 }
 
 function renderBonusMap() {
   const level = getBonusCurrentLevel();
-  const currentIsland = getCurrentBonusIsland(level);
-  const levelBadge = document.getElementById("bonusLevelBadge");
-  const trainImg = document.getElementById("bonusTrainImg");
-  const trainFallback = document.getElementById("bonusTrainFallback");
+  const currentIslandId = getCurrentBonusIslandId(level);
+  const position = BONUS_BOAT_POSITIONS[currentIslandId] || BONUS_BOAT_POSITIONS[1];
+  const glow = BONUS_GLOW_POSITIONS[currentIslandId] || BONUS_GLOW_POSITIONS[1];
+  const stage = BONUS_STAGE_INFO[currentIslandId] || BONUS_STAGE_INFO[1];
+  const nextStage = BONUS_STAGE_INFO[currentIslandId + 1] || null;
+  const remainingLevel = nextStage ? Math.max(0, stage.maxLevel + 1 - level) : 0;
+  const progressText = nextStage
+    ? `다음 섬까지 ${remainingLevel}레벨 남았어요!`
+    : "최고 보물섬에 도착했어요!";
+  const bonusSongHtml = (stage.songs || [])
+    .map((songId) => getBonusSongById(songId) || { songId, title: "준비 중" })
+    .map((song) => `
+      <button type="button" class="bonusSongChip" data-song-id="${song.songId}" onclick="prepareBonusSong('${song.songId}')">
+        <span class="bonusSongPlay">▶</span>
+        <span>${song.title}</span>
+      </button>
+    `)
+    .join("");
+  const lockOverlayHtml = Object.entries(BONUS_LOCK_OVERLAYS)
+    .filter(([islandId]) => Number(islandId) > currentIslandId)
+    .map(([, lock]) => `
+      <div
+        class="bonusLockOverlay"
+        style="left: ${lock.x}%; top: ${lock.y}%; width: ${lock.w}%; height: ${lock.h}%;"
+      >
+        <div class="bonusLockIcon">🔒</div>
+      </div>
+    `)
+    .join("");
+  const frame = document.getElementById("bonusMapFrame");
 
-  if (levelBadge) {
-    levelBadge.textContent = `현재 LV ${level} · ${currentIsland.name}`;
-  }
+  if (!frame) return;
 
-  if (trainImg) {
-    trainImg.style.left = `${currentIsland.trainX}%`;
-    trainImg.style.top = `${currentIsland.trainY}%`;
-  }
-
-  if (trainFallback) {
-    trainFallback.style.left = `${currentIsland.trainX}%`;
-    trainFallback.style.top = `${currentIsland.trainY}%`;
-  }
-
-  BONUS_ISLANDS.forEach((island) => {
-    const isOpen = level >= island.minLevel;
-    const isCurrent = island.id === currentIsland.id;
-
-    const label = document.querySelector(`.bonusIslandLabel-${island.id}`);
-    if (label) {
-      label.innerHTML = `
-        <div class="bonusIslandLevel">${island.levelText}</div>
-        <div class="bonusIslandName">${island.name}</div>
-        <div class="bonusIslandState">${
-          isCurrent ? "현재 위치" : isOpen ? "이동 가능" : "아직 열리지 않았어요"
-        }</div>
-      `;
-
-      label.classList.toggle("is-open", isOpen);
-      label.classList.toggle("is-locked", !isOpen);
-      label.classList.toggle("is-current", isCurrent);
-    }
-
-    const hit = document.querySelector(`.bonusIslandHit-${island.id}`);
-    if (hit) {
-      hit.classList.toggle("is-open", isOpen);
-      hit.classList.toggle("is-locked", !isOpen);
-      hit.classList.toggle("is-current", isCurrent);
-
-      hit.onclick = () => {
-        if (!isOpen) {
-          alert(`${island.name}은 ${island.levelText}에 도달하면 열려요.`);
-          return;
-        }
-
-        alert(`${island.name} 보너스 연주곡은 다음 단계에서 연결합니다.`);
-      };
-    }
-  });
+  frame.innerHTML = `
+    <div class="bonusMapStage">
+      <img class="bonusMapBg" src="images/bonus-map-bg.png" alt="성장 보물섬 여행 지도">
+      ${lockOverlayHtml}
+      <div
+        class="bonusCurrentGlow"
+        style="left: ${glow.x}%; top: ${glow.y}%; width: ${glow.size}%; height: ${glow.size}%;"
+      ></div>
+      <div class="bonusBoat" style="left: ${position.x}%; top: ${position.y}%;">
+        <div class="bonusBoatIcon">⛵</div>
+        <div class="bonusBoatName">이성우</div>
+      </div>
+    </div>
+    <div class="bonusProgressCard">
+      <div class="bonusProgressMain">
+        <div class="bonusProgressInfo">
+          <div class="bonusProgressLocation">
+            <span class="bonusLevelBadge">LV ${level}</span>
+            <strong>${stage.name}</strong>
+          </div>
+          <div class="bonusProgressText">
+            ${progressText}
+          </div>
+        </div>
+        <div class="bonusSongList" aria-label="현재 보물섬 보너스곡">
+          ${bonusSongHtml}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function goBonusMap() {

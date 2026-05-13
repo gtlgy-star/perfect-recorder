@@ -98,4 +98,24 @@ const TEXTBOOK_SONGS_BY_GRADE = {
   ]
 };
 
+const BONUS_SONGS = [
+  { songId: "BONUS_EDELWEISS", title: "\uC5D0\uB378\uBC14\uC774\uC2A4", stage: 1, bpm: 84, timeSignature: "3/4", notation: "" },
+  { songId: "BONUS_RUDOLPH", title: "\uB8E8\uB3CC\uD504 \uC0AC\uC2B4\uCF54", stage: 1, bpm: 112, timeSignature: "4/4", notation: "" },
+
+  { songId: "BONUS_FLOWERS", title: "\uBAA8\uB450 \uB2E4 \uAF43\uC774\uC57C", stage: 2, bpm: 92, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_GRANDFATHER_CLOCK", title: "\uD560\uC544\uBC84\uC9C0 \uB0A1\uC740 \uC2DC\uACC4", stage: 2, bpm: 84, timeSignature: "4/4", notation: "" },
+
+  { songId: "BONUS_BALLOON", title: "\uD48D\uC120", stage: 3, bpm: 96, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_OVER_THE_RAINBOW", title: "Over The Rainbow", stage: 3, bpm: 76, timeSignature: "4/4", notation: "" },
+
+  { songId: "BONUS_ALWAYS_WITH_ME", title: "\uC5B8\uC81C\uB098 \uBA87 \uBC88\uC774\uB77C\uB3C4", stage: 4, bpm: 84, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_TOWN_WITH_AN_OCEAN_VIEW", title: "\uBC14\uB2E4\uAC00 \uBCF4\uC774\uB294 \uB9C8\uC744", stage: 4, bpm: 96, timeSignature: "4/4", notation: "" },
+
+  { songId: "BONUS_SUMMER", title: "Summer", stage: 5, bpm: 100, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_HES_A_PIRATE", title: "He's a Pirate", stage: 5, bpm: 120, timeSignature: "4/4", notation: "" },
+
+  { songId: "BONUS_CANON", title: "Canon", stage: 6, bpm: 80, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_MERRY_GO_ROUND_OF_LIFE", title: "\uC778\uC0DD\uC758 \uD68C\uC804\uBAA9\uB9C8", stage: 6, bpm: 88, timeSignature: "3/4", notation: "" }
+];
+
 const BONUS_GROWTH_SONGS = [];
