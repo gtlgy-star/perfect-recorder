@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <image href="images/bonus-map-bg.png" x="0" y="0" width="1600" height="1000" preserveAspectRatio="xMidYMid slice" />
+
+  <style>
+    .hotspot {
+      fill: rgba(80, 210, 255, 0.26);
+      stroke: rgba(0, 74, 140, 0.9);
+      stroke-width: 5;
+      stroke-dasharray: 14 8;
+    }
+
+    .center {
+      fill: rgba(255, 235, 59, 0.94);
+      stroke: #1e2a44;
+      stroke-width: 5;
+    }
+
+    .label-bg {
+      fill: rgba(15, 35, 65, 0.88);
+      stroke: rgba(255, 255, 255, 0.72);
+      stroke-width: 2;
+    }
+
+    .label {
+      fill: #ffffff;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .coord {
+      fill: #fff3a6;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  </style>
+
+  <g id="hotspot-1" transform="translate(352 420)">
+    <ellipse class="hotspot" rx="172.8" ry="102" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="94" width="184" height="64" rx="18" />
+    <text class="label" y="118">1단계</text>
+    <text class="coord" y="144">x22 y42 w21.6 h20.4</text>
+  </g>
+
+  <g id="hotspot-2" transform="translate(816 250)">
+    <ellipse class="hotspot" rx="172.8" ry="102" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="94" width="184" height="64" rx="18" />
+    <text class="label" y="118">2단계</text>
+    <text class="coord" y="144">x51 y25 w21.6 h20.4</text>
+  </g>
+
+  <g id="hotspot-3" transform="translate(1216 410)">
+    <ellipse class="hotspot" rx="172.8" ry="102" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="94" width="184" height="64" rx="18" />
+    <text class="label" y="118">3단계</text>
+    <text class="coord" y="144">x76 y41 w21.6 h20.4</text>
+  </g>
+
+  <g id="hotspot-4" transform="translate(1232 790)">
+    <ellipse class="hotspot" rx="172.8" ry="102" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="94" width="184" height="64" rx="18" />
+    <text class="label" y="118">4단계</text>
+    <text class="coord" y="144">x77 y79 w21.6 h20.4</text>
+  </g>
+
+  <g id="hotspot-5" transform="translate(352 770)">
+    <ellipse class="hotspot" rx="172.8" ry="102" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="94" width="184" height="64" rx="18" />
+    <text class="label" y="118">5단계</text>
+    <text class="coord" y="144">x22 y77 w21.6 h20.4</text>
+  </g>
+
+  <g id="hotspot-6" transform="translate(800 600)">
+    <ellipse class="hotspot" rx="182.4" ry="108" />
+    <circle class="center" r="14" />
+    <rect class="label-bg" x="-92" y="98" width="184" height="64" rx="18" />
+    <text class="label" y="122">6단계</text>
+    <text class="coord" y="148">x50 y60 w22.8 h21.6</text>
+  </g>
+</svg>

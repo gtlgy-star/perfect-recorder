@@ -4767,11 +4767,24 @@ button:disabled {
   position: absolute;
   z-index: 3;
   transform: translate(-50%, -50%);
+  transition:
+    left 0.9s ease-in-out,
+    top 0.9s ease-in-out,
+    transform 0.9s ease-in-out;
+  pointer-events: none;
+}
+
+.bonusBoatInner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  pointer-events: none;
+  transform-origin: center bottom;
+  animation: bonusBoatFloat 2.1s ease-in-out infinite;
+}
+
+.bonusBoat.isSailing .bonusBoatInner {
+  animation: bonusBoatSailing 0.9s ease-in-out infinite;
 }
 
 .bonusCurrentGlow {
@@ -4803,6 +4816,76 @@ button:disabled {
   backdrop-filter: grayscale(0.75) brightness(0.82);
 }
 
+.bonusIslandHotspot {
+  position: absolute;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  border: 0 !important;
+  padding: 0;
+  border-radius: 44% 44% 50% 50%;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bonusIslandHotspot::before,
+.bonusIslandHotspot::after {
+  content: none !important;
+  display: none !important;
+}
+
+.bonusIslandHotspot.isLocked {
+  cursor: not-allowed;
+}
+
+.bonusIslandHotspot.isSelected {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.bonusIslandHotspot:focus-visible {
+  outline: none !important;
+}
+
+.bonusIslandHotspot,
+.bonusIslandHotspot:hover,
+.bonusIslandHotspot:focus,
+.bonusIslandHotspot:active,
+.bonusIslandHotspot.isOpen:hover,
+.bonusIslandHotspot.isSelected:hover,
+.bonusIslandHotspot.isLocked:hover {
+  transform: translate(-50%, -50%) !important;
+  filter: none !important;
+}
+
+.bonusIslandHotspot:hover,
+.bonusIslandHotspot:focus,
+.bonusIslandHotspot:active {
+  box-shadow: none !important;
+}
+
+.bonusIslandHotspot.isSelected:hover,
+.bonusIslandHotspot.isSelected:focus,
+.bonusIslandHotspot.isSelected:active {
+  box-shadow: none !important;
+}
+
+.bonusIslandHotspot:hover::before,
+.bonusIslandHotspot:focus::before,
+.bonusIslandHotspot:active::before {
+  transform: translate(-50%, -50%) !important;
+}
+
+.bonusIslandHotspot:hover::after,
+.bonusIslandHotspot:focus::after,
+.bonusIslandHotspot:active::after {
+  transform: translate(-50%, calc(-50% - 28px)) !important;
+}
+
 .bonusLockIcon {
   position: absolute;
   left: 50%;
@@ -4829,6 +4912,145 @@ button:disabled {
   50% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes bonusBoatFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-0.8deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+}
+
+@keyframes bonusBoatSailing {
+  0%, 100% {
+    transform: translateY(0) rotate(-1.6deg);
+  }
+  25% {
+    transform: translateY(-7px) rotate(1.8deg);
+  }
+  50% {
+    transform: translateY(2px) rotate(-0.8deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(1.2deg);
+  }
+}
+
+.bonusLegendFireworks {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 300px;
+  height: 210px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.bonusLegendFireworks .firework {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 30px;
+  opacity: 0;
+  animation: bonusFireworkPop 1.45s ease-out forwards;
+  filter:
+    drop-shadow(0 0 10px rgba(255, 244, 140, 0.96))
+    drop-shadow(0 0 18px rgba(96, 214, 255, 0.52));
+}
+
+.bonusLegendFireworks .f1 {
+  animation-delay: 0s;
+  --fx: -105px;
+  --fy: -78px;
+}
+
+.bonusLegendFireworks .f2 {
+  animation-delay: 0.1s;
+  --fx: 100px;
+  --fy: -86px;
+}
+
+.bonusLegendFireworks .f3 {
+  animation-delay: 0.2s;
+  --fx: 0px;
+  --fy: -116px;
+}
+
+.bonusLegendFireworks .f4 {
+  animation-delay: 0.3s;
+  --fx: -92px;
+  --fy: 28px;
+}
+
+.bonusLegendFireworks .f5 {
+  animation-delay: 0.4s;
+  --fx: 96px;
+  --fy: 24px;
+}
+
+.bonusLegendFireworks .f6 {
+  animation-delay: 0.5s;
+  --fx: 0px;
+  --fy: 58px;
+}
+
+@keyframes bonusFireworkPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.18) rotate(-10deg);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  68% {
+    transform: translate(calc(-50% + var(--fx)), calc(-50% + var(--fy))) scale(1.28) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--fx)), calc(-50% + var(--fy))) scale(0.82) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.bonusLegendCelebrateText {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(20, 34, 65, 0.84);
+  color: #fff6b8;
+  font-size: 18px;
+  font-weight: 900;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 240, 160, 0.78);
+  box-shadow:
+    0 0 18px rgba(255, 230, 100, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  animation: bonusLegendTextPop 1.5s ease-out forwards;
+}
+
+@keyframes bonusLegendTextPop {
+  0% {
+    transform: translateX(-50%) scale(0.82);
+    opacity: 0;
+  }
+  18% {
+    transform: translateX(-50%) scale(1.08);
+    opacity: 1;
+  }
+  82% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0;
   }
 }
 
@@ -13189,6 +13411,7 @@ body.theme-light .readyCardHint {
   </div>
 
   <script src="songs.js"></script>
+  <script src="bonus-map.js"></script>
   <script src="app.js"></script>
 
   <script>
@@ -16011,6 +16234,8 @@ window.addEventListener("popstate", function (event) {
           totalMs: 0,
           totalBeats: 0,
           notes: [],
+          barlines: [],
+          hasManualBarlines: false,
           keySignature: song?.keySignature || "C",
           timeSignature: timeSig.text,
           measureBeats: timeSig.measureBeats
@@ -16018,15 +16243,47 @@ window.addEventListener("popstate", function (event) {
       }
 
       const tokens = notation
+        .replace(/([|()<>])/g, " $1 ")
         .replace(/\|/g, " | ")
         .split(/\s+/)
         .filter(Boolean);
 
       let cursorMs = 0;
       let cursorBeat = 0;
+      const manualBarlines = [];
+      let tieGroupSeq = 0;
+      let slurGroupSeq = 0;
+      let activeTieGroupId = null;
+      let activeSlurGroupId = null;
 
       for (const token of tokens) {
-        if (token === "|") continue;
+        if (token === "<") {
+          activeTieGroupId = ++tieGroupSeq;
+          continue;
+        }
+
+        if (token === ">") {
+          activeTieGroupId = null;
+          continue;
+        }
+
+        if (token === "(") {
+          activeSlurGroupId = ++slurGroupSeq;
+          continue;
+        }
+
+        if (token === ")") {
+          activeSlurGroupId = null;
+          continue;
+        }
+
+        if (token === "|") {
+          manualBarlines.push({
+            timeMs: cursorMs,
+            beat: cursorBeat
+          });
+          continue;
+        }
 
         const parsed = parseNotationToken(token);
         if (!parsed) continue;
@@ -16039,7 +16296,9 @@ window.addEventListener("popstate", function (event) {
           startMs: cursorMs,
           durMs,
           startBeat: cursorBeat,
-          raw: token
+          raw: token,
+          tieGroupId: activeTieGroupId,
+          slurGroupId: activeSlurGroupId
         });
 
         cursorMs += durMs;
@@ -16052,6 +16311,8 @@ window.addEventListener("popstate", function (event) {
         totalMs: cursorMs,
         totalBeats: cursorBeat,
         notes,
+        barlines: manualBarlines,
+        hasManualBarlines: manualBarlines.length > 0,
         keySignature: song?.keySignature || "C",
         timeSignature: timeSig.text,
         measureBeats: timeSig.measureBeats
@@ -16432,6 +16693,37 @@ function drawRest(ctx, x, staffTop, duration) {
   const beat = Number(duration);
   const NOTE_COLOR = "#1e2a44";
 
+  function drawSixteenthRest() {
+    const topY = centerY - 32;
+    const bottomY = centerY + 34;
+    const stemX = x + 8;
+
+    ctx.strokeStyle = NOTE_COLOR;
+    ctx.fillStyle = NOTE_COLOR;
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    ctx.beginPath();
+    ctx.moveTo(stemX + 5, topY);
+    ctx.bezierCurveTo(stemX, topY + 18, stemX - 4, topY + 38, stemX - 15, bottomY);
+    ctx.stroke();
+
+    [
+      { y: topY + 10, r: 4.8 },
+      { y: topY + 28, r: 4.6 }
+    ].forEach((hook) => {
+      ctx.beginPath();
+      ctx.arc(stemX - 14, hook.y, hook.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(stemX - 10, hook.y + 2);
+      ctx.bezierCurveTo(stemX + 8, hook.y + 4, stemX + 9, hook.y + 17, stemX - 3, hook.y + 20);
+      ctx.stroke();
+    });
+  }
+
   ctx.save();
   ctx.fillStyle = NOTE_COLOR;
   ctx.textAlign = "center";
@@ -16442,6 +16734,8 @@ function drawRest(ctx, x, staffTop, duration) {
     ctx.fillText("𝄽", x, centerY + 2);
   } else if (beat === 0.5) {
     ctx.fillText("𝄾", x, centerY + 2);
+  } else if (beat === 0.25) {
+    drawSixteenthRest();
   } else if (beat === 2) {
     ctx.fillRect(x - 18, centerY - 8, 36, 10);
   } else {
@@ -16672,18 +16966,32 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const measureBeats = Number(timeline.measureBeats || 4);
       const measureMs = beatMs * measureBeats;
+      const manualBarlines = Array.isArray(timeline.barlines) ? timeline.barlines : [];
+      const barlineTimes = timeline.hasManualBarlines
+        ? manualBarlines
+            .map((barline) => Number(barline.timeMs))
+            .filter((timeMs) => Number.isFinite(timeMs) && timeMs >= 0 && timeMs < timeline.totalMs)
+        : [];
 
       ctx.strokeStyle = "#111";
       ctx.lineWidth = 2;
 
-      for (let t = 0; t < timeline.totalMs - 1; t += measureMs) {
-        const barX = judgeX + (t - elapsedMs) * pxPerMs;
-        if (barX < 0 || barX > canvas.width) continue;
+      function drawBarlineAt(timeMs) {
+        const barX = judgeX + (timeMs - elapsedMs) * pxPerMs;
+        if (barX < 0 || barX > canvas.width) return;
 
         ctx.beginPath();
         ctx.moveTo(barX, topLineY - 10);
         ctx.lineTo(barX, bottomLineY + 10);
         ctx.stroke();
+      }
+
+      if (barlineTimes.length) {
+        barlineTimes.forEach(drawBarlineAt);
+      } else {
+        for (let t = 0; t < timeline.totalMs - 1; t += measureMs) {
+          drawBarlineAt(t);
+        }
       }
 
       const finalBarX = judgeX + (timeline.totalMs - elapsedMs) * pxPerMs;
@@ -16703,10 +17011,90 @@ function drawRest(ctx, x, staffTop, duration) {
         ctx.lineWidth = 2;
       }
 
-      timeline.notes.forEach(n => {
+      function drawCurve(startX, startY, endX, endY, side, color, width) {
+        if (Math.max(startX, endX) < -80 || Math.min(startX, endX) > canvas.width + 80) return;
+
+        const midX = (startX + endX) / 2;
+        const controlY = side === "above"
+          ? Math.min(startY, endY) - 26
+          : Math.max(startY, endY) + 26;
+
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.quadraticCurveTo(midX, controlY, endX, endY);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function getHeadCurvePoint(metric, side, edge) {
+        const headXOffset = edge === "start" ? 14 : -14;
+        const headYOffset = side === "above" ? -12 : 14;
+
+        return {
+          x: metric.noteX + headXOffset,
+          y: metric.y + headYOffset
+        };
+      }
+
+      function getAutoCurveSide(group) {
+        const stemDownCount = group.filter((metric) => shouldStemDown(metric.note.note)).length;
+        return stemDownCount >= group.length / 2 ? "above" : "below";
+      }
+
+      function drawTieAndSlurMarks(noteMetrics) {
+        const tieGroups = new Map();
+        const slurGroups = new Map();
+
+        noteMetrics.forEach((metric) => {
+          if (!metric.note.note) return;
+          if (metric.note.tieGroupId) {
+            if (!tieGroups.has(metric.note.tieGroupId)) tieGroups.set(metric.note.tieGroupId, []);
+            tieGroups.get(metric.note.tieGroupId).push(metric);
+          }
+          if (metric.note.slurGroupId) {
+            if (!slurGroups.has(metric.note.slurGroupId)) slurGroups.set(metric.note.slurGroupId, []);
+            slurGroups.get(metric.note.slurGroupId).push(metric);
+          }
+        });
+
+        tieGroups.forEach((group) => {
+          group.forEach((current, index) => {
+            const next = group[index + 1];
+            if (!next || current.note.note !== next.note.note) return;
+
+            const side = getAutoCurveSide([current, next]);
+            const start = getHeadCurvePoint(current, side, "start");
+            const end = getHeadCurvePoint(next, side, "end");
+            drawCurve(start.x, start.y, end.x, end.y, side, "#1e2a44", 2.5);
+          });
+        });
+
+        slurGroups.forEach((group) => {
+          if (group.length < 2) return;
+
+          const first = group[0];
+          const last = group[group.length - 1];
+          const side = getAutoCurveSide(group);
+          const start = getHeadCurvePoint(first, side, "start");
+          const end = getHeadCurvePoint(last, side, "end");
+          drawCurve(start.x, start.y, end.x, end.y, side, "#334155", 2.5);
+        });
+      }
+
+      const noteMetrics = timeline.notes.map(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
         const noteX = x + noteStartOffset;
+        const y = n.note ? noteToY(n.note) : topLineY + 40;
+
+        return { note: n, x, w, noteX, y };
+      });
+
+      noteMetrics.forEach(({ note: n, x, w, noteX, y }) => {
 
         if (x > canvas.width + 80) return;
         if (x + w < judgeX - 20) return;
@@ -16716,11 +17104,12 @@ function drawRest(ctx, x, staffTop, duration) {
           return;
         }
 
-        const y = noteToY(n.note);
         const bodyWidth = getNoteBodyWidthByBeat(n.beat);
 
         drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
       });
+
+      drawTieAndSlurMarks(noteMetrics);
 
       if (elapsedMs < 0) {
         const remain = Math.ceil(Math.abs(elapsedMs) / 1000);
@@ -19430,15 +19819,10 @@ function goChallenge() {
 }
 
 const BONUS_TEST_LEVEL = 27;
-
-const BONUS_BOAT_POSITIONS = {
-  1: { x: 36, y: 35 },
-  2: { x: 64, y: 24 },
-  3: { x: 87, y: 35 },
-  4: { x: 86, y: 60 },
-  5: { x: 39, y: 58 },
-  6: { x: 67, y: 47 }
-};
+let selectedBonusIslandId = null;
+let renderedBonusIslandId = null;
+let isBonusLegendCelebrating = false;
+let bonusLegendCelebrationTimer = null;
 
 const BONUS_GLOW_POSITIONS = {
   1: { x: 26, y: 42, size: 22 },
@@ -19450,51 +19834,21 @@ const BONUS_GLOW_POSITIONS = {
 };
 
 const BONUS_LOCK_OVERLAYS = {
-  1: { x: 24, y: 43, w: 21, h: 20 },
-  2: { x: 50, y: 33, w: 21, h: 20 },
-  3: { x: 73, y: 43, w: 21, h: 20 },
-  4: { x: 76, y: 74, w: 22, h: 21 },
-  5: { x: 22, y: 74, w: 22, h: 21 },
+  1: { x: 22, y: 43, w: 21, h: 20 },
+  2: { x: 51, y: 25, w: 21, h: 20 },
+  3: { x: 77, y: 40, w: 21, h: 20 },
+  4: { x: 76, y: 77, w: 22, h: 21 },
+  5: { x: 22, y: 77, w: 22, h: 21 },
   6: { x: 50, y: 58, w: 24, h: 22 }
 };
 
-const BONUS_STAGE_INFO = {
-  1: {
-    name: "새싹 보물섬",
-    minLevel: 1,
-    maxLevel: 10,
-    songs: ["BONUS_EDELWEISS", "BONUS_RUDOLPH"]
-  },
-  2: {
-    name: "꿈빛 보물섬",
-    minLevel: 11,
-    maxLevel: 20,
-    songs: ["BONUS_FLOWERS", "BONUS_GRANDFATHER_CLOCK"]
-  },
-  3: {
-    name: "멜로디 보물섬",
-    minLevel: 21,
-    maxLevel: 30,
-    songs: ["BONUS_BALLOON", "BONUS_OVER_THE_RAINBOW"]
-  },
-  4: {
-    name: "스타 보물섬",
-    minLevel: 31,
-    maxLevel: 40,
-    songs: ["BONUS_ALWAYS_WITH_ME", "BONUS_TOWN_WITH_AN_OCEAN_VIEW"]
-  },
-  5: {
-    name: "무지개 보물섬",
-    minLevel: 41,
-    maxLevel: 49,
-    songs: ["BONUS_SUMMER", "BONUS_HES_A_PIRATE"]
-  },
-  6: {
-    name: "레전드 보물섬",
-    minLevel: 50,
-    maxLevel: 50,
-    songs: ["BONUS_CANON", "BONUS_MERRY_GO_ROUND_OF_LIFE"]
-  }
+const BONUS_ISLAND_HOTSPOTS = {
+  1: { x: 22, y: 42, w: 21.6, h: 20.4 },
+  2: { x: 51, y: 25, w: 21.6, h: 20.4 },
+  3: { x: 76, y: 41, w: 21.6, h: 20.4 },
+  4: { x: 77, y: 79, w: 21.6, h: 20.4 },
+  5: { x: 22, y: 77, w: 21.6, h: 20.4 },
+  6: { x: 50, y: 60, w: 22.8, h: 21.6 }
 };
 
 function getBonusCurrentLevel() {
@@ -19512,14 +19866,6 @@ function getCurrentBonusIslandId(level) {
   return 1;
 }
 
-function getBonusSongById(songId) {
-  if (!Array.isArray(window.BONUS_SONGS) && typeof BONUS_SONGS === "undefined") return null;
-  const list = window.BONUS_SONGS || BONUS_SONGS;
-  return list.find(function(song) {
-    return song.songId === songId;
-  }) || null;
-}
-
 function prepareBonusSong(songId) {
   const song = getBonusSongById(songId);
 
@@ -19533,32 +19879,129 @@ function prepareBonusSong(songId) {
     return;
   }
 
-  console.log("선택한 성장 보너스곡:", song);
-  alert(song.title + " 곡을 연주 화면으로 연결할 준비가 되었어요.");
+  app.currentSong = {
+    ...song,
+    category: "bonus",
+    source: "bonus",
+    mode: "bonus"
+  };
+
+  currentActivityTitle = "성장 보너스 연주곡";
+  setChallengePlayMode(false);
+  setPracticeScreenMode("song");
+  showStep("step34Section");
+  showSelectedSong();
+  resetPractice();
+
+  if (typeof drawPracticeBase === "function") {
+    drawPracticeBase(song.timeSignature || "4/4", song.keySignature || "C");
+  }
+
+  console.log("성장 보너스곡 측정 화면 진입:", song);
 }
+
+function triggerBonusLegendCelebration() {
+  isBonusLegendCelebrating = true;
+
+  if (bonusLegendCelebrationTimer) {
+    clearTimeout(bonusLegendCelebrationTimer);
+  }
+
+  bonusLegendCelebrationTimer = setTimeout(function() {
+    isBonusLegendCelebrating = false;
+    renderBonusMap();
+  }, 1500);
+}
+
+function selectBonusIsland(stageId) {
+  const currentLevel = getBonusCurrentLevel();
+  const maxOpenedStageId = getCurrentBonusIslandId(currentLevel);
+  const targetStageId = Number(stageId);
+  const targetStage = BONUS_STAGE_INFO[targetStageId];
+
+  if (!targetStage) {
+    return;
+  }
+
+  if (targetStageId > maxOpenedStageId) {
+    const needLevel = targetStage.minLevel;
+    const remainLevel = Math.max(0, needLevel - currentLevel);
+    alert("LV" + needLevel + "부터 " + targetStage.name + "이 열려요!\n현재 LV" + currentLevel + ", " + remainLevel + "레벨 남았어요.");
+    return;
+  }
+
+  const wasSelectedIslandId = selectedBonusIslandId;
+  selectedBonusIslandId = targetStageId;
+  if (targetStageId === 6 && wasSelectedIslandId !== 6) {
+    triggerBonusLegendCelebration();
+  }
+  renderBonusMap();
+}
+
+window.selectBonusIsland = selectBonusIsland;
 
 function renderBonusMap() {
   const level = getBonusCurrentLevel();
-  const currentIslandId = getCurrentBonusIslandId(level);
-  const position = BONUS_BOAT_POSITIONS[currentIslandId] || BONUS_BOAT_POSITIONS[1];
-  const glow = BONUS_GLOW_POSITIONS[currentIslandId] || BONUS_GLOW_POSITIONS[1];
-  const stage = BONUS_STAGE_INFO[currentIslandId] || BONUS_STAGE_INFO[1];
-  const nextStage = BONUS_STAGE_INFO[currentIslandId + 1] || null;
-  const remainingLevel = nextStage ? Math.max(0, stage.maxLevel + 1 - level) : 0;
-  const progressText = nextStage
-    ? `다음 섬까지 ${remainingLevel}레벨 남았어요!`
-    : "최고 보물섬에 도착했어요!";
-  const bonusSongHtml = (stage.songs || [])
-    .map((songId) => getBonusSongById(songId) || { songId, title: "준비 중" })
-    .map((song) => `
-      <button type="button" class="bonusSongChip" data-song-id="${song.songId}" onclick="prepareBonusSong('${song.songId}')">
-        <span class="bonusSongPlay">▶</span>
-        <span>${song.title}</span>
-      </button>
-    `)
+  const maxOpenedStageId = getCurrentBonusIslandId(level);
+
+  if (!selectedBonusIslandId || selectedBonusIslandId > maxOpenedStageId) {
+    selectedBonusIslandId = maxOpenedStageId;
+  }
+
+  const selectedIslandId = selectedBonusIslandId;
+  const previousIslandId = renderedBonusIslandId || selectedIslandId;
+  const position = BONUS_BOAT_POSITIONS[selectedIslandId] || BONUS_BOAT_POSITIONS[1];
+  const previousPosition = BONUS_BOAT_POSITIONS[previousIslandId] || position;
+  const selectedHotspot = BONUS_ISLAND_HOTSPOTS[selectedIslandId] || null;
+  const baseGlow = BONUS_GLOW_POSITIONS[selectedIslandId] || BONUS_GLOW_POSITIONS[1];
+  const glow = selectedHotspot
+    ? {
+        x: selectedHotspot.x,
+        y: selectedHotspot.y,
+        size: Math.max(selectedHotspot.w || 18, selectedHotspot.h || 18) * 1.3
+      }
+    : baseGlow;
+  const stage = BONUS_STAGE_INFO[selectedIslandId] || BONUS_STAGE_INFO[1];
+  const maxOpenedStage = BONUS_STAGE_INFO[maxOpenedStageId] || BONUS_STAGE_INFO[1];
+  const nextStage = BONUS_STAGE_INFO[maxOpenedStageId + 1] || null;
+  const remainingLevel = nextStage ? Math.max(0, maxOpenedStage.maxLevel + 1 - level) : 0;
+  const progressText = selectedIslandId === maxOpenedStageId
+    ? (nextStage ? `다음 섬까지 ${remainingLevel}레벨 남았어요!` : "최고 보물섬에 도착했어요!")
+    : `${stage.name}으로 다시 이동했어요!`;
+  const stageSongs = getBonusSongsByStage(selectedIslandId);
+  const bonusSongHtml = stageSongs.length
+    ? stageSongs
+        .map((song) => `
+          <button type="button" class="bonusSongChip" data-song-id="${song.songId}" onclick="prepareBonusSong('${song.songId}')">
+            <span class="bonusSongPlay">▶</span>
+            <span>${song.title}</span>
+          </button>
+        `)
+        .join("")
+    : `<div class="bonusSongEmpty">이 보물섬의 보너스곡을 준비 중이에요.</div>`;
+  const islandHotspotHtml = Object.entries(BONUS_STAGE_INFO)
+    .map(([stageId, stageInfo]) => {
+      const id = Number(stageId);
+      const spot = BONUS_ISLAND_HOTSPOTS[id] || BONUS_GLOW_POSITIONS[id] || { x: 50, y: 50, w: 18, h: 18 };
+      const width = spot.w || spot.size || 18;
+      const height = spot.h || spot.size || width;
+      const isLocked = id > maxOpenedStageId;
+      const isSelected = id === selectedIslandId;
+
+      return `
+        <button
+          type="button"
+          class="bonusIslandHotspot ${isLocked ? "isLocked" : "isOpen"} ${isSelected ? "isSelected" : ""}"
+          style="left: ${spot.x}%; top: ${spot.y}%; width: ${width}%; height: ${height}%;"
+          data-stage="${id}"
+          onclick="selectBonusIsland(${id})"
+          aria-label="${stageInfo.name}"
+        ></button>
+      `;
+    })
     .join("");
   const lockOverlayHtml = Object.entries(BONUS_LOCK_OVERLAYS)
-    .filter(([islandId]) => Number(islandId) > currentIslandId)
+    .filter(([islandId]) => Number(islandId) > maxOpenedStageId)
     .map(([, lock]) => `
       <div
         class="bonusLockOverlay"
@@ -19568,6 +20011,19 @@ function renderBonusMap() {
       </div>
     `)
     .join("");
+  const legendCelebrationHtml = isBonusLegendCelebrating && selectedIslandId === 6
+    ? `
+      <div class="bonusLegendFireworks" aria-hidden="true">
+        <span class="firework f1">✨</span>
+        <span class="firework f2">⭐</span>
+        <span class="firework f3">🎆</span>
+        <span class="firework f4">✨</span>
+        <span class="firework f5">⭐</span>
+        <span class="firework f6">🎇</span>
+        <div class="bonusLegendCelebrateText">레전드 보물섬 도착!</div>
+      </div>
+    `
+    : "";
   const frame = document.getElementById("bonusMapFrame");
 
   if (!frame) return;
@@ -19576,13 +20032,17 @@ function renderBonusMap() {
     <div class="bonusMapStage">
       <img class="bonusMapBg" src="images/bonus-map-bg.png" alt="성장 보물섬 여행 지도">
       ${lockOverlayHtml}
+      ${islandHotspotHtml}
+      ${legendCelebrationHtml}
       <div
         class="bonusCurrentGlow"
         style="left: ${glow.x}%; top: ${glow.y}%; width: ${glow.size}%; height: ${glow.size}%;"
       ></div>
-      <div class="bonusBoat" style="left: ${position.x}%; top: ${position.y}%;">
-        <div class="bonusBoatIcon">⛵</div>
-        <div class="bonusBoatName">이성우</div>
+      <div class="bonusBoat" id="bonusBoat" style="left: ${previousPosition.x}%; top: ${previousPosition.y}%;">
+        <div class="bonusBoatInner">
+          <div class="bonusBoatIcon">⛵</div>
+          <div class="bonusBoatName">이성우</div>
+        </div>
       </div>
     </div>
     <div class="bonusProgressCard">
@@ -19602,9 +20062,34 @@ function renderBonusMap() {
       </div>
     </div>
   `;
+
+  const boat = document.getElementById("bonusBoat");
+  if (boat) {
+    const shouldSail = previousIslandId !== selectedIslandId;
+    if (shouldSail) {
+      boat.classList.add("isSailing");
+    }
+
+    boat.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      boat.style.left = `${position.x}%`;
+      boat.style.top = `${position.y}%`;
+    });
+
+    if (shouldSail) {
+      setTimeout(() => {
+        boat.classList.remove("isSailing");
+      }, 950);
+    }
+  }
+
+  renderedBonusIslandId = selectedIslandId;
 }
 
 function goBonusMap() {
+  const currentLevel = getBonusCurrentLevel();
+  selectedBonusIslandId = getCurrentBonusIslandId(currentLevel);
+  renderedBonusIslandId = selectedBonusIslandId;
   showScreen("screen-bonus-map");
   renderBonusMap();
 }

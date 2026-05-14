@@ -108,10 +108,10 @@ const BONUS_SONGS = [
   { songId: "BONUS_BALLOON", title: "\uD48D\uC120", stage: 3, bpm: 96, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_OVER_THE_RAINBOW", title: "Over The Rainbow", stage: 3, bpm: 76, timeSignature: "4/4", notation: "" },
 
-  { songId: "BONUS_ALWAYS_WITH_ME", title: "\uC5B8\uC81C\uB098 \uBA87 \uBC88\uC774\uB77C\uB3C4", stage: 4, bpm: 84, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_SUMMER", title: "Summer", stage: 4, bpm: 100, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_TOWN_WITH_AN_OCEAN_VIEW", title: "\uBC14\uB2E4\uAC00 \uBCF4\uC774\uB294 \uB9C8\uC744", stage: 4, bpm: 96, timeSignature: "4/4", notation: "" },
 
-  { songId: "BONUS_SUMMER", title: "Summer", stage: 5, bpm: 100, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_ALWAYS_WITH_ME", title: "\uC5B8\uC81C\uB098 \uBA87 \uBC88\uC774\uB77C\uB3C4", stage: 5, bpm: 84, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_HES_A_PIRATE", title: "He's a Pirate", stage: 5, bpm: 120, timeSignature: "4/4", notation: "" },
 
   { songId: "BONUS_CANON", title: "Canon", stage: 6, bpm: 80, timeSignature: "4/4", notation: "" },
