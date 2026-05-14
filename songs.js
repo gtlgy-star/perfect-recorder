@@ -99,9 +99,8 @@ const TEXTBOOK_SONGS_BY_GRADE = {
 };
 
 const BONUS_SONGS = [
-  { songId: "BONUS_EDELWEISS", title: "에델바이스", stage: 1, bpm: 80, timeSignature: "3/4", notation: "E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 E5/1 E5/1 F5/1 G5/1 A5/1 | G5/3 | E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 G5/1 G5/1 A5/1 B5/1 C6/1 | C6/3 | D6/1 G5/1 G5/1 B5/1 A5/1 G5/1 | E5/1 G5/1 C6/3 | A5/1 C6/1 D6/1 C6/1 B5/1 G5/1 | G5/3 | E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 G5/1 G5/1 A5/1 B5/1 C6/1 | C6/3" },
-  { songId: "BONUS_RUDOLPH", title: "루돌프 사슴코", stage: 1, bpm: 112, timeSignature: "4/4", notation: "G5/1 A5/1 G5/1 E5/1 | C6/1 A5/1 G5/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 C6/1 | B5/3 R/1 | F5/1 G5/1 F5/1 D5/1 | B4/1 A4/1 G4/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 A5/1 | E5/3 R/1 | G5/1 A5/1 G5/1 E5/1 | C6/1 A5/1 G5/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 C6/1 | B5/3 R/1 | F5/1 G5/1 F5/1 D5/1 | B4/1 A4/1 G4/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 D6/1 | C6/3 R/1" },
-
+  { songId: "BONUS_EDELWEISS", title: "에델바이스", stage: 1, bpm: 80, timeSignature: "3/4", notation: "E5/2 G5/1 | D6/3 | C6/2 G5/1 | F5/3 | E5/2 E5/1 | E5/1 F5/1 G5/1 | A5/3 | G5/3 | E5/2 G5/1 | D6/3 | C6/2 G5/1 | F5/3 | E5/2 G5/1 | G5/1 A5/1 B5/1 | C6/3 | C6/3 | D6/1 r/0.5 G5/0.5 G5/1 | B5/1 A5/1 G5/1 | E5/2 G5/1 | C6/3 | A5/2 C6/1 | D6/2 C6/1 | B5/3 | G5/3 | E5/2 G5/1 | D6/3 | C6/2 G5/1 | F5/3 | E5/2 G5/1 | G5/1 A5/1 B5/1 | C6/3 | C6/3" },
+{ songId: "BONUS_RUDOLPH", title: "루돌프 사슴코", stage: 1, bpm: 112, timeSignature: "4/4", notation: "g/8 a/4 g/8 e/4 c6/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 c6/4 | b/2. r/4 | f/8 g/4 f/8 d/4 b/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 a/4 | e/2. r/4 | g/8 a/4 g/8 e/4 c6/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 c6/4 | b/2. r/4 | f/8 g/4 f/8 d/4 b/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 d6/4 | c6/2. r/4 | a/4 a/4 c6/4 a/4 | g/4 e/8 < g/8 g/2 > | f/4 a/4 g/4 f/4 | e/2. r/4 | d/4 e/4 g/4 a/4 | b/4 b/4 b/2 | c6/4 c6/4 b/4 a/4 | g/4 f/4 d/2 | g/8 a/4 g/8 e/4 c6/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 c6/4 | b/2. r/4 | f/8 g/4 f/8 d/4 b/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 d6/4 | c6/2. r/4 | f/8 g/4 f/8 d/4 b/4 | a/4 g/2 r/4 | g/8 a/8 g/8 a/8 g/4 d6/4 | c6/2. r/4" },
   { songId: "BONUS_FLOWERS", title: "모두 다 꽃이야", stage: 2, bpm: 92, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_GRANDFATHER_CLOCK", title: "할아버지 낡은 시계", stage: 2, bpm: 84, timeSignature: "4/4", notation: "" },
 
