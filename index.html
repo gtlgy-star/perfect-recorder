@@ -4768,9 +4768,9 @@ button:disabled {
   z-index: 3;
   transform: translate(-50%, -50%);
   transition:
-    left 1.5s ease-in-out,
-    top 1.5s ease-in-out,
-    transform 1.5s ease-in-out;
+    left 1.04s ease-in-out,
+    top 1.04s ease-in-out,
+    transform 1.04s ease-in-out;
   pointer-events: none;
 }
 
@@ -5151,6 +5151,13 @@ button:disabled {
   background: rgba(255, 255, 255, 0.92);
   color: #12345a;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.bonusSongChip:disabled,
+.bonusSongChip.isWaitingForBoat {
+  cursor: default;
+  opacity: 0.58;
+  filter: grayscale(0.25);
 }
 
 .bonusSongPlay {
@@ -16234,6 +16241,70 @@ window.addEventListener("popstate", function (event) {
       };
     }
 
+    function buildScoringNotes(displayNotes) {
+      const notes = Array.isArray(displayNotes) ? displayNotes : [];
+      const scoringNotes = [];
+      let index = 0;
+
+      while (index < notes.length) {
+        const current = notes[index];
+
+        if (!current?.note || !current.tieGroupId) {
+          scoringNotes.push(current);
+          index += 1;
+          continue;
+        }
+
+        const group = [current];
+        let nextIndex = index + 1;
+
+        while (
+          nextIndex < notes.length &&
+          notes[nextIndex]?.tieGroupId === current.tieGroupId
+        ) {
+          group.push(notes[nextIndex]);
+          nextIndex += 1;
+        }
+
+        const canMergeTieGroup =
+          group.length > 1 &&
+          group.every((note) => note?.note && note.note === current.note);
+
+        if (!canMergeTieGroup) {
+          if (group.length > 1) {
+            console.warn("tie scoring skipped:", {
+              tieGroupId: current.tieGroupId,
+              notes: group.map((note) => note?.note || "R")
+            });
+          }
+          scoringNotes.push(...group);
+          index = nextIndex;
+          continue;
+        }
+
+        const totalBeat = group.reduce((sum, note) => sum + (Number(note.beat) || 0), 0);
+        const totalDurMs = group.reduce((sum, note) => sum + (Number(note.durMs) || 0), 0);
+        const mergedNote = {
+          ...current,
+          beat: totalBeat,
+          durMs: totalDurMs,
+          raw: group.map((note) => note.raw).join("~"),
+          tieMerged: true,
+          displayNotes: group
+        };
+
+        console.log("tie scoring merged:", {
+          note: mergedNote.note,
+          totalBeat: mergedNote.beat
+        });
+
+        scoringNotes.push(mergedNote);
+        index = nextIndex;
+      }
+
+      return scoringNotes;
+    }
+
     function buildSongTimeline(song, selectedBpm) {
       const notation = String(song && song.notation ? song.notation : "").trim();
       const bpm = Math.max(1, Number(selectedBpm) || Number(song && song.bpm) || 80);
@@ -16248,6 +16319,7 @@ window.addEventListener("popstate", function (event) {
           totalMs: 0,
           totalBeats: 0,
           notes: [],
+          scoringNotes: [],
           barlines: [],
           hasManualBarlines: false,
           keySignature: song?.keySignature || "C",
@@ -16325,6 +16397,7 @@ window.addEventListener("popstate", function (event) {
         totalMs: cursorMs,
         totalBeats: cursorBeat,
         notes,
+        scoringNotes: buildScoringNotes(notes),
         barlines: manualBarlines,
         hasManualBarlines: manualBarlines.length > 0,
         keySignature: song?.keySignature || "C",
@@ -16706,6 +16779,13 @@ function drawRest(ctx, x, staffTop, duration) {
   const centerY = staffTop + 40;
   const beat = Number(duration);
   const NOTE_COLOR = "#1e2a44";
+  const dottedRestMap = {
+    0.75: 0.5,
+    1.5: 1,
+    3: 2
+  };
+  const dottedBeat = Object.keys(dottedRestMap).find((value) => Math.abs(beat - Number(value)) < 0.001);
+  const baseBeat = dottedBeat ? dottedRestMap[dottedBeat] : beat;
 
   function drawSixteenthRest() {
     const topY = centerY - 32;
@@ -16744,16 +16824,22 @@ function drawRest(ctx, x, staffTop, duration) {
   ctx.textBaseline = "middle";
   ctx.font = "48px Arial, serif";
 
-  if (beat === 1) {
+  if (baseBeat === 1) {
     ctx.fillText("𝄽", x, centerY + 2);
-  } else if (beat === 0.5) {
+  } else if (baseBeat === 0.5) {
     ctx.fillText("𝄾", x, centerY + 2);
-  } else if (beat === 0.25) {
+  } else if (baseBeat === 0.25) {
     drawSixteenthRest();
-  } else if (beat === 2) {
+  } else if (baseBeat === 2) {
     ctx.fillRect(x - 18, centerY - 8, 36, 10);
   } else {
     ctx.fillText("𝄽", x, centerY + 2);
+  }
+
+  if (dottedBeat) {
+    ctx.beginPath();
+    ctx.arc(x + 28, centerY + 1, 3.5, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   ctx.restore();
@@ -17284,12 +17370,13 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function getTimelineNoteIndex(target, timeline) {
-      if (!target || !timeline || !Array.isArray(timeline.notes)) return -1;
-      return timeline.notes.findIndex((note) => note === target);
+      const notes = Array.isArray(timeline?.scoringNotes) ? timeline.scoringNotes : timeline?.notes;
+      if (!target || !Array.isArray(notes)) return -1;
+      return notes.findIndex((note) => note === target);
     }
 
     function getAdjacentPlayableNotes(target, timeline) {
-      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      const notes = Array.isArray(timeline?.scoringNotes) ? timeline.scoringNotes : (Array.isArray(timeline?.notes) ? timeline.notes : []);
       const index = getTimelineNoteIndex(target, timeline);
       const neighbors = [];
 
@@ -17383,9 +17470,10 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function findCurrentTargetNote(elapsedMs, timeline) {
-      if (!timeline || !timeline.notes || !timeline.notes.length) return null;
+      const notes = Array.isArray(timeline?.scoringNotes) ? timeline.scoringNotes : (Array.isArray(timeline?.notes) ? timeline.notes : []);
+      if (!notes.length) return null;
 
-      for (const n of timeline.notes) {
+      for (const n of notes) {
         if (elapsedMs >= n.startMs && elapsedMs < n.startMs + n.durMs) {
           return n.note ? n : null;
         }
@@ -19835,6 +19923,8 @@ function goChallenge() {
 const BONUS_TEST_LEVEL = 27;
 let selectedBonusIslandId = null;
 let renderedBonusIslandId = null;
+let isBonusBoatSailing = false;
+let bonusBoatSailingRunId = 0;
 let isBonusLegendCelebrating = false;
 let bonusLegendCelebrationTimer = null;
 
@@ -19899,6 +19989,10 @@ function getCurrentBonusIslandId(level) {
 }
 
 function prepareBonusSong(songId) {
+  if (isBonusBoatSailing) {
+    return;
+  }
+
   const song = getBonusSongById(songId);
 
   if (!song) {
@@ -19959,6 +20053,23 @@ function getBonusBoatSeaRoute(fromIslandId, toIslandId) {
   return fromId < toId ? route : [...route].reverse();
 }
 
+function setBonusSongButtonsReady(isReady) {
+  document.querySelectorAll(".bonusSongChip").forEach(function(button) {
+    button.disabled = !isReady;
+    button.classList.toggle("isWaitingForBoat", !isReady);
+    button.setAttribute("aria-disabled", String(!isReady));
+  });
+}
+
+function finishBonusBoatSailing(runId) {
+  if (runId !== bonusBoatSailingRunId) {
+    return;
+  }
+
+  isBonusBoatSailing = false;
+  setBonusSongButtonsReady(true);
+}
+
 function selectBonusIsland(stageId) {
   const currentLevel = getBonusCurrentLevel();
   const maxOpenedStageId = getCurrentBonusIslandId(currentLevel);
@@ -19978,6 +20089,10 @@ function selectBonusIsland(stageId) {
 
   const wasSelectedIslandId = selectedBonusIslandId;
   selectedBonusIslandId = targetStageId;
+  if (wasSelectedIslandId !== targetStageId) {
+    isBonusBoatSailing = true;
+    bonusBoatSailingRunId += 1;
+  }
   if (targetStageId === 6 && wasSelectedIslandId !== 6) {
     triggerBonusLegendCelebration();
   }
@@ -20018,7 +20133,13 @@ function renderBonusMap() {
   const bonusSongHtml = stageSongs.length
     ? stageSongs
         .map((song) => `
-          <button type="button" class="bonusSongChip" data-song-id="${song.songId}" onclick="prepareBonusSong('${song.songId}')">
+          <button
+            type="button"
+            class="bonusSongChip ${isBonusBoatSailing ? "isWaitingForBoat" : ""}"
+            data-song-id="${song.songId}"
+            onclick="prepareBonusSong('${song.songId}')"
+            ${isBonusBoatSailing ? `disabled aria-disabled="true" title="배가 도착하면 연주할 수 있어요."` : `aria-disabled="false"`}
+          >
             <span class="bonusSongPlay">▶</span>
             <span>${song.title}</span>
           </button>
@@ -20114,7 +20235,9 @@ function renderBonusMap() {
     const shouldSail = previousIslandId !== selectedIslandId;
     const routePoints = shouldSail ? getBonusBoatSeaRoute(previousIslandId, selectedIslandId) : [];
     const travelPoints = [...routePoints, position];
-    const legDurationMs = 1500;
+    const legDurationMs = 1040;
+    const sailingRunId = bonusBoatSailingRunId;
+    const totalTravelDurationMs = Math.max(legDurationMs, travelPoints.length * legDurationMs);
 
     if (shouldSail) {
       boat.classList.add("isSailing");
@@ -20126,7 +20249,7 @@ function renderBonusMap() {
         top: `${point.y}%`
       }));
       const animation = boat.animate(keyframes, {
-        duration: Math.max(legDurationMs, travelPoints.length * legDurationMs),
+        duration: totalTravelDurationMs,
         easing: "linear",
         fill: "forwards"
       });
@@ -20135,7 +20258,12 @@ function renderBonusMap() {
         boat.style.left = `${position.x}%`;
         boat.style.top = `${position.y}%`;
         boat.classList.remove("isSailing");
+        finishBonusBoatSailing(sailingRunId);
       };
+
+      setTimeout(() => {
+        finishBonusBoatSailing(sailingRunId);
+      }, totalTravelDurationMs);
     } else {
       boat.getBoundingClientRect();
       requestAnimationFrame(() => {
@@ -20146,7 +20274,8 @@ function renderBonusMap() {
       if (shouldSail) {
         setTimeout(() => {
           boat.classList.remove("isSailing");
-        }, Math.max(legDurationMs, travelPoints.length * legDurationMs));
+          finishBonusBoatSailing(sailingRunId);
+        }, totalTravelDurationMs);
       }
     }
   }
@@ -20158,6 +20287,8 @@ function goBonusMap() {
   const currentLevel = getBonusCurrentLevel();
   selectedBonusIslandId = getCurrentBonusIslandId(currentLevel);
   renderedBonusIslandId = selectedBonusIslandId;
+  isBonusBoatSailing = false;
+  bonusBoatSailingRunId += 1;
   showScreen("screen-bonus-map");
   renderBonusMap();
 }
