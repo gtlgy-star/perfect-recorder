@@ -80,11 +80,11 @@
     <text class="coord" y="92">x33 y75</text>
   </g>
 
-  <g id="island-6" transform="translate(864 550)">
+  <g id="island-6" transform="translate(784 550)">
     <circle class="ring" r="44" />
     <circle class="marker" r="20" />
     <rect class="label-bg" x="-92" y="42" width="184" height="64" rx="18" />
     <text class="label" y="66">6단계</text>
-    <text class="coord" y="92">x54 y55</text>
+    <text class="coord" y="92">x49 y55</text>
   </g>
 </svg>

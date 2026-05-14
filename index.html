@@ -4768,9 +4768,9 @@ button:disabled {
   z-index: 3;
   transform: translate(-50%, -50%);
   transition:
-    left 0.9s ease-in-out,
-    top 0.9s ease-in-out,
-    transform 0.9s ease-in-out;
+    left 1.5s ease-in-out,
+    top 1.5s ease-in-out,
+    transform 1.5s ease-in-out;
   pointer-events: none;
 }
 
@@ -4784,7 +4784,7 @@ button:disabled {
 }
 
 .bonusBoat.isSailing .bonusBoatInner {
-  animation: bonusBoatSailing 0.9s ease-in-out infinite;
+  animation: bonusBoatSailing 1.2s ease-in-out infinite;
 }
 
 .bonusCurrentGlow {
@@ -19851,6 +19851,24 @@ const BONUS_ISLAND_HOTSPOTS = {
   6: { x: 50, y: 60, w: 22.8, h: 21.6 }
 };
 
+const BONUS_BOAT_SEA_ROUTES = {
+  "1-2": [{ x: 44, y: 39 }],
+  "1-3": [{ x: 44, y: 39 }, { x: 65, y: 25 }, { x: 74, y: 24 }],
+  "1-4": [{ x: 24, y: 58 }, { x: 58, y: 86 }, { x: 92, y: 82 }],
+  "1-5": [{ x: 24, y: 58 }],
+  "1-6": [{ x: 38, y: 46 }],
+  "2-3": [{ x: 74, y: 24 }],
+  "2-4": [{ x: 76, y: 24 }, { x: 94, y: 54 }],
+  "2-5": [{ x: 37, y: 31 }, { x: 24, y: 58 }],
+  "2-6": [{ x: 55, y: 39 }],
+  "3-4": [{ x: 94, y: 54 }],
+  "3-5": [{ x: 94, y: 54 }, { x: 62, y: 86 }],
+  "3-6": [{ x: 64, y: 48 }],
+  "4-5": [{ x: 62, y: 86 }],
+  "4-6": [{ x: 63, y: 72 }],
+  "5-6": [{ x: 37, y: 60 }]
+};
+
 function getBonusCurrentLevel() {
   // 현재는 테스트용 레벨입니다.
   // 나중에 실제 학생 레벨 시스템이 연결되면 이 함수의 반환값만 바꾸면 됩니다.
@@ -19911,6 +19929,20 @@ function triggerBonusLegendCelebration() {
     isBonusLegendCelebrating = false;
     renderBonusMap();
   }, 1500);
+}
+
+function getBonusBoatSeaRoute(fromIslandId, toIslandId) {
+  const fromId = Number(fromIslandId);
+  const toId = Number(toIslandId);
+
+  if (!fromId || !toId || fromId === toId) {
+    return [];
+  }
+
+  const key = fromId < toId ? `${fromId}-${toId}` : `${toId}-${fromId}`;
+  const route = BONUS_BOAT_SEA_ROUTES[key] || [];
+
+  return fromId < toId ? route : [...route].reverse();
 }
 
 function selectBonusIsland(stageId) {
@@ -20066,20 +20098,42 @@ function renderBonusMap() {
   const boat = document.getElementById("bonusBoat");
   if (boat) {
     const shouldSail = previousIslandId !== selectedIslandId;
+    const routePoints = shouldSail ? getBonusBoatSeaRoute(previousIslandId, selectedIslandId) : [];
+    const travelPoints = [...routePoints, position];
+    const legDurationMs = 1500;
+
     if (shouldSail) {
       boat.classList.add("isSailing");
     }
 
-    boat.getBoundingClientRect();
-    requestAnimationFrame(() => {
-      boat.style.left = `${position.x}%`;
-      boat.style.top = `${position.y}%`;
-    });
+    if (shouldSail && typeof boat.animate === "function") {
+      const keyframes = [previousPosition, ...travelPoints].map((point) => ({
+        left: `${point.x}%`,
+        top: `${point.y}%`
+      }));
+      const animation = boat.animate(keyframes, {
+        duration: Math.max(legDurationMs, travelPoints.length * legDurationMs),
+        easing: "linear",
+        fill: "forwards"
+      });
 
-    if (shouldSail) {
-      setTimeout(() => {
+      animation.onfinish = () => {
+        boat.style.left = `${position.x}%`;
+        boat.style.top = `${position.y}%`;
         boat.classList.remove("isSailing");
-      }, 950);
+      };
+    } else {
+      boat.getBoundingClientRect();
+      requestAnimationFrame(() => {
+        boat.style.left = `${position.x}%`;
+        boat.style.top = `${position.y}%`;
+      });
+
+      if (shouldSail) {
+        setTimeout(() => {
+          boat.classList.remove("isSailing");
+        }, Math.max(legDurationMs, travelPoints.length * legDurationMs));
+      }
     }
   }
 

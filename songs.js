@@ -1,7 +1,7 @@
 const LOCAL_SHORT_SONGS = [
   {
     songId: "HAKGYOJONG",
-    title: "\uD559\uAD50\uC885",
+    title: "학교종",
     bpm: 84,
     timeSignature: "4/4",
     recorderImage: "",
@@ -9,7 +9,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "SAME_SAME",
-    title: "\uB611\uAC19\uC544\uC694",
+    title: "똑같아요",
     bpm: 90,
     timeSignature: "3/4",
     recorderImage: "",
@@ -17,7 +17,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "ODE",
-    title: "\uD658\uD76C\uC758 \uC1A1\uAC00",
+    title: "환희의 송가",
     bpm: 92,
     timeSignature: "4/4",
     recorderImage: "",
@@ -25,7 +25,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "JAGEUNBYEOL",
-    title: "\uC791\uC740\uBCC4",
+    title: "작은별",
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
@@ -33,7 +33,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "NABIYA",
-    title: "\uB098\uBE44\uC57C",
+    title: "나비야",
     bpm: 88,
     timeSignature: "4/4",
     recorderImage: "",
@@ -41,7 +41,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "TONGTONG",
-    title: "\uD1B5\uD1B5\uD1B5\uD1B5",
+    title: "통통통통",
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
@@ -49,7 +49,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "DRAGONFLY",
-    title: "\uC7A0\uC790\uB9AC",
+    title: "잠자리",
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
@@ -57,7 +57,7 @@ const LOCAL_SHORT_SONGS = [
   },
   {
     songId: "HOMETOWN_SPRING",
-    title: "\uACE0\uD5A5\uC758 \uBD04",
+    title: "고향의 봄",
     bpm: 90,
     timeSignature: "4/4",
     recorderImage: "",
@@ -99,23 +99,23 @@ const TEXTBOOK_SONGS_BY_GRADE = {
 };
 
 const BONUS_SONGS = [
-  { songId: "BONUS_EDELWEISS", title: "\uC5D0\uB378\uBC14\uC774\uC2A4", stage: 1, bpm: 84, timeSignature: "3/4", notation: "" },
-  { songId: "BONUS_RUDOLPH", title: "\uB8E8\uB3CC\uD504 \uC0AC\uC2B4\uCF54", stage: 1, bpm: 112, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_EDELWEISS", title: "에델바이스", stage: 1, bpm: 80, timeSignature: "3/4", notation: "E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 E5/1 E5/1 F5/1 G5/1 A5/1 | G5/3 | E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 G5/1 G5/1 A5/1 B5/1 C6/1 | C6/3 | D6/1 G5/1 G5/1 B5/1 A5/1 G5/1 | E5/1 G5/1 C6/3 | A5/1 C6/1 D6/1 C6/1 B5/1 G5/1 | G5/3 | E5/1 G5/1 D6/3 | C6/1 G5/1 F5/3 | E5/1 G5/1 G5/1 A5/1 B5/1 C6/1 | C6/3" },
+  { songId: "BONUS_RUDOLPH", title: "루돌프 사슴코", stage: 1, bpm: 112, timeSignature: "4/4", notation: "G5/1 A5/1 G5/1 E5/1 | C6/1 A5/1 G5/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 C6/1 | B5/3 R/1 | F5/1 G5/1 F5/1 D5/1 | B4/1 A4/1 G4/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 A5/1 | E5/3 R/1 | G5/1 A5/1 G5/1 E5/1 | C6/1 A5/1 G5/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 C6/1 | B5/3 R/1 | F5/1 G5/1 F5/1 D5/1 | B4/1 A4/1 G4/2 | G5/0.5 A5/0.5 G5/0.5 A5/0.5 G5/1 D6/1 | C6/3 R/1" },
 
-  { songId: "BONUS_FLOWERS", title: "\uBAA8\uB450 \uB2E4 \uAF43\uC774\uC57C", stage: 2, bpm: 92, timeSignature: "4/4", notation: "" },
-  { songId: "BONUS_GRANDFATHER_CLOCK", title: "\uD560\uC544\uBC84\uC9C0 \uB0A1\uC740 \uC2DC\uACC4", stage: 2, bpm: 84, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_FLOWERS", title: "모두 다 꽃이야", stage: 2, bpm: 92, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_GRANDFATHER_CLOCK", title: "할아버지 낡은 시계", stage: 2, bpm: 84, timeSignature: "4/4", notation: "" },
 
-  { songId: "BONUS_BALLOON", title: "\uD48D\uC120", stage: 3, bpm: 96, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_BALLOON", title: "풍선", stage: 3, bpm: 96, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_OVER_THE_RAINBOW", title: "Over The Rainbow", stage: 3, bpm: 76, timeSignature: "4/4", notation: "" },
 
   { songId: "BONUS_SUMMER", title: "Summer", stage: 4, bpm: 100, timeSignature: "4/4", notation: "" },
-  { songId: "BONUS_TOWN_WITH_AN_OCEAN_VIEW", title: "\uBC14\uB2E4\uAC00 \uBCF4\uC774\uB294 \uB9C8\uC744", stage: 4, bpm: 96, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_TOWN_WITH_AN_OCEAN_VIEW", title: "바다가 보이는 마을", stage: 4, bpm: 96, timeSignature: "4/4", notation: "" },
 
-  { songId: "BONUS_ALWAYS_WITH_ME", title: "\uC5B8\uC81C\uB098 \uBA87 \uBC88\uC774\uB77C\uB3C4", stage: 5, bpm: 84, timeSignature: "4/4", notation: "" },
+  { songId: "BONUS_ALWAYS_WITH_ME", title: "언제나 몇 번이라도", stage: 5, bpm: 84, timeSignature: "4/4", notation: "" },
   { songId: "BONUS_HES_A_PIRATE", title: "He's a Pirate", stage: 5, bpm: 120, timeSignature: "4/4", notation: "" },
 
   { songId: "BONUS_CANON", title: "Canon", stage: 6, bpm: 80, timeSignature: "4/4", notation: "" },
-  { songId: "BONUS_MERRY_GO_ROUND_OF_LIFE", title: "\uC778\uC0DD\uC758 \uD68C\uC804\uBAA9\uB9C8", stage: 6, bpm: 88, timeSignature: "3/4", notation: "" }
+  { songId: "BONUS_MERRY_GO_ROUND_OF_LIFE", title: "인생의 회전목마", stage: 6, bpm: 88, timeSignature: "3/4", notation: "" }
 ];
 
 const BONUS_GROWTH_SONGS = [];

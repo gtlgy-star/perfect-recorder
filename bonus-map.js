@@ -4,7 +4,7 @@ var BONUS_BOAT_POSITIONS = window.BONUS_BOAT_POSITIONS || {
   3: { x: 87, y: 35 },
   4: { x: 88, y: 71 },
   5: { x: 33, y: 75 },
-  6: { x: 54, y: 55 }
+  6: { x: 49, y: 55 }
 };
 
 window.BONUS_BOAT_POSITIONS = BONUS_BOAT_POSITIONS;
