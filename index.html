@@ -2703,40 +2703,62 @@ button:disabled {
       inset: 0;
       z-index: 18;
       display: none;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
+      padding-top: 14px;
       background: rgba(5, 12, 24, 0.22);
       backdrop-filter: blur(1px);
       -webkit-backdrop-filter: blur(1px);
       color: #ffffff;
       pointer-events: none;
+      box-sizing: border-box;
     }
 
     .practicePauseOverlay.visible {
       display: flex;
     }
 
+    .practicePauseOverlay.countdown {
+      align-items: center;
+      padding-top: 0;
+    }
+
     .practicePauseOverlayInner {
       display: grid;
       place-items: center;
-      min-width: 148px;
-      min-height: 148px;
-      border-radius: 28px;
+      min-width: 128px;
+      min-height: 48px;
+      padding: 8px 18px;
+      border-radius: 18px;
       background: rgba(7, 20, 42, 0.58);
       border: 1px solid rgba(255, 255, 255, 0.42);
       box-shadow:
-        0 22px 46px rgba(0, 0, 0, 0.32),
+        0 14px 32px rgba(0, 0, 0, 0.24),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .practicePauseOverlayText {
-      font-size: clamp(56px, 11vw, 116px);
+      font-size: clamp(24px, 4vw, 42px);
       font-weight: 1000;
       line-height: 1;
       color: #ffffff;
       text-shadow:
         0 4px 18px rgba(0, 0, 0, 0.42),
         0 0 28px rgba(120, 228, 255, 0.54);
+    }
+
+    .practicePauseOverlay.countdown .practicePauseOverlayInner {
+      min-width: 148px;
+      min-height: 148px;
+      padding: 0;
+      border-radius: 28px;
+      box-shadow:
+        0 22px 46px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .practicePauseOverlay.countdown .practicePauseOverlayText {
+      font-size: clamp(56px, 11vw, 116px);
     }
 
     .comboOverlay {
@@ -3126,7 +3148,7 @@ button:disabled {
 
     .practiceActionStack {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 10px;
       height: 90px;
       min-height: 90px;
@@ -3166,6 +3188,14 @@ button:disabled {
 
     .practice-pause-btn {
       background: linear-gradient(180deg, #b9f7a5, #32b768);
+    }
+
+    .practice-back-btn,
+    .practice-continue-btn {
+      background: linear-gradient(180deg, #d9ff9f 0%, #8be055 54%, #45b63f 100%);
+      color: #173d18;
+      border-color: rgba(237, 255, 203, 0.78);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.32);
     }
 
     .practice-stop-btn {
@@ -3210,6 +3240,11 @@ button:disabled {
       font-size: 13px;
       color: inherit;
       font-weight: 900;
+    }
+
+    .practiceMiniBtn.hidden,
+    .practice-continue-btn.hidden {
+      display: none;
     }
 
     .bottomBar {
@@ -4580,7 +4615,7 @@ button:disabled {
       }
 
       .practiceActionStack {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(7, minmax(0, 1fr));
       }
 
       .practiceMiniBtn {
@@ -5141,12 +5176,13 @@ button:disabled {
 .bonusSongChip {
   border: 0;
   border-radius: 999px;
-  padding: 5px 11px;
+  padding: 6px 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   min-width: 172px;
+  min-height: 44px;
   font-weight: 900;
   background: rgba(255, 255, 255, 0.92);
   color: #12345a;
@@ -5161,8 +5197,19 @@ button:disabled {
 }
 
 .bonusSongPlay {
+  flex: 0 0 auto;
   font-size: 11px;
   color: #1f79c9;
+}
+
+.bonusSongTitle {
+  display: block;
+  max-width: 138px;
+  line-height: 1.16;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .bonusProgressHint {
@@ -10227,7 +10274,7 @@ body.theme-light .practiceStaffSlot {
   }
 
   .practiceActionStack {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
   }
 
   .practiceMiniBtn {
@@ -12899,6 +12946,8 @@ body.theme-light .readyCardHint {
         <button id="practiceRecordBtn" type="button" class="sub" onclick="togglePracticeRecording()" disabled>🔴 녹음하기</button>
         <button type="button" class="practice-control-btn practice-pause-btn" onclick="pauseSongPractice()">일시정지</button>
         <button class="sub" onclick="stopPractice()">연습 정지</button>
+        <button type="button" class="sub practice-back-btn" onclick="jumpToPreviousMeasure()" disabled>이전으로</button>
+        <button type="button" class="sub practice-continue-btn hidden" onclick="continueFromMeasureJump()">계속 연주</button>
       </div>
 
       <div class="btnRow" style="margin-top:10px;">
@@ -13435,6 +13484,9 @@ body.theme-light .readyCardHint {
     let practiceAnimationFrameId = null;
     let practiceResumeCountdownTimer = null;
     let practiceResumeCounting = false;
+    let isMeasureJumpPaused = false;
+    let resumeMsAfterJump = 0;
+    let resumeBeatAfterJump = 0;
 
     let audioCtx = null;
     let micStream = null;
@@ -14623,6 +14675,8 @@ function renderSongButtons() {
 
       const startBtn = actionRow.querySelector('button[onclick="startPractice()"]');
       const existingPauseBtn = actionRow.querySelector('button[onclick="pauseSongPractice()"]');
+      const existingBackBtn = actionRow.querySelector('button[onclick="jumpToPreviousMeasure()"]');
+      const existingContinueBtn = actionRow.querySelector('button[onclick="continueFromMeasureJump()"]');
       const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
       let recordBtn = actionRow.querySelector("#practiceRecordBtn");
       const saveBtn = saveRow.querySelector('button[onclick="save()"]');
@@ -14651,6 +14705,22 @@ function renderSongButtons() {
       pauseBtn.setAttribute("aria-label", "\uC77C\uC2DC\uC815\uC9C0");
       pauseBtn.disabled = true;
 
+      const backBtn = existingBackBtn || document.createElement("button");
+      backBtn.type = "button";
+      backBtn.className = "practiceMiniBtn practice-control-btn practice-back-btn";
+      backBtn.setAttribute("onclick", "jumpToPreviousMeasure()");
+      backBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9194;</span><span class="label practice-btn-label">\uC774\uC804\uC73C\uB85C</span>';
+      backBtn.setAttribute("aria-label", "\uC774\uC804\uC73C\uB85C");
+      backBtn.disabled = true;
+
+      const continueBtn = existingContinueBtn || document.createElement("button");
+      continueBtn.type = "button";
+      continueBtn.className = "practiceMiniBtn practice-control-btn practice-continue-btn hidden";
+      continueBtn.setAttribute("onclick", "continueFromMeasureJump()");
+      continueBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9654;</span><span class="label practice-btn-label">\uACC4\uC18D \uC5F0\uC8FC</span>';
+      continueBtn.setAttribute("aria-label", "\uACC4\uC18D \uC5F0\uC8FC");
+      continueBtn.disabled = true;
+
       stopBtn.className = "practiceMiniBtn practice-control-btn practice-stop-btn";
       stopBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9632;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
@@ -14669,7 +14739,7 @@ function renderSongButtons() {
       const actionStack = document.createElement("div");
       actionStack.className = "practiceActionStack";
       actionStack.setAttribute("aria-label", "\uC5F0\uC2B5 \uB3D9\uC791");
-      actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn);
+      actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn, backBtn, continueBtn);
 
 
       controlPanel.append(practiceInfoBox, actionStack);
@@ -16422,7 +16492,9 @@ window.addEventListener("popstate", function (event) {
         B5: 6,
         C6: 7,
         D6: 8,
-        E6: 9
+        E6: 9,
+        F6: 10,
+        G6: 11
       };
 
       const canvas = document.getElementById("practiceCanvas");
@@ -18034,6 +18106,9 @@ function drawRest(ctx, x, staffTop, duration) {
       practicePaused = false;
       practicePausedAt = 0;
       practicePausedDuration = 0;
+      isMeasureJumpPaused = false;
+      resumeMsAfterJump = 0;
+      resumeBeatAfterJump = 0;
       if (practiceResumeCountdownTimer) {
         clearInterval(practiceResumeCountdownTimer);
         practiceResumeCountdownTimer = null;
@@ -18050,11 +18125,11 @@ function drawRest(ctx, x, staffTop, duration) {
         else pauseBtn.textContent = "일시정지";
         if (icon) icon.textContent = "⏸";
       }
-
       resetScoreState();
       resetJudgmentZoneState();
 
       practiceRunning = true;
+      setMeasureJumpControls(false);
       updatePracticeRecordButton();
       document.getElementById("practiceSongTitle").textContent = song.title;
       document.getElementById("practiceTimeSignature").textContent = timeline.timeSignature || "4/4";
@@ -18064,6 +18139,7 @@ function drawRest(ctx, x, staffTop, duration) {
         `곡 제목: ${song.title || "-"}<br>박자: ${timeline.timeSignature || "4/4"} (BPM ${baseBpm})<br>전체 음표수: ${timeline.notes.length}개`;
 
       setStatus("practiceStatus", "5초 카운트 후 시작 · 마이크 판정중", "ok");
+      let hasShownMicJudgingOnly = false;
 
       function loop(now) {
         if (!practiceRunning) return;
@@ -18075,6 +18151,10 @@ function drawRest(ctx, x, staffTop, duration) {
         }
 
         const elapsedMs = (now - currentPracticeStartedAt) - countdownMs;
+        if (!hasShownMicJudgingOnly && elapsedMs >= 0) {
+          hasShownMicJudgingOnly = true;
+          setStatus("practiceStatus", "마이크 판정중", "ok");
+        }
         drawTimelineNotes(elapsedMs, timeline, now);
 
         if (elapsedMs >= timeline.totalMs + 1500) {
@@ -18099,13 +18179,14 @@ function drawRest(ctx, x, staffTop, duration) {
       practiceAnim = practiceAnimationFrameId;
     }
 
-    function setPracticePauseOverlay(text, visible = true) {
+    function setPracticePauseOverlay(text, visible = true, mode = "") {
       const overlay = document.getElementById("practicePauseOverlay");
       const overlayText = document.getElementById("practicePauseOverlayText");
       if (!overlay || !overlayText) return;
 
       overlayText.textContent = text;
       overlay.classList.toggle("visible", visible);
+      overlay.classList.toggle("countdown", mode === "countdown");
       overlay.setAttribute("aria-hidden", visible ? "false" : "true");
     }
 
@@ -18114,7 +18195,79 @@ function drawRest(ctx, x, staffTop, duration) {
       if (!overlay) return;
 
       overlay.classList.remove("visible");
+      overlay.classList.remove("countdown");
       overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function getCountInNumbersByTimeSignature(timeSignature) {
+      const raw = String(timeSignature || "4/4").trim();
+      if (raw === "3/4" || raw === "6/8") return [3, 2, 1];
+      return [4, 3, 2, 1];
+    }
+
+    function getPracticeElapsedMsForJump() {
+      if (!currentTimeline) return 0;
+      if (isMeasureJumpPaused) return resumeMsAfterJump;
+
+      const now = practicePaused && practicePausedAt ? practicePausedAt : performance.now();
+      return Math.max(0, (now - currentPracticeStartedAt) - currentCountdownMs);
+    }
+
+    function getMeasureStartPoints(timeline) {
+      if (!timeline) return [];
+
+      const points = [{ beat: 0, timeMs: 0 }];
+      const manualBarlines = Array.isArray(timeline.barlines) ? timeline.barlines : [];
+
+      if (manualBarlines.length) {
+        manualBarlines.forEach((barline) => {
+          const beat = Number(barline.beat);
+          const timeMs = Number(barline.timeMs);
+          if (!Number.isFinite(beat) || !Number.isFinite(timeMs) || timeMs <= 0) return;
+          if (timeMs >= timeline.totalMs) return;
+          points.push({ beat, timeMs });
+        });
+      } else {
+        const measureBeats = Math.max(0.25, Number(timeline.measureBeats) || 4);
+        const measureMs = measureBeats * (Number(timeline.beatMs) || 600);
+        for (let timeMs = measureMs, beat = measureBeats; timeMs < timeline.totalMs - 1; timeMs += measureMs, beat += measureBeats) {
+          points.push({ beat, timeMs });
+        }
+      }
+
+      return points
+        .sort((a, b) => a.timeMs - b.timeMs)
+        .filter((point, index, list) => index === 0 || Math.abs(point.timeMs - list[index - 1].timeMs) > 1);
+    }
+
+    function setJudgedNotesBeforeElapsed(timeline, elapsedMs) {
+      const notes = Array.isArray(timeline?.scoringNotes)
+        ? timeline.scoringNotes
+        : (Array.isArray(timeline?.notes) ? timeline.notes : []);
+      const nextJudgedNoteSet = new Set();
+
+      notes.forEach((note) => {
+        if (!note?.note) return;
+        if ((Number(note.startMs) || 0) >= elapsedMs - 1) return;
+
+        const signature = getNoteSignature(note);
+        if (signature) nextJudgedNoteSet.add(signature);
+      });
+
+      judgedNoteSet = nextJudgedNoteSet;
+    }
+
+    function setMeasureJumpControls(active) {
+      const backBtn = document.querySelector(".practice-back-btn");
+      const continueBtn = document.querySelector(".practice-continue-btn");
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+
+      if (backBtn) backBtn.disabled = !practiceRunning || !currentTimeline;
+      if (continueBtn) {
+        continueBtn.classList.toggle("hidden", !active);
+        continueBtn.disabled = !active;
+      }
+      if (pauseBtn && active) pauseBtn.disabled = true;
     }
 
     function startResumeCountdown() {
@@ -18132,7 +18285,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
       if (pauseIcon) pauseIcon.textContent = "▶";
       if (pauseLabel) pauseLabel.textContent = "이어하기";
-      setPracticePauseOverlay(String(count));
+      setPracticePauseOverlay(String(count), true, "countdown");
 
       practiceResumeCountdownTimer = setInterval(() => {
         count -= 1;
@@ -18147,7 +18300,7 @@ function drawRest(ctx, x, staffTop, duration) {
           return;
         }
 
-        setPracticePauseOverlay(String(count));
+        setPracticePauseOverlay(String(count), true, "countdown");
       }, countdownMs);
     }
 
@@ -18204,6 +18357,127 @@ function drawRest(ctx, x, staffTop, duration) {
       }
 
       startResumeCountdown();
+    }
+
+    function jumpToPreviousMeasure() {
+      if (isFingeringPracticeMode()) {
+        return;
+      }
+
+      if (!practiceRunning || !currentTimeline) {
+        setStatus("practiceStatus", "연습을 시작한 뒤 사용할 수 있어요.", "");
+        return;
+      }
+
+      if (practiceResumeCountdownTimer) {
+        clearInterval(practiceResumeCountdownTimer);
+        practiceResumeCountdownTimer = null;
+      }
+      practiceResumeCounting = false;
+
+      const measureStarts = getMeasureStartPoints(currentTimeline);
+      const totalMeasureCount = Math.max(1, measureStarts.length);
+      const elapsedMs = getPracticeElapsedMsForJump();
+      const previousMeasure = [...measureStarts]
+        .reverse()
+        .find((point) => point.timeMs < elapsedMs - 8);
+
+      if (!previousMeasure) {
+        if (elapsedMs > 8) {
+          const firstMeasure = measureStarts[0] || { beat: 0, timeMs: 0 };
+          practicePaused = true;
+          practicePausedAt = performance.now();
+          isMeasureJumpPaused = true;
+          resumeMsAfterJump = firstMeasure.timeMs;
+          resumeBeatAfterJump = firstMeasure.beat;
+
+          setJudgedNotesBeforeElapsed(currentTimeline, resumeMsAfterJump);
+          drawTimelineNotes(resumeMsAfterJump, currentTimeline, performance.now());
+          hidePracticePauseOverlay();
+          setMeasureJumpControls(true);
+          setStatus("practiceStatus", `이전마디(전체 ${totalMeasureCount}마디 중 1번째 마디)로 이동했습니다. 계속 연주를 누르면 여기서부터 시작해요.`, "ok");
+          return;
+        }
+
+        setStatus("practiceStatus", "첫 마디입니다.", "");
+        return;
+      }
+
+      practicePaused = true;
+      practicePausedAt = performance.now();
+      isMeasureJumpPaused = true;
+      resumeMsAfterJump = previousMeasure.timeMs;
+      resumeBeatAfterJump = previousMeasure.beat;
+
+      setJudgedNotesBeforeElapsed(currentTimeline, resumeMsAfterJump);
+      drawTimelineNotes(resumeMsAfterJump, currentTimeline, performance.now());
+      hidePracticePauseOverlay();
+      setMeasureJumpControls(true);
+
+      const pauseBtn = document.querySelector(".practice-pause-btn");
+      const pauseLabel = pauseBtn ? pauseBtn.querySelector(".practice-btn-label") : null;
+      const pauseIcon = pauseBtn ? pauseBtn.querySelector(".practice-btn-icon") : null;
+      if (pauseLabel) pauseLabel.textContent = "일시정지";
+      if (pauseIcon) pauseIcon.textContent = "⏸";
+
+      const previousMeasureIndex = measureStarts.findIndex((point) => point === previousMeasure);
+      const displayMeasureNumber = previousMeasureIndex >= 0 ? previousMeasureIndex + 1 : 1;
+      setStatus("practiceStatus", `이전마디(전체 ${totalMeasureCount}마디 중 ${displayMeasureNumber}번째 마디)로 이동했습니다. 계속 연주를 누르면 여기서부터 시작해요.`, "ok");
+    }
+
+    function continueFromMeasureJump() {
+      if (!isMeasureJumpPaused || !practiceRunning || !currentTimeline || practiceResumeCounting) {
+        return;
+      }
+
+      const continueBtn = document.querySelector(".practice-continue-btn");
+      const backBtn = document.querySelector(".practice-back-btn");
+      if (continueBtn) continueBtn.disabled = true;
+      if (backBtn) backBtn.disabled = true;
+
+      const countInNumbers = getCountInNumbersByTimeSignature(currentTimeline.timeSignature || "4/4");
+      const countdownMs = Math.max(120, Number(currentTimeline.beatMs) || 800);
+      let countIndex = 0;
+
+      practiceResumeCounting = true;
+      setPracticePauseOverlay(String(countInNumbers[countIndex]), true, "countdown");
+
+      practiceResumeCountdownTimer = setInterval(() => {
+        countIndex += 1;
+
+        if (countIndex >= countInNumbers.length) {
+          clearInterval(practiceResumeCountdownTimer);
+          practiceResumeCountdownTimer = null;
+          practiceResumeCounting = false;
+
+          currentPracticeStartedAt = performance.now() - resumeMsAfterJump - currentCountdownMs;
+          practicePaused = false;
+          practicePausedAt = 0;
+          practicePausedDuration = 0;
+          isMeasureJumpPaused = false;
+          resumeMsAfterJump = 0;
+          resumeBeatAfterJump = 0;
+
+          hidePracticePauseOverlay();
+          setMeasureJumpControls(false);
+
+          const pauseBtn = document.querySelector(".practice-pause-btn");
+          if (pauseBtn) {
+            pauseBtn.disabled = false;
+            const pauseLabel = pauseBtn.querySelector(".practice-btn-label");
+            const pauseIcon = pauseBtn.querySelector(".practice-btn-icon");
+            if (pauseLabel) pauseLabel.textContent = "일시정지";
+            else pauseBtn.textContent = "일시정지";
+            if (pauseIcon) pauseIcon.textContent = "⏸";
+          }
+
+          if (backBtn) backBtn.disabled = false;
+          setStatus("practiceStatus", "연습 진행 중", "ok");
+          return;
+        }
+
+        setPracticePauseOverlay(String(countInNumbers[countIndex]), true, "countdown");
+      }, countdownMs);
     }
 
     function updatePracticeRecordButton() {
@@ -18365,6 +18639,9 @@ function drawRest(ctx, x, staffTop, duration) {
       practicePaused = false;
       practicePausedAt = 0;
       practicePausedDuration = 0;
+      isMeasureJumpPaused = false;
+      resumeMsAfterJump = 0;
+      resumeBeatAfterJump = 0;
       if (practiceResumeCountdownTimer) {
         clearInterval(practiceResumeCountdownTimer);
         practiceResumeCountdownTimer = null;
@@ -18401,6 +18678,8 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const startBtn = document.querySelector(".practice-start-btn");
       if (startBtn) startBtn.disabled = false;
+
+      setMeasureJumpControls(false);
 
       updatePracticeRecordButton();
 
@@ -20028,6 +20307,42 @@ function getCurrentBonusIslandId(level) {
   return 1;
 }
 
+function escapeBonusText(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatBonusSongTitle(title) {
+  const rawTitle = String(title || "").trim().replace(/\s+/g, " ");
+  const words = rawTitle.split(" ").filter(Boolean);
+
+  if (words.length < 2 || rawTitle.length <= 7) {
+    return escapeBonusText(rawTitle);
+  }
+
+  let bestBreakIndex = 1;
+  let bestBalance = Infinity;
+
+  for (let i = 1; i < words.length; i += 1) {
+    const leftLength = words.slice(0, i).join("").length;
+    const rightLength = words.slice(i).join("").length;
+    const balance = Math.abs(leftLength - rightLength);
+
+    if (balance < bestBalance) {
+      bestBalance = balance;
+      bestBreakIndex = i;
+    }
+  }
+
+  const firstLine = words.slice(0, bestBreakIndex).join(" ");
+  const secondLine = words.slice(bestBreakIndex).join(" ");
+  return `${escapeBonusText(firstLine)}<br>${escapeBonusText(secondLine)}`;
+}
+
 function prepareBonusSong(songId) {
   if (isBonusBoatSailing) {
     return;
@@ -20181,7 +20496,7 @@ function renderBonusMap() {
             ${isBonusBoatSailing ? `disabled aria-disabled="true" title="배가 도착하면 연주할 수 있어요."` : `aria-disabled="false"`}
           >
             <span class="bonusSongPlay">▶</span>
-            <span>${song.title}</span>
+            <span class="bonusSongTitle">${formatBonusSongTitle(song.title)}</span>
           </button>
         `)
         .join("")
