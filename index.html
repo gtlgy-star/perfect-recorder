@@ -16569,7 +16569,7 @@ window.addEventListener("popstate", function (event) {
       return value >= border;
     }
 
-   function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth) {
+   function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth, options = {}) {
   const beat = Number(noteObj.beat || 1);
   const NOTE_COLOR = "#1e2a44";
   const NOTE_BAR_COLOR = "#93c5fd";
@@ -16590,7 +16590,14 @@ window.addEventListener("popstate", function (event) {
   const isDotted = [0.75, 1.5, 3].some((value) => Math.abs(beat - value) < 0.001);
   const stemDown = shouldStemDown(noteObj.note);
 
-  const safeBodyWidth = Math.max(12, Number(bodyWidth) || 12);
+  const maxRightX = Number(options.maxRightX);
+  const hasRightLimit = Number.isFinite(maxRightX);
+  const rightLimit = hasRightLimit ? maxRightX - 6 : Infinity;
+
+  const rawBodyWidth = Math.max(12, Number(bodyWidth) || 12);
+  const safeBodyWidth = hasRightLimit
+    ? Math.max(0, Math.min(rawBodyWidth, rightLimit - (noteX + 18) - 5))
+    : rawBodyWidth;
   const NOTE_NAME_Y = bottomLineY + 54;
   const BAR_BOTTOM_LIMIT = NOTE_NAME_Y - 18;
   const NOTE_MIN_Y = NOTE_NAME_Y - 24;
@@ -16683,7 +16690,7 @@ window.addEventListener("popstate", function (event) {
       const stemBottomY = stemEndY - 1;
       drawDownFlag(stemBottomY);
       if (isSixteenth) {
-        drawDownFlag(stemBottomY + 10);
+        drawDownFlag(stemBottomY - stemLength / 3);
       }
       ctx.restore();
     } else {
@@ -16715,7 +16722,7 @@ window.addEventListener("popstate", function (event) {
       const stemTopY = stemEndY + 1;
       drawUpFlag(stemTopY);
       if (isSixteenth) {
-        drawUpFlag(stemTopY - 10);
+        drawUpFlag(stemTopY + stemLength / 3);
       }
       ctx.restore();
     }
@@ -17049,7 +17056,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const judgeX = JUDGMENT_LINE_X;
       const beatMs = timeline.beatMs;
-      const STAFF_X_SCALE = 1.2;
+      const STAFF_X_SCALE = 1.6;
       const pxPerBeat = 80 * STAFF_X_SCALE;
       const pxPerMs = pxPerBeat / beatMs;
 
@@ -17086,13 +17093,17 @@ function drawRest(ctx, x, staffTop, duration) {
         ctx.stroke();
       }
 
-      if (barlineTimes.length) {
-        barlineTimes.forEach(drawBarlineAt);
-      } else {
-        for (let t = 0; t < timeline.totalMs - 1; t += measureMs) {
-          drawBarlineAt(t);
-        }
-      }
+      const renderBarlineTimes = barlineTimes.length
+        ? barlineTimes
+        : (() => {
+            const times = [];
+            for (let t = 0; t < timeline.totalMs - 1; t += measureMs) {
+              times.push(t);
+            }
+            return times;
+          })();
+
+      renderBarlineTimes.forEach(drawBarlineAt);
 
       const finalBarX = judgeX + (timeline.totalMs - elapsedMs) * pxPerMs;
       if (finalBarX >= -12 && finalBarX <= canvas.width + 12) {
@@ -17145,6 +17156,31 @@ function drawRest(ctx, x, staffTop, duration) {
         return stemDownCount >= group.length / 2 ? "above" : "below";
       }
 
+      function getNoteGlyphRightMargin(noteObj) {
+        if (!noteObj?.note) return 32;
+
+        const beat = Number(noteObj?.beat || 1);
+        const stemDown = shouldStemDown(noteObj?.note);
+        const isEighth = beat < 1;
+        const isDotted = [0.75, 1.5, 3].some((value) => Math.abs(beat - value) < 0.001);
+
+        return Math.max(
+          isEighth && !stemDown ? 42 : 18,
+          isDotted ? 31 : 18
+        );
+      }
+
+      function constrainNoteXToMeasure(noteObj, noteX, maxRightX) {
+        if (!Number.isFinite(maxRightX)) return noteX;
+
+        const rightLimit = maxRightX - 6;
+        const glyphRightMargin = getNoteGlyphRightMargin(noteObj);
+
+        return noteX + glyphRightMargin > rightLimit
+          ? noteX - (noteX + glyphRightMargin - rightLimit)
+          : noteX;
+      }
+
       function drawTieAndSlurMarks(noteMetrics) {
         const tieGroups = new Map();
         const slurGroups = new Map();
@@ -17188,13 +17224,17 @@ function drawRest(ctx, x, staffTop, duration) {
       const noteMetrics = timeline.notes.map(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
-        const noteX = x + noteStartOffset;
+        const nextBarlineTime = renderBarlineTimes.find((timeMs) => timeMs > n.startMs + 0.5);
+        const maxRightX = Number.isFinite(nextBarlineTime)
+          ? judgeX + (nextBarlineTime - elapsedMs) * pxPerMs
+          : Infinity;
+        const noteX = constrainNoteXToMeasure(n, x + noteStartOffset, maxRightX);
         const y = n.note ? noteToY(n.note) : topLineY + 40;
 
-        return { note: n, x, w, noteX, y };
+        return { note: n, x, w, noteX, y, maxRightX };
       });
 
-      noteMetrics.forEach(({ note: n, x, w, noteX, y }) => {
+      noteMetrics.forEach(({ note: n, x, w, noteX, y, maxRightX }) => {
 
         if (x > canvas.width + 80) return;
         if (x + w < judgeX - 20) return;
@@ -17206,7 +17246,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
         const bodyWidth = getNoteBodyWidthByBeat(n.beat);
 
-        drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth);
+        drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth, { maxRightX });
       });
 
       drawTieAndSlurMarks(noteMetrics);
