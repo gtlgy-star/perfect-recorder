@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxONo5EESEmo1E8PpxA1IDk08XEJCAourRMBA3vFDseHz1gbLyWqDem4yG6uVhJN4a-/exec";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLRVuyn0p_J78e9j77rFpBULtO01q6zok-Z0rkgtRueqFbx5Z10gnXvX62hXtifOSQig/exec";
 const SONGS_CACHE_KEY = "recorder_student_songs_cache_v2";
 const SONGS_CACHE_TIME_KEY = "recorder_student_songs_cache_time_v1";
 const SONGS_CACHE_MAX_AGE_MS = 1000 * 60 * 10;
@@ -52,11 +52,18 @@ const app = {
         body: JSON.stringify({ action, payload })
       });
 
-      if (!res.ok) throw new Error(`서버 오류 (${res.status})`);
+      if (!res.ok) {
+        const error = new Error(`서버 오류 (${res.status})`);
+        error.status = res.status;
+        error.statusText = res.statusText;
+        throw error;
+      }
 
       const data = await res.json();
       if (data?.ok === false) {
-        throw new Error(data.error || "요청 실패");
+        const error = new Error(data.error || data.message || "API Error");
+        error.response = data;
+        throw error;
       }
 
       return data;

@@ -5956,7 +5956,7 @@ body.theme-light .challenge-my-ranking {
 .next-mission-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
 .next-mission-card {
@@ -6726,7 +6726,7 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
     inset 0 1px 0 rgba(255,255,255,0.18),
     0 0 16px rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.96);
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   flex: 0 0 32px;
 }
@@ -8459,7 +8459,7 @@ body.theme-light .menuTitle {
   width: 100%;
   max-width: inherit;
   margin: 0 auto 16px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 #screen-menu > * {
@@ -8502,7 +8502,8 @@ body.theme-light .menuTitle {
   align-items: center;
   gap: 18px;
   position: relative;
-  overflow: hidden;
+  z-index: 5;
+  overflow: visible;
 }
 
 #screen-menu .status-left,
@@ -8530,21 +8531,20 @@ body.theme-light .menuTitle {
 }
 
 #screen-menu .missionDock {
-  display: grid;
-  grid-template-columns: auto 0fr;
-  align-items: center;
-  gap: 0;
-  max-width: 420px;
-  min-width: 180px;
+  --daily-mission-button-width: 180px;
+  --daily-mission-card-width: 280px;
+  --daily-mission-gap: 10px;
+  display: block;
+  width: var(--daily-mission-button-width);
+  max-width: 100%;
+  min-width: var(--daily-mission-button-width);
   justify-self: end;
-  transition:
-    grid-template-columns 0.28s ease,
-    gap 0.28s ease;
+  position: relative;
+  z-index: 24;
 }
 
 #screen-menu .missionDock.open {
-  grid-template-columns: auto minmax(220px, 1fr);
-  gap: 12px;
+  z-index: 32;
 }
 
 #screen-menu .mission-toggle,
@@ -8559,12 +8559,34 @@ body.theme-light .menuTitle {
   align-items: center;
   column-gap: 10px;
   row-gap: 2px;
+  width: auto;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(188, 139, 255, 0.42);
   text-align: left;
-  justify-self: end;
+  letter-spacing: 0;
   white-space: nowrap;
   transition:
     transform 0.28s ease,
     box-shadow 0.28s ease;
+}
+
+#screen-menu .missionDock .mission-toggle,
+#screen-menu .missionDock .mission-header {
+  width: var(--daily-mission-button-width);
+  min-width: var(--daily-mission-button-width);
+  max-width: var(--daily-mission-button-width);
+  position: relative;
+  z-index: 4;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.28), transparent 34%),
+    linear-gradient(135deg, rgba(132, 108, 255, 0.96), rgba(103, 72, 221, 0.96) 46%, rgba(71, 44, 162, 0.98));
+  border-color: rgba(208, 184, 255, 0.62);
+  box-shadow:
+    0 12px 24px rgba(67, 47, 166, 0.24),
+    0 0 20px rgba(150, 115, 255, 0.32),
+    inset 0 1px 0 rgba(255,255,255,0.36);
 }
 
 #screen-menu .mission-main {
@@ -8588,7 +8610,7 @@ body.theme-light .menuTitle {
 }
 
 #screen-menu .missionDock.open .mission-toggle {
-  transform: translateX(-4px);
+  transform: translateX(calc(0px - var(--daily-mission-card-width) - var(--daily-mission-gap)));
 }
 
 #screen-menu #missionPanel {
@@ -8668,101 +8690,146 @@ body.theme-light #screen-menu #missionPanel {
 }
 
 #screen-menu .daily-mission-card {
-  margin: 10px 0 8px;
-  padding: 14px 16px;
-  border-radius: 20px;
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 2;
+  width: var(--daily-mission-card-width);
+  min-width: var(--daily-mission-card-width);
+  max-width: var(--daily-mission-card-width);
+  box-sizing: border-box;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-50%) translateX(-14px) scaleX(0.96);
+  transform-origin: left center;
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 16px;
   background:
     radial-gradient(circle at 14% 20%, rgba(255,255,255,0.2), transparent 18%),
-    linear-gradient(180deg, rgba(32, 66, 118, 0.78), rgba(13, 30, 64, 0.9));
-  border: 1px solid rgba(176, 226, 255, 0.3);
+    linear-gradient(180deg, rgba(43, 39, 106, 0.92), rgba(19, 21, 64, 0.96));
+  border: 0 solid rgba(190, 150, 255, 0.46);
   box-shadow:
     0 14px 30px rgba(2, 8, 18, 0.22),
-    0 0 24px rgba(94, 219, 255, 0.12),
+    0 0 24px rgba(150, 115, 255, 0.18),
     inset 0 1px 0 rgba(255,255,255,0.16);
+  transition:
+    opacity 0.24s ease,
+    transform 0.3s ease,
+    max-height 0.3s ease,
+    padding 0.3s ease,
+    border-width 0.3s ease;
+}
+
+#screen-menu .daily-mission-card.open {
+  display: block;
+  max-height: 150px;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scaleX(1);
+  padding: 8px 10px;
+  border-width: 1px;
+}
+
+#screen-menu .daily-mission-popover {
+  pointer-events: auto;
 }
 
 #screen-menu .daily-mission-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 #screen-menu .daily-mission-title {
-  font-size: 16px;
-  line-height: 1.25;
+  font-size: 13px;
+  line-height: 1.15;
   font-weight: 950;
   color: #f4fcff;
 }
 
 #screen-menu .daily-mission-sub {
-  margin-top: 3px;
-  font-size: 12px;
-  line-height: 1.35;
-  font-weight: 800;
-  color: rgba(226, 241, 255, 0.76);
+  display: none;
 }
 
 #screen-menu .daily-mission-bonus {
-  flex: 0 0 auto;
-  min-width: 54px;
-  padding: 8px 10px;
-  border-radius: 16px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 950;
-  color: #12334f;
-  background: linear-gradient(135deg, #fff0a8, #75f0d5);
-  box-shadow:
-    0 8px 18px rgba(64, 228, 198, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.78);
+  display: none;
+}
+
+#screen-menu .daily-mission-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
 }
 
 #screen-menu .daily-mission-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 3px;
+  margin-top: 0;
+}
+
+#screen-menu .daily-mission-action-side {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #screen-menu .daily-mission-item {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   min-width: 0;
-  min-height: 34px;
-  padding: 8px 10px;
-  border-radius: 14px;
-  background: rgba(7, 17, 38, 0.34);
-  border: 1px solid rgba(196, 238, 255, 0.16);
+  min-height: 18px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
   color: rgba(232, 245, 255, 0.78);
   font-size: 12px;
-  line-height: 1.3;
+  line-height: 1.15;
   font-weight: 800;
 }
 
-#screen-menu .daily-mission-item.done {
-  background: rgba(109, 245, 207, 0.18);
-  border-color: rgba(139, 255, 225, 0.38);
-  color: #f4fffb;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+#screen-menu .daily-mission-text,
+#screen-menu .daily-mission-item > span:last-child {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
+#screen-menu .daily-mission-item.done {
+  background: transparent;
+  border-color: transparent;
+  color: #f4fffb;
+  box-shadow: none;
+}
+
+#screen-menu .daily-mission-checkbox,
 #screen-menu .daily-mission-check {
   flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  border-radius: 7px;
+  width: 12px;
+  height: 12px;
+  margin-right: 0;
+  border-radius: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(196, 238, 255, 0.32);
   background: rgba(255,255,255,0.07);
   color: rgba(232, 245, 255, 0.62);
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1;
 }
 
+#screen-menu .daily-mission-item.done .daily-mission-checkbox,
 #screen-menu .daily-mission-item.done .daily-mission-check {
   border-color: rgba(151, 255, 224, 0.66);
   background: linear-gradient(135deg, #8dffdf, #66d0ff);
@@ -8770,9 +8837,10 @@ body.theme-light #screen-menu #missionPanel {
 }
 
 #screen-menu .daily-mission-note {
-  margin-top: 9px;
+  display: none;
+  margin-top: 0;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.1;
   font-weight: 800;
   color: rgba(226, 241, 255, 0.72);
 }
@@ -8786,36 +8854,112 @@ body.theme-light #screen-menu #missionPanel {
 
 #screen-menu .daily-mission-claim-btn {
   appearance: none;
-  border: 1px solid rgba(255, 248, 186, 0.66);
-  border-radius: 14px;
-  padding: 8px 13px;
-  min-height: 34px;
-  color: #17314d;
-  background: linear-gradient(135deg, #fff2a8, #79f2d7 48%, #79d7ff);
+  width: 68px;
+  min-width: 68px;
+  max-width: 68px;
+  height: 64px;
+  margin: 0;
+  padding: 5px 4px;
+  border: 1px solid rgba(190, 245, 255, 0.85);
+  border-radius: 16px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.42), transparent 28%),
+    linear-gradient(135deg, rgba(74, 211, 255, 0.95), rgba(122, 82, 255, 0.95));
   box-shadow:
-    0 8px 18px rgba(64, 228, 198, 0.2),
-    0 0 16px rgba(255, 231, 126, 0.22),
-    inset 0 1px 0 rgba(255,255,255,0.78);
+    0 0 14px rgba(92, 214, 255, 0.45),
+    0 6px 14px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.45);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
   font-size: 12px;
-  line-height: 1.2;
-  font-weight: 950;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
   cursor: pointer;
   transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 #screen-menu .daily-mission-claim-btn:hover:not(:disabled) {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
   transform: translateY(-1px);
   box-shadow:
-    0 10px 22px rgba(64, 228, 198, 0.26),
-    0 0 18px rgba(255, 231, 126, 0.3),
-    inset 0 1px 0 rgba(255,255,255,0.84);
+    0 0 18px rgba(92, 214, 255, 0.58),
+    0 8px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.52);
+}
+
+#screen-menu .daily-mission-claim-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
 }
 
 #screen-menu .daily-mission-claim-btn:disabled {
   opacity: 0.72;
-  cursor: wait;
+  cursor: default;
+  filter: grayscale(0.1);
   transform: none;
+}
+
+#screen-menu .daily-mission-claim-btn .claim-line {
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.05;
+}
+
+#screen-menu .daily-mission-claim-btn .claim-line-strong {
+  color: #fff6a8;
+  font-size: 12.5px;
+  text-shadow: 0 0 8px rgba(255, 240, 120, 0.75);
+}
+
+#screen-menu .daily-mission-complete-badge {
+  width: 68px;
+  min-width: 68px;
+  max-width: 68px;
+  height: 64px;
+  margin: 0;
+  padding: 5px 4px;
+  border: 1px solid rgba(180, 255, 220, 0.9);
+  border-radius: 16px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.36), transparent 30%),
+    linear-gradient(135deg, rgba(72, 230, 170, 0.96), rgba(46, 168, 255, 0.92));
+  box-shadow:
+    0 0 14px rgba(100, 255, 205, 0.42),
+    0 6px 14px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.45);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  font-size: 12px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+#screen-menu .daily-mission-complete-badge .complete-line {
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#screen-menu .daily-mission-complete-badge .complete-line-strong {
+  color: #fff6a8;
+  font-size: 12.5px;
+  text-shadow: 0 0 8px rgba(255, 240, 120, 0.75);
 }
 
 #screen-menu .daily-mission-claimed {
@@ -8843,17 +8987,18 @@ body.theme-light #screen-menu .daily-mission-note {
 }
 
 body.theme-light #screen-menu .daily-mission-item {
-  background: rgba(255,255,255,0.62);
-  border-color: rgba(76, 134, 200, 0.2);
+  background: transparent;
+  border-color: transparent;
   color: rgba(34, 61, 92, 0.74);
 }
 
 body.theme-light #screen-menu .daily-mission-item.done {
-  background: rgba(113, 230, 196, 0.22);
-  border-color: rgba(50, 178, 147, 0.32);
+  background: transparent;
+  border-color: transparent;
   color: #1b594b;
 }
 
+body.theme-light #screen-menu .daily-mission-checkbox,
 body.theme-light #screen-menu .daily-mission-check {
   border-color: rgba(76, 134, 200, 0.24);
   color: rgba(34, 61, 92, 0.54);
@@ -8927,11 +9072,6 @@ body.theme-light #screen-menu .daily-mission-claimed {
     border-radius: 18px;
   }
 
-  #screen-menu .daily-mission-list {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
   #screen-menu .menuBonusBtn .menuBtnSub {
     font-size: 12px;
   }
@@ -8970,15 +9110,18 @@ body.theme-light #screen-menu .daily-mission-claimed {
 
   #screen-menu .missionDock,
   #screen-menu .missionDock.open {
+    --daily-mission-button-width: 100%;
+    --daily-mission-card-width: 100%;
     width: 100%;
+    min-width: 0;
     max-width: none;
-    grid-template-columns: 1fr;
-    gap: 10px;
   }
 
   #screen-menu .mission-toggle,
   #screen-menu .mission-header {
     width: 100%;
+    max-width: none;
+    min-width: 0;
     justify-self: stretch;
   }
 
@@ -8990,6 +9133,22 @@ body.theme-light #screen-menu .daily-mission-claimed {
   #screen-menu .missionDock.open #missionPanel {
     max-width: none;
     width: 100%;
+  }
+
+  #screen-menu .daily-mission-card {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    transform: translateY(-8px);
+    transform-origin: top center;
+  }
+
+  #screen-menu .daily-mission-card.open {
+    transform: translateY(0);
   }
 }
 
@@ -10370,12 +10529,11 @@ body.theme-light .practiceStaffSlot {
   #screen-menu .missionDock,
   #screen-menu .missionDock.open {
     max-width: none;
-    min-width: 0;
   }
 
   #screen-menu .missionDock.open {
-    grid-template-columns: auto minmax(180px, 1fr);
-    gap: 8px;
+    --daily-mission-card-width: 260px;
+    --daily-mission-gap: 8px;
   }
 
   #screen-menu .mission-toggle,
@@ -12911,45 +13069,29 @@ body.theme-light .readyCardHint {
 
         <!-- 오른쪽 -->
         <div class="missionDock">
-          <div class="mission-header mission-toggle" onclick="toggleMission()">
+          <button type="button" class="mission-header mission-toggle" onclick="toggleDailyMissionCard()">
             <span class="mission-main">🎯 오늘의 미션</span>
             <span class="mission-bonus">완료 보너스 +30</span>
             <span id="missionArrow">▶</span>
-          </div>
+          </button>
 
-          <div class="mission-panel missionPanel collapsed" id="missionPanel">
-            <div class="mission-body" id="missionBody">
-
-              <div class="mission-item done">
-                기본 운지 1회 보기
-                <span class="mission-score">+3</span>
+          <div id="dailyMissionCard" class="daily-mission-card daily-mission-popover" style="display:none;">
+            <div class="daily-mission-head">
+              <div>
+                <div class="daily-mission-title">🎯 오늘의 미션</div>
+                <div class="daily-mission-sub" id="dailyMissionSummary"></div>
               </div>
-
-              <div class="mission-item progress">
-                운지법 연습 2/3
-                <span class="mission-score">+6</span>
+              <div class="daily-mission-bonus" id="dailyMissionBonus"></div>
+            </div>
+            <div class="daily-mission-body">
+              <div id="dailyMissionList" class="daily-mission-list"></div>
+              <div class="daily-mission-action-side" id="dailyMissionActionSide">
+                <div class="daily-mission-note" id="dailyMissionNote"></div>
               </div>
-
-              <div class="mission-item">
-                짧은 곡 0/1
-                <span class="mission-score">+10</span>
-              </div>
-
             </div>
           </div>
         </div>
 
-      </div>
-      <div id="dailyMissionCard" class="daily-mission-card" style="display:none;">
-        <div class="daily-mission-head">
-          <div>
-            <div class="daily-mission-title">🎯 오늘의 미션</div>
-            <div class="daily-mission-sub" id="dailyMissionSummary">오늘의 미션을 불러오는 중...</div>
-          </div>
-          <div class="daily-mission-bonus" id="dailyMissionBonus">+30</div>
-        </div>
-        <div id="dailyMissionList" class="daily-mission-list"></div>
-        <div class="daily-mission-note" id="dailyMissionNote">3개 모두 완료하면 성장 포인트 +30</div>
       </div>
       <hr style="margin:6px 0 8px;">
       <div class="menuButtonGrid">
@@ -13886,6 +14028,7 @@ body.theme-light .readyCardHint {
     const activityGrowthRequestState = {};
     let dailyMissionState = null;
     let dailyMissionBonusClaiming = false;
+    const localDailyMissionCompletedTypes = new Set();
     let stampAudio = null;
     let stampAudioMissing = false;
     let stampFxAudioCtx = null;
@@ -14034,31 +14177,205 @@ body.theme-light .readyCardHint {
         const role = String(appState?.user?.role || "").trim().toUpperCase();
         if (!appState || !appState.user || !appState.user.userId || role !== "STUDENT") {
           dailyMissionState = null;
-          renderDailyMissions(null);
+          if (isDailyMissionCardOpen()) renderDailyMissions(null);
           return null;
         }
 
-        renderDailyMissions({ loading: true });
+        if (isDailyMissionCardOpen()) {
+          renderDailyMissions(dailyMissionState || { loading: true });
+        }
 
         const result = await appState.api("getDailyMissions", {
           userId: appState.user.userId
         });
 
         if (result && result.ok) {
-          dailyMissionState = result;
-          renderDailyMissions(result);
-          return result;
+          const previousDateKey = getDailyMissionDateKey(dailyMissionState);
+          const nextDateKey = getDailyMissionDateKey(result);
+          if (previousDateKey && nextDateKey && previousDateKey !== nextDateKey) {
+            localDailyMissionCompletedTypes.clear();
+          }
+
+          const mergedResult = mergeDailyMissionLocalCompletions(result);
+          dailyMissionState = mergedResult;
+          renderDailyMissions(mergedResult);
+          return mergedResult;
         }
 
         dailyMissionState = null;
-        renderDailyMissions(null);
+        if (isDailyMissionCardOpen()) renderDailyMissions(null);
         return null;
       } catch (err) {
         dailyMissionState = null;
         console.warn("[DAILY MISSIONS ERROR]", err);
-        renderDailyMissions(null);
+        if (isDailyMissionCardOpen()) renderDailyMissions(null);
         return null;
       }
+    }
+
+    function isDailyMissionCardOpen() {
+      const card = document.getElementById("dailyMissionCard");
+      return !!card && card.classList.contains("open");
+    }
+
+    function setDailyMissionButtonState(open, data) {
+      const dock = document.querySelector("#screen-menu .missionDock");
+      const arrow = document.getElementById("missionArrow");
+      const bonus = document.querySelector("#screen-menu .missionDock .mission-bonus");
+
+      if (dock) dock.classList.toggle("open", !!open);
+      if (arrow) arrow.textContent = open ? "▼" : "▶";
+
+      if (!bonus) return;
+      const missions = Array.isArray(data?.missions) ? data.missions : [];
+      if (!missions.length) {
+        bonus.textContent = "완료 보너스 +30";
+        return;
+      }
+
+      const totalCount = Number.isFinite(Number(data.totalCount)) ? Number(data.totalCount) : missions.length;
+      const completedCount = Number.isFinite(Number(data.completedCount))
+        ? Number(data.completedCount)
+        : missions.filter((mission) => !!mission?.completed).length;
+      const bonusExp = Number.isFinite(Number(data.bonusExp)) ? Number(data.bonusExp) : 30;
+      bonus.textContent = `${Math.max(0, completedCount)}/${Math.max(1, totalCount)} 완료 · +${bonusExp}`;
+    }
+
+    function openDailyMissionCard() {
+      const card = document.getElementById("dailyMissionCard");
+      if (!card) return;
+
+      card.style.display = "block";
+      card.getBoundingClientRect();
+      card.classList.add("open");
+      setDailyMissionButtonState(true, dailyMissionState);
+      renderDailyMissions(dailyMissionState || { loading: true });
+      loadDailyMissions();
+    }
+
+    function closeDailyMissionCard() {
+      const card = document.getElementById("dailyMissionCard");
+      if (!card) return;
+
+      card.classList.remove("open");
+      setDailyMissionButtonState(false, dailyMissionState);
+      window.setTimeout(() => {
+        if (!card.classList.contains("open")) {
+          card.style.display = "none";
+        }
+      }, 320);
+    }
+
+    function toggleDailyMissionCard() {
+      if (isDailyMissionCardOpen()) {
+        closeDailyMissionCard();
+      } else {
+        openDailyMissionCard();
+      }
+    }
+
+    window.openDailyMissionCard = openDailyMissionCard;
+    window.closeDailyMissionCard = closeDailyMissionCard;
+    window.toggleDailyMissionCard = toggleDailyMissionCard;
+
+    function normalizeActivityTypeForMission(value) {
+      return String(value || "").trim().toUpperCase();
+    }
+
+    function getMissionActivityType(mission) {
+      return normalizeActivityTypeForMission(
+        mission?.activityType ||
+        mission?.type ||
+        mission?.activity ||
+        mission?.missionType ||
+        ""
+      );
+    }
+
+    function getDailyMissionDateKey(data) {
+      return String(data?.dateKey || data?.missionDate || data?.date || data?.todayKey || "").trim();
+    }
+
+    function updateDailyMissionCompletionSummary() {
+      if (!dailyMissionState || !Array.isArray(dailyMissionState.missions)) return;
+
+      const completedCount = dailyMissionState.missions.filter((mission) => mission && mission.completed === true).length;
+      dailyMissionState.completedCount = completedCount;
+      dailyMissionState.totalCount = dailyMissionState.missions.length;
+      dailyMissionState.allCompleted = completedCount >= dailyMissionState.missions.length;
+    }
+
+    function mergeDailyMissionLocalCompletions(serverData) {
+      if (!serverData || !Array.isArray(serverData.missions)) return serverData;
+
+      const previousCompletedTypes = new Set();
+
+      if (dailyMissionState && Array.isArray(dailyMissionState.missions)) {
+        dailyMissionState.missions.forEach((mission) => {
+          if (mission && mission.completed === true) {
+            const type = getMissionActivityType(mission);
+            if (type) previousCompletedTypes.add(type);
+          }
+        });
+      }
+
+      const mergedMissions = serverData.missions.map((mission) => {
+        const type = getMissionActivityType(mission);
+        const completed = mission?.completed === true
+          || (type && localDailyMissionCompletedTypes.has(type))
+          || (type && previousCompletedTypes.has(type));
+
+        return {
+          ...mission,
+          completed
+        };
+      });
+
+      const completedCount = mergedMissions.filter((mission) => mission && mission.completed === true).length;
+
+      return {
+        ...serverData,
+        missions: mergedMissions,
+        completedCount,
+        totalCount: mergedMissions.length,
+        allCompleted: completedCount >= mergedMissions.length,
+        bonusClaimed: serverData.bonusClaimed === true || dailyMissionState?.bonusClaimed === true,
+        serverAllCompleted: serverData.allCompleted === true,
+        serverBonusClaimed: serverData.bonusClaimed === true
+      };
+    }
+
+    function markDailyMissionCompletedLocally(activityType) {
+      const targetType = normalizeActivityTypeForMission(activityType);
+      if (!targetType) return false;
+
+      localDailyMissionCompletedTypes.add(targetType);
+
+      if (!dailyMissionState || !Array.isArray(dailyMissionState.missions)) return false;
+
+      let changed = false;
+
+      dailyMissionState.missions = dailyMissionState.missions.map((mission) => {
+        const missionType = getMissionActivityType(mission);
+        if (mission && missionType === targetType && mission.completed !== true) {
+          changed = true;
+          return {
+            ...mission,
+            completed: true
+          };
+        }
+        return mission;
+      });
+
+      if (changed) {
+        updateDailyMissionCompletionSummary();
+
+        if (typeof renderDailyMissions === "function") {
+          renderDailyMissions(dailyMissionState);
+        }
+      }
+
+      return changed;
     }
 
     function renderDailyMissions(data) {
@@ -14069,28 +14386,43 @@ body.theme-light .readyCardHint {
       const note = document.getElementById("dailyMissionNote");
 
       if (!card || !summary || !list || !bonus || !note) return;
+      setDailyMissionButtonState(isDailyMissionCardOpen(), data || dailyMissionState);
 
       if (!data) {
-        card.style.display = "none";
-        list.innerHTML = "";
+        if (!isDailyMissionCardOpen()) {
+          card.style.display = "none";
+          card.classList.remove("open");
+          list.innerHTML = "";
+          return;
+        }
+        summary.textContent = "";
+        bonus.textContent = "";
+        note.className = "daily-mission-note";
+        note.textContent = "";
+        list.innerHTML = '<div class="daily-mission-item">미션 확인 중...</div>';
         return;
       }
 
-      card.style.display = "";
+      if (!isDailyMissionCardOpen()) {
+        card.style.display = "none";
+      }
 
       if (data.loading) {
-        summary.textContent = "오늘의 미션을 불러오는 중...";
-        bonus.textContent = "+30";
+        summary.textContent = "";
+        bonus.textContent = "";
         note.className = "daily-mission-note";
-        note.textContent = "3개 모두 완료하면 성장 포인트 +30";
-        list.innerHTML = "";
+        note.textContent = "";
+        list.innerHTML = '<div class="daily-mission-item">미션 확인 중...</div>';
         return;
       }
 
       const missions = Array.isArray(data.missions) ? data.missions.slice(0, 3) : [];
       if (!missions.length) {
-        card.style.display = "none";
-        list.innerHTML = "";
+        summary.textContent = "";
+        bonus.textContent = "";
+        note.className = "daily-mission-note";
+        note.textContent = "";
+        list.innerHTML = '<div class="daily-mission-item">미션 확인 중...</div>';
         return;
       }
 
@@ -14101,31 +14433,44 @@ body.theme-light .readyCardHint {
       const safeTotal = Math.max(1, totalCount);
       const safeCompleted = Math.max(0, Math.min(safeTotal, completedCount));
       const bonusExp = Number.isFinite(Number(data.bonusExp)) ? Number(data.bonusExp) : 30;
-      const allCompleted = data.allCompleted === true || safeCompleted >= safeTotal;
-      const canClaimBonus = data.allCompleted === true && data.bonusClaimed !== true;
-      const bonusClaimed = data.bonusClaimed === true;
+      const serverAllCompleted = data.serverAllCompleted === true;
+      const bonusClaimed = data.bonusClaimed === true || data.serverBonusClaimed === true;
+      const canClaimBonus = serverAllCompleted === true && bonusClaimed !== true;
 
-      summary.textContent = allCompleted ? "오늘의 미션을 모두 완료했어요!" : `${safeCompleted}/${safeTotal} 완료`;
-      bonus.textContent = `+${bonusExp}`;
+      summary.textContent = "";
+      bonus.textContent = "";
       note.className = "daily-mission-note";
       note.innerHTML = "";
 
       if (bonusClaimed) {
         note.classList.add("daily-mission-claimed");
-        note.textContent = "오늘의 미션 보너스를 받았어요!";
+        const completeBadge = document.createElement("div");
+        completeBadge.className = "daily-mission-complete-badge";
+        completeBadge.innerHTML = `
+          <span class="complete-line">미션</span>
+          <span class="complete-line complete-line-strong">완료</span>
+        `;
+        note.appendChild(completeBadge);
       } else if (canClaimBonus) {
         note.classList.add("daily-mission-ready");
         const claimButton = document.createElement("button");
         claimButton.type = "button";
         claimButton.className = "daily-mission-claim-btn";
         claimButton.disabled = dailyMissionBonusClaiming;
-        claimButton.textContent = dailyMissionBonusClaiming
-          ? "성장 포인트 받는 중..."
-          : `성장 포인트 +${bonusExp} 받기`;
+        if (dailyMissionBonusClaiming) {
+          claimButton.innerHTML = `
+            <span class="claim-line">성장 포인트</span>
+            <span class="claim-line claim-line-strong">받는 중...</span>
+          `;
+        } else {
+          claimButton.innerHTML = `
+            <span class="claim-line">성장</span>
+            <span class="claim-line">포인트</span>
+            <span class="claim-line claim-line-strong">받기 +${bonusExp}</span>
+          `;
+        }
         claimButton.addEventListener("click", claimDailyMissionBonus);
         note.appendChild(claimButton);
-      } else {
-        note.textContent = `3개 모두 완료하면 성장 포인트 +${bonusExp}`;
       }
 
       list.innerHTML = "";
@@ -14134,10 +14479,12 @@ body.theme-light .readyCardHint {
         item.className = `daily-mission-item${mission?.completed ? " done" : ""}`;
 
         const check = document.createElement("span");
-        check.className = "daily-mission-check";
+        check.className = "daily-mission-checkbox";
+        check.setAttribute("aria-hidden", "true");
         check.textContent = mission?.completed ? "✓" : "";
 
         const label = document.createElement("span");
+        label.className = "daily-mission-text";
         label.textContent = String(
           mission?.title ||
           mission?.label ||
@@ -14153,17 +14500,30 @@ body.theme-light .readyCardHint {
     }
 
     async function claimDailyMissionBonus() {
+      console.log("[DAILY MISSION BONUS CLICK]");
+      console.log("[DAILY MISSION BONUS USER]", app?.user);
+
       if (dailyMissionBonusClaiming) return null;
 
-      try {
-        if (typeof app === "undefined" || !app || !app.user || !app.user.userId) return null;
+      dailyMissionBonusClaiming = true;
+      renderDailyMissions(dailyMissionState);
 
-        dailyMissionBonusClaiming = true;
-        renderDailyMissions(dailyMissionState);
+      try {
+        if (typeof app === "undefined" || !app || !app.user || !app.user.userId) {
+          console.warn("[DAILY MISSION BONUS] no user");
+          return null;
+        }
+
+        console.log("[DAILY MISSION BONUS REQUEST]", {
+          userId: app?.user?.userId,
+          action: "claimDailyMissionBonus"
+        });
 
         const result = await app.api("claimDailyMissionBonus", {
           userId: app.user.userId
         });
+
+        console.log("[DAILY MISSION BONUS RESPONSE]", result);
 
         if (result && result.ok && result.growth) {
           if (typeof result.growth.expAfter === "number") {
@@ -14179,12 +14539,37 @@ body.theme-light .readyCardHint {
           if (typeof renderMenuStudentGrowthInfo === "function") {
             renderMenuStudentGrowthInfo();
           }
+        } else if (result && result.ok) {
+          console.warn("[DAILY MISSION BONUS NO GROWTH]", result);
+        } else {
+          console.warn("[DAILY MISSION BONUS NOT APPLIED]", result);
+        }
+
+        const earnedExp = Number(result?.growth?.earnedExp || result?.growth?.expDelta || result?.growth?.exp || 0);
+        const alreadyClaimed = result?.alreadyClaimed === true || result?.reason === "ALREADY_CLAIMED";
+        const claimed = result?.claimed === true || result?.bonusClaimed === true || earnedExp > 0 || alreadyClaimed;
+
+        if (claimed && dailyMissionState) {
+          dailyMissionState.bonusClaimed = true;
+          dailyMissionState.claimed = true;
+          renderDailyMissions(dailyMissionState);
+        }
+
+        if (result?.reason === "NOT_ALL_COMPLETED") {
+          console.warn("[DAILY MISSION BONUS NOT ALL COMPLETED]", result);
+          if (dailyMissionState) {
+            dailyMissionState.serverAllCompleted = false;
+            renderDailyMissions(dailyMissionState);
+          }
         }
 
         await loadDailyMissions();
         return result;
       } catch (err) {
-        console.warn("[DAILY MISSION BONUS ERROR]", err);
+        console.error("[DAILY MISSION BONUS ERROR]", err);
+        console.error("[DAILY MISSION BONUS ERROR MESSAGE]", err?.message);
+        console.error("[DAILY MISSION BONUS ERROR STACK]", err?.stack);
+        console.error("[DAILY MISSION BONUS ERROR RESPONSE]", err?.response);
         try {
           await loadDailyMissions();
         } catch (refreshErr) {
@@ -14217,6 +14602,10 @@ body.theme-light .readyCardHint {
           activityType: type
         });
 
+        if (result && result.ok && typeof markDailyMissionCompletedLocally === "function") {
+          markDailyMissionCompletedLocally(type);
+        }
+
         if (result && result.ok && result.growth) {
           if (typeof result.growth.expAfter === "number") {
             app.user.exp = result.growth.expAfter;
@@ -14238,6 +14627,9 @@ body.theme-light .readyCardHint {
           activityGrowthRequestState[type] = "done";
         } else {
           activityGrowthRequestState[type] = "";
+          if (result && result.ok && typeof loadDailyMissions === "function") {
+            loadDailyMissions();
+          }
         }
 
         return result;
@@ -15600,6 +15992,7 @@ function renderSongButtons() {
         setMenuTitleMode(true);
         if (menuScreen) menuScreen.style.display = "block";
         renderMenuStudentGrowthInfo();
+        if (typeof closeDailyMissionCard === "function") closeDailyMissionCard();
         loadDailyMissions();
       } else if (targetId === "screen-challenge") {
         if (challengeScreen) challengeScreen.style.display = "block";
@@ -20098,6 +20491,9 @@ function startBasicPractice() {
           renderGrowthResult(null);
         }
         if (saveResult && saveResult.ok && typeof loadDailyMissions === "function") {
+          if (typeof markDailyMissionCompletedLocally === "function") {
+            markDailyMissionCompletedLocally(activityType);
+          }
           loadDailyMissions();
         }
 
