@@ -16279,16 +16279,56 @@ window.addEventListener("popstate", function (event) {
       updatePracticeSpeedInfo();
     }
 
+    const KEY_SIGNATURE_ACCIDENTALS = {
+      C: {},
+      F: { b: "flat" },
+      G: { f: "sharp" },
+      D: { f: "sharp", c: "sharp" },
+      Bb: { b: "flat", e: "flat" },
+      Eb: { b: "flat", e: "flat", a: "flat" }
+    };
+
+    function normalizeKeySignature(keySignature) {
+      const raw = String(keySignature || "C").trim();
+      if (!raw) return "C";
+
+      const normalized = raw[0].toUpperCase() + raw.slice(1).replace("♭", "b").replace("♯", "#");
+      if (normalized === "BB") return "Bb";
+      if (normalized === "EB") return "Eb";
+      return KEY_SIGNATURE_ACCIDENTALS[normalized] ? normalized : "C";
+    }
+
+    function getKeySignatureAccidental(noteName, keySignature) {
+      const key = normalizeKeySignature(keySignature);
+      const match = String(noteName || "").trim().match(/^([A-G])/i);
+      if (!match) return null;
+
+      const letter = match[1].toLowerCase();
+      return KEY_SIGNATURE_ACCIDENTALS[key]?.[letter] || null;
+    }
+
     function parseNotationToken(token) {
       token = String(token || "").trim();
       if (!token) return null;
 
-      const m = token.match(/^([A-GR][#b]?\d?)(?:\/(\d+(?:\.\d+)?|[028]|[248]\.))?$/i);
+      let explicitAccidental = null;
+      if (token[0] === "+" || token[0] === "-" || token[0] === "=") {
+        explicitAccidental = token[0] === "+"
+          ? "sharp"
+          : (token[0] === "-" ? "flat" : "natural");
+        token = token.slice(1);
+      }
+
+      const m = token.match(/^([A-GR])([#b]?)(\d?)(?:\/(\d+(?:\.\d+)?|[028]|[248]\.))?$/i);
       if (!m) return null;
 
-      const rawNote = m[1].toUpperCase();
+      const letter = m[1].toUpperCase();
+      const inlineAccidental = m[2] === "#" ? "sharp" : (m[2].toLowerCase() === "b" ? "flat" : null);
+      const octaveText = m[3] || "";
+      const rawNote = `${letter}${octaveText}`;
       const normalizedNote = rawNote === "R" || /\d$/.test(rawNote) ? rawNote : rawNote + "5";
-      const durationText = m[2] || "4";
+      const durationText = m[4] || "4";
+      const parsedExplicitAccidental = normalizedNote === "R" ? null : (explicitAccidental || inlineAccidental);
       const noteValueToBeat = {
         "0": 4,
         "2": 2,
@@ -16307,7 +16347,8 @@ window.addEventListener("popstate", function (event) {
 
       return {
         note: normalizedNote === "R" ? null : normalizedNote,
-        beat: beat
+        beat: beat,
+        explicitAccidental: parsedExplicitAccidental
       };
     }
 
@@ -16338,7 +16379,11 @@ window.addEventListener("popstate", function (event) {
 
         const canMergeTieGroup =
           group.length > 1 &&
-          group.every((note) => note?.note && note.note === current.note);
+          group.every((note) =>
+            note?.note &&
+            note.note === current.note &&
+            (note.effectiveAccidental || null) === (current.effectiveAccidental || null)
+          );
 
         if (!canMergeTieGroup) {
           if (group.length > 1) {
@@ -16381,6 +16426,7 @@ window.addEventListener("popstate", function (event) {
       const beatMs = 60000 / bpm;
       const notes = [];
       const timeSig = parseTimeSignature(song && song.timeSignature);
+      const keySignature = normalizeKeySignature(song?.keySignature || "C");
 
       if (!notation) {
         return {
@@ -16392,7 +16438,7 @@ window.addEventListener("popstate", function (event) {
           scoringNotes: [],
           barlines: [],
           hasManualBarlines: false,
-          keySignature: song?.keySignature || "C",
+          keySignature,
           timeSignature: timeSig.text,
           measureBeats: timeSig.measureBeats
         };
@@ -16445,9 +16491,17 @@ window.addEventListener("popstate", function (event) {
         if (!parsed) continue;
 
         const durMs = parsed.beat * beatMs;
+        const keyAccidental = parsed.note ? getKeySignatureAccidental(parsed.note, keySignature) : null;
+        const explicitAccidental = parsed.explicitAccidental || null;
+        const effectiveAccidental = !parsed.note
+          ? null
+          : (explicitAccidental === "natural" ? null : (explicitAccidental || keyAccidental));
 
         notes.push({
           note: parsed.note,
+          explicitAccidental,
+          effectiveAccidental,
+          accidental: effectiveAccidental,
           beat: parsed.beat,
           startMs: cursorMs,
           durMs,
@@ -16470,7 +16524,7 @@ window.addEventListener("popstate", function (event) {
         scoringNotes: buildScoringNotes(notes),
         barlines: manualBarlines,
         hasManualBarlines: manualBarlines.length > 0,
-        keySignature: song?.keySignature || "C",
+        keySignature,
         timeSignature: timeSig.text,
         measureBeats: timeSig.measureBeats
       };
@@ -16511,7 +16565,7 @@ window.addEventListener("popstate", function (event) {
     }
 
     function drawKeySignature(ctx, keySignature, topLineY, gap) {
-      const key = String(keySignature || "C").toUpperCase();
+      const key = normalizeKeySignature(keySignature);
 
       if (key === "C") {
         return 0;
@@ -16523,24 +16577,34 @@ window.addEventListener("popstate", function (event) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      const x = 98;
+      const flatPositions = {
+        b: topLineY + gap * 2,
+        e: topLineY + gap * 3.5,
+        a: topLineY + gap * 1.5
+      };
+      const sharpPositions = {
+        f: topLineY + gap * 3.5,
+        c: topLineY + gap * 1
+      };
+      const accidentals = KEY_SIGNATURE_ACCIDENTALS[key] || {};
+      const order = Object.keys(accidentals);
+      let drawnCount = 0;
 
-      if (key === "G") {
-        const y = topLineY + gap * 3.5;
-        ctx.fillText("♯", x, y);
-        ctx.restore();
-        return 28;
-      }
-
-      if (key === "F") {
-        const y = topLineY + gap * 2;
-        ctx.fillText("♭", x, y);
-        ctx.restore();
-        return 28;
-      }
+      order.forEach((letter) => {
+        const accidental = accidentals[letter];
+        const x = 98 + drawnCount * 18;
+        if (accidental === "sharp") {
+          ctx.fillText("♯", x, sharpPositions[letter] ?? topLineY + gap * 2);
+          drawnCount += 1;
+        }
+        if (accidental === "flat") {
+          ctx.fillText("♭", x, flatPositions[letter] ?? topLineY + gap * 2);
+          drawnCount += 1;
+        }
+      });
 
       ctx.restore();
-      return 0;
+      return drawnCount > 0 ? 28 + Math.max(0, drawnCount - 1) * 18 : 0;
     }
 
     function drawPracticeBase(timeSignatureText = "4/4", keySignature = "C") {
@@ -16596,7 +16660,7 @@ window.addEventListener("popstate", function (event) {
 
       const keyOffset = drawKeySignature(ctx, keySignature, topLineY, gap);
 
-      const timeSigX = keyOffset > 0 ? 124 : 90;
+      const timeSigX = keyOffset > 0 ? 96 + keyOffset : 90;
       const parts = timeSignatureText.split("/");
       ctx.fillStyle = "#111";
       ctx.font = "26px system-ui";
@@ -16713,6 +16777,23 @@ window.addEventListener("popstate", function (event) {
     ctx.fill();
   }
 
+  if (
+    noteObj.explicitAccidental === "sharp" ||
+    noteObj.explicitAccidental === "flat" ||
+    noteObj.explicitAccidental === "natural"
+  ) {
+    ctx.save();
+    ctx.fillStyle = NOTE_COLOR;
+    ctx.font = "30px Georgia, 'Times New Roman', serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const accidentalSymbol = noteObj.explicitAccidental === "sharp"
+      ? "♯"
+      : (noteObj.explicitAccidental === "flat" ? "♭" : "♮");
+    ctx.fillText(accidentalSymbol, noteX - 22, noteY);
+    ctx.restore();
+  }
+
   // 以꾧린
   if (!isWhole) {
     const stemX = stemDown ? noteX - 12 : noteX + 12;
@@ -16812,23 +16893,27 @@ window.addEventListener("popstate", function (event) {
 
   // 怨꾩씠由??쒖떆
   ctx.fillStyle = "rgba(255,255,255,0.8)";
-  ctx.fillRect(noteX - 13, NOTE_NAME_Y - 16, 26, 20);
+  const noteName = getKoreanNoteName(noteObj);
+  const noteNameBoxWidth = noteName.length > 1 ? 38 : 26;
+  ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - 16, noteNameBoxWidth, 20);
   ctx.fillStyle = "#111";
   ctx.font = "bold 16px system-ui";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(getKoreanNoteName(noteObj.note), noteX, NOTE_NAME_Y - 6);
+  ctx.fillText(noteName, noteX, NOTE_NAME_Y - 6);
   ctx.textAlign = "start";
   ctx.textBaseline = "alphabetic";
 }
 
-function getKoreanNoteName(note) {
-  const raw = String(note || "").trim().toUpperCase();
+function getKoreanNoteName(note, accidentalOverride) {
+  const noteName = typeof note === "object" && note ? note.note : note;
+  const raw = String(noteName || "").trim().toUpperCase();
   const m = raw.match(/^([A-G])(#|B)?\d*$/);
   if (!m) return raw;
 
   const base = m[1];
-  const accidental = m[2] || "";
+  const inlineAccidental = m[2] === "#" ? "sharp" : (m[2] === "B" ? "flat" : null);
+  const accidental = accidentalOverride || (typeof note === "object" && note ? note.effectiveAccidental : null) || inlineAccidental;
 
   const map = {
     C: "도",
@@ -16842,8 +16927,8 @@ function getKoreanNoteName(note) {
 
   let name = map[base] || raw;
 
-  if (accidental === "#") name += "#";
-  if (accidental === "B") name += "b";
+  if (accidental === "sharp") name += "#";
+  if (accidental === "flat") name += "b";
 
   return name;
 }
@@ -17272,7 +17357,11 @@ function drawRest(ctx, x, staffTop, duration) {
         tieGroups.forEach((group) => {
           group.forEach((current, index) => {
             const next = group[index + 1];
-            if (!next || current.note.note !== next.note.note) return;
+            if (
+              !next ||
+              current.note.note !== next.note.note ||
+              (current.note.effectiveAccidental || null) !== (next.note.effectiveAccidental || null)
+            ) return;
 
             const side = getAutoCurveSide([current, next]);
             const start = getHeadCurvePoint(current, side, "start");
@@ -17300,7 +17389,8 @@ function drawRest(ctx, x, staffTop, duration) {
         const maxRightX = Number.isFinite(nextBarlineTime)
           ? judgeX + (nextBarlineTime - elapsedMs) * pxPerMs
           : Infinity;
-        const noteX = constrainNoteXToMeasure(n, x + noteStartOffset, maxRightX);
+        const accidentalOffset = n.explicitAccidental ? 16 : 0;
+        const noteX = constrainNoteXToMeasure(n, x + noteStartOffset + accidentalOffset, maxRightX);
         const y = n.note ? noteToY(n.note) : topLineY + 40;
 
         return { note: n, x, w, noteX, y, maxRightX };
@@ -17356,14 +17446,17 @@ function drawRest(ctx, x, staffTop, duration) {
       return String(note || "").trim().toUpperCase().replace("?", "#").replace("?", "#");
     }
 
-    function noteNameToMidi(note) {
+    function noteNameToMidi(note, accidentalOverride) {
       note = normalizeNoteName(note);
-      const m = note.match(/^([A-G])(#?)(\d)$/);
+      const m = note.match(/^([A-G])([#B]?)(\d)$/);
       if (!m) return null;
 
       const baseMap = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
       let semitone = baseMap[m[1]];
-      if (m[2] === "#") semitone += 1;
+      const inlineAccidental = m[2] === "#" ? "sharp" : (m[2] === "B" ? "flat" : null);
+      const accidental = accidentalOverride || inlineAccidental;
+      if (accidental === "sharp") semitone += 1;
+      if (accidental === "flat") semitone -= 1;
 
       const octave = Number(m[3]);
       return (octave + 1) * 12 + semitone;
@@ -17393,7 +17486,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
     function getNoteSignature(note) {
       if (!note) return "";
-      return `${note.startMs}:${note.note}:${note.durMs}`;
+      return `${note.startMs}:${note.note}:${note.effectiveAccidental || ""}:${note.durMs}`;
     }
 
     function shouldJudgeNoteNow(elapsedMs, target) {
@@ -17507,7 +17600,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
     function getPitchDiffCents(note, detectedMidiValue) {
       if (!note?.note || detectedMidiValue == null) return Infinity;
-      const midi = noteNameToMidi(note.note);
+      const midi = noteNameToMidi(note.note, note.effectiveAccidental);
       if (midi == null) return Infinity;
       return Math.abs((detectedMidiValue - midi) * 100);
     }
@@ -20563,7 +20656,7 @@ function renderBonusMap() {
       <div class="bonusBoat" id="bonusBoat" style="left: ${previousPosition.x}%; top: ${previousPosition.y}%;">
         <div class="bonusBoatInner">
           <div class="bonusBoatIcon">⛵</div>
-          <div class="bonusBoatName">이성우</div>
+          <div class="bonusBoatName">이건영</div>
         </div>
       </div>
     </div>

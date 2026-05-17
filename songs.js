@@ -81,7 +81,7 @@ const TEXTBOOK_SONGS_BY_GRADE = {
     { songId: "TB3_TWINKLE", title: "작은 별", bpm: 90, timeSignature: "4/4", keySignature: "C", notation: "C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2" }
   ],
   "4": [
-    { songId: "HAPPY_BIRTHDAY", title: "생일 축하합니다", bpm: 80, timeSignature: "3/4", notation: "(c/8. c/16) | d/4 c/4 f/4 | e/2 (c/8. c/16) | d/4 c/4 g/4 | f/2 (c/8. c/16) | c6/4 a/4 f/4 | e/4 d/4 (b4/8. b4/16) | a/4 f/4 g/4 | f/2 r/4" },
+    { songId: "HAPPY_BIRTHDAY", title: "생일 축하합니다", bpm: 80, timeSignature: "3/4", keySignature: "F", notation: "c/8. c/16 | d/4 c/4 f/4 | e/2 c/8. c/16 | d/4 c/4 g/4 | f/2 c/8. c/16 | c6/4 a/4 f/4 | e/4 d/4 b/8. b/16 | a/4 f/4 g/4 | f/2 r/4" },
     { songId: "TB4_TRAVEL", title: "즐거운 여행", bpm: 96, timeSignature: "4/4", notation: "C5/1 D5/1 E5/1 G5/1 A5/1 G5/1 E5/2" },
     { songId: "TB4_FRIEND", title: "우리 친구", bpm: 90, timeSignature: "4/4", notation: "G5/1 E5/1 F5/1 G5/1 A5/1 G5/1 D5/2" },
     { songId: "TB4_PUFF_JACKY", title: "퍼프와 재키", bpm: 90, timeSignature: "4/4", notation: "G5/1 A5/1 G5/1 E5/1 D5/1 E5/1 G5/2" }
