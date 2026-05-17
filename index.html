@@ -8667,6 +8667,210 @@ body.theme-light #screen-menu #missionPanel {
     inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
+#screen-menu .daily-mission-card {
+  margin: 10px 0 8px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 14% 20%, rgba(255,255,255,0.2), transparent 18%),
+    linear-gradient(180deg, rgba(32, 66, 118, 0.78), rgba(13, 30, 64, 0.9));
+  border: 1px solid rgba(176, 226, 255, 0.3);
+  box-shadow:
+    0 14px 30px rgba(2, 8, 18, 0.22),
+    0 0 24px rgba(94, 219, 255, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+#screen-menu .daily-mission-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#screen-menu .daily-mission-title {
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 950;
+  color: #f4fcff;
+}
+
+#screen-menu .daily-mission-sub {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: rgba(226, 241, 255, 0.76);
+}
+
+#screen-menu .daily-mission-bonus {
+  flex: 0 0 auto;
+  min-width: 54px;
+  padding: 8px 10px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 950;
+  color: #12334f;
+  background: linear-gradient(135deg, #fff0a8, #75f0d5);
+  box-shadow:
+    0 8px 18px rgba(64, 228, 198, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+#screen-menu .daily-mission-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#screen-menu .daily-mission-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(7, 17, 38, 0.34);
+  border: 1px solid rgba(196, 238, 255, 0.16);
+  color: rgba(232, 245, 255, 0.78);
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+#screen-menu .daily-mission-item.done {
+  background: rgba(109, 245, 207, 0.18);
+  border-color: rgba(139, 255, 225, 0.38);
+  color: #f4fffb;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+}
+
+#screen-menu .daily-mission-check {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(196, 238, 255, 0.32);
+  background: rgba(255,255,255,0.07);
+  color: rgba(232, 245, 255, 0.62);
+  font-size: 12px;
+  line-height: 1;
+}
+
+#screen-menu .daily-mission-item.done .daily-mission-check {
+  border-color: rgba(151, 255, 224, 0.66);
+  background: linear-gradient(135deg, #8dffdf, #66d0ff);
+  color: #073047;
+}
+
+#screen-menu .daily-mission-note {
+  margin-top: 9px;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: rgba(226, 241, 255, 0.72);
+}
+
+#screen-menu .daily-mission-note.daily-mission-ready,
+#screen-menu .daily-mission-note.daily-mission-claimed {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#screen-menu .daily-mission-claim-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 248, 186, 0.66);
+  border-radius: 14px;
+  padding: 8px 13px;
+  min-height: 34px;
+  color: #17314d;
+  background: linear-gradient(135deg, #fff2a8, #79f2d7 48%, #79d7ff);
+  box-shadow:
+    0 8px 18px rgba(64, 228, 198, 0.2),
+    0 0 16px rgba(255, 231, 126, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 950;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+#screen-menu .daily-mission-claim-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 22px rgba(64, 228, 198, 0.26),
+    0 0 18px rgba(255, 231, 126, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.84);
+}
+
+#screen-menu .daily-mission-claim-btn:disabled {
+  opacity: 0.72;
+  cursor: wait;
+  transform: none;
+}
+
+#screen-menu .daily-mission-claimed {
+  justify-content: flex-end;
+  color: #a9ffe6;
+}
+
+body.theme-light #screen-menu .daily-mission-card {
+  background:
+    radial-gradient(circle at 14% 20%, rgba(255,255,255,0.82), transparent 18%),
+    linear-gradient(180deg, rgba(250,255,255,0.96), rgba(221, 241, 255, 0.94));
+  border-color: rgba(76, 134, 200, 0.24);
+  box-shadow:
+    0 14px 28px rgba(80, 126, 177, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.82);
+}
+
+body.theme-light #screen-menu .daily-mission-title {
+  color: #17385d;
+}
+
+body.theme-light #screen-menu .daily-mission-sub,
+body.theme-light #screen-menu .daily-mission-note {
+  color: rgba(34, 61, 92, 0.72);
+}
+
+body.theme-light #screen-menu .daily-mission-item {
+  background: rgba(255,255,255,0.62);
+  border-color: rgba(76, 134, 200, 0.2);
+  color: rgba(34, 61, 92, 0.74);
+}
+
+body.theme-light #screen-menu .daily-mission-item.done {
+  background: rgba(113, 230, 196, 0.22);
+  border-color: rgba(50, 178, 147, 0.32);
+  color: #1b594b;
+}
+
+body.theme-light #screen-menu .daily-mission-check {
+  border-color: rgba(76, 134, 200, 0.24);
+  color: rgba(34, 61, 92, 0.54);
+}
+
+body.theme-light #screen-menu .daily-mission-claim-btn {
+  border-color: rgba(48, 146, 132, 0.3);
+  color: #17405f;
+  box-shadow:
+    0 8px 18px rgba(52, 154, 178, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.84);
+}
+
+body.theme-light #screen-menu .daily-mission-claimed {
+  color: #14735f;
+}
+
 #screen-menu-title {
   width: 100%;
   max-width: inherit;
@@ -8716,6 +8920,16 @@ body.theme-light #screen-menu #missionPanel {
   #screen-menu .menuButtonGrid .menuBtn {
     min-height: 68px;
     font-size: 16px;
+  }
+
+  #screen-menu .daily-mission-card {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  #screen-menu .daily-mission-list {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   #screen-menu .menuBonusBtn .menuBtnSub {
@@ -12726,6 +12940,17 @@ body.theme-light .readyCardHint {
         </div>
 
       </div>
+      <div id="dailyMissionCard" class="daily-mission-card" style="display:none;">
+        <div class="daily-mission-head">
+          <div>
+            <div class="daily-mission-title">🎯 오늘의 미션</div>
+            <div class="daily-mission-sub" id="dailyMissionSummary">오늘의 미션을 불러오는 중...</div>
+          </div>
+          <div class="daily-mission-bonus" id="dailyMissionBonus">+30</div>
+        </div>
+        <div id="dailyMissionList" class="daily-mission-list"></div>
+        <div class="daily-mission-note" id="dailyMissionNote">3개 모두 완료하면 성장 포인트 +30</div>
+      </div>
       <hr style="margin:6px 0 8px;">
       <div class="menuButtonGrid">
         <button class="menuBtn" onclick="showScreen('screen-basic')">🎵 기본 운지 방법</button>
@@ -13658,6 +13883,9 @@ body.theme-light .readyCardHint {
     let basicPracticeTimerIds = [];
     let basicPracticeRunning = false;
     let resultSequenceRunId = 0;
+    const activityGrowthRequestState = {};
+    let dailyMissionState = null;
+    let dailyMissionBonusClaiming = false;
     let stampAudio = null;
     let stampAudioMissing = false;
     let stampFxAudioCtx = null;
@@ -13798,6 +14026,232 @@ body.theme-light .readyCardHint {
           : (level >= 41 ? 5 : level >= 31 ? 4 : level >= 21 ? 3 : level >= 11 ? 2 : 1);
         levelGem.classList.add("avatar", "level-gem", `gem-tier-${gemTier}`);
       }
+    }
+
+    async function loadDailyMissions() {
+      try {
+        const appState = typeof app !== "undefined" ? app : null;
+        const role = String(appState?.user?.role || "").trim().toUpperCase();
+        if (!appState || !appState.user || !appState.user.userId || role !== "STUDENT") {
+          dailyMissionState = null;
+          renderDailyMissions(null);
+          return null;
+        }
+
+        renderDailyMissions({ loading: true });
+
+        const result = await appState.api("getDailyMissions", {
+          userId: appState.user.userId
+        });
+
+        if (result && result.ok) {
+          dailyMissionState = result;
+          renderDailyMissions(result);
+          return result;
+        }
+
+        dailyMissionState = null;
+        renderDailyMissions(null);
+        return null;
+      } catch (err) {
+        dailyMissionState = null;
+        console.warn("[DAILY MISSIONS ERROR]", err);
+        renderDailyMissions(null);
+        return null;
+      }
+    }
+
+    function renderDailyMissions(data) {
+      const card = document.getElementById("dailyMissionCard");
+      const summary = document.getElementById("dailyMissionSummary");
+      const list = document.getElementById("dailyMissionList");
+      const bonus = document.getElementById("dailyMissionBonus");
+      const note = document.getElementById("dailyMissionNote");
+
+      if (!card || !summary || !list || !bonus || !note) return;
+
+      if (!data) {
+        card.style.display = "none";
+        list.innerHTML = "";
+        return;
+      }
+
+      card.style.display = "";
+
+      if (data.loading) {
+        summary.textContent = "오늘의 미션을 불러오는 중...";
+        bonus.textContent = "+30";
+        note.className = "daily-mission-note";
+        note.textContent = "3개 모두 완료하면 성장 포인트 +30";
+        list.innerHTML = "";
+        return;
+      }
+
+      const missions = Array.isArray(data.missions) ? data.missions.slice(0, 3) : [];
+      if (!missions.length) {
+        card.style.display = "none";
+        list.innerHTML = "";
+        return;
+      }
+
+      const totalCount = Number.isFinite(Number(data.totalCount)) ? Number(data.totalCount) : missions.length;
+      const completedCount = Number.isFinite(Number(data.completedCount))
+        ? Number(data.completedCount)
+        : missions.filter((mission) => !!mission?.completed).length;
+      const safeTotal = Math.max(1, totalCount);
+      const safeCompleted = Math.max(0, Math.min(safeTotal, completedCount));
+      const bonusExp = Number.isFinite(Number(data.bonusExp)) ? Number(data.bonusExp) : 30;
+      const allCompleted = data.allCompleted === true || safeCompleted >= safeTotal;
+      const canClaimBonus = data.allCompleted === true && data.bonusClaimed !== true;
+      const bonusClaimed = data.bonusClaimed === true;
+
+      summary.textContent = allCompleted ? "오늘의 미션을 모두 완료했어요!" : `${safeCompleted}/${safeTotal} 완료`;
+      bonus.textContent = `+${bonusExp}`;
+      note.className = "daily-mission-note";
+      note.innerHTML = "";
+
+      if (bonusClaimed) {
+        note.classList.add("daily-mission-claimed");
+        note.textContent = "오늘의 미션 보너스를 받았어요!";
+      } else if (canClaimBonus) {
+        note.classList.add("daily-mission-ready");
+        const claimButton = document.createElement("button");
+        claimButton.type = "button";
+        claimButton.className = "daily-mission-claim-btn";
+        claimButton.disabled = dailyMissionBonusClaiming;
+        claimButton.textContent = dailyMissionBonusClaiming
+          ? "성장 포인트 받는 중..."
+          : `성장 포인트 +${bonusExp} 받기`;
+        claimButton.addEventListener("click", claimDailyMissionBonus);
+        note.appendChild(claimButton);
+      } else {
+        note.textContent = `3개 모두 완료하면 성장 포인트 +${bonusExp}`;
+      }
+
+      list.innerHTML = "";
+      missions.forEach((mission) => {
+        const item = document.createElement("div");
+        item.className = `daily-mission-item${mission?.completed ? " done" : ""}`;
+
+        const check = document.createElement("span");
+        check.className = "daily-mission-check";
+        check.textContent = mission?.completed ? "✓" : "";
+
+        const label = document.createElement("span");
+        label.textContent = String(
+          mission?.title ||
+          mission?.label ||
+          mission?.name ||
+          mission?.description ||
+          "오늘의 미션"
+        );
+
+        item.appendChild(check);
+        item.appendChild(label);
+        list.appendChild(item);
+      });
+    }
+
+    async function claimDailyMissionBonus() {
+      if (dailyMissionBonusClaiming) return null;
+
+      try {
+        if (typeof app === "undefined" || !app || !app.user || !app.user.userId) return null;
+
+        dailyMissionBonusClaiming = true;
+        renderDailyMissions(dailyMissionState);
+
+        const result = await app.api("claimDailyMissionBonus", {
+          userId: app.user.userId
+        });
+
+        if (result && result.ok && result.growth) {
+          if (typeof result.growth.expAfter === "number") {
+            app.user.exp = result.growth.expAfter;
+          }
+          if (typeof result.growth.levelAfter === "number") {
+            app.user.level = result.growth.levelAfter;
+          }
+
+          window.lastGrowthResult = result.growth;
+          console.log("[DAILY MISSION BONUS]", result.growth);
+
+          if (typeof renderMenuStudentGrowthInfo === "function") {
+            renderMenuStudentGrowthInfo();
+          }
+        }
+
+        await loadDailyMissions();
+        return result;
+      } catch (err) {
+        console.warn("[DAILY MISSION BONUS ERROR]", err);
+        try {
+          await loadDailyMissions();
+        } catch (refreshErr) {
+          console.warn("[DAILY MISSION BONUS REFRESH ERROR]", refreshErr);
+        }
+        return null;
+      } finally {
+        dailyMissionBonusClaiming = false;
+        renderDailyMissions(dailyMissionState);
+      }
+    }
+
+    async function claimActivityGrowth(activityType) {
+      const type = String(activityType || "").trim().toUpperCase();
+
+      try {
+        if (!type || typeof app === "undefined" || !app.user || !app.user.userId) return null;
+
+        const role = String(app.user.role || "").trim().toUpperCase();
+        if (role && role !== "STUDENT") return null;
+
+        if (activityGrowthRequestState[type] === "pending" || activityGrowthRequestState[type] === "done") {
+          return null;
+        }
+
+        activityGrowthRequestState[type] = "pending";
+
+        const result = await app.api("claimActivityGrowth", {
+          userId: app.user.userId,
+          activityType: type
+        });
+
+        if (result && result.ok && result.growth) {
+          if (typeof result.growth.expAfter === "number") {
+            app.user.exp = result.growth.expAfter;
+          }
+          if (typeof result.growth.levelAfter === "number") {
+            app.user.level = result.growth.levelAfter;
+          }
+
+          window.lastGrowthResult = result.growth;
+          console.log("[ACTIVITY GROWTH]", type, result.growth);
+
+          if (typeof renderMenuStudentGrowthInfo === "function") {
+            renderMenuStudentGrowthInfo();
+          }
+          if (typeof loadDailyMissions === "function") {
+            loadDailyMissions();
+          }
+
+          activityGrowthRequestState[type] = "done";
+        } else {
+          activityGrowthRequestState[type] = "";
+        }
+
+        return result;
+      } catch (err) {
+        activityGrowthRequestState[type] = "";
+        console.warn("[ACTIVITY GROWTH ERROR]", type, err);
+        return null;
+      }
+    }
+
+    function resetActivityGrowthRequestState() {
+      Object.keys(activityGrowthRequestState).forEach((key) => {
+        delete activityGrowthRequestState[key];
+      });
     }
     const THEME_STORAGE_KEY = "recorder_theme_v1";
     const STARTUP_GRACE_MS = 450;
@@ -15146,6 +15600,7 @@ function renderSongButtons() {
         setMenuTitleMode(true);
         if (menuScreen) menuScreen.style.display = "block";
         renderMenuStudentGrowthInfo();
+        loadDailyMissions();
       } else if (targetId === "screen-challenge") {
         if (challengeScreen) challengeScreen.style.display = "block";
       } else if (targetId === "screen-challenge-play") {
@@ -15228,6 +15683,7 @@ function renderSongButtons() {
       if (screenId === "screen-tonguing-guide") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
+        claimActivityGrowth("TONGUING");
         if (!skipHistory) pushAppHistory(screenId);
         return;
       }
@@ -15264,6 +15720,7 @@ function renderSongButtons() {
         currentActivityTitle = SCREEN_TITLES[screenId];
         setPracticeScreenMode("fingering");
         showStep("step34Section", { skipHistory: true });
+        claimActivityGrowth("FINGERING_PRACTICE");
         primeFingeringMetronomeAudio();
         if (!skipHistory) pushAppHistory(screenId);
         resetPractice();
@@ -15273,6 +15730,7 @@ function renderSongButtons() {
       if (screenId === "screen-basic") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         showStep("step-basic-typeSection", { skipHistory: true });
+        claimActivityGrowth("BASIC_FINGERING");
         updateBasicTypeRecorderCards();
         if (!skipHistory) pushAppHistory(screenId);
         setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
@@ -16116,17 +16574,17 @@ function renderSongButtons() {
     }
 
     function betaLogin() {
+      resetActivityGrowthRequestState();
       app.user = {
         userId: "BETA_TESTER",
         loginCode: "BETA",
         role: "STUDENT",
-        name: "베타테스터",
-        grade: "3",
-        class: "1",
+        name: "이건영",
+        grade: "5",
+        class: "6",
         number: "0",
-        points: 0,
-        level: 1,
-        exp: 0
+        level: 27,
+        exp: 3675
       };
 
       const gradeEl = document.getElementById("grade");
@@ -16203,6 +16661,7 @@ function renderSongButtons() {
         const user = await app.login(code, inputStudent);
         assertLoginUserMatchesInput(user, inputStudent);
 
+        resetActivityGrowthRequestState();
         app.user.grade = normalizeLoginNumberField(user.grade) || inputStudent.grade;
         app.user.class = normalizeLoginNumberField(user.class) || inputStudent.class;
         app.user.number = normalizeLoginNumberField(user.number) || inputStudent.number;
@@ -16239,6 +16698,9 @@ hideLoadingScreen();
 appHistoryLocked = false;
 pushAppHistory("screen-menu", { replace: true });
 showScreen("screen-menu", { skipHistory: true });
+if (app.user && String(app.user.role || "").trim().toUpperCase() === "STUDENT") {
+  claimActivityGrowth("LOGIN");
+}
 app.refreshSongs().catch(() => {});
 preloadChallengeSongs().catch(() => {});
       } catch (e) {
@@ -16308,6 +16770,7 @@ function goBackFromCurrentScreen() {
 function logout() {
   stopBasicPracticeSession();
   stopPractice();
+  resetActivityGrowthRequestState();
   resetSongMenuState("short");
   currentActivityTitle = DEFAULT_PAGE_TITLE;
   restorePracticeFromChallengePlay();
@@ -19633,6 +20096,9 @@ function startBasicPractice() {
           renderGrowthResult(saveResult.growth);
         } else {
           renderGrowthResult(null);
+        }
+        if (saveResult && saveResult.ok && typeof loadDailyMissions === "function") {
+          loadDailyMissions();
         }
 
         setSongStoredScore(song.songId, finalScore);
