@@ -9,8 +9,8 @@ const app = {
   songs: [],
   currentSong: null,
 
-  async login(code) {
-    const result = await this.api("loginByCode", { code });
+  async login(code, studentInfo = {}) {
+    const result = await this.api("loginByCode", { code, ...studentInfo });
 
     if (!result || !result.user) {
       throw new Error("로그인 응답이 올바르지 않습니다.");

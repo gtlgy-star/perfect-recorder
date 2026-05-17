@@ -3658,6 +3658,115 @@ button:disabled {
       letter-spacing: 0.04em;
     }
 
+    .growth-result-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 16px;
+      align-items: center;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(37, 76, 64, 0.86) 0%, rgba(17, 39, 43, 0.92) 100%),
+        radial-gradient(circle at top left, rgba(138, 255, 188, 0.2) 0%, transparent 42%);
+      border: 1px solid rgba(170, 255, 210, 0.22);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 0 24px rgba(121, 255, 190, 0.08),
+        0 12px 24px rgba(5, 18, 22, 0.22);
+      color: #f4fff9;
+      overflow: hidden;
+    }
+
+    .growth-result-card::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background:
+        linear-gradient(135deg, rgba(190,255,220,0.18), transparent 34%, rgba(255,239,158,0.12));
+      pointer-events: none;
+    }
+
+    .growth-result-title,
+    .growth-result-main,
+    .growth-result-detail,
+    .growth-result-level {
+      position: relative;
+      z-index: 1;
+    }
+
+    .growth-result-title {
+      grid-row: span 3;
+      font-size: 15px;
+      font-weight: 900;
+      color: #c7ffdf;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .growth-result-main {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 900;
+      color: rgba(245,255,250,0.9);
+    }
+
+    #growthEarnedExp {
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 0.95;
+      color: #8effbb;
+      text-shadow:
+        0 0 16px rgba(142, 255, 187, 0.42),
+        0 3px 12px rgba(0,0,0,0.22);
+    }
+
+    .growth-result-detail,
+    .growth-result-level {
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(232,255,243,0.78);
+      line-height: 1.35;
+    }
+
+    body.theme-light .growth-result-card,
+    body.light-mode .growth-result-card {
+      background:
+        linear-gradient(180deg, rgba(244,255,249,0.96) 0%, rgba(222,248,236,0.94) 100%),
+        radial-gradient(circle at top left, rgba(84, 210, 135, 0.18) 0%, transparent 42%);
+      border-color: rgba(42, 155, 94, 0.22);
+      color: #143d29;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.72),
+        0 12px 22px rgba(42, 122, 82, 0.14);
+    }
+
+    body.theme-light .growth-result-title,
+    body.light-mode .growth-result-title {
+      color: #1c7a48;
+    }
+
+    body.theme-light .growth-result-main,
+    body.light-mode .growth-result-main {
+      color: #1a4a32;
+    }
+
+    body.theme-light #growthEarnedExp,
+    body.light-mode #growthEarnedExp {
+      color: #12944f;
+      text-shadow: 0 3px 12px rgba(18, 148, 79, 0.18);
+    }
+
+    body.theme-light .growth-result-detail,
+    body.theme-light .growth-result-level,
+    body.light-mode .growth-result-detail,
+    body.light-mode .growth-result-level {
+      color: rgba(22, 72, 48, 0.78);
+    }
+
     .resultStamp {
       --stamp-main: #ffd84d;
       --stamp-glow: rgba(255, 216, 77, 0.62);
@@ -3932,6 +4041,16 @@ button:disabled {
         right: 50%;
         top: 4px;
         margin-right: -102px;
+      }
+
+      .growth-result-card {
+        grid-template-columns: 1fr;
+        gap: 7px;
+        padding: 14px;
+      }
+
+      .growth-result-title {
+        grid-row: auto;
       }
     }
 
@@ -12558,12 +12677,12 @@ body.theme-light .readyCardHint {
 
           <div class="status-info">
             <div class="name-row">
-              <span class="name">학생</span>
-              <span class="level">Lv.7</span>
+              <span class="name" id="menuStudentName">학생</span>
+              <span class="level" id="menuStudentLevel">LV.0</span>
             </div>
 
             <div class="exp-text">
-              EXP <span id="expNow">2100</span> / <span id="expMax">2450</span>
+              성장 포인트 <span id="expNow">0</span> / <span id="expMax">80</span>
             </div>
 
             <div class="exp-bar">
@@ -12571,7 +12690,7 @@ body.theme-light .readyCardHint {
             </div>
 
             <div class="exp-desc">
-              다음 레벨까지 <span id="expRemain">350</span> EXP 남았어요!
+              다음 레벨까지 <span id="expRemain">80</span>점 남았어요!
             </div>
           </div>
         </div>
@@ -13004,6 +13123,16 @@ body.theme-light .readyCardHint {
                   <div id="resultText" class="resultText">PERFECT!!</div>
                 </div>
               </div>
+            </div>
+
+            <div id="growthResultCard" class="growth-result-card" style="display:none;">
+              <div class="growth-result-title">성장 포인트</div>
+              <div class="growth-result-main">
+                <span id="growthEarnedExp">+0</span>
+                <span>획득</span>
+              </div>
+              <div class="growth-result-detail" id="growthDailyInfo"></div>
+              <div class="growth-result-level" id="growthLevelInfo"></div>
             </div>
           </div>
 
@@ -13518,6 +13647,7 @@ body.theme-light .readyCardHint {
     let currentSongMenuMode = "short";
     let currentPracticeMode = "song";
     let currentActivityTitle = "도전! 퍼펙트 리코더!";
+    let currentActivityType = "SHORT_SONG";
     let appCurrentScreen = "step1Section";
     let appHistoryLocked = false;
     let currentTextbookGrade = null;
@@ -13538,6 +13668,137 @@ body.theme-light .readyCardHint {
     const BASIC_PRACTICE_BEAT_MS = 800;
     const SONG_CLEAR_STATE_KEY = "recorder_song_clear_state_v1";
     const SONG_SCORE_STATE_KEY = "recorder_song_score_state_v1";
+
+    function getCurrentActivityTypeForRecord(song) {
+      const id = String(song?.songId || "");
+      const source = String(song?.source || song?.category || song?.type || "").toLowerCase();
+
+      if (source.includes("bonus") || id.startsWith("BONUS_")) return "BONUS_ISLAND_SONG";
+      if (source.includes("challenge") || id.startsWith("CHALLENGE_")) return "CHALLENGE_SONG";
+      if (source.includes("textbook") || id.startsWith("TB")) return "TEXTBOOK_SONG";
+
+      if (typeof currentActivityType === "string" && currentActivityType) {
+        return currentActivityType;
+      }
+
+      return "SHORT_SONG";
+    }
+
+    function clampClientLevel(level) {
+      const value = Number(level);
+      if (!Number.isFinite(value)) return 0;
+      return Math.max(0, Math.min(50, Math.floor(value)));
+    }
+
+    function clampClientExp(exp) {
+      const value = Number(exp);
+      if (!Number.isFinite(value)) return 0;
+      return Math.max(0, Math.min(10000, Math.floor(value)));
+    }
+
+    function getClientRequiredExpForNextLevel(level) {
+      const lv = clampClientLevel(level);
+      if (lv >= 50) return 0;
+      if (lv < 5) return 80;
+      if (lv < 10) return 100;
+      if (lv < 15) return 120;
+      if (lv < 20) return 150;
+      if (lv < 25) return 180;
+      if (lv < 30) return 210;
+      if (lv < 35) return 240;
+      if (lv < 40) return 270;
+      if (lv < 45) return 310;
+      return 340;
+    }
+
+    function getClientTotalRequiredExpForLevel(level) {
+      const lv = clampClientLevel(level);
+      let total = 0;
+      for (let i = 0; i < lv; i += 1) {
+        total += getClientRequiredExpForNextLevel(i);
+      }
+      return Math.min(10000, total);
+    }
+
+    function getClientGrowthProgress(exp) {
+      const safeExp = clampClientExp(exp);
+      let level = 0;
+      for (let lv = 0; lv < 50; lv += 1) {
+        const nextTotal = getClientTotalRequiredExpForLevel(lv + 1);
+        if (safeExp >= nextTotal) level = lv + 1;
+        else break;
+      }
+
+      const currentLevelExp = getClientTotalRequiredExpForLevel(level);
+      const nextLevelExp = level >= 50 ? 10000 : getClientTotalRequiredExpForLevel(level + 1);
+      const expIntoLevel = safeExp - currentLevelExp;
+      const expToNextLevel = Math.max(0, nextLevelExp - safeExp);
+      const required = Math.max(1, nextLevelExp - currentLevelExp);
+      const progressRatio = level >= 50 ? 1 : Math.max(0, Math.min(1, expIntoLevel / required));
+
+      return {
+        exp: safeExp,
+        level,
+        currentLevelExp,
+        nextLevelExp,
+        expIntoLevel,
+        expToNextLevel,
+        progressRatio
+      };
+    }
+
+    function renderMenuStudentGrowthInfo() {
+      const appState = typeof app !== "undefined" ? app : window.app;
+      const user = appState?.user || null;
+      const level = clampClientLevel(user?.level);
+      const exp = clampClientExp(user?.exp);
+      const currentLevelExp = getClientTotalRequiredExpForLevel(level);
+      const nextLevelExp = level >= 50 ? 10000 : getClientTotalRequiredExpForLevel(level + 1);
+      const required = Math.max(1, nextLevelExp - currentLevelExp);
+      const expIntoLevel = Math.max(0, Math.min(required, exp - currentLevelExp));
+      const expToNextLevel = level >= 50 ? 0 : Math.max(0, nextLevelExp - exp);
+      const progressRatio = level >= 50 ? 1 : Math.max(0, Math.min(1, expIntoLevel / required));
+
+      const nameParts = [];
+      if (user?.grade) nameParts.push(`${user.grade}학년`);
+      if (user?.class) nameParts.push(`${user.class}반`);
+      if (user?.number) nameParts.push(`${user.number}번`);
+      const name = String(user?.name || "").trim();
+      const displayName = nameParts.length || name
+        ? [...nameParts, name || "학생"].join(" ")
+        : "학생";
+
+      const nameEl = document.getElementById("menuStudentName");
+      const levelEl = document.getElementById("menuStudentLevel");
+      const expNowEl = document.getElementById("expNow");
+      const expMaxEl = document.getElementById("expMax");
+      const expRemainEl = document.getElementById("expRemain");
+      const expDescEl = document.querySelector("#screen-menu .exp-desc");
+      const progressFill = document.getElementById("expFill");
+      const levelGem = document.getElementById("levelGem");
+
+      if (nameEl) nameEl.textContent = displayName;
+      if (levelEl) levelEl.textContent = `LV.${level}`;
+      if (expNowEl) expNowEl.textContent = String(exp);
+      if (expMaxEl) expMaxEl.textContent = String(nextLevelExp);
+      if (progressFill) progressFill.style.width = `${progressRatio * 100}%`;
+
+      if (expDescEl) {
+        expDescEl.textContent = level >= 50
+          ? "최고 레벨에 도착했어요!"
+          : `다음 레벨까지 ${expToNextLevel}점 남았어요!`;
+      } else if (expRemainEl) {
+        expRemainEl.textContent = String(expToNextLevel);
+      }
+
+      if (levelGem) {
+        levelGem.className = levelGem.className.replace(/\bgem-tier-\d+\b/g, "").trim();
+        const gemTier = typeof window.getGemTierByLevel === "function"
+          ? window.getGemTierByLevel(level)
+          : (level >= 41 ? 5 : level >= 31 ? 4 : level >= 21 ? 3 : level >= 11 ? 2 : 1);
+        levelGem.classList.add("avatar", "level-gem", `gem-tier-${gemTier}`);
+      }
+    }
     const THEME_STORAGE_KEY = "recorder_theme_v1";
     const STARTUP_GRACE_MS = 450;
     const NOTE_TRANSITION_GRACE_MS = 140;
@@ -14105,6 +14366,45 @@ function restorePracticeFromChallengePlay() {
       }, 240);
     }
 
+    function renderGrowthResult(growth) {
+      const card = document.getElementById("growthResultCard");
+      if (!card) return;
+
+      if (!growth || typeof growth.earnedExp !== "number") {
+        card.style.display = "none";
+        return;
+      }
+
+      const earned = document.getElementById("growthEarnedExp");
+      const daily = document.getElementById("growthDailyInfo");
+      const level = document.getElementById("growthLevelInfo");
+
+      if (earned) earned.textContent = `+${growth.earnedExp}`;
+
+      if (daily) {
+        const totalAfter = Number(growth.dailyTotalAfter || 0);
+        daily.textContent = `오늘 성장 포인트 ${totalAfter} / 200`;
+
+        if (growth.earnedExp <= 0 && Number(growth.requestedExp || 0) > 0) {
+          daily.textContent = "오늘 이 영역에서 받을 수 있는 성장 포인트를 모두 모았어요.";
+        }
+      }
+
+      if (level) {
+        const levelAfter = Number(growth.levelAfter || 0);
+        const progress = growth.progress || {};
+        const remain = Number(progress.expToNextLevel || 0);
+
+        if (levelAfter >= 50) {
+          level.textContent = `현재 LV${levelAfter} · 최고 레벨에 도착했어요!`;
+        } else {
+          level.textContent = `현재 LV${levelAfter} · 다음 레벨까지 ${remain}점`;
+        }
+      }
+
+      card.style.display = "";
+    }
+
     function pulseResultValue(element) {
       if (!element) return;
       element.classList.remove("bump");
@@ -14203,6 +14503,8 @@ function restorePracticeFromChallengePlay() {
       const runId = ++resultSequenceRunId;
 
       if (!overlay || !stamp || !pitchEl || !rhythmEl || !comboEl || !totalEl || !text) return;
+
+      renderGrowthResult(null);
 
       const pitchScore = Math.round(Number(scoreData.pitchAccuracy) || 0);
       const rhythmScore = Math.round(Number(scoreData.rhythmAccuracy) || 0);
@@ -14366,6 +14668,7 @@ function restorePracticeFromChallengePlay() {
     function resetSongMenuState(mode = "short") {
       songLoadRequestSeq++;
       currentSongMenuMode = mode;
+      currentActivityType = mode === "textbook" ? "TEXTBOOK_SONG" : "SHORT_SONG";
       currentTextbookGrade = null;
       app.songs = [];
       app.currentSong = null;
@@ -14842,6 +15145,7 @@ function renderSongButtons() {
       if (targetId === "screen-menu") {
         setMenuTitleMode(true);
         if (menuScreen) menuScreen.style.display = "block";
+        renderMenuStudentGrowthInfo();
       } else if (targetId === "screen-challenge") {
         if (challengeScreen) challengeScreen.style.display = "block";
       } else if (targetId === "screen-challenge-play") {
@@ -14938,6 +15242,7 @@ function renderSongButtons() {
 
       if (screenId === "screen-song") {
         currentActivityTitle = SCREEN_TITLES[screenId];
+        currentActivityType = "SHORT_SONG";
         resetSongMenuState("short");
         showStep("step2Section", { skipHistory: true });
         if (!skipHistory) pushAppHistory(screenId);
@@ -14947,6 +15252,7 @@ function renderSongButtons() {
 
       if (screenId === "screen-textbook") {
         currentActivityTitle = SCREEN_TITLES[screenId];
+        currentActivityType = "TEXTBOOK_SONG";
         resetSongMenuState("textbook");
         showStep("step2Section", { skipHistory: true });
         if (!skipHistory) pushAppHistory(screenId);
@@ -15842,8 +16148,49 @@ function renderSongButtons() {
       }
     }
 
+    function normalizeLoginField(value) {
+      return String(value ?? "").trim().replace(/\s+/g, " ");
+    }
+
+    function normalizeLoginNumberField(value) {
+      const text = normalizeLoginField(value);
+      const number = Number(text);
+      return Number.isFinite(number) ? String(number) : text;
+    }
+
+    function getLoginInputStudentInfo() {
+      return {
+        grade: normalizeLoginNumberField(document.getElementById("grade")?.value),
+        class: normalizeLoginNumberField(document.getElementById("class")?.value),
+        number: normalizeLoginNumberField(document.getElementById("number")?.value),
+        name: normalizeLoginField(document.getElementById("name")?.value)
+      };
+    }
+
+    function validateLoginInputStudentInfo(input) {
+      if (!input.grade || !input.class || !input.number || !input.name) {
+        throw new Error("학년, 반, 번호, 이름, 개인 코드를 모두 입력하세요.");
+      }
+    }
+
+    function assertLoginUserMatchesInput(user, input) {
+      const checks = [
+        { label: "학년", input: input.grade, actual: normalizeLoginNumberField(user?.grade) },
+        { label: "반", input: input.class, actual: normalizeLoginNumberField(user?.class) },
+        { label: "번호", input: input.number, actual: normalizeLoginNumberField(user?.number) },
+        { label: "이름", input: input.name, actual: normalizeLoginField(user?.name) }
+      ];
+
+      const mismatched = checks.filter((item) => item.actual && item.input !== item.actual);
+
+      if (mismatched.length) {
+        throw new Error("입력한 학생 정보와 개인 코드가 일치하지 않습니다.");
+      }
+    }
+
     async function login() {
       const code = document.getElementById("code").value.trim();
+      const inputStudent = getLoginInputStudentInfo();
 
       if (!code) {
         setStatus("loginStatus", "코드를 입력하세요.", "bad");
@@ -15851,13 +16198,15 @@ function renderSongButtons() {
       }
 
       try {
+        validateLoginInputStudentInfo(inputStudent);
         showLoadingScreen();
-        const user = await app.login(code);
+        const user = await app.login(code, inputStudent);
+        assertLoginUserMatchesInput(user, inputStudent);
 
-        app.user.grade = document.getElementById("grade").value;
-        app.user.class = document.getElementById("class").value;
-        app.user.number = document.getElementById("number").value;
-        app.user.name = document.getElementById("name").value;
+        app.user.grade = normalizeLoginNumberField(user.grade) || inputStudent.grade;
+        app.user.class = normalizeLoginNumberField(user.class) || inputStudent.class;
+        app.user.number = normalizeLoginNumberField(user.number) || inputStudent.number;
+        app.user.name = normalizeLoginField(user.name) || inputStudent.name;
 
         setStatus(
           "loginStatus",
@@ -15893,6 +16242,7 @@ showScreen("screen-menu", { skipHistory: true });
 app.refreshSongs().catch(() => {});
 preloadChallengeSongs().catch(() => {});
       } catch (e) {
+        app.user = null;
         hideLoadingScreen();
         showStep("step1Section");
         setStatus("loginStatus", e.message, "bad");
@@ -19242,10 +19592,12 @@ function startBasicPractice() {
       try {
         const finalScore = scoreState.finalScore || 0;
         const grade = getScoreGrade(finalScore);
+        const activityType = getCurrentActivityTypeForRecord(song);
 
-        await app.api("saveRecord", {
+        const saveResult = await app.api("saveRecord", {
           userId: app.user.userId,
           mode: "song",
+          activityType,
           songId: song.songId,
           scoreTotal: finalScore,
           gradeKey: grade.key,
@@ -19264,9 +19616,24 @@ function startBasicPractice() {
             timeSignature: song.timeSignature || "4/4",
             speedMultiplier: getSpeedMultiplier(),
             gradeKey: grade.key,
-            gradeLabel: grade.label
+            gradeLabel: grade.label,
+            activityType
           }
         });
+
+        if (app.user && saveResult && saveResult.ok && saveResult.growth) {
+          if (typeof saveResult.growth.expAfter === "number") {
+            app.user.exp = saveResult.growth.expAfter;
+          }
+          if (typeof saveResult.growth.levelAfter === "number") {
+            app.user.level = saveResult.growth.levelAfter;
+          }
+          window.lastGrowthResult = saveResult.growth;
+          console.log("[GROWTH RESULT]", saveResult.growth);
+          renderGrowthResult(saveResult.growth);
+        } else {
+          renderGrowthResult(null);
+        }
 
         setSongStoredScore(song.songId, finalScore);
         setSongCleared(song.songId, finalScore >= 75);
@@ -19279,6 +19646,7 @@ function startBasicPractice() {
           "ok"
         );
       } catch (e) {
+        renderGrowthResult(null);
         setStatus("saveStatus", e.message, "bad");
       }
     }
@@ -20332,7 +20700,8 @@ function goChallenge() {
   setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
-const BONUS_TEST_LEVEL = 27;
+// 개발 테스트가 필요할 때만 임시로 사용하세요.
+// const BONUS_TEST_LEVEL = 27;
 let selectedBonusIslandId = null;
 let renderedBonusIslandId = null;
 let isBonusBoatSailing = false;
@@ -20386,9 +20755,10 @@ const BONUS_BOAT_SEA_ROUTES = {
 };
 
 function getBonusCurrentLevel() {
-  // 현재는 테스트용 레벨입니다.
-  // 나중에 실제 학생 레벨 시스템이 연결되면 이 함수의 반환값만 바꾸면 됩니다.
-  return BONUS_TEST_LEVEL;
+  const appState = typeof app !== "undefined" ? app : window.app;
+  const level = Number(appState?.user?.level ?? 0);
+  if (!Number.isFinite(level)) return 0;
+  return Math.max(0, Math.min(50, level));
 }
 
 function getCurrentBonusIslandId(level) {
@@ -20436,6 +20806,19 @@ function formatBonusSongTitle(title) {
   return `${escapeBonusText(firstLine)}<br>${escapeBonusText(secondLine)}`;
 }
 
+function getBonusBoatDisplayName() {
+  const appState = typeof app !== "undefined" ? app : window.app;
+  const user = appState?.user || null;
+  const userId = String(user?.userId || "").trim().toUpperCase();
+  const loginCode = String(user?.loginCode || "").trim().toUpperCase();
+
+  if (userId === "BETA_TESTER" || loginCode === "BETA") {
+    return "이건영";
+  }
+
+  return String(user?.name || "").trim() || "학생";
+}
+
 function prepareBonusSong(songId) {
   if (isBonusBoatSailing) {
     return;
@@ -20461,6 +20844,7 @@ function prepareBonusSong(songId) {
   };
 
   currentActivityTitle = "성장 보너스 연주곡";
+  currentActivityType = "BONUS_ISLAND_SONG";
   setChallengePlayMode(false);
   setPracticeScreenMode("song");
   showStep("step34Section");
@@ -20640,6 +21024,7 @@ function renderBonusMap() {
     `
     : "";
   const frame = document.getElementById("bonusMapFrame");
+  const boatDisplayName = escapeBonusText(getBonusBoatDisplayName());
 
   if (!frame) return;
 
@@ -20656,7 +21041,7 @@ function renderBonusMap() {
       <div class="bonusBoat" id="bonusBoat" style="left: ${previousPosition.x}%; top: ${previousPosition.y}%;">
         <div class="bonusBoatInner">
           <div class="bonusBoatIcon">⛵</div>
-          <div class="bonusBoatName">이건영</div>
+          <div class="bonusBoatName">${boatDisplayName}</div>
         </div>
       </div>
     </div>
@@ -20913,6 +21298,7 @@ async function startChallengeSong(songId) {
     console.log("[challenge] start:", requestedSongId || "current");
 
     window.isChallengePlayMode = true;
+    currentActivityType = "CHALLENGE_SONG";
 
     const songs = await loadChallengeSongsForScreen({ force: !challengeSongsCache.length });
 
@@ -20932,6 +21318,7 @@ async function startChallengeSong(songId) {
     if (!matchedSong) {
       window.isChallengePlayMode = false;
       setChallengePlayMode(false);
+      currentActivityType = "SHORT_SONG";
       console.error("[challenge] song not found", requestedSongId, challengeSongsCache);
       alert("도전 미션곡 정보를 찾을 수 없습니다. 선생님이 미션곡을 등록한 뒤 다시 시도해 주세요.");
       return;
@@ -20947,6 +21334,7 @@ async function startChallengeSong(songId) {
   } catch (error) {
     window.isChallengePlayMode = false;
     setChallengePlayMode(false);
+    currentActivityType = "SHORT_SONG";
     console.error("도전 미션 시작 실패:", error);
     alert("도전 미션을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.");
   }
