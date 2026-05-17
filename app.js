@@ -1,4 +1,4 @@
-const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLRVuyn0p_J78e9j77rFpBULtO01q6zok-Z0rkgtRueqFbx5Z10gnXvX62hXtifOSQig/exec";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6orVgVDJgzObaX_lHolORJuF92LazbWxfAHRyx30kTqcci4iJnJaCtBZ2WH_bLtLBZg/exec";
 const SONGS_CACHE_KEY = "recorder_student_songs_cache_v2";
 const SONGS_CACHE_TIME_KEY = "recorder_student_songs_cache_time_v1";
 const SONGS_CACHE_MAX_AGE_MS = 1000 * 60 * 10;

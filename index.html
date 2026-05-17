@@ -14027,6 +14027,7 @@ body.theme-light .readyCardHint {
     let resultSequenceRunId = 0;
     const activityGrowthRequestState = {};
     let dailyMissionState = null;
+    let dailyMissionStateUserId = "";
     let dailyMissionBonusClaiming = false;
     const localDailyMissionCompletedTypes = new Set();
     let stampAudio = null;
@@ -14171,23 +14172,83 @@ body.theme-light .readyCardHint {
       }
     }
 
-    async function loadDailyMissions() {
+    function getCurrentDailyMissionUserId() {
+      const appState = typeof app !== "undefined" ? app : window.app;
+      return String(appState?.user?.userId || "").trim();
+    }
+
+    function resetDailyMissionLocalState() {
+      dailyMissionState = null;
+
+      if (localDailyMissionCompletedTypes && typeof localDailyMissionCompletedTypes.clear === "function") {
+        localDailyMissionCompletedTypes.clear();
+      }
+
+      dailyMissionBonusClaiming = false;
+
+      const card = document.getElementById("dailyMissionCard");
+      if (card) {
+        card.classList.remove("open");
+        card.style.display = "none";
+      }
+
+      if (typeof renderDailyMissions === "function") {
+        renderDailyMissions(null);
+      }
+    }
+
+    async function loadDailyMissions(options = {}) {
+      const appState = typeof app !== "undefined" ? app : null;
+      const force = options && options.force === true;
+      console.log("[DAILY MISSIONS LOAD START]", {
+        userId: appState?.user?.userId,
+        force,
+        stateUserId: dailyMissionStateUserId
+      });
+
       try {
-        const appState = typeof app !== "undefined" ? app : null;
         const role = String(appState?.user?.role || "").trim().toUpperCase();
         if (!appState || !appState.user || !appState.user.userId || role !== "STUDENT") {
-          dailyMissionState = null;
-          if (isDailyMissionCardOpen()) renderDailyMissions(null);
+          resetDailyMissionLocalState();
+          dailyMissionStateUserId = "";
           return null;
         }
+
+        const currentUserId = String(appState.user.userId || "").trim();
+        if (!currentUserId || dailyMissionStateUserId !== currentUserId) {
+          resetDailyMissionLocalState();
+        }
+        dailyMissionStateUserId = currentUserId;
 
         if (isDailyMissionCardOpen()) {
           renderDailyMissions(dailyMissionState || { loading: true });
         }
 
+        console.log("[DAILY MISSIONS API REQUEST]", {
+          userId: appState?.user?.userId
+        });
+
         const result = await appState.api("getDailyMissions", {
           userId: appState.user.userId
         });
+
+        console.log("[DAILY MISSIONS RAW RESPONSE]", result);
+
+        if (getCurrentDailyMissionUserId() !== currentUserId) {
+          resetDailyMissionLocalState();
+          return null;
+        }
+
+        const resultUserId = String(result?.userId || "").trim();
+        if (resultUserId && currentUserId && resultUserId !== currentUserId) {
+          console.warn("[DAILY MISSIONS USER MISMATCH]", {
+            currentUserId,
+            resultUserId,
+            result
+          });
+          resetDailyMissionLocalState();
+          return null;
+        }
 
         if (result && result.ok) {
           const previousDateKey = getDailyMissionDateKey(dailyMissionState);
@@ -14229,7 +14290,7 @@ body.theme-light .readyCardHint {
       if (!bonus) return;
       const missions = Array.isArray(data?.missions) ? data.missions : [];
       if (!missions.length) {
-        bonus.textContent = "완료 보너스 +30";
+        bonus.textContent = "확인 중...";
         return;
       }
 
@@ -14308,9 +14369,19 @@ body.theme-light .readyCardHint {
     function mergeDailyMissionLocalCompletions(serverData) {
       if (!serverData || !Array.isArray(serverData.missions)) return serverData;
 
+      const currentUserId = getCurrentDailyMissionUserId();
+      const canUseLocalState = !!currentUserId && (!dailyMissionStateUserId || dailyMissionStateUserId === currentUserId);
+
+      if (!canUseLocalState) {
+        if (localDailyMissionCompletedTypes && typeof localDailyMissionCompletedTypes.clear === "function") {
+          localDailyMissionCompletedTypes.clear();
+        }
+        dailyMissionStateUserId = currentUserId;
+      }
+
       const previousCompletedTypes = new Set();
 
-      if (dailyMissionState && Array.isArray(dailyMissionState.missions)) {
+      if (canUseLocalState && dailyMissionState && Array.isArray(dailyMissionState.missions)) {
         dailyMissionState.missions.forEach((mission) => {
           if (mission && mission.completed === true) {
             const type = getMissionActivityType(mission);
@@ -14322,7 +14393,7 @@ body.theme-light .readyCardHint {
       const mergedMissions = serverData.missions.map((mission) => {
         const type = getMissionActivityType(mission);
         const completed = mission?.completed === true
-          || (type && localDailyMissionCompletedTypes.has(type))
+          || (canUseLocalState && type && localDailyMissionCompletedTypes.has(type))
           || (type && previousCompletedTypes.has(type));
 
         return {
@@ -14339,7 +14410,7 @@ body.theme-light .readyCardHint {
         completedCount,
         totalCount: mergedMissions.length,
         allCompleted: completedCount >= mergedMissions.length,
-        bonusClaimed: serverData.bonusClaimed === true || dailyMissionState?.bonusClaimed === true,
+        bonusClaimed: serverData.bonusClaimed === true || (canUseLocalState && dailyMissionState?.bonusClaimed === true),
         serverAllCompleted: serverData.allCompleted === true,
         serverBonusClaimed: serverData.bonusClaimed === true
       };
@@ -14392,6 +14463,10 @@ body.theme-light .readyCardHint {
         if (!isDailyMissionCardOpen()) {
           card.style.display = "none";
           card.classList.remove("open");
+          summary.textContent = "";
+          bonus.textContent = "";
+          note.className = "daily-mission-note";
+          note.textContent = "";
           list.innerHTML = "";
           return;
         }
@@ -14434,8 +14509,9 @@ body.theme-light .readyCardHint {
       const safeCompleted = Math.max(0, Math.min(safeTotal, completedCount));
       const bonusExp = Number.isFinite(Number(data.bonusExp)) ? Number(data.bonusExp) : 30;
       const serverAllCompleted = data.serverAllCompleted === true;
+      const allCompleted = data.allCompleted === true || safeCompleted >= safeTotal;
       const bonusClaimed = data.bonusClaimed === true || data.serverBonusClaimed === true;
-      const canClaimBonus = serverAllCompleted === true && bonusClaimed !== true;
+      const canClaimBonus = (serverAllCompleted === true || allCompleted === true) && bonusClaimed !== true;
 
       summary.textContent = "";
       bonus.textContent = "";
@@ -14602,10 +14678,6 @@ body.theme-light .readyCardHint {
           activityType: type
         });
 
-        if (result && result.ok && typeof markDailyMissionCompletedLocally === "function") {
-          markDailyMissionCompletedLocally(type);
-        }
-
         if (result && result.ok && result.growth) {
           if (typeof result.growth.expAfter === "number") {
             app.user.exp = result.growth.expAfter;
@@ -14620,15 +14692,23 @@ body.theme-light .readyCardHint {
           if (typeof renderMenuStudentGrowthInfo === "function") {
             renderMenuStudentGrowthInfo();
           }
-          if (typeof loadDailyMissions === "function") {
-            loadDailyMissions();
-          }
 
           activityGrowthRequestState[type] = "done";
         } else {
           activityGrowthRequestState[type] = "";
-          if (result && result.ok && typeof loadDailyMissions === "function") {
-            loadDailyMissions();
+        }
+
+        if (result && result.ok) {
+          const missionType = type || activityType;
+
+          if (typeof markDailyMissionCompletedLocally === "function") {
+            markDailyMissionCompletedLocally(missionType);
+          }
+
+          console.log("[DAILY MISSIONS REFRESH AFTER ACTIVITY]", missionType);
+
+          if (typeof loadDailyMissions === "function") {
+            loadDailyMissions({ force: true });
           }
         }
 
@@ -16980,6 +17060,12 @@ function renderSongButtons() {
         exp: 3675
       };
 
+      const newUserId = String(app.user?.userId || "").trim();
+      if (!newUserId || dailyMissionStateUserId !== newUserId) {
+        resetDailyMissionLocalState();
+      }
+      dailyMissionStateUserId = newUserId;
+
       const gradeEl = document.getElementById("grade");
       const classEl = document.getElementById("class");
       const numberEl = document.getElementById("number");
@@ -17060,6 +17146,12 @@ function renderSongButtons() {
         app.user.number = normalizeLoginNumberField(user.number) || inputStudent.number;
         app.user.name = normalizeLoginField(user.name) || inputStudent.name;
 
+        const newUserId = String(app.user?.userId || "").trim();
+        if (!newUserId || dailyMissionStateUserId !== newUserId) {
+          resetDailyMissionLocalState();
+        }
+        dailyMissionStateUserId = newUserId;
+
         setStatus(
           "loginStatus",
           `로그인 성공 · ${user.userId} / ${user.name || "이름없음"}`,
@@ -17098,6 +17190,8 @@ app.refreshSongs().catch(() => {});
 preloadChallengeSongs().catch(() => {});
       } catch (e) {
         app.user = null;
+        resetDailyMissionLocalState();
+        dailyMissionStateUserId = "";
         hideLoadingScreen();
         showStep("step1Section");
         setStatus("loginStatus", e.message, "bad");
@@ -17164,6 +17258,9 @@ function logout() {
   stopBasicPracticeSession();
   stopPractice();
   resetActivityGrowthRequestState();
+  resetDailyMissionLocalState();
+  dailyMissionStateUserId = "";
+  app.user = null;
   resetSongMenuState("short");
   currentActivityTitle = DEFAULT_PAGE_TITLE;
   restorePracticeFromChallengePlay();
@@ -17721,6 +17818,18 @@ window.addEventListener("popstate", function (event) {
         cursorBeat += parsed.beat;
       }
 
+      notes.forEach((note, index) => {
+        const previous = notes[index - 1];
+        note.hideKoreanNoteName = Boolean(
+          note?.note &&
+          previous?.note &&
+          note.tieGroupId &&
+          previous.tieGroupId === note.tieGroupId &&
+          note.note === previous.note &&
+          (note.effectiveAccidental || null) === (previous.effectiveAccidental || null)
+        );
+      });
+
       return {
         bpm,
         beatMs,
@@ -17789,7 +17898,7 @@ window.addEventListener("popstate", function (event) {
         a: topLineY + gap * 1.5
       };
       const sharpPositions = {
-        f: topLineY + gap * 3.5,
+        f: topLineY,
         c: topLineY + gap * 1
       };
       const accidentals = KEY_SIGNATURE_ACCIDENTALS[key] || {};
@@ -18097,16 +18206,18 @@ window.addEventListener("popstate", function (event) {
     ctx.stroke();
   }
 
-  // 怨꾩씠由??쒖떆
-  ctx.fillStyle = "rgba(255,255,255,0.8)";
-  const noteName = getKoreanNoteName(noteObj);
-  const noteNameBoxWidth = noteName.length > 1 ? 38 : 26;
-  ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - 16, noteNameBoxWidth, 20);
-  ctx.fillStyle = "#111";
-  ctx.font = "bold 16px system-ui";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(noteName, noteX, NOTE_NAME_Y - 6);
+  // 계이름 표시
+  if (!noteObj.hideKoreanNoteName) {
+    ctx.fillStyle = "rgba(255,255,255,0.8)";
+    const noteName = getKoreanNoteName(noteObj);
+    const noteNameBoxWidth = noteName.length > 1 ? 38 : 26;
+    ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - 16, noteNameBoxWidth, 20);
+    ctx.fillStyle = "#111";
+    ctx.font = "bold 16px system-ui";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(noteName, noteX, NOTE_NAME_Y - 6);
+  }
   ctx.textAlign = "start";
   ctx.textBaseline = "alphabetic";
 }
