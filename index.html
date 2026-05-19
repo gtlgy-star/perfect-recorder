@@ -18655,6 +18655,51 @@ function drawRest(ctx, x, staffTop, duration) {
           : noteX;
       }
 
+      function getMinimumDisplayGap(leftMetric, rightMetric) {
+        const timeGapPx = Math.max(
+          0,
+          (Number(rightMetric.note?.startMs) - Number(leftMetric.note?.startMs)) * pxPerMs
+        );
+        const leftBeat = Number(leftMetric.note?.beat || 1);
+        const rightBeat = Number(rightMetric.note?.beat || 1);
+        const hasSixteenth = leftBeat < 0.5 || rightBeat < 0.5;
+        const hasShortNote = leftBeat < 1 || rightBeat < 1;
+        const visualMinimum = hasSixteenth ? 32 : (hasShortNote ? 30 : 28);
+
+        return Math.max(visualMinimum, Math.min(timeGapPx, 44));
+      }
+
+      function adjustDisplayNoteSpacing(noteMetrics) {
+        const measures = new Map();
+
+        noteMetrics.forEach((metric) => {
+          if (!Number.isFinite(metric.maxRightX)) return;
+
+          const key = metric.maxRightX.toFixed(3);
+          if (!measures.has(key)) measures.set(key, []);
+          measures.get(key).push(metric);
+        });
+
+        measures.forEach((metrics) => {
+          const ordered = metrics
+            .slice()
+            .sort((a, b) => Number(a.note?.startMs || 0) - Number(b.note?.startMs || 0));
+
+          for (let index = ordered.length - 1; index >= 0; index -= 1) {
+            const metric = ordered[index];
+            const rightLimit = metric.maxRightX - 6;
+            const maxNoteX = rightLimit - getNoteGlyphRightMargin(metric.note);
+            metric.noteX = Math.min(metric.noteX, maxNoteX);
+
+            const previous = ordered[index - 1];
+            if (previous) {
+              const minimumGap = getMinimumDisplayGap(previous, metric);
+              previous.noteX = Math.min(previous.noteX, metric.noteX - minimumGap);
+            }
+          }
+        });
+      }
+
       function drawTieAndSlurMarks(noteMetrics) {
         const tieGroups = new Map();
         const slurGroups = new Map();
@@ -18707,11 +18752,13 @@ function drawRest(ctx, x, staffTop, duration) {
           ? judgeX + (nextBarlineTime - elapsedMs) * pxPerMs
           : Infinity;
         const accidentalOffset = n.explicitAccidental ? 16 : 0;
-        const noteX = constrainNoteXToMeasure(n, x + noteStartOffset + accidentalOffset, maxRightX);
+        const noteX = x + noteStartOffset + accidentalOffset;
         const y = n.note ? noteToY(n.note) : topLineY + 40;
 
         return { note: n, x, w, noteX, y, maxRightX };
       });
+
+      adjustDisplayNoteSpacing(noteMetrics);
 
       noteMetrics.forEach(({ note: n, x, w, noteX, y, maxRightX }) => {
 
