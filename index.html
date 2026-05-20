@@ -2723,6 +2723,26 @@ button:disabled {
       padding-top: 0;
     }
 
+    .practicePauseOverlay.countdown.countdown-blur-4 {
+      background: rgba(5, 12, 24, 0.16);
+      backdrop-filter: blur(0.7px);
+      -webkit-backdrop-filter: blur(0.7px);
+    }
+
+    .practicePauseOverlay.countdown.countdown-blur-3 {
+      background: rgba(5, 12, 24, 0.1);
+      backdrop-filter: blur(0.35px);
+      -webkit-backdrop-filter: blur(0.35px);
+    }
+
+    .practicePauseOverlay.countdown.countdown-clear,
+    .practicePauseOverlay.countdown.countdown-blur-2,
+    .practicePauseOverlay.countdown.countdown-blur-1 {
+      background: rgba(5, 12, 24, 0.04);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
     .practicePauseOverlayInner {
       display: grid;
       place-items: center;
@@ -2763,10 +2783,10 @@ button:disabled {
 
     .comboOverlay {
       --combo-tilt: -18deg;
-      --combo-number-color: #e8ffd1;
-      --combo-number-shadow-1: rgba(191, 255, 174, 0.72);
-      --combo-number-shadow-2: rgba(130, 255, 213, 0.4);
-      --combo-number-shadow-3: rgba(255, 246, 160, 0.2);
+      --combo-number-color: #ff1744;
+      --combo-number-shadow-1: rgba(255, 255, 255, 0.86);
+      --combo-number-shadow-2: rgba(255, 23, 68, 0.76);
+      --combo-number-shadow-3: rgba(255, 184, 196, 0.42);
       --combo-badge-glow: rgba(255, 221, 124, 0.4);
       --combo-badge-glow-2: rgba(134, 246, 255, 0.22);
       --combo-core-glow: rgba(255, 229, 132, 0.22);
@@ -2943,11 +2963,11 @@ button:disabled {
 
     .judgmentText {
       position: absolute;
-      left: min(72%, 650px);
-      top: 52px;
-      transform: translate(-50%, 0) scale(0.86);
+      left: 50%;
+      top: 34px;
+      transform: translate(-50%, -50%) scale(0.86);
       opacity: 0;
-      font-size: clamp(30px, 5vw, 58px);
+      font-size: clamp(36px, 5.8vw, 68px);
       font-weight: 1000;
       line-height: 1;
       letter-spacing: 0.04em;
@@ -2980,28 +3000,28 @@ button:disabled {
     @keyframes judgmentTextPop {
       0% {
         opacity: 0;
-        transform: translate(-50%, 12px) scale(0.76);
+        transform: translate(-50%, calc(-50% + 16px)) scale(0.74);
       }
       16% {
         opacity: 1;
-        transform: translate(-50%, 0) scale(1.08);
+        transform: translate(-50%, -50%) scale(1.12);
       }
       42% {
         opacity: 1;
-        transform: translate(-50%, -4px) scale(1);
+        transform: translate(-50%, calc(-50% - 6px)) scale(1);
       }
       100% {
         opacity: 0;
-        transform: translate(-50%, -30px) scale(0.92);
+        transform: translate(-50%, calc(-50% - 34px)) scale(0.9);
       }
     }
 
     .comboOverlay.combo-tier-2 {
       filter: saturate(1.1) brightness(1.06);
-      --combo-number-color: #c8fff6;
-      --combo-number-shadow-1: rgba(130, 255, 235, 0.76);
-      --combo-number-shadow-2: rgba(119, 232, 255, 0.46);
-      --combo-number-shadow-3: rgba(219, 255, 196, 0.24);
+      --combo-number-color: #ff1744;
+      --combo-number-shadow-1: rgba(255, 255, 255, 0.9);
+      --combo-number-shadow-2: rgba(255, 23, 68, 0.82);
+      --combo-number-shadow-3: rgba(255, 184, 196, 0.46);
       --combo-badge-glow: rgba(142, 255, 236, 0.52);
       --combo-badge-glow-2: rgba(114, 231, 255, 0.34);
       --combo-core-glow: rgba(149, 255, 228, 0.3);
@@ -3025,10 +3045,10 @@ button:disabled {
 
     .comboOverlay.combo-tier-3 {
       filter: saturate(1.08) brightness(1.04);
-      --combo-number-color: #fff2a8;
-      --combo-number-shadow-1: rgba(255, 248, 140, 0.82);
-      --combo-number-shadow-2: rgba(255, 221, 112, 0.46);
-      --combo-number-shadow-3: rgba(170, 255, 233, 0.26);
+      --combo-number-color: #ff1744;
+      --combo-number-shadow-1: rgba(255, 255, 255, 0.92);
+      --combo-number-shadow-2: rgba(255, 23, 68, 0.86);
+      --combo-number-shadow-3: rgba(255, 184, 196, 0.5);
       --combo-badge-glow: rgba(255, 239, 160, 0.62);
       --combo-badge-glow-2: rgba(162, 255, 232, 0.36);
       --combo-core-glow: rgba(255, 237, 156, 0.36);
@@ -3076,25 +3096,29 @@ button:disabled {
       font-size: clamp(24px, 3.2vw, 36px);
       font-weight: 1000;
       line-height: 1;
-      letter-spacing: -0.05em;
-      color: var(--combo-number-color);
+      letter-spacing: 0;
+      color: #e60012;
+      -webkit-text-fill-color: #e60012;
+      -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.96);
       text-shadow:
-        0 2px 0 rgba(118, 92, 24, 0.42),
-        0 0 18px var(--combo-number-shadow-1),
-        0 0 30px var(--combo-number-shadow-2),
-        0 0 42px var(--combo-number-shadow-3);
+        0 2px 0 rgba(70, 0, 8, 0.78),
+        0 0 4px rgba(255, 255, 255, 0.95),
+        0 0 12px rgba(230, 0, 18, 0.82);
     }
 
     .comboOverlay.combo-tier-1 .comboValue {
-      color: #e8ffd1;
+      color: #e60012;
+      -webkit-text-fill-color: #e60012;
     }
 
     .comboOverlay.combo-tier-2 .comboValue {
-      color: #c8fff6;
+      color: #e60012;
+      -webkit-text-fill-color: #e60012;
     }
 
     .comboOverlay.combo-tier-3 .comboValue {
-      color: #fff2a8;
+      color: #e60012;
+      -webkit-text-fill-color: #e60012;
     }
 
     .comboValue::after {
@@ -3104,10 +3128,12 @@ button:disabled {
       top: 1px;
       font-size: 10px;
       font-weight: 1000;
-      color: #67bdb4;
+      color: #b00012;
+      -webkit-text-fill-color: #b00012;
+      -webkit-text-stroke: 0.4px rgba(255, 255, 255, 0.9);
       text-shadow:
-        0 1px 0 rgba(255,255,255,0.38),
-        0 0 10px rgba(175, 255, 241, 0.42);
+        0 1px 0 rgba(70, 0, 8, 0.65),
+        0 0 6px rgba(255, 255, 255, 0.72);
     }
 
     .practiceControlPanel {
@@ -3990,9 +4016,9 @@ button:disabled {
       }
 
       .judgmentText {
-        left: 68%;
-        top: 44px;
-        font-size: clamp(26px, 8vw, 40px);
+        left: 50%;
+        top: 30px;
+        font-size: clamp(28px, 8.4vw, 44px);
         -webkit-text-stroke-width: 1.5px;
       }
 
@@ -4596,6 +4622,32 @@ button:disabled {
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.12),
         0 6px 14px rgba(31, 42, 68, 0.24);
+    }
+
+    .basicPracticeLights {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 66px;
+      height: 18px;
+    }
+
+    .basicPracticeLights span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #ff8a00;
+      box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.7),
+        0 0 12px rgba(255, 138, 0, 0.84);
+      opacity: 1;
+      transition: opacity 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .basicPracticeLights span.off {
+      opacity: 0.24;
+      filter: grayscale(0.7);
+      box-shadow: 0 0 0 1px rgba(83, 99, 124, 0.26);
     }
 
     #basicStaffCanvas {
@@ -13527,7 +13579,7 @@ body.theme-light .readyCardHint {
             </div>
           </div>
 
-          <button id="resultConfirmBtn" class="resultConfirmBtn" type="button">확인</button>
+          <button id="resultConfirmBtn" class="resultConfirmBtn" type="button">확인하고 성장 포인트 받기</button>
         </div>
       </div>
     </section>
@@ -13600,6 +13652,12 @@ body.theme-light .readyCardHint {
               🎵 같이 불어보기
             </button>
             <div id="beatDisplay" class="beat-display">-</div>
+            <div id="basicPracticeLights" class="basicPracticeLights" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
           <div class="basicPracticePanel">
             <div class="basicPracticeTitle">리코더 연습 순서</div>
@@ -14054,7 +14112,15 @@ body.theme-light .readyCardHint {
     let basicPracticeAudios = [];
     let basicPracticeTimerIds = [];
     let basicPracticeRunning = false;
+    const basicFingeringViewedSet = new Set();
+    let basicFingeringGrowthClaimRequested = false;
+    let fingeringPracticeSetGrowthClaimRequested = false;
     let resultSequenceRunId = 0;
+    let resultSaveState = {
+      saving: false,
+      saved: false,
+      lastResultId: 0
+    };
     const activityGrowthRequestState = {};
     let dailyMissionState = null;
     let dailyMissionStateUserId = "";
@@ -15650,6 +15716,18 @@ function restorePracticeFromChallengePlay() {
       const text = document.getElementById("resultText");
       const runId = ++resultSequenceRunId;
 
+      resultSaveState = {
+        saving: false,
+        saved: false,
+        lastResultId: runId
+      };
+
+      const resultConfirmBtn = document.getElementById("resultConfirmBtn");
+      if (resultConfirmBtn) {
+        resultConfirmBtn.disabled = false;
+        resultConfirmBtn.textContent = "확인하고 성장 포인트 받기";
+      }
+
       if (!overlay || !stamp || !pitchEl || !rhythmEl || !comboEl || !totalEl || !text) return;
 
       renderGrowthResult(null);
@@ -16190,6 +16268,9 @@ function renderSongButtons() {
       const actionStack = document.createElement("div");
       actionStack.className = "practiceActionStack";
       actionStack.setAttribute("aria-label", "\uC5F0\uC2B5 \uB3D9\uC791");
+      if (saveBtn) {
+        saveBtn.style.display = "none";
+      }
       actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn, backBtn, continueBtn);
 
 
@@ -16378,7 +16459,6 @@ function renderSongButtons() {
       if (screenId === "screen-tonguing-guide") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
-        claimActivityGrowth("TONGUING");
         if (!skipHistory) pushAppHistory(screenId);
         return;
       }
@@ -16387,6 +16467,7 @@ function renderSongButtons() {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
         initTonguingPracticeScreen();
+        claimActivityGrowth("TONGUING");
         if (!skipHistory) pushAppHistory(screenId);
         return;
       }
@@ -16415,7 +16496,6 @@ function renderSongButtons() {
         currentActivityTitle = SCREEN_TITLES[screenId];
         setPracticeScreenMode("fingering");
         showStep("step34Section", { skipHistory: true });
-        claimActivityGrowth("FINGERING_PRACTICE");
         primeFingeringMetronomeAudio();
         if (!skipHistory) pushAppHistory(screenId);
         resetPractice();
@@ -16425,7 +16505,6 @@ function renderSongButtons() {
       if (screenId === "screen-basic") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         showStep("step-basic-typeSection", { skipHistory: true });
-        claimActivityGrowth("BASIC_FINGERING");
         updateBasicTypeRecorderCards();
         if (!skipHistory) pushAppHistory(screenId);
         setStatus("basicTypeStatus", "운지 방식을 선택해 주세요.", "");
@@ -17245,6 +17324,8 @@ function renderSongButtons() {
 
     function openBasicFingering(system) {
       currentBasicFingeringSystem = normalizeFingeringSystem(system);
+      basicFingeringViewedSet.clear();
+      basicFingeringGrowthClaimRequested = false;
 
       resetBasicPracticeState("C5");
 
@@ -18593,27 +18674,17 @@ function drawRest(ctx, x, staffTop, duration) {
       if (!layer) return;
 
       const safeKind = ["perfect", "great", "good", "miss"].includes(kind) ? kind : "miss";
+      layer.querySelectorAll(".judgmentText").forEach((item) => item.remove());
       const node = document.createElement("div");
       node.className = `judgmentText ${safeKind}`;
       node.textContent = label;
       layer.appendChild(node);
-
-      const existing = Array.from(layer.querySelectorAll(".judgmentText"));
-      existing.slice(0, -3).forEach((item) => item.remove());
 
       node.addEventListener("animationend", () => node.remove(), { once: true });
     }
 
     function enqueueJudgmentFeedback(kind) {
       const style = getJudgmentFeedbackStyle(kind);
-      judgmentFeedbacks.push({
-        label: style.label,
-        kind,
-        color: style.color,
-        glow: style.glow,
-        createdAt: performance.now()
-      });
-      judgmentFeedbacks = judgmentFeedbacks.slice(-4);
       showJudgmentText(kind, style.label);
     }
 
@@ -19006,11 +19077,14 @@ function drawRest(ctx, x, staffTop, duration) {
 
       if (elapsedMs < 0) {
         const remain = Math.ceil(Math.abs(elapsedMs) / 1000);
+        const veilAlpha = remain >= 5 ? 0.34 : remain === 4 ? 0.22 : remain === 3 ? 0.1 : 0;
 
-        ctx.fillStyle = "rgba(255,255,255,0.75)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (veilAlpha > 0) {
+          ctx.fillStyle = `rgba(255,255,255,${veilAlpha})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
-        ctx.fillStyle = "#111";
+        ctx.fillStyle = remain <= 2 ? "rgba(17, 24, 39, 0.82)" : "#111";
         ctx.font = "bold 72px system-ui";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -19924,9 +19998,25 @@ function drawRest(ctx, x, staffTop, duration) {
       const overlayText = document.getElementById("practicePauseOverlayText");
       if (!overlay || !overlayText) return;
 
+      overlay.classList.remove(
+        "countdown-blur-4",
+        "countdown-blur-3",
+        "countdown-blur-2",
+        "countdown-blur-1",
+        "countdown-clear"
+      );
+
       overlayText.textContent = text;
       overlay.classList.toggle("visible", visible);
       overlay.classList.toggle("countdown", mode === "countdown");
+      if (visible && mode === "countdown") {
+        const countValue = Number(String(text).trim());
+        if (Number.isFinite(countValue) && countValue <= 2) {
+          overlay.classList.add("countdown-clear");
+        } else if (Number.isFinite(countValue) && countValue <= 4) {
+          overlay.classList.add(`countdown-blur-${countValue}`);
+        }
+      }
       overlay.setAttribute("aria-hidden", visible ? "false" : "true");
     }
 
@@ -19936,6 +20026,13 @@ function drawRest(ctx, x, staffTop, duration) {
 
       overlay.classList.remove("visible");
       overlay.classList.remove("countdown");
+      overlay.classList.remove(
+        "countdown-blur-4",
+        "countdown-blur-3",
+        "countdown-blur-2",
+        "countdown-blur-1",
+        "countdown-clear"
+      );
       overlay.setAttribute("aria-hidden", "true");
     }
 
@@ -20674,6 +20771,7 @@ function resetBasicPracticeState(defaultNote = "C5") {
     beatEl.innerText = "-";
     beatEl.classList.remove("active");
   }
+  updateBasicPracticeLights(0);
 }
 
 function showBasicNote(note) {
@@ -20720,6 +20818,21 @@ function stopBeatDisplay() {
   if (beat) beat.innerText = "-";
 }
 
+function trackBasicFingeringViewed(note) {
+  const key = String(note || "").trim().toUpperCase();
+  if (!key) return;
+
+  basicFingeringViewedSet.add(key);
+
+  if (
+    basicFingeringViewedSet.size >= 3 &&
+    !basicFingeringGrowthClaimRequested
+  ) {
+    basicFingeringGrowthClaimRequested = true;
+    claimActivityGrowth("BASIC_FINGERING");
+  }
+}
+
 function updateBeatDisplay(beat) {
   const beatEl = document.getElementById("beatDisplay");
   if (beatEl) beatEl.innerText = String(beat);
@@ -20746,10 +20859,18 @@ function pulseBeatDisplay() {
   );
 }
 
+function updateBasicPracticeLights(remaining = 0) {
+  const lights = document.querySelectorAll("#basicPracticeLights span");
+  lights.forEach((light, index) => {
+    light.classList.toggle("off", index >= remaining);
+  });
+}
+
 function selectBasicNote(note) {
   currentBasicNote = note || "C5";
   stopBasicPracticeSession();
   showBasicNote(currentBasicNote);
+  trackBasicFingeringViewed(currentBasicNote);
 }
 
 function playBasicSound(src) {
@@ -20787,6 +20908,7 @@ async function playBasicPractice(note) {
 
   currentBasicNote = note || "C5";
   renderBasicNoteDisplay(currentBasicNote);
+  updateBasicPracticeLights(4);
   setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} ${note} 같이 불어보기 시작`, "ok");
 
   async function runBasicBeat(beat, { includeNote = false } = {}) {
@@ -20811,6 +20933,8 @@ async function playBasicPractice(note) {
       return;
     }
 
+    updateBasicPracticeLights(4 - repeat);
+
     for (let beat = 1; beat <= 4; beat++) {
       const keepGoing = await runBasicBeat(beat, { includeNote: true });
       if (!keepGoing) {
@@ -20824,6 +20948,8 @@ async function playBasicPractice(note) {
         return;
       }
     }
+
+    updateBasicPracticeLights(3 - repeat);
   }
 
   if (runId === basicPracticeRunId) {
@@ -20874,14 +21000,16 @@ function startBasicPractice() {
 
     async function save() {
       if (!app.user) {
-        setStatus("saveStatus", "먼저 로그인하세요.", "bad");
-        return;
+        const error = new Error("먼저 로그인하세요.");
+        setStatus("saveStatus", error.message, "bad");
+        throw error;
       }
 
       const song = app.currentSong || getSelectedSong();
       if (!song) {
-        setStatus("saveStatus", "곡을 먼저 선택하세요.", "bad");
-        return;
+        const error = new Error("곡을 먼저 선택하세요.");
+        setStatus("saveStatus", error.message, "bad");
+        throw error;
       }
 
       try {
@@ -20916,6 +21044,10 @@ function startBasicPractice() {
           }
         });
 
+        if (!saveResult || saveResult.ok !== true) {
+          throw new Error(saveResult?.message || "저장에 실패했습니다.");
+        }
+
         if (app.user && saveResult && saveResult.ok && saveResult.growth) {
           if (typeof saveResult.growth.expAfter === "number") {
             app.user.exp = saveResult.growth.expAfter;
@@ -20949,6 +21081,7 @@ function startBasicPractice() {
       } catch (e) {
         renderGrowthResult(null);
         setStatus("saveStatus", e.message, "bad");
+        throw e;
       }
     }
 
@@ -20960,16 +21093,45 @@ function startBasicPractice() {
 
       if (resultOverlay && !resultOverlay.dataset.dismissBound) {
         resultOverlay.addEventListener("click", () => {
-          hideResultStamp();
+          if (resultSaveState.saved) {
+            hideResultStamp();
+          }
         });
         resultOverlay.dataset.dismissBound = "true";
       }
 
       if (resultConfirmBtn && !resultConfirmBtn.dataset.dismissBound) {
-        resultConfirmBtn.addEventListener("click", (event) => {
+        resultConfirmBtn.addEventListener("click", async (event) => {
           event.stopPropagation();
+
+          if (resultSaveState.saving) {
+            return;
+          }
+
+          if (resultSaveState.saved) {
+            hideResultStamp();
+            return;
+          }
+
+          resultSaveState.saving = true;
+          resultConfirmBtn.disabled = true;
+          resultConfirmBtn.textContent = "성장 포인트 받는 중...";
           hideResultStamp();
+
+          try {
+            await save();
+
+            resultSaveState.saved = true;
+          } catch (error) {
+            resultSaveState.saved = false;
+            resultConfirmBtn.disabled = false;
+            resultConfirmBtn.textContent = "다시 시도하기";
+            setStatus("saveStatus", error?.message || "저장에 실패했습니다.", "bad");
+          } finally {
+            resultSaveState.saving = false;
+          }
         });
+
         resultConfirmBtn.dataset.dismissBound = "true";
       }
     }
@@ -21853,6 +22015,10 @@ function startBasicPractice() {
         setFingeringPracticeActionButtonsRunning(false);
         renderFingeringPracticeFrame();
         showFingeringPracticeResultInButton();
+        if (!fingeringPracticeSetGrowthClaimRequested) {
+          fingeringPracticeSetGrowthClaimRequested = true;
+          claimActivityGrowth("FINGERING_PRACTICE");
+        }
         setStatus("practiceStatus", "운지법 자동 훈련 완료", "ok");
         return;
       }
@@ -21886,6 +22052,7 @@ function startBasicPractice() {
       resetFingeringPracticeResultButton();
       setFingeringPracticeActionButtonsRunning(false);
       practiceState.index = 0;
+      fingeringPracticeSetGrowthClaimRequested = false;
 
       if (patternKey && FINGERING_PRACTICE_PATTERNS[patternKey]) {
         practiceState.notes = [...FINGERING_PRACTICE_PATTERNS[patternKey].notes];
