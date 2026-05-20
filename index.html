@@ -11441,6 +11441,8 @@ body.light-mode .fingering-card .desc {
 
 #step34Section .arrow {
   display: inline-block;
+  width: 22px;
+  text-align: center;
   font-size: 18px;
   line-height: 1;
   color: #ffd76a;
@@ -11457,7 +11459,7 @@ body.light-mode .fingering-card .desc {
 }
 
 #step34Section .arrow-right {
-  animation-delay: 0.3s;
+  animation-delay: 0s;
 }
 
 @keyframes arrowBounce {
@@ -11916,6 +11918,7 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 
 .fingeringPracticeActionRow {
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   gap: 14px;
   margin: 12px 0 4px;
@@ -11924,14 +11927,16 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 }
 
 .fingeringPracticeStartBtn,
-.fingeringPracticeResetBtn {
-  min-width: 160px;
-  min-height: 52px;
+.fingeringPracticeResultBtn,
+.fingeringPracticeSetupBtn {
+  min-width: 0;
+  height: 52px;
   padding: 13px 22px;
   border: 0;
   border-radius: 999px;
   font-size: 16px;
   font-weight: 900;
+  white-space: nowrap;
   cursor: pointer;
   color: #ffffff;
   box-shadow:
@@ -11940,7 +11945,25 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
 }
 
 .fingeringPracticeStartBtn {
+  flex: 1.2 1 0;
   background: linear-gradient(135deg, #2f80ed, #6ee7ff);
+}
+
+.fingeringPracticeResultBtn {
+  flex: 1 1 0;
+  background: linear-gradient(135deg, #7c3aed, #c084fc);
+}
+
+.fingeringPracticeResultBtn.result-ready {
+  background: linear-gradient(135deg, #a855f7, #f0abfc);
+  box-shadow:
+    0 14px 28px rgba(168,85,247,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.36);
+}
+
+.fingeringPracticeSetupBtn {
+  flex: 1 1 0;
+  background: linear-gradient(135deg, #64748b, #334155);
 }
 
 #startFingeringPracticeBtn .start-label,
@@ -11950,14 +11973,12 @@ body.light-mode #step34Section .practice-right-column .staff-area .slot-label-ca
   letter-spacing: 1px;
 }
 
-.fingeringPracticeStartBtn:disabled {
+.fingeringPracticeStartBtn:disabled,
+.fingeringPracticeResultBtn:disabled,
+.fingeringPracticeSetupBtn:disabled {
   opacity: 0.42;
   cursor: not-allowed;
   filter: grayscale(0.4);
-}
-
-.fingeringPracticeResetBtn {
-  background: linear-gradient(135deg, #64748b, #334155);
 }
 
 #step34Section.fingeringTrainingMode .patternCard.selected {
@@ -12865,11 +12886,11 @@ body.theme-light .readyCardHint {
   }
 
   .fingeringPracticeStartBtn,
-  .fingeringPracticeResetBtn {
-    min-width: 0;
-    flex: 1;
-    font-size: 14px;
-    padding: 12px 14px;
+  .fingeringPracticeResultBtn,
+  .fingeringPracticeSetupBtn {
+    height: 48px;
+    font-size: 13px;
+    padding: 10px 10px;
   }
 }
 
@@ -13330,8 +13351,11 @@ body.theme-light .readyCardHint {
                 <button type="button" id="startFingeringPracticeBtn" class="fingeringPracticeStartBtn" disabled>
                   ▶ <span class="start-label">연습 시작</span>
                 </button>
-                <button type="button" id="resetFingeringPracticeBtn" class="fingeringPracticeResetBtn">
-                  ↺ 다시 하기
+                <button type="button" id="fingeringPracticeResultBtn" class="fingeringPracticeResultBtn">
+                  📊 정확도
+                </button>
+                <button type="button" id="resetFingeringPracticeBtn" class="fingeringPracticeSetupBtn">
+                  다시 설정
                 </button>
               </div>
             </div>
@@ -13987,6 +14011,12 @@ body.theme-light .readyCardHint {
     let audioCtx = null;
     let micStream = null;
     let micSource = null;
+    let sharedMicStream = null;
+    let sharedAudioContext = null;
+    let sharedMicSource = null;
+    let micReady = false;
+    let micInitializing = false;
+    let sharedMicrophonePromise = null;
     let analyser = null;
     let pitchBuffer = null;
     let micRunning = false;
@@ -14177,6 +14207,54 @@ body.theme-light .readyCardHint {
       return String(appState?.user?.userId || "").trim();
     }
 
+    function isBetaTesterUser(user) {
+      const userId = String(user?.userId || "").trim().toUpperCase();
+      const loginCode = String(user?.loginCode || "").trim().toUpperCase();
+      return userId === "BETA_TESTER" || loginCode === "BETA";
+    }
+
+    function getBetaDailyMissionData(user) {
+      const completedTypes = localDailyMissionCompletedTypes || new Set();
+      const missions = [
+        {
+          activityType: "LOGIN",
+          title: "테스터 계정으로 입장하기",
+          completed: true
+        },
+        {
+          activityType: "SHORT_SONG",
+          title: "짧은 곡 연주 완료하기",
+          completed: completedTypes.has("SHORT_SONG")
+        },
+        {
+          activityType: "TEXTBOOK_SONG",
+          title: "교과서 수록곡 연주 완료하기",
+          completed: completedTypes.has("TEXTBOOK_SONG")
+        }
+      ];
+      const completedCount = missions.filter((mission) => mission.completed).length;
+      const today = new Date();
+      const dateKey = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+      ].join("-");
+
+      return {
+        ok: true,
+        userId: String(user?.userId || "BETA_TESTER"),
+        dateKey,
+        missions,
+        totalCount: missions.length,
+        completedCount,
+        allCompleted: completedCount >= missions.length,
+        bonusExp: 30,
+        bonusClaimed: dailyMissionState?.bonusClaimed === true,
+        serverAllCompleted: completedCount >= missions.length,
+        serverBonusClaimed: dailyMissionState?.bonusClaimed === true
+      };
+    }
+
     function resetDailyMissionLocalState() {
       dailyMissionState = null;
 
@@ -14222,6 +14300,13 @@ body.theme-light .readyCardHint {
 
         if (isDailyMissionCardOpen()) {
           renderDailyMissions(dailyMissionState || { loading: true });
+        }
+
+        if (isBetaTesterUser(appState.user)) {
+          const betaResult = getBetaDailyMissionData(appState.user);
+          dailyMissionState = betaResult;
+          renderDailyMissions(betaResult);
+          return betaResult;
         }
 
         console.log("[DAILY MISSIONS API REQUEST]", {
@@ -14590,6 +14675,29 @@ body.theme-light .readyCardHint {
           return null;
         }
 
+        if (isBetaTesterUser(app.user)) {
+          const bonusExp = Number(dailyMissionState?.bonusExp || 30);
+          app.user.exp = clampClientExp(Number(app.user.exp || 0) + bonusExp);
+          app.user.level = getClientGrowthProgress(app.user.exp).level;
+          dailyMissionState = {
+            ...getBetaDailyMissionData(app.user),
+            bonusClaimed: true,
+            serverBonusClaimed: true
+          };
+          renderMenuStudentGrowthInfo();
+          renderDailyMissions(dailyMissionState);
+          return {
+            ok: true,
+            claimed: true,
+            bonusClaimed: true,
+            growth: {
+              earnedExp: bonusExp,
+              expAfter: app.user.exp,
+              levelAfter: app.user.level
+            }
+          };
+        }
+
         console.log("[DAILY MISSION BONUS REQUEST]", {
           userId: app?.user?.userId,
           action: "claimDailyMissionBonus"
@@ -14878,6 +14986,17 @@ body.theme-light .readyCardHint {
     let activePatternSlot = 0;
     let nextPatternSlot = 0;
     let fingeringPracticeSpeed = "normal";
+    const FINGERING_RESULT_BUTTON_DEFAULT_TEXT = "📊 정확도";
+    let fingeringJudgeState = {
+      active: false,
+      totalNotes: 0,
+      correctNotes: 0,
+      judgedNotes: [],
+      wrongNotes: [],
+      lastResultPercent: null,
+      hoverWrongNoteIndex: null,
+      selectedWrongNoteIndex: null
+    };
     let practiceState = {
       mode: "cards",
       notes: [],
@@ -14898,6 +15017,109 @@ body.theme-light .readyCardHint {
 
       startBtn.disabled = !hasPattern;
       startBtn.classList.toggle("is-active", hasPattern);
+    }
+
+    function initFingeringJudgeState(notesOverride) {
+      const notes = Array.isArray(notesOverride)
+        ? notesOverride
+        : getSelectedFingeringPracticeNotes();
+      fingeringJudgeState = {
+        active: true,
+        totalNotes: notes.length,
+        correctNotes: 0,
+        judgedNotes: [],
+        wrongNotes: [],
+        lastResultPercent: null,
+        hoverWrongNoteIndex: null,
+        selectedWrongNoteIndex: null
+      };
+    }
+
+    function getDetectedFingeringNoteName() {
+      if (liveDetectedNote) return normalizeNoteName(liveDetectedNote);
+      if (liveDetectedMidi != null) return normalizeNoteName(midiToNoteName(liveDetectedMidi));
+      if (livePitchHz > 0) return normalizeNoteName(midiToNoteName(freqToMidi(livePitchHz)));
+      return "";
+    }
+
+    function isFingeringPitchCorrect(targetNote) {
+      const targetMidi = noteNameToMidi(targetNote);
+      const detectedMidiValue = getDetectedMidiValue();
+
+      if (targetMidi == null || detectedMidiValue == null) return false;
+
+      return Math.abs((detectedMidiValue - targetMidi) * 100) <= PITCH_NEAR_TOLERANCE_CENTS;
+    }
+
+    async function startFingeringPitchJudge() {
+      fingeringJudgeState.active = true;
+
+      try {
+        await startMicMonitoring();
+        return true;
+      } catch (error) {
+        fingeringJudgeState.active = false;
+        console.warn("Fingering pitch judge could not start.", error);
+        return false;
+      }
+    }
+
+    function stopFingeringPitchJudge() {
+      fingeringJudgeState.active = false;
+      stopMicMonitoring();
+    }
+
+    function judgeFingeringNoteAtIndex(noteIndex) {
+      if (!fingeringJudgeState.active) return;
+      if (!Array.isArray(practiceState.notes)) return;
+      if (noteIndex < 0 || noteIndex >= practiceState.notes.length) return;
+
+      const targetNote = practiceState.notes[noteIndex];
+      if (!targetNote || /^R/i.test(String(targetNote))) return;
+
+      const alreadyJudged = fingeringJudgeState.judgedNotes.some(
+        (item) => Number(item?.index) === Number(noteIndex)
+      );
+      if (alreadyJudged) return;
+
+      const detectedNote = getDetectedFingeringNoteName();
+      const hasInput = hasValidPerformanceInput();
+      const judgeStatus = hasInput && isFingeringPitchCorrect(targetNote)
+        ? "correct"
+        : "wrong";
+      const judgedEntry = {
+        index: noteIndex,
+        targetNote,
+        detectedNote,
+        judgeStatus,
+        fingeringJudgeStatus: judgeStatus
+      };
+
+      fingeringJudgeState.judgedNotes.push(judgedEntry);
+      if (judgeStatus === "correct") {
+        fingeringJudgeState.correctNotes += 1;
+      } else {
+        fingeringJudgeState.wrongNotes.push(judgedEntry);
+      }
+
+      fingeringJudgeState.lastResultPercent = fingeringJudgeState.judgedNotes.length
+        ? Math.round((fingeringJudgeState.correctNotes / fingeringJudgeState.judgedNotes.length) * 100)
+        : null;
+
+      renderFingeringPracticeFrame();
+    }
+
+    function resetFingeringJudgeState() {
+      fingeringJudgeState = {
+        active: false,
+        totalNotes: 0,
+        correctNotes: 0,
+        judgedNotes: [],
+        wrongNotes: [],
+        lastResultPercent: null,
+        hoverWrongNoteIndex: null,
+        selectedWrongNoteIndex: null
+      };
     }
     let scoreState = {
       totalFrames: 0,
@@ -17257,6 +17479,7 @@ function goBackFromCurrentScreen() {
 function logout() {
   stopBasicPracticeSession();
   stopPractice();
+  releaseSharedMicrophone();
   resetActivityGrowthRequestState();
   resetDailyMissionLocalState();
   dailyMissionStateUserId = "";
@@ -17301,6 +17524,10 @@ window.addEventListener("popstate", function (event) {
   }
 
   renderScreenOnly(screenId);
+});
+
+window.addEventListener("beforeunload", function () {
+  releaseSharedMicrophone();
 });
 
     function renderShortSongList(songs, { keepSelection = false } = {}) {
@@ -19125,12 +19352,16 @@ function drawRest(ctx, x, staffTop, duration) {
       };
     }
 
-    function hasActiveMicStream() {
+    function isSharedMicStreamAlive() {
       return !!(
-        micStream &&
-        typeof micStream.getAudioTracks === "function" &&
-        micStream.getAudioTracks().some((track) => track.readyState === "live")
+        sharedMicStream &&
+        typeof sharedMicStream.getAudioTracks === "function" &&
+        sharedMicStream.getAudioTracks().some((track) => track.readyState === "live")
       );
+    }
+
+    function hasActiveMicStream() {
+      return isSharedMicStreamAlive();
     }
 
     async function ensureAudioContextRunning() {
@@ -19139,14 +19370,15 @@ function drawRest(ctx, x, staffTop, duration) {
         throw new Error("AudioContext is not supported.");
       }
 
-      if (!audioCtx || audioCtx.state === "closed") {
-        audioCtx = new AudioContextClass();
+      if (!sharedAudioContext || sharedAudioContext.state === "closed") {
+        sharedAudioContext = new AudioContextClass();
       }
 
-      if (audioCtx.state === "suspended") {
-        await audioCtx.resume();
+      if (sharedAudioContext.state === "suspended") {
+        await sharedAudioContext.resume();
       }
 
+      audioCtx = sharedAudioContext;
       return audioCtx;
     }
 
@@ -19189,6 +19421,76 @@ function drawRest(ctx, x, staffTop, duration) {
       }
     }
 
+    async function ensureSharedMicrophone() {
+      if (micReady && isSharedMicStreamAlive()) {
+        micStream = sharedMicStream;
+        await ensureAudioContextRunning();
+        return {
+          stream: sharedMicStream,
+          audioContext: sharedAudioContext
+        };
+      }
+
+      if (micInitializing && sharedMicrophonePromise) {
+        return sharedMicrophonePromise;
+      }
+
+      micInitializing = true;
+      sharedMicrophonePromise = (async () => {
+        try {
+          ensureMicApiAvailable();
+
+          if (!isSharedMicStreamAlive()) {
+            sharedMicStream = await requestPracticeMicStream();
+          }
+
+          micStream = sharedMicStream;
+          await ensureAudioContextRunning();
+          micReady = true;
+
+          return {
+            stream: sharedMicStream,
+            audioContext: sharedAudioContext
+          };
+        } catch (error) {
+          micReady = false;
+          logMicDebugError(error);
+          setStatus("practiceStatus", getMicPermissionGuideMessageWithError(error), "bad");
+          throw error;
+        } finally {
+          micInitializing = false;
+          sharedMicrophonePromise = null;
+        }
+      })();
+
+      return sharedMicrophonePromise;
+    }
+
+    function releaseSharedMicrophone() {
+      stopMicMonitoring();
+
+      if (sharedMicSource) {
+        try { sharedMicSource.disconnect(); } catch (_) {}
+        sharedMicSource = null;
+      }
+
+      if (sharedMicStream) {
+        try { sharedMicStream.getTracks().forEach((track) => track.stop()); } catch (_) {}
+        sharedMicStream = null;
+      }
+
+      if (sharedAudioContext) {
+        try { sharedAudioContext.close(); } catch (_) {}
+        sharedAudioContext = null;
+      }
+
+      micStream = null;
+      audioCtx = null;
+      micReady = false;
+      micInitializing = false;
+      sharedMicrophonePromise = null;
+    }
+
     function getMicPermissionGuideMessage(error) {
       const ua = navigator.userAgent || "";
       const isIOS = /iPad|iPhone|iPod/.test(ua) ||
@@ -19218,20 +19520,9 @@ function drawRest(ctx, x, staffTop, duration) {
 
     async function ensureMicReadyForIOS() {
       try {
-        ensureMicApiAvailable();
-        micStream = hasActiveMicStream()
-          ? micStream
-          : await requestPracticeMicStream();
-        await ensureAudioContextRunning();
+        await ensureSharedMicrophone();
         return true;
       } catch (error) {
-        logMicDebugError(error);
-        const guideMessage = getMicPermissionGuideMessageWithError(error);
-        setStatus(
-          "practiceStatus",
-          guideMessage,
-          "bad"
-        );
         return false;
       }
     }
@@ -19240,13 +19531,14 @@ function drawRest(ctx, x, staffTop, duration) {
       if (micRunning) return;
 
       try {
-        if (!hasActiveMicStream()) {
-          micStream = await requestPracticeMicStream();
+        await ensureSharedMicrophone();
+
+        if (micSource) {
+          try { micSource.disconnect(); } catch (_) {}
+          micSource = null;
         }
-
-        await ensureAudioContextRunning();
-
         micSource = audioCtx.createMediaStreamSource(micStream);
+        sharedMicSource = micSource;
 
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 2048;
@@ -19279,20 +19571,11 @@ function drawRest(ctx, x, staffTop, duration) {
         try { micSource.disconnect(); } catch (_) {}
         micSource = null;
       }
+      sharedMicSource = null;
 
       if (analyser) {
         try { analyser.disconnect(); } catch (_) {}
         analyser = null;
-      }
-
-      if (micStream) {
-        try { micStream.getTracks().forEach(t => t.stop()); } catch (_) {}
-        micStream = null;
-      }
-
-      if (audioCtx) {
-        try { audioCtx.close(); } catch (_) {}
-        audioCtx = null;
       }
 
       livePitchHz = 0;
@@ -20002,15 +20285,13 @@ function drawRest(ctx, x, staffTop, duration) {
       }
 
       try {
-        if (!micStream) {
-          await startMicMonitoring();
-        }
+        await ensureSharedMicrophone();
 
         const mimeType = getRecordingMimeType();
         const options = mimeType ? { mimeType } : undefined;
 
         practiceRecordingChunks = [];
-        practiceRecorder = new MediaRecorder(micStream, options);
+        practiceRecorder = new MediaRecorder(sharedMicStream || micStream, options);
         practiceRecordingStartedAt = Date.now();
 
         practiceRecorder.ondataavailable = (event) => {
@@ -20729,6 +21010,39 @@ function startBasicPractice() {
       }
     }
 
+    function setFingeringPracticeActionButtonsRunning(isRunning) {
+      [
+        "resetFingeringPracticeBtn"
+      ].forEach((id) => {
+        const button = document.getElementById(id);
+        if (button) button.disabled = !!isRunning;
+      });
+    }
+
+    function resetFingeringPracticeResultButton() {
+      const resultBtn = document.getElementById("fingeringPracticeResultBtn");
+      if (!resultBtn) return;
+
+      resultBtn.textContent = FINGERING_RESULT_BUTTON_DEFAULT_TEXT;
+      resultBtn.classList.remove("result-ready");
+    }
+
+    function showFingeringPracticeResultInButton() {
+      const resultBtn = document.getElementById("fingeringPracticeResultBtn");
+      if (!resultBtn) return;
+
+      const correctNotes = Number(fingeringJudgeState?.correctNotes || 0);
+      const wrongNotes = Array.isArray(fingeringJudgeState?.wrongNotes)
+        ? fingeringJudgeState.wrongNotes.length
+        : 0;
+      const totalJudgedNotes = correctNotes + wrongNotes;
+
+      resultBtn.textContent = totalJudgedNotes > 0
+        ? `정확도 ${Math.round((correctNotes / totalJudgedNotes) * 100)}%`
+        : "결과 없음";
+      resultBtn.classList.add("result-ready");
+    }
+
     function updateRecorderImageByNote(note) {
       if (!note) return;
 
@@ -20769,6 +21083,156 @@ function startBasicPractice() {
         offset += getFingeringPatternSlotNotes(i).length;
       }
       return offset;
+    }
+
+    function getFingeringJudgeStatus(globalNoteIndex) {
+      const judged = Array.isArray(fingeringJudgeState?.judgedNotes)
+        ? fingeringJudgeState.judgedNotes
+        : [];
+      const found = judged.find((item) => Number(item?.index) === Number(globalNoteIndex));
+      const status = String(found?.fingeringJudgeStatus || found?.judgeStatus || found?.status || "pending").toLowerCase();
+
+      return status === "correct" || status === "wrong" ? status : "pending";
+    }
+
+    function normalizeFingeringTargetNoteForRecorder(note) {
+      return normalizeNoteName(note);
+    }
+
+    function getFingeringCanvasDisplayRect(canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const canvasRatio = canvas.height ? canvas.width / canvas.height : 1;
+      const rectRatio = rect.height ? rect.width / rect.height : canvasRatio;
+      let contentWidth = rect.width;
+      let contentHeight = rect.height;
+      let contentLeft = rect.left;
+      let contentTop = rect.top;
+
+      if (rectRatio > canvasRatio) {
+        contentHeight = rect.height;
+        contentWidth = contentHeight * canvasRatio;
+        contentLeft = rect.left + (rect.width - contentWidth) / 2;
+      } else if (rectRatio < canvasRatio) {
+        contentWidth = rect.width;
+        contentHeight = contentWidth / canvasRatio;
+        contentTop = rect.top + (rect.height - contentHeight) / 2;
+      }
+
+      return {
+        rect,
+        contentLeft,
+        contentTop,
+        contentWidth,
+        contentHeight
+      };
+    }
+
+    function getFingeringCanvasPointerPoint(event, canvas) {
+      const displayRect = getFingeringCanvasDisplayRect(canvas);
+      const clientX = event.clientX ?? event.touches?.[0]?.clientX ?? 0;
+      const clientY = event.clientY ?? event.touches?.[0]?.clientY ?? 0;
+      const scaleX = displayRect.contentWidth ? canvas.width / displayRect.contentWidth : 1;
+      const scaleY = displayRect.contentHeight ? canvas.height / displayRect.contentHeight : 1;
+
+      return {
+        x: (clientX - displayRect.contentLeft) * scaleX,
+        y: (clientY - displayRect.contentTop) * scaleY,
+        rect: displayRect.rect,
+        contentWidth: displayRect.contentWidth,
+        contentHeight: displayRect.contentHeight,
+        scaleX,
+        scaleY
+      };
+    }
+
+    function getFingeringWrongNoteHitAtPoint(canvas, point) {
+      const hitBoxes = Array.isArray(canvas?._fingeringWrongNoteHitBoxes)
+        ? canvas._fingeringWrongNoteHitBoxes
+        : [];
+      if (!hitBoxes.length) return null;
+
+      return [...hitBoxes].reverse().find((box) => {
+        const dx = point.x - box.hitX;
+        const dy = point.y - box.hitY;
+        return Math.sqrt(dx * dx + dy * dy) <= box.hitRadius;
+      }) || null;
+    }
+
+    function logFingeringPointerScaleCheck(canvas, point, hit) {
+      console.log("[FINGERING POINTER SCALE CHECK]", {
+        rectWidth: canvas.getBoundingClientRect().width,
+        canvasWidth: canvas.width,
+        scaleX: point.scaleX,
+        pointerX: point.x,
+        selectedIndex: hit?.index ?? null,
+        hitX: hit?.note?.hitX ?? hit?.hitX ?? null,
+        diffX: hit ? point.x - (hit.note?.hitX ?? hit.hitX) : null,
+        targetNote: hit?.note?.targetNote ?? hit?.targetNote ?? null
+      });
+    }
+
+    function handleFingeringWrongNotePointerMove(event) {
+      const canvas = event.currentTarget;
+      const point = getFingeringCanvasPointerPoint(event, canvas);
+      const hit = getFingeringWrongNoteHitAtPoint(canvas, point);
+      const nextHoverIndex = hit ? hit.index : null;
+
+      canvas.style.cursor = hit ? "pointer" : "";
+      if (fingeringJudgeState.hoverWrongNoteIndex === nextHoverIndex) return;
+
+      fingeringJudgeState.hoverWrongNoteIndex = nextHoverIndex;
+      drawFingeringStaff();
+    }
+
+    function handleFingeringWrongNotePointerLeave(event) {
+      const canvas = event.currentTarget;
+      canvas.style.cursor = "";
+      if (fingeringJudgeState.hoverWrongNoteIndex == null) return;
+
+      fingeringJudgeState.hoverWrongNoteIndex = null;
+      drawFingeringStaff();
+    }
+
+    function handleFingeringWrongNotePointerDown(event) {
+      const canvas = event.currentTarget;
+      const point = getFingeringCanvasPointerPoint(event, canvas);
+      const hit = getFingeringWrongNoteHitAtPoint(canvas, point);
+
+      if (!hit) {
+        logFingeringPointerScaleCheck(canvas, point, null);
+        console.log("[FINGERING WRONG NOTE CLICK MISS]", {
+          clickX: Math.round(point.x),
+          clickY: Math.round(point.y)
+        });
+        return;
+      }
+
+      event.preventDefault();
+
+      const normalizedNote = normalizeFingeringTargetNoteForRecorder(hit.targetNote);
+      fingeringJudgeState.selectedWrongNoteIndex = hit.index;
+      fingeringJudgeState.hoverWrongNoteIndex = hit.index;
+      updateRecorderImageByNote(normalizedNote);
+      drawFingeringStaff();
+      logFingeringPointerScaleCheck(canvas, point, hit);
+      console.log("[FINGERING WRONG NOTE SELECT]", {
+        index: hit.index,
+        targetNote: hit.targetNote,
+        normalizedNote
+      });
+      setStatus("practiceStatus", "이 음의 운지법을 다시 확인해 보세요.", "ok");
+    }
+
+    function bindFingeringWrongNoteCanvasClicks() {
+      document.querySelectorAll("#step34Section .fingeringStaffCanvas").forEach((canvas) => {
+        if (canvas.dataset.fingeringWrongNoteClickBound === "true") return;
+
+        canvas.addEventListener("pointermove", handleFingeringWrongNotePointerMove);
+        canvas.addEventListener("pointerleave", handleFingeringWrongNotePointerLeave);
+        canvas.addEventListener("pointerdown", handleFingeringWrongNotePointerDown);
+        canvas.style.touchAction = "manipulation";
+        canvas.dataset.fingeringWrongNoteClickBound = "true";
+      });
     }
 
     function syncSelectedFingeringPracticeNotes() {
@@ -20947,6 +21411,8 @@ function startBasicPractice() {
       stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
       selectedPracticePatterns[slotIndex] = patternKey;
+      selectedFingeringPattern = patternKey;
+      nextPatternSlot = slotIndex === 0 ? 1 : 0;
       practiceState.index = 0;
       syncSelectedFingeringPracticeNotes();
       updatePatternCardSelectionUI();
@@ -20993,28 +21459,11 @@ function startBasicPractice() {
 
       if (!FINGERING_PRACTICE_PATTERNS[patternKey]) return;
 
-      stopFingeringMetronomeClick();
-      selectedFingeringPattern = patternKey;
-      selectedPracticePatterns = [patternKey, null];
-      practiceState.index = 0;
-      syncSelectedFingeringPracticeNotes();
-      updatePatternCardSelectionUI();
-      updateSelectedPatternTitles();
-      updateSlotEmptyState(0);
-      updateSlotEmptyState(1);
-      playSlotInsertAnimation(0);
-      renderFingeringPracticeFrame();
-      updateFingeringStartButtonState();
+      const emptySlot = selectedPracticePatterns.findIndex((selectedKey) => !selectedKey);
+      const targetSlot = emptySlot >= 0 ? emptySlot : nextPatternSlot;
 
-      document.querySelectorAll("#step34Section.fingeringTrainingMode .patternCard")
-        .forEach((btn) => {
-          const isSelected = btn === card;
-          btn.classList.toggle("selected", isSelected);
-          btn.classList.toggle("is-selected", isSelected);
-        });
-
+      assignFingeringPatternToSlot(targetSlot, patternKey);
       updateFingeringStaffReadyCard(card);
-
       updateActivePatternSlotUI();
     }
 
@@ -21058,7 +21507,6 @@ function startBasicPractice() {
 
     function drawLedgerLineIfNeeded(ctx, note, x, staffTop, lineGap) {
       const bottomLineY = staffTop + lineGap * 4;
-      const topLineY = staffTop;
 
       ctx.save();
       ctx.strokeStyle = "rgba(230, 248, 255, 0.72)";
@@ -21080,28 +21528,22 @@ function startBasicPractice() {
         ctx.stroke();
       }
 
-      if (note === "C6") {
-        const y = topLineY - lineGap / 2;
-        ctx.beginPath();
-        ctx.moveTo(x - 17, y);
-        ctx.lineTo(x + 17, y);
-        ctx.stroke();
-      }
-
       ctx.restore();
     }
 
-    function drawFingeringStaffOnCanvas(canvas, notes, currentIndex) {
+    function drawFingeringStaffOnCanvas(canvas, notes, currentIndex, globalOffset = 0) {
       if (!canvas) return;
 
       const ctx = canvas.getContext("2d");
       const w = canvas.width;
       const h = canvas.height;
 
+      canvas._fingeringWrongNoteHitBoxes = [];
       ctx.clearRect(0, 0, w, h);
 
+      const staffLineLeft = 28;
       const staffLeft = 78;
-      const staffRight = w - 34;
+      const staffRight = w - 24;
       const lineGap = 13;
       const hasNotes = notes.length > 0;
       const staffHeight = lineGap * 4;
@@ -21121,7 +21563,7 @@ function startBasicPractice() {
       for (let i = 0; i < 5; i++) {
         const y = staffTop + i * lineGap;
         ctx.beginPath();
-        ctx.moveTo(staffLeft, y);
+        ctx.moveTo(staffLineLeft, y);
         ctx.lineTo(staffRight, y);
         ctx.stroke();
       }
@@ -21147,10 +21589,55 @@ function startBasicPractice() {
       });
 
       notes.forEach((note, i) => {
-        const x = xs[i];
-        const y = getStaffYForNote(note, staffTop, lineGap);
+        const noteHeadX = xs[i];
+        const noteHeadY = getStaffYForNote(note, staffTop, lineGap);
         const isCurrent = currentIndex >= 0 && i === currentIndex;
         const isPast = currentIndex >= 0 && i < currentIndex;
+        const judgeStatus = getFingeringJudgeStatus(globalOffset + i);
+        const isWrong = judgeStatus === "wrong";
+        const isCorrect = judgeStatus === "correct";
+        const globalNoteIndex = globalOffset + i;
+        const isHoveredWrong = isWrong &&
+          fingeringJudgeState.hoverWrongNoteIndex != null &&
+          Number(fingeringJudgeState.hoverWrongNoteIndex) === globalNoteIndex;
+        const isSelectedWrong = isWrong &&
+          fingeringJudgeState.selectedWrongNoteIndex != null &&
+          Number(fingeringJudgeState.selectedWrongNoteIndex) === globalNoteIndex;
+        const noteHeadRadiusX = isCurrent ? 11 : 9;
+        const noteHeadRadiusY = isCurrent ? 8 : 7;
+        const hoverScale = isHoveredWrong ? 1.15 : 1;
+        const hitRadius = Math.max(Math.max(noteHeadRadiusX, noteHeadRadiusY) * 2.4, 24);
+
+        if (isWrong) {
+          canvas._fingeringWrongNoteHitBoxes.push({
+            index: globalNoteIndex,
+            targetNote: note,
+            hitX: noteHeadX,
+            hitY: noteHeadY,
+            note: {
+              hitX: noteHeadX,
+              hitY: noteHeadY,
+              targetNote: note
+            },
+            hitRadius
+          });
+        }
+
+        if (isHoveredWrong || isSelectedWrong) {
+          ctx.save();
+          ctx.shadowColor = isSelectedWrong
+            ? "rgba(255, 235, 120, 0.95)"
+            : "rgba(255, 190, 190, 0.78)";
+          ctx.shadowBlur = isSelectedWrong ? 22 : 16;
+          ctx.strokeStyle = isSelectedWrong
+            ? "rgba(255, 235, 120, 0.92)"
+            : "rgba(255, 220, 220, 0.78)";
+          ctx.lineWidth = isSelectedWrong ? 3 : 2;
+          ctx.beginPath();
+          ctx.arc(noteHeadX, noteHeadY, isSelectedWrong ? 19 : 16, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
 
         if (isCurrent) {
           ctx.save();
@@ -21158,35 +21645,38 @@ function startBasicPractice() {
           ctx.shadowBlur = 26;
           ctx.fillStyle = "rgba(255, 225, 100, 0.26)";
           ctx.beginPath();
-          ctx.arc(x, y, 22, 0, Math.PI * 2);
+          ctx.arc(noteHeadX, noteHeadY, 22, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
         }
 
-        drawLedgerLineIfNeeded(ctx, note, x, staffTop, lineGap);
+        drawLedgerLineIfNeeded(ctx, note, noteHeadX, staffTop, lineGap);
 
         ctx.save();
-        ctx.translate(x, y);
+        ctx.translate(noteHeadX, noteHeadY);
         ctx.rotate(-0.25);
-        ctx.fillStyle = isCurrent
-          ? "#ffe66d"
-          : isPast
-            ? "rgba(150, 245, 210, 0.82)"
-            : "rgba(235, 248, 255, 0.72)";
+        ctx.scale(hoverScale, hoverScale);
+        ctx.fillStyle = isWrong
+          ? "rgba(255, 95, 95, 0.92)"
+          : isCurrent
+            ? "#ffe66d"
+            : (isCorrect || isPast)
+              ? "rgba(150, 245, 210, 0.82)"
+              : "rgba(235, 248, 255, 0.72)";
         ctx.strokeStyle = isCurrent
           ? "rgba(255,255,255,0.95)"
           : "rgba(255,255,255,0.45)";
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.ellipse(0, 0, isCurrent ? 11 : 9, isCurrent ? 8 : 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, noteHeadRadiusX, noteHeadRadiusY, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
 
         const stemDown = shouldStemDown(note);
-        const stemX = stemDown ? x - 8 : x + 8;
-        const stemStartY = stemDown ? y + 2 : y - 2;
-        const stemEndY = stemDown ? y + 40 : y - 42;
+        const stemX = stemDown ? noteHeadX - 8 : noteHeadX + 8;
+        const stemStartY = stemDown ? noteHeadY + 2 : noteHeadY - 2;
+        const stemEndY = stemDown ? noteHeadY + 40 : noteHeadY - 42;
 
         ctx.strokeStyle = isCurrent ? "#ffe66d" : "rgba(235, 248, 255, 0.68)";
         ctx.lineWidth = isCurrent ? 3 : 2;
@@ -21198,18 +21688,33 @@ function startBasicPractice() {
         if (isCurrent) {
           ctx.fillStyle = "rgba(255, 248, 180, 0.96)";
           ctx.font = "16px sans-serif";
-          ctx.fillText("✓", x, y - 52);
+          ctx.fillText("✓", noteHeadX, noteHeadY - 52);
+        }
+
+        if (isSelectedWrong) {
+          ctx.save();
+          ctx.fillStyle = "rgba(255, 238, 120, 0.98)";
+          ctx.strokeStyle = "rgba(40, 28, 0, 0.35)";
+          ctx.lineWidth = 2;
+          ctx.font = "bold 18px sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.strokeText("✓", noteHeadX, noteHeadY - 30);
+          ctx.fillText("✓", noteHeadX, noteHeadY - 30);
+          ctx.restore();
         }
 
         ctx.font = isCurrent ? "bold 16px sans-serif" : "bold 14px sans-serif";
-        ctx.fillStyle = isCurrent
-          ? "#fff2a8"
-          : isPast
-            ? "rgba(160, 255, 220, 0.84)"
-            : "rgba(225, 242, 255, 0.72)";
+        ctx.fillStyle = isWrong
+          ? "rgba(255, 180, 180, 0.95)"
+          : isCurrent
+            ? "#fff2a8"
+            : (isCorrect || isPast)
+              ? "rgba(160, 255, 220, 0.84)"
+              : "rgba(225, 242, 255, 0.72)";
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.fillText(FINGERING_NOTE_LABELS[note] || note, x, staffTop + lineGap * 5 + 18);
+        ctx.fillText(FINGERING_NOTE_LABELS[note] || note, noteHeadX, staffTop + lineGap * 5 + 18);
       });
 
       ctx.restore();
@@ -21224,7 +21729,7 @@ function startBasicPractice() {
         const offset = getFingeringPatternGlobalOffset(slotIndex);
         const localIndex = practiceState.index - offset;
         const currentIndex = localIndex >= 0 && localIndex < notes.length ? localIndex : -1;
-        drawFingeringStaffOnCanvas(canvas, notes, currentIndex);
+        drawFingeringStaffOnCanvas(canvas, notes, currentIndex, offset);
       });
     }
 
@@ -21333,8 +21838,22 @@ function startBasicPractice() {
       const notes = practiceState.notes;
       if (!notes.length) {
         stopFingeringPracticeTimer();
+        stopFingeringPitchJudge();
+        setFingeringPracticeActionButtonsRunning(false);
         renderFingeringPracticeFrame();
         setStatus("practiceStatus", "가락 카드 2장을 슬롯에 놓아주세요", "");
+        return;
+      }
+
+      judgeFingeringNoteAtIndex(practiceState.index - 1);
+
+      if (practiceState.index >= notes.length) {
+        stopFingeringPracticeTimer();
+        stopFingeringPitchJudge();
+        setFingeringPracticeActionButtonsRunning(false);
+        renderFingeringPracticeFrame();
+        showFingeringPracticeResultInButton();
+        setStatus("practiceStatus", "운지법 자동 훈련 완료", "ok");
         return;
       }
 
@@ -21359,15 +21878,13 @@ function startBasicPractice() {
       playFingeringCountdownClick();
 
       practiceState.index++;
-
-      if (practiceState.index >= notes.length) {
-        stopFingeringPracticeTimer();
-        setStatus("practiceStatus", "운지법 자동 훈련 완료", "ok");
-      }
     }
 
-    function startFingeringPractice(patternKey) {
+    async function startFingeringPractice(patternKey) {
       stopFingeringPracticeTimer();
+      stopFingeringPitchJudge();
+      resetFingeringPracticeResultButton();
+      setFingeringPracticeActionButtonsRunning(false);
       practiceState.index = 0;
 
       if (patternKey && FINGERING_PRACTICE_PATTERNS[patternKey]) {
@@ -21382,7 +21899,12 @@ function startBasicPractice() {
         return;
       }
 
-      setStatus("practiceStatus", "운지법 자동 훈련 시작", "ok");
+      initFingeringJudgeState(practiceState.notes);
+      const micReady = await startFingeringPitchJudge();
+      setFingeringPracticeActionButtonsRunning(true);
+      if (micReady) {
+        setStatus("practiceStatus", "운지법 자동 훈련 시작", "ok");
+      }
       nextNote();
       practiceTimer = setInterval(nextNote, practiceState.speed);
     }
@@ -21390,12 +21912,17 @@ function startBasicPractice() {
     function stopFingeringPractice() {
       stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
+      stopFingeringPitchJudge();
+      setFingeringPracticeActionButtonsRunning(false);
       setStatus("practiceStatus", "운지법 훈련 일시정지", "");
     }
 
     function resetFingeringPractice() {
       stopFingeringMetronomeClick();
       stopFingeringPracticeTimer();
+      stopFingeringPitchJudge();
+      resetFingeringJudgeState();
+      resetFingeringPracticeResultButton();
       selectedFingeringPattern = null;
       selectedPracticePatterns = [null, null];
       activePatternSlot = 0;
@@ -21413,6 +21940,8 @@ function startBasicPractice() {
     }
 
     function setupFingeringPracticeControls() {
+      bindFingeringWrongNoteCanvasClicks();
+
       document.querySelectorAll(".patternCard").forEach((btn) => {
         btn.setAttribute("draggable", "true");
         btn.onclick = null;
@@ -21476,6 +22005,8 @@ function startBasicPractice() {
     }
 
     function bindFingeringPracticeButtons() {
+      bindFingeringWrongNoteCanvasClicks();
+
       document.querySelectorAll("#step34Section .patternCard").forEach((card) => {
         if (card.dataset.fingeringClickBound === "true") return;
 
@@ -21494,6 +22025,8 @@ function startBasicPractice() {
           if (startBtn.disabled) return;
           if (startBtn.dataset.counting === "true") return;
 
+          resetFingeringPracticeResultButton();
+
           const startLabel = startBtn.querySelector(".start-label");
           function animateFingeringCountdownLabel() {
             if (!startLabel) return;
@@ -21508,6 +22041,7 @@ function startBasicPractice() {
           let count = 4;
 
           stopFingeringMetronomeClick();
+          setFingeringPracticeActionButtonsRunning(true);
           primeFingeringMetronomeAudio();
           prepareFingeringMetronomeClick();
           startBtn.dataset.counting = "true";
@@ -21523,6 +22057,7 @@ function startBasicPractice() {
             if (!practiceState.notes.length) {
               if (startLabel) startLabel.textContent = originalLabel || "연습 시작";
               startBtn.dataset.counting = "false";
+              setFingeringPracticeActionButtonsRunning(false);
               updateFingeringStartButtonState();
               return;
             }
@@ -21554,13 +22089,43 @@ function startBasicPractice() {
         startBtn.dataset.fingeringStartBound = "true";
       }
 
+      const resultBtn = document.getElementById("fingeringPracticeResultBtn");
+      if (resultBtn && resultBtn.dataset.fingeringResultBound !== "true") {
+        resultBtn.addEventListener("click", showFingeringPracticeResultInButton);
+        resultBtn.dataset.fingeringResultBound = "true";
+      }
+
       const resetBtn = document.getElementById("resetFingeringPracticeBtn");
       if (resetBtn && resetBtn.dataset.fingeringResetBound !== "true") {
-        resetBtn.addEventListener("click", resetFingeringPracticeSelection);
+        resetBtn.addEventListener("click", resetFingeringPracticeSetup);
         resetBtn.dataset.fingeringResetBound = "true";
       }
 
       updateFingeringStartButtonState();
+    }
+
+    function retryFingeringPractice() {
+      stopFingeringMetronomeClick();
+      stopFingeringPracticeTimer();
+      stopFingeringPitchJudge();
+      resetFingeringJudgeState();
+      resetFingeringPracticeResultButton();
+      setFingeringPracticeActionButtonsRunning(false);
+      practiceState.index = 0;
+      syncSelectedFingeringPracticeNotes();
+      renderFingeringPracticeFrame();
+
+      if (!getSelectedFingeringPracticeNotes().length) {
+        setStatus("practiceStatus", "가락 카드를 선택해 주세요", "");
+        return;
+      }
+
+      startFingeringPractice();
+    }
+
+    function resetFingeringPracticeSetup() {
+      resetFingeringPracticeResultButton();
+      resetFingeringPracticeSelection();
     }
 
     function bindFingeringStartButton() {
@@ -21570,6 +22135,11 @@ function startBasicPractice() {
 
     function resetFingeringPracticeSelection() {
       stopFingeringMetronomeClick();
+      stopFingeringPitchJudge();
+      stopFingeringPracticeTimer();
+      resetFingeringJudgeState();
+      resetFingeringPracticeResultButton();
+      setFingeringPracticeActionButtonsRunning(false);
       selectedFingeringPattern = null;
       selectedPracticePatterns = [null, null];
       activePatternSlot = 0;
@@ -21598,10 +22168,6 @@ function startBasicPractice() {
 
       document.getElementById("step34Section")?.classList.remove("fingeringPracticeStarted");
 
-      if (typeof stopFingeringPractice === "function") {
-        stopFingeringPractice();
-      }
-
       updateSelectedPatternTitles();
       updateActivePatternSlotUI();
       updateAllSlotEmptyStates();
@@ -21611,6 +22177,8 @@ function startBasicPractice() {
       if (typeof drawPracticeBase === "function") {
         drawPracticeBase("4/4");
       }
+
+      setStatus("practiceStatus", "가락 카드를 선택해 주세요", "");
     }
 
     function bindChallengeButtons() {
