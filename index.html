@@ -4217,30 +4217,178 @@ button:disabled {
       text-shadow: 0 0 16px rgba(103, 220, 255, 0.14);
     }
 
-    .speedMetaControl {
+    .speed-info-card {
       display: grid;
-      grid-template-columns: auto minmax(88px, 50%);
+      grid-template-columns: auto 1fr;
       align-items: center;
-      gap: 8px;
-      justify-content: space-between;
+      gap: 18px;
+      min-height: 70px;
     }
 
-    .speed-select {
+    .speed-info-card .metaLabel {
+      margin-bottom: 0;
+      line-height: 1.18;
+      white-space: nowrap;
+    }
+
+    .speedMetaControl {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
+      min-width: 270px;
+    }
+
+    .speedStepperGuide {
       width: 100%;
-      min-height: 32px;
-      padding: 4px 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(193, 235, 255, 0.22);
-      border-radius: 12px;
-      color: #f2fbff;
+      display: grid;
+      grid-template-columns: 45px 93px 45px;
+      column-gap: 16px;
+      justify-content: center;
+      align-items: end;
+      padding: 0 12px;
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 1;
+      color: #facc15;
+      white-space: nowrap;
+    }
+
+    .speedStepperGuide span:first-child {
+      grid-column: 1;
+      text-align: center;
+    }
+
+    .speedStepperGuide span:last-child {
+      grid-column: 3;
+      text-align: center;
+    }
+
+    .speed-stepper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-width: 270px;
+      height: 38px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .speed-stepper-btn {
+      width: 45px;
+      height: 30px;
+      min-width: 45px;
+      min-height: 30px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
       font-size: 15px;
       font-weight: 900;
-      text-align: center;
-      outline: none;
+      line-height: 1;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+      transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
     }
 
-    .speed-select option {
-      color: #12304d;
+    .speed-stepper-btn:hover {
+      transform: translateY(-1px) scale(1.04);
+      filter: brightness(1.08);
+    }
+
+    .speed-stepper-btn:active {
+      transform: translateY(0) scale(0.96);
+    }
+
+    .speed-stepper-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+      filter: grayscale(0.25);
+    }
+
+    .speed-stepper-value {
+      min-width: 93px;
+      height: 30px;
+      padding: 0 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 950;
+      line-height: 1;
+      white-space: nowrap;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+    }
+
+    body.light .speed-stepper,
+    body.theme-light .speed-stepper,
+    body.light-mode .speed-stepper,
+    .light .speed-stepper {
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(59, 130, 246, 0.24);
+      box-shadow: 0 8px 18px rgba(59, 130, 246, 0.16);
+    }
+
+    body.light .speed-stepper-value,
+    body.theme-light .speed-stepper-value,
+    body.light-mode .speed-stepper-value,
+    .light .speed-stepper-value {
+      color: #1e3a8a;
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    body.light .speedStepperGuide,
+    body.theme-light .speedStepperGuide,
+    body.light-mode .speedStepperGuide,
+    .light .speedStepperGuide {
+      color: #ca8a04;
+    }
+
+    @media (max-width: 640px) {
+      .speed-info-card {
+        gap: 12px;
+        min-height: 64px;
+      }
+
+      .speed-stepper {
+        min-width: 240px;
+        height: 36px;
+        gap: 10px;
+      }
+
+      .speedStepperGuide {
+        grid-template-columns: 45px 74px 45px;
+        column-gap: 10px;
+        font-size: 10px;
+      }
+
+      .speed-stepper-btn {
+        width: 45px;
+        height: 30px;
+        min-width: 45px;
+        min-height: 30px;
+      }
+
+      .speed-stepper-value {
+        min-width: 74px;
+        height: 28px;
+        font-size: 16px;
+      }
     }
 
     .basicRecorderStage {
@@ -13439,17 +13587,18 @@ body.theme-light .readyCardHint {
           <div class="metaLabel">박자</div>
           <div id="practiceTimeSignature" class="metaValue">-</div>
         </div>
-        <div class="metaCard">
-          <div class="metaLabel">배속</div>
+        <div class="metaCard speed-info-card">
+          <div class="metaLabel">연주<br>속도</div>
           <div class="speedMetaControl">
-            <div id="practiceSpeedText" class="metaValue">1.0x</div>
-            <select id="speedSelect" class="speed-select" onchange="updatePracticeSpeedInfo()" aria-label="속도 배속">
-              <option value="0.5">0.5배</option>
-              <option value="0.75">0.75배</option>
-              <option value="1" selected>1.0배</option>
-              <option value="1.25">1.25배</option>
-              <option value="1.5">1.5배</option>
-            </select>
+            <div class="speedStepperGuide" aria-hidden="true">
+              <span>느리게</span>
+              <span>빠르게</span>
+            </div>
+            <div class="speed-stepper" aria-label="곡 속도 조절">
+              <button type="button" class="speed-stepper-btn" id="btnSpeedDown" aria-label="속도 느리게">≪</button>
+              <div class="speed-stepper-value" id="speedStepperValue">1배</div>
+              <button type="button" class="speed-stepper-btn" id="btnSpeedUp" aria-label="속도 빠르게">≫</button>
+            </div>
           </div>
         </div>
       </div>
@@ -14065,6 +14214,7 @@ body.theme-light .readyCardHint {
     let isMeasureJumpPaused = false;
     let resumeMsAfterJump = 0;
     let resumeBeatAfterJump = 0;
+    let currentPlaybackSpeed = 1;
 
     let audioCtx = null;
     let micStream = null;
@@ -17790,6 +17940,7 @@ window.addEventListener("beforeunload", function () {
       setChallengePlayMode(!!window.isChallengePlayMode);
       setPracticeScreenMode("song");
       showStep("step34Section");
+      resetSpeedStepper();
       showSelectedSong();
       resetPractice();
     }
@@ -17837,15 +17988,129 @@ window.addEventListener("beforeunload", function () {
       };
     }
 
+    function clampPlaybackSpeed(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return 1;
+      return Math.min(1.5, Math.max(0.5, Math.round(numeric * 10) / 10));
+    }
+
+    function formatPlaybackSpeed(value) {
+      const speed = clampPlaybackSpeed(value);
+      if (Math.abs(speed - 1) < 0.001) return "1배";
+      return `${speed.toFixed(1).replace(/\.0$/, "")}배`;
+    }
+
+    function getCurrentPlaybackSpeed() {
+      return clampPlaybackSpeed(currentPlaybackSpeed || 1);
+    }
+
+    function setCurrentPlaybackSpeed(nextSpeed, options = {}) {
+      currentPlaybackSpeed = clampPlaybackSpeed(nextSpeed);
+
+      const valueEl = document.getElementById("speedStepperValue");
+      if (valueEl) {
+        valueEl.textContent = formatPlaybackSpeed(currentPlaybackSpeed);
+      }
+
+      const downBtn = document.getElementById("btnSpeedDown");
+      const upBtn = document.getElementById("btnSpeedUp");
+
+      if (downBtn) {
+        downBtn.disabled = currentPlaybackSpeed <= 0.5;
+      }
+
+      if (upBtn) {
+        upBtn.disabled = currentPlaybackSpeed >= 1.5;
+      }
+
+      if (options.updateInfo !== false) {
+        updatePracticeSpeedInfo();
+      }
+
+      applyPlaybackSpeedToPausedPractice();
+    }
+
+    function initSpeedStepper() {
+      const downBtn = document.getElementById("btnSpeedDown");
+      const upBtn = document.getElementById("btnSpeedUp");
+
+      if (downBtn && !downBtn.dataset.speedStepperReady) {
+        downBtn.dataset.speedStepperReady = "1";
+        downBtn.addEventListener("click", function () {
+          setCurrentPlaybackSpeed(getCurrentPlaybackSpeed() - 0.1);
+        });
+      }
+
+      if (upBtn && !upBtn.dataset.speedStepperReady) {
+        upBtn.dataset.speedStepperReady = "1";
+        upBtn.addEventListener("click", function () {
+          setCurrentPlaybackSpeed(getCurrentPlaybackSpeed() + 0.1);
+        });
+      }
+
+      setCurrentPlaybackSpeed(getCurrentPlaybackSpeed(), { updateInfo: false });
+    }
+
+    function resetSpeedStepper() {
+      setCurrentPlaybackSpeed(1, { updateInfo: false });
+      initSpeedStepper();
+    }
+
     function getSpeedMultiplier() {
-      const speedEl = document.getElementById("speedSelect");
-      return Math.max(0.25, Number(speedEl ? speedEl.value : 1) || 1);
+      return getCurrentPlaybackSpeed();
+    }
+
+    function buildCurrentPracticeTimelineForSpeed(song, speed) {
+      const baseBpm = Number(song?.bpm) || 80;
+      const selectedBpm = Math.max(40, Math.min(220, Math.round(baseBpm * clampPlaybackSpeed(speed))));
+      return buildSongTimeline(song, selectedBpm);
+    }
+
+    function getTimelineBeatAtElapsed(timeline, elapsedMs) {
+      const beatMs = Number(timeline?.beatMs) || 600;
+      return Math.max(0, Number(elapsedMs || 0) / beatMs);
+    }
+
+    function getTimelineElapsedAtBeat(timeline, beat) {
+      const beatMs = Number(timeline?.beatMs) || 600;
+      return Math.max(0, Number(beat || 0) * beatMs);
+    }
+
+    function applyPlaybackSpeedToPausedPractice() {
+      if (!practiceRunning || !practicePaused || !currentTimeline || practiceResumeCounting) return;
+      if (isFingeringPracticeMode()) return;
+
+      const song = app.currentSong || getSelectedSong();
+      if (!song || !String(song.notation || "").trim()) return;
+
+      const oldTimeline = currentTimeline;
+      const anchorBeat = isMeasureJumpPaused
+        ? Math.max(0, Number(resumeBeatAfterJump) || getTimelineBeatAtElapsed(oldTimeline, resumeMsAfterJump))
+        : getTimelineBeatAtElapsed(oldTimeline, getPracticeElapsedMsForJump());
+      const nextTimeline = buildCurrentPracticeTimelineForSpeed(song, getCurrentPlaybackSpeed());
+      const nextElapsedMs = Math.min(nextTimeline.totalMs, getTimelineElapsedAtBeat(nextTimeline, anchorBeat));
+      const pauseAnchorNow = practicePausedAt || performance.now();
+
+      currentTimeline = nextTimeline;
+      currentPracticeStartedAt = pauseAnchorNow - nextElapsedMs - currentCountdownMs;
+      practicePausedAt = pauseAnchorNow;
+      practicePausedDuration = 0;
+
+      if (isMeasureJumpPaused) {
+        resumeBeatAfterJump = anchorBeat;
+        resumeMsAfterJump = nextElapsedMs;
+      }
+
+      setJudgedNotesBeforeElapsed(currentTimeline, nextElapsedMs);
+      drawPracticeBase(currentTimeline.timeSignature || "4/4", currentTimeline.keySignature || song.keySignature || "C");
+      drawTimelineNotes(nextElapsedMs, currentTimeline, performance.now());
     }
 
     function updatePracticeSpeedInfo() {
       const speed = getSpeedMultiplier();
       const song = app.currentSong || getSelectedSong();
-      document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
+      const speedValueEl = document.getElementById("speedStepperValue");
+      if (speedValueEl) speedValueEl.textContent = formatPlaybackSpeed(speed);
 
       if (song) {
         const actualBpm = Math.round((Number(song.bpm) || 80) * speed);
@@ -17887,6 +18152,7 @@ window.addEventListener("beforeunload", function () {
       if (practiceSongTitleEl) practiceSongTitleEl.textContent = song.title || "-";
       if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = song.timeSignature || "-";
 
+      initSpeedStepper();
       updatePracticeSpeedInfo();
     }
 
@@ -19967,9 +20233,7 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const speed = getSpeedMultiplier();
       const baseBpm = Number(song.bpm) || 80;
-      const selectedBpm = Math.max(40, Math.min(220, Math.round(baseBpm * speed)));
-
-      const timeline = buildSongTimeline(song, selectedBpm);
+      const timeline = buildCurrentPracticeTimelineForSpeed(song, speed);
       let startedAt = performance.now();
       const countdownMs = 5000;
 
@@ -20006,7 +20270,8 @@ function drawRest(ctx, x, staffTop, duration) {
       updatePracticeRecordButton();
       document.getElementById("practiceSongTitle").textContent = song.title;
       document.getElementById("practiceTimeSignature").textContent = timeline.timeSignature || "4/4";
-      document.getElementById("practiceSpeedText").textContent = `${speed.toFixed(2).replace(/\.00$/, "")}x`;
+      const speedValueEl = document.getElementById("speedStepperValue");
+      if (speedValueEl) speedValueEl.textContent = formatPlaybackSpeed(speed);
 
       document.getElementById("practiceInfo").innerHTML =
         `곡 제목: ${song.title || "-"}<br>박자: ${timeline.timeSignature || "4/4"} (BPM ${baseBpm})<br>전체 음표수: ${timeline.notes.length}개`;
@@ -20028,9 +20293,10 @@ function drawRest(ctx, x, staffTop, duration) {
           hasShownMicJudgingOnly = true;
           setStatus("practiceStatus", "마이크 판정중", "ok");
         }
-        drawTimelineNotes(elapsedMs, timeline, now);
+        const activeTimeline = currentTimeline || timeline;
+        drawTimelineNotes(elapsedMs, activeTimeline, now);
 
-        if (elapsedMs >= timeline.totalMs + 1500) {
+        if (elapsedMs >= activeTimeline.totalMs + 1500) {
           const completedScoreState = { ...scoreState };
           stopPractice();
           const finalScore = completedScoreState.finalScore || 0;
@@ -20254,6 +20520,26 @@ function drawRest(ctx, x, staffTop, duration) {
 
       startResumeCountdown();
     }
+
+    function shouldIgnorePracticeSpaceShortcut(event) {
+      const target = event?.target;
+      if (!target) return false;
+
+      const tagName = String(target.tagName || "").toLowerCase();
+      if (["input", "textarea", "select", "button"].includes(tagName)) return true;
+      if (target.isContentEditable) return true;
+      return Boolean(target.closest?.("[contenteditable='true']"));
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (event.code !== "Space" && event.key !== " ") return;
+      if (shouldIgnorePracticeSpaceShortcut(event)) return;
+      if (isFingeringPracticeMode()) return;
+      if (!practiceRunning || !currentTimeline) return;
+
+      event.preventDefault();
+      pauseSongPractice();
+    });
 
     function jumpToPreviousMeasure() {
       if (isFingeringPracticeMode()) {
@@ -22662,6 +22948,7 @@ function prepareBonusSong(songId) {
   setChallengePlayMode(false);
   setPracticeScreenMode("song");
   showStep("step34Section");
+  resetSpeedStepper();
   showSelectedSong();
   resetPractice();
 
@@ -23170,6 +23457,7 @@ function initChallengePlay(song) {
   mountPracticeIntoChallengePlay();
   setPracticeScreenMode("song");
   setChallengePlayMode(true);
+  resetSpeedStepper();
   showSelectedSong();
   resetPractice();
 
