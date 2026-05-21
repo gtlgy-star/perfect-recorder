@@ -16979,11 +16979,11 @@ function renderSongButtons() {
 
     function drawTonguingRest(ctx, x, y, mini) {
       ctx.save();
-      ctx.fillStyle = "#374151";
-      ctx.font = mini ? "bold 24px serif" : "bold 42px serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("𝄾", x, y - (mini ? 4 : 8));
+      drawEighthRestGlyph(ctx, x, y - (mini ? 4 : 8), {
+        color: "#374151",
+        scale: mini ? 0.58 : 0.86,
+        staffGap: 20
+      });
       ctx.restore();
     }
 
@@ -18564,6 +18564,90 @@ function getNoteBodyWidthByBeat(beat) {
   return baseWidthForWhole * (safeBeat / 4);
 }
 
+function drawEighthRestGlyph(ctx, x, centerY, options = {}) {
+  const color = options.color || "#1e2a44";
+  const scale = Number(options.scale || 1);
+  const staffGap = Number(options.staffGap || 20) * scale;
+  const headX = x - 9 * scale;
+  const headY = centerY - staffGap * 0.5;
+  const stemTopX = x + 7.5 * scale;
+  const stemTopY = centerY - staffGap * 0.7;
+  const stemBottomX = x - 2 * scale;
+  const stemBottomY = Number.isFinite(Number(options.stemBottomY))
+    ? Number(options.stemBottomY)
+    : centerY + staffGap;
+  const drawStem = options.drawStem !== false;
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 3 * scale;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  ctx.beginPath();
+  ctx.ellipse(headX, headY, 7.74 * scale, 7.2 * scale, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(headX, headY + 6.48 * scale);
+  ctx.bezierCurveTo(
+    headX + 6 * scale,
+    headY + 10 * scale,
+    stemTopX - 7 * scale,
+    stemTopY + 6 * scale,
+    stemTopX,
+    stemTopY
+  );
+  ctx.stroke();
+
+  if (drawStem) {
+    ctx.beginPath();
+    ctx.moveTo(stemTopX, stemTopY);
+    ctx.lineTo(stemBottomX, stemBottomY);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawSixteenthRestGlyph(ctx, x, centerY, options = {}) {
+  const color = options.color || "#1e2a44";
+  const scale = Number(options.scale || 1);
+  const staffGap = Number(options.staffGap || 20) * scale;
+  const shiftedCenterY = centerY + staffGap * 0.5;
+  const topCenterY = shiftedCenterY - staffGap * 0.5;
+  const lowerCenterY = topCenterY + staffGap;
+  const stemTopX = x + 7.5 * scale;
+  const stemTopY = topCenterY - staffGap * 0.7;
+  const stemBottomX = x - 2 * scale;
+  const stemBottomY = lowerCenterY + staffGap;
+
+  drawEighthRestGlyph(ctx, x, topCenterY, {
+    color,
+    scale,
+    staffGap: options.staffGap || 20,
+    drawStem: false
+  });
+
+  drawEighthRestGlyph(ctx, x - 3.5 * scale, lowerCenterY, {
+    color,
+    scale,
+    staffGap: options.staffGap || 20,
+    drawStem: false
+  });
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 3 * scale;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(stemTopX, stemTopY);
+  ctx.lineTo(stemBottomX, stemBottomY);
+  ctx.stroke();
+  ctx.restore();
+}
+
 function drawRest(ctx, x, staffTop, duration) {
   const centerY = staffTop + 40;
   const beat = Number(duration);
@@ -18576,37 +18660,6 @@ function drawRest(ctx, x, staffTop, duration) {
   const dottedBeat = Object.keys(dottedRestMap).find((value) => Math.abs(beat - Number(value)) < 0.001);
   const baseBeat = dottedBeat ? dottedRestMap[dottedBeat] : beat;
 
-  function drawSixteenthRest() {
-    const topY = centerY - 32;
-    const bottomY = centerY + 34;
-    const stemX = x + 8;
-
-    ctx.strokeStyle = NOTE_COLOR;
-    ctx.fillStyle = NOTE_COLOR;
-    ctx.lineWidth = 4;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    ctx.beginPath();
-    ctx.moveTo(stemX + 5, topY);
-    ctx.bezierCurveTo(stemX, topY + 18, stemX - 4, topY + 38, stemX - 15, bottomY);
-    ctx.stroke();
-
-    [
-      { y: topY + 10, r: 4.8 },
-      { y: topY + 28, r: 4.6 }
-    ].forEach((hook) => {
-      ctx.beginPath();
-      ctx.arc(stemX - 14, hook.y, hook.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(stemX - 10, hook.y + 2);
-      ctx.bezierCurveTo(stemX + 8, hook.y + 4, stemX + 9, hook.y + 17, stemX - 3, hook.y + 20);
-      ctx.stroke();
-    });
-  }
-
   ctx.save();
   ctx.fillStyle = NOTE_COLOR;
   ctx.textAlign = "center";
@@ -18614,11 +18667,16 @@ function drawRest(ctx, x, staffTop, duration) {
   ctx.font = "48px Arial, serif";
 
   if (baseBeat === 1) {
-    ctx.fillText("𝄽", x, centerY + 2);
+    ctx.font = "80.64px Arial, serif";
+    ctx.save();
+    ctx.translate(x, centerY + 2);
+    ctx.rotate(-10 * Math.PI / 180);
+    ctx.fillText("𝄽", 0, 0);
+    ctx.restore();
   } else if (baseBeat === 0.5) {
-    ctx.fillText("𝄾", x, centerY + 2);
+    drawEighthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20 });
   } else if (baseBeat === 0.25) {
-    drawSixteenthRest();
+    drawSixteenthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20 });
   } else if (baseBeat === 2) {
     ctx.fillRect(x - 18, centerY - 8, 36, 10);
   } else {
@@ -18626,8 +18684,9 @@ function drawRest(ctx, x, staffTop, duration) {
   }
 
   if (dottedBeat) {
+    const dotY = baseBeat === 1 ? centerY - 10 : centerY + 1;
     ctx.beginPath();
-    ctx.arc(x + 28, centerY + 1, 3.5, 0, Math.PI * 2);
+    ctx.arc(x + 28, dotY, 3.5, 0, Math.PI * 2);
     ctx.fill();
   }
 
