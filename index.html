@@ -15052,6 +15052,12 @@ body.theme-light .readyCardHint {
     const THEME_STORAGE_KEY = "recorder_theme_v1";
     const STARTUP_GRACE_MS = 450;
     const NOTE_TRANSITION_GRACE_MS = 140;
+    const NOTE_ACCUMULATED_END_GRACE_MS = 35;
+    const NOTE_ACCUMULATED_MIN_SAMPLES = 2;
+    const TARGET_NOTE_PERFECT_RATIO = 0.7;
+    const TARGET_NOTE_GREAT_RATIO = 0.5;
+    const TARGET_NOTE_GOOD_RATIO = 0.25;
+    const TARGET_NOTE_SAMPLE_MAX_STEP_MS = 80;
     const PITCH_EXACT_TOLERANCE_CENTS = 25;
     const PITCH_NEAR_TOLERANCE_CENTS = 60;
     const PITCH_LOOSE_TOLERANCE_CENTS = 95;
@@ -15350,6 +15356,8 @@ body.theme-light .readyCardHint {
       gradeLabel: "다시 도전!"
     };
     let judgedNoteSet = new Set();
+    let noteAccumulationMap = new Map();
+    let lastScoringSampleElapsedMs = null;
 
     const trebleImg = new Image();
     let trebleReady = false;
@@ -16795,6 +16803,7 @@ function renderSongButtons() {
 
     let selectedTonguingRhythm = null;
     let tonguingAudioCtx = null;
+    let countdownClickAudioCtx = null;
     let tonguingStopFlag = false;
     let tonguingRunning = false;
     let tonguingSpeakRunning = false;
@@ -17321,21 +17330,86 @@ function renderSongButtons() {
       return queue;
     }
 
+    async function ensureCountdownClickAudio() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+
+      if (!countdownClickAudioCtx) {
+        countdownClickAudioCtx = new AudioContextClass();
+      }
+
+      if (countdownClickAudioCtx.state === "suspended") {
+        try {
+          await countdownClickAudioCtx.resume();
+        } catch (e) {}
+      }
+
+      return countdownClickAudioCtx;
+    }
+
+    function playCountdownClick(volume = 0.09) {
+      const ctx = countdownClickAudioCtx;
+      if (!ctx) return;
+
+      try {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "square";
+        osc.frequency.setValueAtTime(1200, now);
+
+        gain.gain.setValueAtTime(Math.max(0.0001, volume), now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.055);
+      } catch (e) {}
+    }
+
+    async function showCountdownStep({ labelEl, count, animateClass = "", clickVolume = 0.09 }) {
+      await ensureCountdownClickAudio();
+
+      if (labelEl) {
+        labelEl.textContent = String(count);
+
+        if (animateClass) {
+          labelEl.classList.remove(animateClass);
+          void labelEl.offsetWidth;
+          labelEl.classList.add(animateClass);
+        }
+      }
+
+      playCountdownClick(clickVolume);
+    }
+
+    function clearCountdownTimer(timerName) {
+      if (window[timerName]) {
+        clearTimeout(window[timerName]);
+        clearInterval(window[timerName]);
+        window[timerName] = null;
+      }
+    }
+
     async function runTonguingCountdown() {
       const countEl = document.getElementById("tonguingCount");
       const beatMs = 640;
 
+      await ensureTonguingAudio();
+      await ensureCountdownClickAudio();
+
       for (let n = 4; n >= 1; n--) {
         if (tonguingStopFlag || tonguingSpeakStopFlag || tonguingListenStopFlag) break;
 
-        if (countEl) {
-          countEl.textContent = String(n);
-          countEl.classList.remove("pop");
-          void countEl.offsetWidth;
-          countEl.classList.add("pop");
-        }
-
-        playTonguingClick();
+        await showCountdownStep({
+          labelEl: countEl,
+          count: n,
+          animateClass: "pop",
+          clickVolume: 0.09
+        });
         await tonguingSleep(beatMs);
       }
 
@@ -19479,6 +19553,11 @@ function drawRest(ctx, x, staffTop, duration) {
       return `${note.startMs}:${note.note}:${note.effectiveAccidental || ""}:${note.durMs}`;
     }
 
+    function isPlayableScoringNote(note) {
+      if (!note?.note) return false;
+      return !/^R$/i.test(String(note.note).trim());
+    }
+
     function shouldJudgeNoteNow(elapsedMs, target) {
       if (!target) return false;
 
@@ -19492,6 +19571,8 @@ function drawRest(ctx, x, staffTop, duration) {
 
     function resetNoteJudgmentState() {
       judgedNoteSet = new Set();
+      noteAccumulationMap = new Map();
+      lastScoringSampleElapsedMs = null;
       lastJudgedNoteSignature = "";
     }
 
@@ -19575,8 +19656,8 @@ function drawRest(ctx, x, staffTop, duration) {
       const index = getTimelineNoteIndex(target, timeline);
       const neighbors = [];
 
-      if (index > 0 && notes[index - 1]?.note) neighbors.push(notes[index - 1]);
-      if (index >= 0 && index < notes.length - 1 && notes[index + 1]?.note) neighbors.push(notes[index + 1]);
+      if (index > 0 && isPlayableScoringNote(notes[index - 1])) neighbors.push(notes[index - 1]);
+      if (index >= 0 && index < notes.length - 1 && isPlayableScoringNote(notes[index + 1])) neighbors.push(notes[index + 1]);
 
       return neighbors;
     }
@@ -19596,7 +19677,7 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function getPitchMatchScore(target, elapsedMs, timeline, hasValidInput = hasValidPerformanceInput()) {
-      if (!target || !hasValidInput) {
+      if (!isPlayableScoringNote(target) || !hasValidInput) {
         return 0;
       }
 
@@ -19642,6 +19723,157 @@ function drawRest(ctx, x, staffTop, duration) {
       return 0;
     }
 
+    function getAccumulatedPitchScoreFromRatio(targetRatio, bestScore) {
+      const safeRatio = Math.max(0, Math.min(1, Number(targetRatio) || 0));
+      const safeBestScore = Math.max(0, Math.min(1, Number(bestScore) || 0));
+
+      if (safeRatio >= TARGET_NOTE_PERFECT_RATIO) {
+        return Math.max(PITCH_EXACT_SCORE, safeBestScore);
+      }
+
+      if (safeRatio >= TARGET_NOTE_GREAT_RATIO) {
+        return Math.max(PITCH_NEAR_SCORE, safeBestScore);
+      }
+
+      if (safeRatio >= TARGET_NOTE_GOOD_RATIO) {
+        return Math.max(PITCH_LOOSE_SCORE, safeBestScore);
+      }
+
+      if (safeRatio > 0) {
+        return Math.max(PITCH_WIDE_SCORE, safeBestScore * 0.5);
+      }
+
+      return 0;
+    }
+
+    function getOrCreateNoteAccumulation(note) {
+      const signature = getNoteSignature(note);
+      if (!signature) return null;
+
+      if (!noteAccumulationMap.has(signature)) {
+        noteAccumulationMap.set(signature, {
+          signature,
+          note,
+          totalWeight: 0,
+          validInputWeight: 0,
+          targetWeight: 0,
+          bestPitchScore: 0,
+          sampleCount: 0,
+          targetSampleCount: 0
+        });
+      }
+
+      return noteAccumulationMap.get(signature);
+    }
+
+    function collectPitchSampleForNote(note, elapsedMs, timeline, sampleWeightMs, hasValidInput = hasValidPerformanceInput()) {
+      if (!isPlayableScoringNote(note)) return;
+
+      const acc = getOrCreateNoteAccumulation(note);
+      if (!acc) return;
+
+      const weight = Math.max(1, Math.min(TARGET_NOTE_SAMPLE_MAX_STEP_MS, Number(sampleWeightMs) || 16));
+      acc.totalWeight += weight;
+      acc.sampleCount += 1;
+
+      if (!hasValidInput) {
+        return;
+      }
+
+      acc.validInputWeight += weight;
+
+      const pitchScore = getPitchMatchScore(note, elapsedMs, timeline, true);
+      acc.bestPitchScore = Math.max(acc.bestPitchScore, pitchScore);
+
+      if (pitchScore >= PITCH_LOOSE_SCORE) {
+        acc.targetWeight += weight;
+        acc.targetSampleCount += 1;
+      }
+    }
+
+    function judgeAccumulatedNote(note, elapsedMs, timeline) {
+      if (!isPlayableScoringNote(note)) {
+        return false;
+      }
+
+      const signature = getNoteSignature(note);
+      if (!signature || judgedNoteSet.has(signature)) {
+        return false;
+      }
+
+      const acc = noteAccumulationMap.get(signature);
+      const totalWeight = Math.max(1, acc ? acc.totalWeight : 0);
+      const targetRatio = acc ? acc.targetWeight / totalWeight : 0;
+      const pitchScore = getAccumulatedPitchScoreFromRatio(targetRatio, acc ? acc.bestPitchScore : 0);
+
+      const hadEnoughSamples = (acc ? acc.sampleCount : 0) >= NOTE_ACCUMULATED_MIN_SAMPLES;
+      const hasAnyTarget = (acc ? acc.targetSampleCount : 0) > 0;
+
+      let finalPitchScore = pitchScore;
+      if (!hadEnoughSamples && !hasAnyTarget) {
+        finalPitchScore = 0;
+      }
+
+      const noteStartMs = Number(note.startMs) || 0;
+      const noteDurMs = Number(note.durMs) || 0;
+      const noteEndMs = noteStartMs + noteDurMs;
+
+      const rhythmScore = getRhythmMatchScore(
+        Math.min(elapsedMs, noteEndMs),
+        note,
+        acc ? acc.validInputWeight > 0 : false
+      );
+
+      judgedNoteSet.add(signature);
+      noteAccumulationMap.delete(signature);
+
+      scoreState.judgedFrames++;
+      scoreState.pitchHitFrames += finalPitchScore;
+      scoreState.rhythmHitFrames += rhythmScore;
+
+      const judged = Math.max(1, scoreState.judgedFrames);
+      scoreState.pitchAccuracy = Math.round((scoreState.pitchHitFrames / judged) * 100);
+      scoreState.rhythmAccuracy = Math.round((scoreState.rhythmHitFrames / judged) * 100);
+      scoreState.finalScore = Math.round(
+        scoreState.pitchAccuracy * 0.7 + scoreState.rhythmAccuracy * 0.3
+      );
+
+      const grade = getScoreGrade(scoreState.finalScore);
+      scoreState.gradeKey = grade.key;
+      scoreState.gradeLabel = grade.label;
+
+      lastJudgedNoteSignature = signature;
+
+      const feedbackKind = getJudgmentFeedbackKind(
+        finalPitchScore,
+        rhythmScore,
+        acc ? acc.validInputWeight > 0 : false
+      );
+
+      applyComboForJudgment(feedbackKind);
+      enqueueJudgmentFeedback(feedbackKind);
+      triggerJudgmentZonePulse(feedbackKind);
+
+      const liveScoreEl = document.getElementById("liveScore");
+      if (liveScoreEl) {
+        liveScoreEl.textContent = String(scoreState.finalScore);
+      }
+
+      return true;
+    }
+
+    function getScoringNotesFromTimeline(timeline) {
+      if (Array.isArray(timeline?.scoringNotes)) {
+        return timeline.scoringNotes;
+      }
+
+      if (Array.isArray(timeline?.notes)) {
+        return timeline.notes;
+      }
+
+      return [];
+    }
+
     function getRhythmMatchScore(elapsedMs, target, hasValidInput = hasValidPerformanceInput()) {
       if (!target || !hasValidInput) return 0;
 
@@ -19665,12 +19897,12 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function findCurrentTargetNote(elapsedMs, timeline) {
-      const notes = Array.isArray(timeline?.scoringNotes) ? timeline.scoringNotes : (Array.isArray(timeline?.notes) ? timeline.notes : []);
+      const notes = getScoringNotesFromTimeline(timeline);
       if (!notes.length) return null;
 
       for (const n of notes) {
         if (elapsedMs >= n.startMs && elapsedMs < n.startMs + n.durMs) {
-          return n.note ? n : null;
+          return isPlayableScoringNote(n) ? n : null;
         }
       }
       return null;
@@ -20020,50 +20252,50 @@ function drawRest(ctx, x, staffTop, duration) {
 
       scoreState.totalFrames++;
 
-      if (!target) return;
-
       if (elapsedMs < STARTUP_GRACE_MS) {
+        lastScoringSampleElapsedMs = elapsedMs;
         return;
       }
 
-      if (!shouldJudgeNoteNow(elapsedMs, target)) {
+      const notes = getScoringNotesFromTimeline(currentTimeline);
+      if (!notes.length) {
+        lastScoringSampleElapsedMs = elapsedMs;
         return;
       }
 
-      const noteSignature = getNoteSignature(target);
-      if (!noteSignature || judgedNoteSet.has(noteSignature)) {
-        return;
-      }
+      const previousElapsedMs = lastScoringSampleElapsedMs == null
+        ? Math.max(STARTUP_GRACE_MS, elapsedMs - 16)
+        : lastScoringSampleElapsedMs;
 
-      judgedNoteSet.add(noteSignature);
+      const sampleWeightMs = Math.max(1, elapsedMs - previousElapsedMs);
+      lastScoringSampleElapsedMs = elapsedMs;
 
       const hasValidInput = hasValidPerformanceInput();
-      const pitchScore = getPitchMatchScore(target, elapsedMs, currentTimeline, hasValidInput);
-      const rhythmScore = getRhythmMatchScore(elapsedMs, target, hasValidInput);
 
-      scoreState.judgedFrames++;
+      if (target && target.note) {
+        collectPitchSampleForNote(
+          target,
+          elapsedMs,
+          currentTimeline,
+          sampleWeightMs,
+          hasValidInput
+        );
+      }
 
-      scoreState.pitchHitFrames += pitchScore;
-      scoreState.rhythmHitFrames += rhythmScore;
+      for (const note of notes) {
+        if (!isPlayableScoringNote(note)) continue;
 
-      const judged = Math.max(1, scoreState.judgedFrames);
-      scoreState.pitchAccuracy = Math.round((scoreState.pitchHitFrames / judged) * 100);
-      scoreState.rhythmAccuracy = Math.round((scoreState.rhythmHitFrames / judged) * 100);
-      scoreState.finalScore = Math.round(
-        scoreState.pitchAccuracy * 0.7 + scoreState.rhythmAccuracy * 0.3
-      );
-      const grade = getScoreGrade(scoreState.finalScore);
-      scoreState.gradeKey = grade.key;
-      scoreState.gradeLabel = grade.label;
+        const signature = getNoteSignature(note);
+        if (!signature || judgedNoteSet.has(signature)) continue;
 
-      lastJudgedNoteSignature = noteSignature;
-      const feedbackKind = getJudgmentFeedbackKind(pitchScore, rhythmScore, hasValidInput);
-      applyComboForJudgment(feedbackKind);
-      enqueueJudgmentFeedback(feedbackKind);
-      triggerJudgmentZonePulse(feedbackKind);
+        const noteStartMs = Number(note.startMs) || 0;
+        const noteDurMs = Number(note.durMs) || 0;
+        const noteEndMs = noteStartMs + noteDurMs;
 
-      const liveScoreEl = document.getElementById("liveScore");
-      if (liveScoreEl) liveScoreEl.textContent = String(scoreState.finalScore);
+        if (elapsedMs >= noteEndMs + NOTE_ACCUMULATED_END_GRACE_MS) {
+          judgeAccumulatedNote(note, elapsedMs, currentTimeline);
+        }
+      }
     }
 
     function getActiveInputThreshold() {
@@ -20409,7 +20641,7 @@ function drawRest(ctx, x, staffTop, duration) {
       const nextJudgedNoteSet = new Set();
 
       notes.forEach((note) => {
-        if (!note?.note) return;
+        if (!isPlayableScoringNote(note)) return;
         if ((Number(note.startMs) || 0) >= elapsedMs - 1) return;
 
         const signature = getNoteSignature(note);
@@ -20417,6 +20649,8 @@ function drawRest(ctx, x, staffTop, duration) {
       });
 
       judgedNoteSet = nextJudgedNoteSet;
+      noteAccumulationMap = new Map();
+      lastScoringSampleElapsedMs = null;
     }
 
     function setMeasureJumpControls(active) {
@@ -21249,12 +21483,12 @@ async function playBasicPractice(note) {
   basicPracticeRunning = true;
   const runId = ++basicPracticeRunId;
   const noteSrc = `audio/${note}.wav`;
-  const metroSrc = "audio/metronome.wav";
 
   currentBasicNote = note || "C5";
   renderBasicNoteDisplay(currentBasicNote);
   updateBasicPracticeLights(4);
   setStatus("basicRecorderStatus", `${getBasicFingeringLabel()} ${note} 같이 불어보기 시작`, "ok");
+  await ensureCountdownClickAudio();
 
   async function runBasicBeat(beat, { includeNote = false } = {}) {
     if (!basicPracticeRunning || runId !== basicPracticeRunId) {
@@ -21264,7 +21498,7 @@ async function playBasicPractice(note) {
 
     updateBeatDisplay(beat);
     pulseBeatDisplay();
-    playBasicSound(metroSrc);
+    playCountdownClick(0.09);
     if (includeNote) {
       playBasicSound(noteSrc);
     }
@@ -22270,28 +22504,8 @@ function startBasicPractice() {
 
     function primeFingeringMetronomeAudio() {
       if (fingeringMetronomePrimed) return;
-
-      try {
-        fingeringMetronomeAudio.volume = 0;
-        fingeringMetronomeAudio.currentTime = 0;
-
-        const p = fingeringMetronomeAudio.play();
-
-        if (p && typeof p.then === "function") {
-          p.then(() => {
-            if (fingeringMetronomeAudio.volume === 0) {
-              fingeringMetronomeAudio.pause();
-              fingeringMetronomeAudio.currentTime = 0;
-            }
-            fingeringMetronomeAudio.volume = 1;
-            fingeringMetronomePrimed = true;
-          }).catch(() => {
-            fingeringMetronomeAudio.volume = 1;
-          });
-        }
-      } catch (e) {
-        fingeringMetronomeAudio.volume = 1;
-      }
+      ensureCountdownClickAudio();
+      fingeringMetronomePrimed = true;
     }
 
     function stopFingeringMetronomeClick() {
@@ -22307,6 +22521,7 @@ function startBasicPractice() {
         }
 
         if (window.fingeringPracticeCountdownTimer) {
+          clearTimeout(window.fingeringPracticeCountdownTimer);
           clearInterval(window.fingeringPracticeCountdownTimer);
           window.fingeringPracticeCountdownTimer = null;
         }
@@ -22327,18 +22542,13 @@ function startBasicPractice() {
     }
 
     function prepareFingeringMetronomeClick() {
-      try {
-        fingeringMetronomeAudio.load();
-      } catch (e) {}
+      // 카운트다운 클릭음은 Web Audio API로 즉시 재생하므로 별도 wav load가 필요하지 않다.
     }
 
     function playFingeringCountdownClick() {
-      try {
-        fingeringMetronomeAudio.volume = 1;
-        fingeringMetronomeAudio.pause();
-        fingeringMetronomeAudio.currentTime = 0;
-        fingeringMetronomeAudio.play().catch(() => {});
-      } catch (e) {}
+      ensureCountdownClickAudio().then(() => {
+        playCountdownClick(0.09);
+      });
     }
 
     function nextNote() {
@@ -22540,26 +22750,15 @@ function startBasicPractice() {
           resetFingeringPracticeResultButton();
 
           const startLabel = startBtn.querySelector(".start-label");
-          function animateFingeringCountdownLabel() {
-            if (!startLabel) return;
-
-            startLabel.classList.remove("fingering-count-pop");
-            void startLabel.offsetWidth;
-            startLabel.classList.add("fingering-count-pop");
-          }
-
           const originalLabel = startLabel ? startLabel.textContent : "";
           const countdownMs = Number(practiceState.speed) || 800;
-          let count = 4;
 
           stopFingeringMetronomeClick();
           setFingeringPracticeActionButtonsRunning(true);
           primeFingeringMetronomeAudio();
           prepareFingeringMetronomeClick();
           startBtn.dataset.counting = "true";
-          if (startLabel) startLabel.textContent = String(count);
-          animateFingeringCountdownLabel();
-          playFingeringCountdownClick();
+          let countdownStartedAt = performance.now();
 
           const runFingeringPracticeStart = () => {
             document.getElementById("step34Section")?.classList.add("fingeringPracticeStarted");
@@ -22582,20 +22781,35 @@ function startBasicPractice() {
             }
           };
 
-          window.fingeringPracticeCountdownTimer = setInterval(() => {
-            count -= 1;
+          function scheduleFingeringCountdownStep(currentCount) {
+            if (startBtn.dataset.counting !== "true") return;
 
-            if (count <= 0) {
-              clearInterval(window.fingeringPracticeCountdownTimer);
-              window.fingeringPracticeCountdownTimer = null;
+            if (currentCount <= 0) {
+              clearCountdownTimer("fingeringPracticeCountdownTimer");
               runFingeringPracticeStart();
               return;
             }
 
-            if (startLabel) startLabel.textContent = String(count);
-            animateFingeringCountdownLabel();
-            playFingeringCountdownClick();
-          }, countdownMs);
+            showCountdownStep({
+              labelEl: startLabel,
+              count: currentCount,
+              animateClass: "fingering-count-pop",
+              clickVolume: 0.09
+            });
+
+            const stepIndex = 5 - currentCount;
+            const nextTargetAt = countdownStartedAt + (stepIndex * countdownMs);
+            const nextDelayMs = Math.max(0, nextTargetAt - performance.now());
+
+            window.fingeringPracticeCountdownTimer = setTimeout(() => {
+              scheduleFingeringCountdownStep(currentCount - 1);
+            }, nextDelayMs);
+          }
+
+          ensureCountdownClickAudio().finally(() => {
+            countdownStartedAt = performance.now();
+            scheduleFingeringCountdownStep(4);
+          });
         });
 
         startBtn.dataset.fingeringStartBound = "true";
