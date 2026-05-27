@@ -862,7 +862,7 @@
       border-radius: 999px;
       min-height: 64px;
       padding: 17px 22px;
-      font-size: 17px;
+      font-size: 22px;
       letter-spacing: 0.04em;
       box-shadow:
         0 20px 34px rgba(45, 132, 255, 0.32),
@@ -883,7 +883,7 @@
     .loginActionRow button.sub {
       min-height: 58px;
       padding: 15px 20px;
-      font-size: 16px;
+      font-size: 21px;
     }
 
     #step1Section .field {
@@ -891,18 +891,19 @@
     }
 
     #step1Section .label {
-      margin-bottom: 7px;
-      font-size: 14px;
+      margin-bottom: 9px;
+      font-size: 17px;
       letter-spacing: 0.02em;
       color: rgba(238, 247, 255, 0.84);
       font-weight: 800;
     }
 
     #step1Section input {
-      min-height: 50px;
-      padding: 12px 15px;
+      min-height: 58px;
+      padding: 14px 16px;
       border-radius: 18px;
-      font-size: 15px;
+      font-size: 18px;
+      font-weight: 800;
     }
 
     #step1Section .status {
@@ -6549,7 +6550,7 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
   padding: 18px 20px;
   border-radius: 24px;
   border: 1px solid rgba(214, 243, 255, 0.22);
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: -0.3px;
   cursor: pointer;
@@ -7871,7 +7872,9 @@ body.theme-light .loginRecorderToggle button.active {
 }
 
 #step1Section input {
-  min-height: 50px;
+  min-height: 58px;
+  font-size: 18px;
+  font-weight: 800;
   color: #f6fbff;
   background:
     radial-gradient(circle at 18% 0%, rgba(121, 229, 255, 0.16) 0%, transparent 42%),
@@ -8014,7 +8017,7 @@ body.theme-light #step1Section input:focus {
   #step1Section .loginActionRow button {
     min-height: 58px;
     padding: 15px 18px;
-    font-size: 16px;
+    font-size: 21px;
   }
 
   #step1Section input {
@@ -8597,7 +8600,7 @@ body.menu-title-active #screen-menu-title {
 #screen-menu .menuBonusBtn .menuBtnSub {
   display: block;
   max-width: 100%;
-  font-size: 13px;
+  font-size: 18px;
   line-height: 1.25;
   font-weight: 800;
   color: rgba(248, 255, 252, 0.86);
@@ -8616,7 +8619,7 @@ body.menu-title-active #screen-menu-title {
   margin: 0;
   padding: 20px 24px;
   border-radius: 24px;
-  font-size: 23px;
+  font-size: 28px;
   background:
     radial-gradient(circle at 16% 24%, rgba(255,255,255,0.46), transparent 9%),
     radial-gradient(circle at 82% 26%, rgba(255,215,160,0.34), transparent 14%),
@@ -8688,7 +8691,7 @@ body.theme-light .menuTitle {
 #screen-menu .menuButtonGrid .menuBtn {
   grid-column: auto;
   min-height: 82px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 #screen-menu .challengeWideButton .btn-challenge {
@@ -9268,7 +9271,7 @@ body.theme-light #screen-menu .daily-mission-claimed {
 
   #screen-menu .menuButtonGrid .menuBtn {
     min-height: 68px;
-    font-size: 16px;
+    font-size: 21px;
   }
 
   #screen-menu .daily-mission-card {
@@ -9277,13 +9280,13 @@ body.theme-light #screen-menu .daily-mission-claimed {
   }
 
   #screen-menu .menuBonusBtn .menuBtnSub {
-    font-size: 12px;
+    font-size: 17px;
   }
 
   #screen-menu .challengeWideButton .btn-challenge {
     min-height: 70px;
     padding: 16px 18px;
-    font-size: 19px;
+    font-size: 24px;
   }
 
   #screen-menu .status-card {
@@ -9299,11 +9302,11 @@ body.theme-light #screen-menu .daily-mission-claimed {
   }
 
   #screen-menu .menuButtonGrid .menuBtn {
-    font-size: 16px;
+    font-size: 21px;
   }
 
   #screen-menu .menuBonusBtn .menuBtnSub {
-    font-size: 12px;
+    font-size: 17px;
   }
 }
 
@@ -9498,6 +9501,50 @@ body.theme-light .menuPageTitle {
   filter:
     drop-shadow(0 6px 14px rgba(28, 91, 156, 0.24))
     drop-shadow(0 0 8px rgba(255, 255, 255, 0.34));
+}
+
+#screen-menu-title .menuPageTitle {
+  font-family: "JalnanGothic", "GmarketSansMedium", "CookieRun", "ONE Mobile POP", "BM JUA", "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  background: none;
+  color: #eafcff;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  letter-spacing: 0;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+  filter: none;
+}
+
+.heroCard #pageTitle {
+  font-family: "JalnanGothic", "GmarketSansMedium", "CookieRun", "ONE Mobile POP", "BM JUA", "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  background: none;
+  color: #eafcff;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  letter-spacing: 0;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+  filter: none;
+}
+
+body.theme-light #screen-menu-title .menuPageTitle,
+body.light-mode #screen-menu-title .menuPageTitle,
+body.light #screen-menu-title .menuPageTitle {
+  background: none;
+  color: #123b52;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  filter: none;
+}
+
+body.theme-light .heroCard #pageTitle,
+body.light-mode .heroCard #pageTitle,
+body.light .heroCard #pageTitle {
+  background: none;
+  color: #123b52;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  filter: none;
 }
 
 #step34Section .practiceGameShell {
@@ -10639,16 +10686,16 @@ body.theme-light .practiceStaffSlot {
       }
 
       #step1Section .label {
-        margin-bottom: 4px;
-        font-size: 12px;
+        margin-bottom: 6px;
+        font-size: 15px;
       }
 
   #step1Section input,
   #step1Section .loginActionRow button,
   #step1Section .loginActionRow button.sub {
-    min-height: 42px;
-    padding: 10px 12px;
-    font-size: 13px;
+    min-height: 48px;
+    padding: 11px 13px;
+    font-size: 20px;
     border-radius: 14px;
   }
 
@@ -10711,12 +10758,12 @@ body.theme-light .practiceStaffSlot {
   #screen-menu .menuButtonGrid .menuBtn {
     min-height: 52px;
     padding: 10px 12px;
-    font-size: 14px;
+    font-size: 19px;
     border-radius: 16px;
   }
 
   #screen-menu .menuBonusBtn .menuBtnSub {
-    font-size: 11px;
+    font-size: 16px;
   }
 
   #screen-menu .challengeWideButton {
@@ -10726,7 +10773,7 @@ body.theme-light .practiceStaffSlot {
   #screen-menu .challengeWideButton .btn-challenge {
     min-height: 56px;
     padding: 11px 14px;
-    font-size: 16px;
+    font-size: 21px;
     border-radius: 18px;
   }
 
