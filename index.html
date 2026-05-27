@@ -8194,7 +8194,7 @@ body.theme-light #step1Section input:focus {
 .name-row {
   display: flex;
   gap: 8px;
-  align-items: center;
+  align-items: flex-start;
   min-width: 0;
 }
 
@@ -8202,9 +8202,10 @@ body.theme-light #step1Section input:focus {
   color: #f8fdff;
   font-size: 18px;
   font-weight: 700;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .level {
@@ -14378,6 +14379,8 @@ body.theme-light .readyCardHint {
       const progressRatio = level >= 50 ? 1 : Math.max(0, Math.min(1, expIntoLevel / required));
 
       const nameParts = [];
+      const schoolName = String(user?.schoolName || user?.school || user?.school_name || "").trim();
+      if (schoolName) nameParts.push(schoolName);
       if (user?.grade) nameParts.push(`${user.grade}학년`);
       if (user?.class) nameParts.push(`${user.class}반`);
       if (user?.number) nameParts.push(`${user.number}번`);
@@ -14385,6 +14388,10 @@ body.theme-light .readyCardHint {
       const displayName = nameParts.length || name
         ? [...nameParts, name || "학생"].join(" ")
         : "학생";
+      console.log("[MENU STUDENT NAME]", {
+        schoolName,
+        displayName
+      });
 
       const nameEl = document.getElementById("menuStudentName");
       const levelEl = document.getElementById("menuStudentLevel");
@@ -17580,6 +17587,7 @@ function renderSongButtons() {
         loginCode: "BETA",
         role: "STUDENT",
         name: "이건영",
+        schoolName: "풍무초",
         grade: "5",
         class: "6",
         number: "0",
@@ -17668,6 +17676,27 @@ function renderSongButtons() {
         assertLoginUserMatchesInput(user, inputStudent);
 
         resetActivityGrowthRequestState();
+        const loginSchoolName = String(
+          user?.schoolName ||
+          user?.school ||
+          user?.school_name ||
+          app.user?.schoolName ||
+          app.user?.school ||
+          app.user?.school_name ||
+          inputStudent?.schoolName ||
+          inputStudent?.school ||
+          ""
+        ).trim();
+        if (app.user) {
+          app.user.schoolName = loginSchoolName;
+        }
+
+        console.log("[LOGIN USER SCHOOL]", {
+          userSchoolName: user?.schoolName,
+          appUserSchoolName: app.user?.schoolName,
+          finalSchoolName: loginSchoolName
+        });
+
         app.user.grade = normalizeLoginNumberField(user.grade) || inputStudent.grade;
         app.user.class = normalizeLoginNumberField(user.class) || inputStudent.class;
         app.user.number = normalizeLoginNumberField(user.number) || inputStudent.number;
@@ -21636,6 +21665,9 @@ function startBasicPractice() {
           }
           window.lastGrowthResult = saveResult.growth;
           console.log("[GROWTH RESULT]", saveResult.growth);
+          if (typeof renderMenuStudentGrowthInfo === "function") {
+            renderMenuStudentGrowthInfo();
+          }
           renderGrowthResult(saveResult.growth);
         } else {
           renderGrowthResult(null);
