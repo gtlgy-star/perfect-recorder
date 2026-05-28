@@ -2653,6 +2653,68 @@ button:disabled {
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
     }
 
+    .tonguingListenBtn.playing {
+      background: linear-gradient(135deg, rgba(20, 86, 138, 0.96), rgba(13, 169, 190, 0.92));
+      border-color: rgba(123, 245, 255, 0.72);
+      box-shadow:
+        0 0 24px rgba(75, 238, 255, 0.34),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+      animation: tonguingListenPulse 1.2s ease-in-out infinite;
+    }
+
+    .tonguingListenBtn.playing .tonguingBtnTexts strong {
+      font-size: 1.12rem;
+    }
+
+    .tonguingListenBtn.playing .tonguingBtnIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.08rem;
+      line-height: 1;
+      transform: translateY(-0.14em);
+    }
+
+    .tonguingListenBtn.playing .tonguingBtnTexts span {
+      color: #ffe66d;
+      opacity: 1;
+      font-weight: 900;
+    }
+
+    .tonguingListenBtn.playing .tonguingBtnTexts .tonguingPerformer {
+      color: #ffd36a;
+      text-shadow:
+        0 0 6px rgba(255, 213, 106, 0.9),
+        0 0 14px rgba(255, 183, 43, 0.75);
+      animation: tonguingPerformerBlink 0.95s ease-in-out infinite;
+    }
+
+    @keyframes tonguingPerformerBlink {
+      0%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 0 6px rgba(255, 213, 106, 0.9),
+          0 0 14px rgba(255, 183, 43, 0.75);
+      }
+      50% {
+        opacity: 0.58;
+        text-shadow:
+          0 0 2px rgba(255, 213, 106, 0.55),
+          0 0 7px rgba(255, 183, 43, 0.45);
+      }
+    }
+
+    @keyframes tonguingListenPulse {
+      0%, 100% {
+        transform: translateY(0);
+        filter: brightness(1);
+      }
+      50% {
+        transform: translateY(-1px);
+        filter: brightness(1.12);
+      }
+    }
+
     .tonguingPracticeBtn {
       background: linear-gradient(135deg, rgba(39, 228, 214, 0.96), rgba(34, 151, 255, 0.96));
       box-shadow: 0 0 22px rgba(67,255,228,0.35);
@@ -13905,6 +13967,7 @@ body.theme-light .readyCardHint {
       <button
         type="button"
         class="tonguingListenBtn"
+        data-tonguing-example="normal"
         onclick="playTonguingNormalExample()"
       >
         <span class="tonguingBtnIcon">▶</span>
@@ -13918,9 +13981,10 @@ body.theme-light .readyCardHint {
       <button
         type="button"
         class="tonguingListenBtn"
+        data-tonguing-example="tonguing"
         onclick="playTonguingExample()"
       >
-        <span class="tonguingBtnIcon">🎵</span>
+        <span class="tonguingBtnIcon">▶</span>
 
         <div class="tonguingBtnTexts">
           <strong>텅잉하며 연주하는</strong>
@@ -16555,6 +16619,9 @@ function renderSongButtons() {
       if (appCurrentScreen === "screen-tonguing-practice" && targetId !== "screen-tonguing-practice") {
         stopTonguingPractice();
       }
+      if (appCurrentScreen === "screen-tonguing-guide" && targetId !== "screen-tonguing-guide") {
+        stopTonguingExampleAudio();
+      }
 
       const menuScreen = document.getElementById("screen-menu");
       const tonguingGuideScreen = document.getElementById("screen-tonguing-guide");
@@ -16778,12 +16845,110 @@ function renderSongButtons() {
       showScreen("screen-tonguing-guide");
     }
 
+    const TONGUING_EXAMPLE_AUDIO = {
+      normal: {
+        src: "audio/노텅잉.m4a",
+        title: "텅잉없이 연주하는"
+      },
+      tonguing: {
+        src: "audio/텅잉.m4a",
+        title: "텅잉하며 연주하는"
+      }
+    };
+    let currentTonguingExampleAudio = null;
+    let currentTonguingExampleType = "";
+
+    function resetTonguingExampleButtons() {
+      document.querySelectorAll("[data-tonguing-example]").forEach((button) => {
+        const type = button.dataset.tonguingExample;
+        const config = TONGUING_EXAMPLE_AUDIO[type];
+        const icon = button.querySelector(".tonguingBtnIcon");
+        const title = button.querySelector(".tonguingBtnTexts strong");
+        const sub = button.querySelector(".tonguingBtnTexts span");
+
+        button.classList.remove("playing");
+        button.setAttribute("aria-pressed", "false");
+        if (icon) icon.textContent = "▶";
+        if (title && config) title.textContent = config.title;
+        if (sub) sub.textContent = "리코더 소리듣기";
+      });
+    }
+
+    function setTonguingExampleButtonPlaying(type) {
+      resetTonguingExampleButtons();
+
+      const button = document.querySelector(`[data-tonguing-example="${type}"]`);
+      if (!button) return;
+
+      const icon = button.querySelector(".tonguingBtnIcon");
+      const sub = button.querySelector(".tonguingBtnTexts span");
+      button.classList.add("playing");
+      button.setAttribute("aria-pressed", "true");
+      if (icon) icon.textContent = "■";
+      if (sub) {
+        sub.innerHTML = '언제나 몇 번이라도<span class="tonguingPerformer">(황윤재 선생님 연주중)</span>';
+      }
+    }
+
+    function stopTonguingExampleAudio() {
+      if (!currentTonguingExampleAudio) return;
+
+      currentTonguingExampleAudio.pause();
+      currentTonguingExampleAudio.currentTime = 0;
+      currentTonguingExampleAudio = null;
+      currentTonguingExampleType = "";
+      resetTonguingExampleButtons();
+    }
+
+    function playTonguingExampleAudio(type) {
+      const config = TONGUING_EXAMPLE_AUDIO[type];
+      if (!config) return;
+
+      if (currentTonguingExampleAudio && currentTonguingExampleType === type) {
+        stopTonguingExampleAudio();
+        return;
+      }
+
+      stopTonguingExampleAudio();
+
+      const audio = new Audio(config.src);
+      currentTonguingExampleAudio = audio;
+      currentTonguingExampleType = type;
+      setTonguingExampleButtonPlaying(type);
+
+      audio.addEventListener("ended", () => {
+        if (currentTonguingExampleAudio === audio) {
+          currentTonguingExampleAudio = null;
+          currentTonguingExampleType = "";
+          resetTonguingExampleButtons();
+        }
+      }, { once: true });
+
+      audio.addEventListener("error", () => {
+        if (currentTonguingExampleAudio !== audio) return;
+
+        currentTonguingExampleAudio = null;
+        currentTonguingExampleType = "";
+        resetTonguingExampleButtons();
+        alert("소리 파일을 불러오지 못했어요. audio 폴더의 파일을 확인해 주세요.");
+      }, { once: true });
+
+      audio.play().catch(() => {
+        if (currentTonguingExampleAudio !== audio) return;
+
+        currentTonguingExampleAudio = null;
+        currentTonguingExampleType = "";
+        resetTonguingExampleButtons();
+        alert("소리를 재생하지 못했어요. 다시 버튼을 눌러 주세요.");
+      });
+    }
+
     function playTonguingNormalExample() {
-      alert("일반 소리 예시는 다음 단계에서 연결합니다.");
+      playTonguingExampleAudio("normal");
     }
 
     function playTonguingExample() {
-      alert("텅잉 소리 예시는 다음 단계에서 연결합니다.");
+      playTonguingExampleAudio("tonguing");
     }
 
     const TONGUING_RHYTHMS = [
@@ -16867,6 +17032,7 @@ function renderSongButtons() {
     let tonguingHighlightIndex = -1;
 
     function goTonguingPractice() {
+      stopTonguingExampleAudio();
       showScreen("screen-tonguing-practice");
     }
 
@@ -17051,7 +17217,7 @@ function renderSongButtons() {
 
       drawTonguingRhythmSymbols(ctx, rhythm, {
         x: 48,
-        y: staffTop + gap * 2,
+        y: staffTop + gap * 3,
         width: w - 90,
         mini: true,
         highlightIndex: -1
@@ -17098,7 +17264,7 @@ function renderSongButtons() {
 
       drawTonguingRhythmSymbols(ctx, rhythm, {
         x: 148,
-        y: staffTop + gap * 2,
+        y: staffTop + gap * 3,
         width: w - 218,
         mini: false,
         highlightIndex
@@ -17802,6 +17968,7 @@ preloadChallengeSongs().catch(() => {});
     }
 
 function backToLogin() {
+  stopTonguingExampleAudio();
   stopBasicPracticeSession();
   resetSongMenuState("short");
   currentActivityTitle = DEFAULT_PAGE_TITLE;
@@ -17811,6 +17978,7 @@ function backToLogin() {
 }
 
 function goHomeMenu() {
+  stopTonguingExampleAudio();
   stopFingeringMetronomeClick();
   stopBasicPracticeSession();
   stopPractice();
@@ -17835,6 +18003,8 @@ function goPrevScreen() {
 function goBackInApp() {
   if (appCurrentScreen === "screen-menu") return;
 
+  stopTonguingExampleAudio();
+
   if (typeof stopBasicPracticeSession === "function") {
     stopBasicPracticeSession();
   }
@@ -17858,6 +18028,7 @@ function goBackFromCurrentScreen() {
 }
 
 function logout() {
+  stopTonguingExampleAudio();
   stopBasicPracticeSession();
   stopPractice();
   releaseSharedMicrophone();
