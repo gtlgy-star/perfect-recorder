@@ -5583,6 +5583,22 @@ button:disabled {
   color: #fff;
 }
 
+#screen-challenge {
+  box-sizing: border-box;
+  width: min(100%, 1040px);
+  max-width: 1040px;
+  padding-left: clamp(16px, 4vw, 40px) !important;
+  padding-right: clamp(16px, 4vw, 40px) !important;
+}
+
+#screen-challenge .challenge-top,
+#screen-challenge .challenge-main-card {
+  width: min(100%, 1040px);
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .challenge-top {
   text-align: center;
   margin-bottom: 20px;
@@ -5808,6 +5824,15 @@ button:disabled {
   margin-top: 18px;
 }
 
+#screen-challenge .challenge-info-grid {
+  width: min(100%, 1040px);
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
 .challenge-info-card {
   position: relative;
   z-index: 5;
@@ -5821,6 +5846,99 @@ button:disabled {
     0 14px 24px rgba(0,0,0,0.22),
     inset 0 1px 0 rgba(255,255,255,0.14);
   backdrop-filter: blur(10px);
+}
+
+#screen-challenge .challenge-info-card {
+  min-height: 220px;
+  padding: 16px;
+  border-radius: 18px;
+}
+
+#screen-challenge .challenge-info-card h4 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+#screen-challenge .challenge-hall-card {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.7), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(255,249,220,0.5), transparent 30%),
+    linear-gradient(135deg, #fff5ca 0%, #f5d172 48%, #d9a43b 100%);
+  border-color: rgba(255, 230, 150, 0.42);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.2),
+    0 0 18px rgba(255, 216, 112, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+#screen-challenge .challenge-hall-card h4 {
+  color: #3b2600;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.52);
+}
+
+#screen-challenge .challenge-hall-card::before {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.06) 42%, transparent 68%),
+    radial-gradient(circle at top left, rgba(255,255,255,0.36) 0%, transparent 32%);
+}
+
+#screen-challenge .challenge-hall-list {
+  gap: 12px;
+}
+
+#screen-challenge .challenge-hall-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 12px 14px;
+  border-radius: 15px;
+  background:
+    linear-gradient(180deg, rgba(32, 29, 22, 0.76), rgba(10, 10, 12, 0.68));
+  border: 1px solid rgba(255, 235, 172, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -10px 18px rgba(0,0,0,0.12),
+    0 8px 16px rgba(25, 16, 0, 0.16);
+  backdrop-filter: blur(7px);
+}
+
+#screen-challenge .challenge-hall-trophy {
+  display: inline-block;
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28));
+}
+
+#screen-challenge .challenge-hall-person {
+  min-width: 0;
+}
+
+#screen-challenge .challenge-hall-affiliation {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255, 230, 162, 0.82);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#screen-challenge .challenge-hall-name {
+  display: block;
+  font-size: 22px;
+  font-weight: 1000;
+  line-height: 1.12;
+  color: #fff9e6;
+  text-shadow:
+    0 0 8px rgba(255, 214, 102, 0.22),
+    0 1px 0 rgba(0,0,0,0.36);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .challenge-info-card::before {
@@ -6010,6 +6128,65 @@ button:disabled {
     linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.14));
 }
 
+#screen-challenge .challenge-ranking-item {
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+#screen-challenge .challenge-ranking-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#screen-challenge .challenge-ranking-score {
+  white-space: nowrap;
+}
+
+#screen-challenge .challenge-hall-list .challenge-hall-item:first-child {
+  border-color: rgba(255, 220, 90, 0.55);
+  box-shadow:
+    0 0 18px rgba(255, 246, 165, 0.38),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    0 8px 18px rgba(93, 58, 0, 0.18);
+}
+
+.challenge-ranking-empty,
+#screen-challenge .challenge-hall-empty {
+  display: block;
+  padding: 16px 12px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.challenge-ranking-empty {
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(196, 238, 255, 0.18);
+}
+
+#screen-challenge .challenge-hall-empty {
+  color: rgba(46, 26, 0, 0.72);
+  background: rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(100, 65, 0, 0.12);
+}
+
+#screen-challenge .challenge-ranking-item.is-me {
+  border-color: rgba(255, 230, 90, 0.68);
+  box-shadow:
+    0 0 18px rgba(255, 230, 90, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+#screen-challenge .challenge-hall-item.is-me {
+  border-color: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
 .challenge-ranking-medal {
   font-size: 18px;
   line-height: 1;
@@ -6090,6 +6267,23 @@ body.theme-light .challenge-info-card h4,
 body.theme-light .next-mission-area h3 {
   color: #1e3a5f;
   text-shadow: none;
+}
+
+body.theme-light #screen-challenge .challenge-hall-card {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255,255,255,0.78), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(255,251,225,0.58), transparent 30%),
+    linear-gradient(135deg, #fff7d3 0%, #f5d77e 48%, #ddb052 100%);
+  border-color: rgba(216, 166, 38, 0.28);
+  box-shadow:
+    0 16px 30px rgba(180, 127, 25, 0.14),
+    0 0 18px rgba(255, 213, 79, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.84);
+}
+
+body.theme-light #screen-challenge .challenge-hall-card h4 {
+  color: #3b2600;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.58);
 }
 
 body.theme-light .challenge-record-block,
@@ -6340,16 +6534,54 @@ body.theme-light .challenge-my-ranking {
   display: none;
 }
 
+@media (max-width: 980px) {
+  #screen-challenge .challenge-info-grid {
+    max-width: 760px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #screen-challenge .challenge-hall-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  #screen-challenge {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  #screen-challenge .challenge-top,
+  #screen-challenge .challenge-main-card,
+  #screen-challenge .challenge-info-grid {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #screen-challenge .challenge-info-grid {
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 620px) {
+  #screen-challenge .challenge-info-grid {
+    max-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  #screen-challenge .challenge-hall-card {
+    grid-column: auto;
+  }
+}
+
 @media (max-width: 640px) {
   .challengeScreen {
     padding: 16px;
   }
 
   .mission-goal-row {
-    grid-template-columns: 1fr;
-  }
-
-  .challenge-info-grid {
     grid-template-columns: 1fr;
   }
 
@@ -14189,30 +14421,30 @@ body.theme-light .readyCardHint {
   </div>
 
   <div class="challenge-info-grid">
-    <div class="challenge-info-card">
+    <div id="challengeMyRecordCard" class="challenge-info-card">
       <h4>나의 기록</h4>
       <div class="challenge-record-list">
         <div class="challenge-record-block">
           <span class="challenge-record-label">최고 점수</span>
           <div class="challenge-record-row">
-            <strong class="challenge-record-score">95점</strong>
-            <span class="challenge-grade-stamp stamp-perfect">PERFECT</span>
+            <strong class="challenge-record-score" data-challenge-my-best-score>95점</strong>
+            <span class="challenge-grade-stamp stamp-perfect" data-challenge-my-best-badge>PERFECT</span>
           </div>
         </div>
 
         <div class="challenge-record-block">
           <span class="challenge-record-label">최근 기록</span>
           <div class="challenge-record-row">
-            <strong class="challenge-record-score">88점</strong>
-            <span class="challenge-grade-stamp stamp-great">GREAT</span>
+            <strong class="challenge-record-score" data-challenge-my-recent-score>88점</strong>
+            <span class="challenge-grade-stamp stamp-great" data-challenge-my-recent-badge>GREAT</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="challenge-info-card">
+    <div id="challengeClassRankingCard" class="challenge-info-card">
       <h4>학급 Ranking</h4>
-      <ol class="challenge-ranking-list">
+      <ol id="challengeClassRankingList" class="challenge-ranking-list">
         <li class="challenge-ranking-item">
           <span class="challenge-ranking-medal">🥇</span>
           <span class="challenge-ranking-rank">1</span>
@@ -14236,10 +14468,37 @@ body.theme-light .readyCardHint {
       <div class="challenge-my-ranking">
         <span class="challenge-my-ranking-label">나의 Ranking</span>
         <div class="challenge-my-ranking-value">
-          <span>Rank 4</span>
-          <strong>95점</strong>
+          <span data-challenge-my-rank>Rank 4</span>
+          <strong data-challenge-my-rank-score>95점</strong>
         </div>
       </div>
+    </div>
+
+    <div id="challengeHallOfFameCard" class="challenge-info-card challenge-hall-card">
+      <h4>🏆 명예의 전당</h4>
+      <ol id="challengeHallOfFameList" class="challenge-ranking-list challenge-hall-list">
+        <li class="challenge-hall-item hall-rank-1">
+          <span class="challenge-hall-trophy">🏆</span>
+          <span class="challenge-hall-person">
+            <span class="challenge-hall-affiliation">풍무초 5학년 6반</span>
+            <strong class="challenge-hall-name">최고수</strong>
+          </span>
+        </li>
+        <li class="challenge-hall-item hall-rank-2">
+          <span class="challenge-hall-trophy">🏆</span>
+          <span class="challenge-hall-person">
+            <span class="challenge-hall-affiliation">풍무초 5학년 6반</span>
+            <strong class="challenge-hall-name">리코더왕</strong>
+          </span>
+        </li>
+        <li class="challenge-hall-item hall-rank-3">
+          <span class="challenge-hall-trophy">🏆</span>
+          <span class="challenge-hall-person">
+            <span class="challenge-hall-affiliation">풍무초 5학년 6반</span>
+            <strong class="challenge-hall-name">멜로디짱</strong>
+          </span>
+        </li>
+      </ol>
     </div>
   </div>
 
@@ -21946,6 +22205,10 @@ function startBasicPractice() {
         renderSongButtons();
         showSelectedSong();
 
+        if (activityType === "CHALLENGE_SONG" && typeof loadChallengeHallOfFame === "function") {
+          loadChallengeHallOfFame().catch(() => {});
+        }
+
         setStatus(
           "saveStatus",
           `저장 완료 · ${finalScore}점 · ${grade.label}`,
@@ -23287,9 +23550,261 @@ let challengeSongsCache = [];
 let challengeSongsLoadedAt = 0;
 let challengeSongsLoadingPromise = null;
 let challengeFallbackActive = false;
+let challengeHallState = {
+  loading: false,
+  loaded: false,
+  error: "",
+  songId: "",
+  myRecord: null,
+  recentRecord: null,
+  classRanking: [],
+  hallOfFame: []
+};
+const CHALLENGE_HALL_FALLBACK = [
+  {
+    affiliation: "풍무초 5학년 6반",
+    name: "최고수",
+    score: 100,
+    achievedAt: "2026-05-28T09:10:00+09:00"
+  },
+  {
+    affiliation: "풍무초 5학년 6반",
+    name: "리코더왕",
+    score: 99,
+    achievedAt: "2026-05-28T09:00:00+09:00"
+  },
+  {
+    affiliation: "풍무초 5학년 6반",
+    name: "멜로디짱",
+    score: 98,
+    achievedAt: "2026-05-28T08:50:00+09:00"
+  }
+];
+
+function getChallengeHallAchievedTime(entry) {
+  const value = new Date(entry?.achievedAt || entry?.createdAt || entry?.timestamp || 0).getTime();
+  return Number.isFinite(value) ? value : 0;
+}
+
+function escapeChallengeHallText(value) {
+  return String(value || "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function formatChallengeStudentAffiliation(record) {
+  if (!record) return "";
+
+  const affiliation = String(record.affiliation || "").trim();
+  if (affiliation) return affiliation;
+
+  const schoolName = String(record.schoolName || "").trim();
+  const grade = String(record.grade || "").trim();
+  const className = String(record.className || "").trim();
+
+  return [
+    schoolName,
+    grade ? grade + "학년" : "",
+    className ? className + "반" : ""
+  ].filter(Boolean).join(" ");
+}
+
+function formatChallengeScore(score) {
+  const n = Number(score);
+  if (!Number.isFinite(n)) return "-";
+  return Math.round(n) + "점";
+}
+
+function getCurrentChallengeSongId() {
+  const song =
+    (window.isChallengePlayMode ? app.currentSong : null) ||
+    window.currentChallengeSong ||
+    window.selectedChallengeSong ||
+    app.currentChallengeSong ||
+    app.selectedChallengeSong ||
+    (typeof getCurrentChallengeSong === "function" ? getCurrentChallengeSong() : null) ||
+    null;
+
+  if (song && (song.songId || song.id)) {
+    return String(song.songId || song.id);
+  }
+
+  return "";
+}
+
+function renderChallengeMyRecord(myRecord, recentRecord) {
+  const card = document.getElementById("challengeMyRecordCard");
+  if (!card) return;
+
+  const bestScoreEl = card.querySelector("[data-challenge-my-best-score]");
+  const recentScoreEl = card.querySelector("[data-challenge-my-recent-score]");
+  const bestBadgeEl = card.querySelector("[data-challenge-my-best-badge]");
+  const recentBadgeEl = card.querySelector("[data-challenge-my-recent-badge]");
+
+  const best = myRecord || null;
+  const recent = recentRecord || null;
+
+  if (bestScoreEl) {
+    bestScoreEl.textContent = best ? formatChallengeScore(best.scoreTotal) : "-";
+  }
+
+  if (recentScoreEl) {
+    recentScoreEl.textContent = recent ? formatChallengeScore(recent.scoreTotal) : "-";
+  }
+
+  if (bestBadgeEl) {
+    bestBadgeEl.textContent = best ? "BEST" : "기록 없음";
+  }
+
+  if (recentBadgeEl) {
+    recentBadgeEl.textContent = recent ? "RECENT" : "도전 전";
+  }
+}
+
+function renderChallengeClassRanking(classRanking) {
+  const list = document.getElementById("challengeClassRankingList");
+  if (!list) return;
+
+  const rows = Array.isArray(classRanking) ? classRanking.slice(0, 5) : [];
+  const myRankEl = document.querySelector("[data-challenge-my-rank]");
+  const myRankScoreEl = document.querySelector("[data-challenge-my-rank-score]");
+  const myRow = rows.find((item) => item && item.isMe) ||
+    (Array.isArray(classRanking) ? classRanking.find((item) => item && item.isMe) : null);
+
+  if (myRankEl) {
+    myRankEl.textContent = myRow && myRow.rank ? "Rank " + myRow.rank : "Rank -";
+  }
+  if (myRankScoreEl) {
+    myRankScoreEl.textContent = myRow ? formatChallengeScore(myRow.scoreTotal) : "-";
+  }
+
+  if (!rows.length) {
+    list.innerHTML = `
+      <li class="challenge-ranking-empty">
+        아직 학급 기록이 없어요.
+      </li>
+    `;
+    return;
+  }
+
+  list.innerHTML = rows.map((item, index) => {
+    const rank = Number(item.rank || index + 1);
+    const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "🎵";
+    const name = escapeChallengeHallText(item.name || "이름 없음");
+    const score = formatChallengeScore(item.scoreTotal);
+    const isMeClass = item.isMe ? " is-me" : "";
+
+    return `
+      <li class="challenge-ranking-item${isMeClass}">
+        <span class="challenge-ranking-medal">${medal}</span>
+        <span class="challenge-ranking-rank">${rank || "-"}</span>
+        <span class="challenge-ranking-name">${name}</span>
+        <strong class="challenge-ranking-score">${score}</strong>
+      </li>
+    `;
+  }).join("");
+}
+
+function renderChallengeHallOfFame(hallOfFame = CHALLENGE_HALL_FALLBACK) {
+  const listEl = document.getElementById("challengeHallOfFameList");
+  if (!listEl) return;
+
+  const topEntries = (Array.isArray(hallOfFame) ? hallOfFame : [])
+    .slice()
+    .sort((a, b) => {
+      const scoreDiff = Number(b?.scoreTotal ?? b?.score ?? 0) - Number(a?.scoreTotal ?? a?.score ?? 0);
+      if (scoreDiff) return scoreDiff;
+      return getChallengeHallAchievedTime(b) - getChallengeHallAchievedTime(a);
+    })
+    .slice(0, 3);
+
+  if (!topEntries.length) {
+    listEl.innerHTML = `
+      <li class="challenge-hall-empty">
+        아직 명예의 전당 기록이 없어요.
+      </li>
+    `;
+    return;
+  }
+
+  listEl.innerHTML = topEntries.map((entry, index) => {
+    const rank = Number(entry.rank || index + 1);
+    const isMeClass = entry.isMe ? " is-me" : "";
+    const affiliation = formatChallengeStudentAffiliation(entry) || "소속 정보 없음";
+
+    return `
+    <li class="challenge-hall-item hall-rank-${rank}${isMeClass}">
+      <span class="challenge-hall-trophy">🏆</span>
+      <span class="challenge-hall-person">
+        <span class="challenge-hall-affiliation">${escapeChallengeHallText(affiliation)}</span>
+        <strong class="challenge-hall-name">${escapeChallengeHallText(entry?.name || "이름 없음")}</strong>
+      </span>
+    </li>
+  `;
+  }).join("");
+}
+
+function renderChallengeHallState() {
+  renderChallengeMyRecord(challengeHallState.myRecord, challengeHallState.recentRecord);
+  renderChallengeClassRanking(challengeHallState.classRanking);
+  renderChallengeHallOfFame(challengeHallState.hallOfFame);
+}
+
+async function loadChallengeHallOfFame() {
+  try {
+    if (!app || !app.user || !app.user.userId) {
+      return null;
+    }
+
+    if (typeof app.api !== "function") {
+      console.warn("[CHALLENGE HALL] app.api가 없어 기록을 불러오지 못했습니다.");
+      return null;
+    }
+
+    const songId = getCurrentChallengeSongId();
+
+    challengeHallState.loading = true;
+    challengeHallState.error = "";
+    challengeHallState.songId = songId;
+
+    const result = await app.api("getChallengeHallOfFame", {
+      userId: app.user.userId,
+      songId: songId,
+      activityType: "CHALLENGE_SONG"
+    });
+
+    if (!result || result.ok !== true) {
+      throw new Error(result && result.error ? result.error : "도전 기록 응답 오류");
+    }
+
+    challengeHallState.loaded = true;
+    challengeHallState.myRecord = result.myRecord || null;
+    challengeHallState.recentRecord = result.recentRecord || null;
+    challengeHallState.classRanking = Array.isArray(result.classRanking) ? result.classRanking : [];
+    challengeHallState.hallOfFame = Array.isArray(result.hallOfFame) ? result.hallOfFame : [];
+
+    renderChallengeHallState();
+
+    console.log("[CHALLENGE HALL] 기록 반영 완료", result);
+    return result;
+  } catch (err) {
+    challengeHallState.error = err.message || String(err);
+    console.warn("[CHALLENGE HALL] 기록 불러오기 실패", err);
+
+    renderChallengeHallState();
+    return null;
+  } finally {
+    challengeHallState.loading = false;
+  }
+}
 
 function goChallenge() {
   showScreen("screen-challenge");
+  renderChallengeHallState();
 
   if (challengeSongsCache.some((song) => Number(song.slot) === 1)) {
     renderChallengeMissionScreen(challengeSongsCache);
@@ -23304,7 +23819,14 @@ function goChallenge() {
     if (!challengeSongsCache.length) {
       renderChallengeFallbackMissionScreen();
     }
+  }).finally(() => {
+    if (typeof loadChallengeHallOfFame === "function") {
+      loadChallengeHallOfFame().catch(() => {});
+    }
   });
+  if (typeof loadChallengeHallOfFame === "function") {
+    loadChallengeHallOfFame().catch(() => {});
+  }
   setTimeout(applyMobileLandscapeAutoScale, 80);
 }
 
@@ -23790,6 +24312,10 @@ function renderChallengeMissionScreen(songs = challengeSongsCache, options = {})
       ? currentSong.title || "도전 미션곡"
       : loading ? "미션곡 불러오는 중" : "미션곡 준비중";
   }
+  if (currentSong) {
+    app.currentChallengeSong = currentSong;
+    window.currentChallengeSong = currentSong;
+  }
   if (descEl) {
     descEl.textContent = currentSong
       ? `${currentSong.timeSignature || "4/4"} 박자 · BPM ${currentSong.bpm || 80} · 퍼펙트 점수에 도전하세요.`
@@ -23934,6 +24460,8 @@ async function startChallengeSong(songId) {
     }
 
     app.currentSong = matchedSong;
+    app.currentChallengeSong = matchedSong;
+    window.currentChallengeSong = matchedSong;
 
     console.log("[challenge] selected:", matchedSong);
     console.log("[challenge] app.currentSong:", app.currentSong);
