@@ -2681,29 +2681,6 @@ button:disabled {
       font-weight: 900;
     }
 
-    .tonguingListenBtn.playing .tonguingBtnTexts .tonguingPerformer {
-      color: #ffd36a;
-      text-shadow:
-        0 0 6px rgba(255, 213, 106, 0.9),
-        0 0 14px rgba(255, 183, 43, 0.75);
-      animation: tonguingPerformerBlink 0.95s ease-in-out infinite;
-    }
-
-    @keyframes tonguingPerformerBlink {
-      0%, 100% {
-        opacity: 1;
-        text-shadow:
-          0 0 6px rgba(255, 213, 106, 0.9),
-          0 0 14px rgba(255, 183, 43, 0.75);
-      }
-      50% {
-        opacity: 0.58;
-        text-shadow:
-          0 0 2px rgba(255, 213, 106, 0.55),
-          0 0 7px rgba(255, 183, 43, 0.45);
-      }
-    }
-
     @keyframes tonguingListenPulse {
       0%, 100% {
         transform: translateY(0);
@@ -15707,6 +15684,71 @@ function restorePracticeFromChallengePlay() {
       renderSongButtons();
     }
 
+    function mergeSongScoreStateFromServer(serverScores) {
+      if (!serverScores || typeof serverScores !== "object") return false;
+
+      const state = loadSongScoreState();
+      let changed = false;
+
+      Object.entries(serverScores).forEach(([songId, score]) => {
+        const key = String(songId || "").trim();
+        const normalizedScore = Number(score);
+
+        if (!key || !Number.isFinite(normalizedScore)) return;
+
+        const previous = Number(state[key]);
+        const nextScore = Number.isFinite(previous)
+          ? Math.max(previous, normalizedScore)
+          : normalizedScore;
+
+        if (!Number.isFinite(previous) || nextScore !== previous) {
+          state[key] = nextScore;
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        saveSongScoreState(state);
+
+        if (typeof renderSongButtons === "function") {
+          renderSongButtons();
+        }
+      }
+
+      return changed;
+    }
+
+    async function loadShortSongMedalsFromServer() {
+      try {
+        if (typeof app === "undefined" || !app || !app.user || !app.user.userId) {
+          return null;
+        }
+
+        if (typeof app.api !== "function") {
+          console.warn("[SONG MEDALS] app.api가 없어 서버 메달 기록을 불러오지 못했습니다.");
+          return null;
+        }
+
+        const result = await app.api("getSongMedals", {
+          userId: app.user.userId,
+          activityType: "SHORT_SONG"
+        });
+
+        if (!result || result.ok !== true || !result.scores) {
+          console.warn("[SONG MEDALS] 서버 메달 기록 없음 또는 응답 오류", result);
+          return result || null;
+        }
+
+        mergeSongScoreStateFromServer(result.scores);
+
+        console.log("[SONG MEDALS] 서버 최고점 반영 완료", result);
+        return result;
+      } catch (err) {
+        console.warn("[SONG MEDALS] 서버 메달 기록 불러오기 실패, localStorage 기록만 사용합니다.", err);
+        return null;
+      }
+    }
+
     function getMedalTierForScore(score) {
       const normalizedScore = Number(score);
       if (!Number.isFinite(normalizedScore)) return "";
@@ -16885,9 +16927,7 @@ function renderSongButtons() {
       button.classList.add("playing");
       button.setAttribute("aria-pressed", "true");
       if (icon) icon.textContent = "■";
-      if (sub) {
-        sub.innerHTML = '언제나 몇 번이라도<span class="tonguingPerformer">(황윤재 선생님 연주중)</span>';
-      }
+      if (sub) sub.textContent = "언제나 몇 번이라도";
     }
 
     function stopTonguingExampleAudio() {
@@ -17828,6 +17868,9 @@ function renderSongButtons() {
 
       history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
       renderScreenOnly("screen-menu");
+      if (typeof loadShortSongMedalsFromServer === "function") {
+        loadShortSongMedalsFromServer().catch(() => {});
+      }
       if (typeof preloadChallengeSongs === "function") {
         preloadChallengeSongs().catch(() => {});
       }
@@ -17954,6 +17997,7 @@ pushAppHistory("screen-menu", { replace: true });
 showScreen("screen-menu", { skipHistory: true });
 if (app.user && String(app.user.role || "").trim().toUpperCase() === "STUDENT") {
   claimActivityGrowth("LOGIN");
+  loadShortSongMedalsFromServer().catch(() => {});
 }
 app.refreshSongs().catch(() => {});
 preloadChallengeSongs().catch(() => {});
