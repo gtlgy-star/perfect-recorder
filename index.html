@@ -1440,14 +1440,17 @@ button:disabled {
     }
 
     .textbookSongButtons {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
+      width: 100%;
+      align-items: stretch;
     }
 
     .textbookSongBtn {
-      width: auto;
-      min-width: 120px;
+      position: relative;
+      width: 100%;
+      min-width: 0;
       min-height: 52px;
       padding: 12px 16px;
       border-radius: 18px;
@@ -1457,6 +1460,57 @@ button:disabled {
       font-size: 15px;
       font-weight: 900;
       box-shadow: 0 8px 16px rgba(77, 168, 255, 0.12);
+      box-sizing: border-box;
+      justify-content: center;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .textbookSongTitle {
+      position: relative;
+      z-index: 2;
+      display: -webkit-box;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.2;
+    }
+
+    .textbookSongBtn .songSuccessStamp {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      z-index: 4;
+      width: 30px;
+      height: 30px;
+      border-width: 2px;
+      font-size: 13px;
+      animation-duration: 2.4s;
+    }
+
+    .textbookSongBtn .songSuccessStamp::before,
+    .textbookSongBtn .songSuccessStamp::after {
+      bottom: -7px;
+      width: 7px;
+      height: 11px;
+    }
+
+    .textbookSongBtn .songSuccessStamp::before {
+      transform: translateX(-6px);
+    }
+
+    .textbookSongBtn .songSuccessStampInner {
+      width: 18px;
+      height: 18px;
+    }
+
+    @media (max-width: 720px) {
+      .textbookSongButtons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     .textbookSongBtn:hover {
@@ -1895,6 +1949,7 @@ button:disabled {
       display: -webkit-box;
       line-clamp: 2;
       -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -7176,13 +7231,13 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
   width: 100%;
 }
 
-.textbookSongBtn {
-  position: relative;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
+    .textbookSongBtn {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
 .gradeChoiceTitle::before,
 .songChoiceTitle::before,
@@ -7244,12 +7299,13 @@ body.theme-light .challenge-play-mode .practiceMiniBtn:not(.practice-control-btn
   flex-basis: 34px;
 }
 
-.textbookSongBtn::before {
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  flex-basis: 28px;
-}
+    .textbookSongBtn::before {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+      flex-basis: 28px;
+      flex-shrink: 0;
+    }
 
 .gradeChoiceBtn.selected .gradeChoiceTitle {
   position: static;
@@ -11318,11 +11374,19 @@ body.theme-light .practiceStaffSlot {
   }
 
   .textbookSongBtn {
-    min-width: 96px;
+    min-width: 0;
     min-height: 40px;
     padding: 8px 10px;
     border-radius: 12px;
     font-size: 12px;
+  }
+
+  .textbookSongBtn .songSuccessStamp {
+    top: 6px;
+    right: 7px;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
   }
 
   .songChoiceBtn {
@@ -13754,7 +13818,7 @@ body.theme-light .readyCardHint {
         <div id="gradeButtonGrid" class="gradeButtonGrid"></div>
         <div id="textbookSongPanel" class="textbookSongPanel hidden">
           <h3 id="textbookSongPanelTitle" class="textbookSongPanelTitle">교과서 수록곡</h3>
-          <div id="textbookSongButtons" class="textbookSongButtons"></div>
+          <div id="textbookSongButtons" class="textbookSongButtons textbook-song-grid"></div>
         </div>
       </div>
 
@@ -15979,7 +16043,7 @@ function restorePracticeFromChallengePlay() {
       return changed;
     }
 
-    async function loadShortSongMedalsFromServer() {
+    async function loadSongMedalsFromServer(activityType = "SHORT_SONG") {
       try {
         if (typeof app === "undefined" || !app || !app.user || !app.user.userId) {
           return null;
@@ -15992,7 +16056,7 @@ function restorePracticeFromChallengePlay() {
 
         const result = await app.api("getSongMedals", {
           userId: app.user.userId,
-          activityType: "SHORT_SONG"
+          activityType
         });
 
         if (!result || result.ok !== true || !result.scores) {
@@ -16002,12 +16066,23 @@ function restorePracticeFromChallengePlay() {
 
         mergeSongScoreStateFromServer(result.scores);
 
-        console.log("[SONG MEDALS] 서버 최고점 반영 완료", result);
+        console.log("[SONG MEDALS] 서버 최고점 반영 완료", {
+          activityType,
+          result
+        });
         return result;
       } catch (err) {
-        console.warn("[SONG MEDALS] 서버 메달 기록 불러오기 실패, localStorage 기록만 사용합니다.", err);
+        console.warn("[SONG MEDALS] 서버 메달 기록 불러오기 실패, localStorage 기록만 사용합니다.", activityType, err);
         return null;
       }
+    }
+
+    async function loadShortSongMedalsFromServer() {
+      return loadSongMedalsFromServer("SHORT_SONG");
+    }
+
+    async function loadTextbookSongMedalsFromServer() {
+      return loadSongMedalsFromServer("TEXTBOOK_SONG");
     }
 
     function getMedalTierForScore(score) {
@@ -16539,11 +16614,29 @@ function restorePracticeFromChallengePlay() {
       wrap.innerHTML = "";
 
       songs.forEach((song) => {
+        const storedScore = getSongStoredScore(song.songId);
+        const score = Number.isFinite(storedScore) ? storedScore : 0;
+        const medal = getMedalTierForScore(score);
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = `textbookSongBtn${String(song.songId) === selectedId ? " selected" : ""}`;
-        btn.textContent = song.title;
         btn.onclick = () => selectSongById(song.songId);
+        if (medal) {
+          const medalEl = document.createElement("span");
+          medalEl.className = `songSuccessStamp ${medal}`;
+          medalEl.setAttribute("aria-label", `${score}점 메달`);
+
+          const medalInner = document.createElement("span");
+          medalInner.className = "songSuccessStampInner";
+          medalInner.textContent = "★";
+          medalEl.appendChild(medalInner);
+          btn.appendChild(medalEl);
+        }
+
+        const titleEl = document.createElement("span");
+        titleEl.className = "textbookSongTitle";
+        titleEl.textContent = song.title;
+        btn.appendChild(titleEl);
         wrap.appendChild(btn);
       });
     }
@@ -16629,6 +16722,13 @@ function restorePracticeFromChallengePlay() {
       setSongMenuView("textbook-songs");
       renderTextbookGradeButtons();
       renderTextbookSongButtons();
+      if (typeof loadTextbookSongMedalsFromServer === "function") {
+        loadTextbookSongMedalsFromServer().then(() => {
+          if (currentSongMenuMode === "textbook" && currentTextbookGrade === String(grade)) {
+            renderTextbookSongButtons();
+          }
+        }).catch(() => {});
+      }
       showSelectedSong();
     }
 
@@ -22491,6 +22591,14 @@ function startBasicPractice() {
 
         if (activityType === "CHALLENGE_SONG" && typeof loadChallengeHallOfFame === "function") {
           loadChallengeHallOfFame().catch(() => {});
+        }
+
+        if (activityType === "TEXTBOOK_SONG" && typeof loadTextbookSongMedalsFromServer === "function") {
+          loadTextbookSongMedalsFromServer().then(() => {
+            if (currentSongMenuMode === "textbook") {
+              renderTextbookSongButtons();
+            }
+          }).catch(() => {});
         }
 
         setStatus(
