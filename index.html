@@ -16045,14 +16045,21 @@ function restorePracticeFromChallengePlay() {
       ];
 
       function firstValidNumber(list, fallback) {
+        let firstFinite = null;
+
         for (const value of list) {
           if (value === undefined || value === null || String(value).trim() === "") {
             continue;
           }
           const n = Number(value);
-          if (Number.isFinite(n)) return Math.max(0, Math.min(100, Math.round(n)));
+          if (Number.isFinite(n)) {
+            const normalized = Math.max(0, Math.min(100, Math.round(n)));
+            if (firstFinite === null) firstFinite = normalized;
+            if (normalized > 0) return normalized;
+          }
         }
-        return fallback;
+
+        return firstFinite !== null ? firstFinite : fallback;
       }
 
       const scoreTotal = firstValidNumber(totalCandidates, 0);
@@ -16082,6 +16089,25 @@ function restorePracticeFromChallengePlay() {
         displayScore: parseScoreText("#resultTotalScore, [data-result-total-score]"),
         pitchScore: parseScoreText("#resultPitchScore"),
         rhythmScore: parseScoreText("#resultRhythmScore")
+      };
+    }
+
+    function getPracticeStatusScoreForRecord() {
+      const text = document.getElementById("practiceStatus")?.textContent || "";
+      const totalMatch = String(text).match(/연습\s*완료\s*·\s*(\d+(?:\.\d+)?)점/);
+      const pitchMatch = String(text).match(/음정\s*(\d+(?:\.\d+)?)%/);
+      const rhythmMatch = String(text).match(/리듬\s*(\d+(?:\.\d+)?)%/);
+
+      function toScore(match) {
+        if (!match) return undefined;
+        const value = Number(match[1]);
+        return Number.isFinite(value) ? value : undefined;
+      }
+
+      return {
+        displayScore: toScore(totalMatch),
+        pitchScore: toScore(pitchMatch),
+        rhythmScore: toScore(rhythmMatch)
       };
     }
 
@@ -22226,14 +22252,19 @@ function startBasicPractice() {
           || scoreState;
         let recordScore = normalizeFinalScoreForRecord(lastRecordScore);
         const visibleScore = getVisibleResultScoreForRecord();
+        const statusScore = getPracticeStatusScoreForRecord();
+        const fallbackScore = Number.isFinite(Number(visibleScore.displayScore)) && Number(visibleScore.displayScore) > 0
+          ? visibleScore
+          : statusScore;
+
         if ((!recordScore.scoreTotal || recordScore.scoreTotal <= 0)
-          && Number.isFinite(Number(visibleScore.displayScore))
-          && Number(visibleScore.displayScore) > 0) {
+          && Number.isFinite(Number(fallbackScore.displayScore))
+          && Number(fallbackScore.displayScore) > 0) {
           recordScore = normalizeFinalScoreForRecord({
             ...recordScore,
-            scoreTotal: visibleScore.displayScore,
-            pitchScore: visibleScore.pitchScore,
-            rhythmScore: visibleScore.rhythmScore
+            scoreTotal: fallbackScore.displayScore,
+            pitchScore: fallbackScore.pitchScore,
+            rhythmScore: fallbackScore.rhythmScore
           });
           setLastRecordScore(recordScore);
         }
