@@ -15436,11 +15436,10 @@ body.theme-light .readyCardHint {
     const NOISE_GUARD_MULTIPLIER = 2.5;
     const NOISE_GUARD_MINIMUM = 0.035;
     const GRADE_RULES = [
-      { min: 90, key: "perfect", label: "PERFECT!!" },
-      { min: 80, key: "great", label: "GREAT!" },
-      { min: 70, key: "good", label: "GOOD!" },
-      { min: 60, key: "pass", label: "PASS" },
-      { min: 0, key: "retry", label: "다시 도전!" }
+      { min: 95, key: "PERFECT", label: "PERFECT!!" },
+      { min: 85, key: "GREAT", label: "GREAT!" },
+      { min: 70, key: "GOOD", label: "GOOD!" },
+      { min: 0, key: "RETRY", label: "다시 도전!" }
     ];
     const loadingMessages = [
       "🎶 연주를 준비하고 있어요",
@@ -15706,7 +15705,7 @@ body.theme-light .readyCardHint {
       pitchAccuracy: 0,
       rhythmAccuracy: 0,
       maxCombo: 0,
-      gradeKey: "retry",
+      gradeKey: "RETRY",
       gradeLabel: "다시 도전!"
     };
     let judgedNoteSet = new Set();
@@ -16017,13 +16016,86 @@ function restorePracticeFromChallengePlay() {
       return "";
     }
 
+    function normalizeFinalScoreForRecord(raw) {
+      const source = raw || {};
+
+      const totalCandidates = [
+        source.scoreTotal,
+        source.totalScore,
+        source.finalScore,
+        source.score,
+        source.total,
+        source.displayScore
+      ];
+
+      const pitchCandidates = [
+        source.pitchScore,
+        source.pitch,
+        source.pitchTotal,
+        source.pitchAccuracy,
+        source.noteScore
+      ];
+
+      const rhythmCandidates = [
+        source.rhythmScore,
+        source.rhythm,
+        source.rhythmTotal,
+        source.rhythmAccuracy,
+        source.timingScore
+      ];
+
+      function firstValidNumber(list, fallback) {
+        for (const value of list) {
+          const n = Number(value);
+          if (Number.isFinite(n)) return Math.max(0, Math.min(100, Math.round(n)));
+        }
+        return fallback;
+      }
+
+      const scoreTotal = firstValidNumber(totalCandidates, 0);
+      const pitchScore = firstValidNumber(pitchCandidates, scoreTotal);
+      const rhythmScore = firstValidNumber(rhythmCandidates, scoreTotal);
+      const grade = GRADE_RULES.find((rule) => scoreTotal >= rule.min) || GRADE_RULES[GRADE_RULES.length - 1];
+
+      return {
+        scoreTotal,
+        pitchScore,
+        rhythmScore,
+        gradeKey: grade.key,
+        gradeLabel: grade.label
+      };
+    }
+
+    function getVisibleResultScoreForRecord() {
+      function parseScoreText(selector) {
+        const text = document.querySelector(selector)?.textContent || "";
+        const match = String(text).match(/-?\d+(\.\d+)?/);
+        if (!match) return undefined;
+        const value = Number(match[0]);
+        return Number.isFinite(value) ? value : undefined;
+      }
+
+      return {
+        displayScore: parseScoreText("#resultTotalScore, [data-result-total-score]"),
+        pitchScore: parseScoreText("#resultPitchScore"),
+        rhythmScore: parseScoreText("#resultRhythmScore")
+      };
+    }
+
+    function setLastRecordScore(recordScore) {
+      window.lastRecordScore = recordScore;
+      if (typeof app !== "undefined" && app) {
+        app.lastRecordScore = recordScore;
+      }
+    }
+
     function getScoreGrade(score) {
-      const safeScore = Number(score) || 0;
-      return GRADE_RULES.find((rule) => safeScore >= rule.min) || GRADE_RULES[GRADE_RULES.length - 1];
+      const normalized = normalizeFinalScoreForRecord({ scoreTotal: score });
+      return { key: normalized.gradeKey, label: normalized.gradeLabel };
     }
 
     function getStampClassName(gradeKey) {
-      return `stamp-${gradeKey || "retry"}`;
+      return `stamp-${String(gradeKey || "RETRY").toLowerCase()}`;
     }
 
     function prepareStampAudio() {
@@ -16280,9 +16352,12 @@ function restorePracticeFromChallengePlay() {
 
     async function showPracticeResultSequence(currentScoreState) {
       const scoreData = currentScoreState || scoreState;
-      const grade = scoreData.gradeKey && scoreData.gradeLabel
-        ? { key: scoreData.gradeKey, label: scoreData.gradeLabel }
-        : getScoreGrade(scoreData.finalScore || 0);
+      const recordScore = normalizeFinalScoreForRecord(scoreData);
+      const grade = {
+        key: recordScore.gradeKey,
+        label: recordScore.gradeLabel
+      };
+      setLastRecordScore(recordScore);
 
       const overlay = document.getElementById("resultOverlay");
       const stamp = document.getElementById("resultStamp");
@@ -16309,10 +16384,10 @@ function restorePracticeFromChallengePlay() {
 
       renderGrowthResult(null);
 
-      const pitchScore = Math.round(Number(scoreData.pitchAccuracy) || 0);
-      const rhythmScore = Math.round(Number(scoreData.rhythmAccuracy) || 0);
+      const pitchScore = recordScore.pitchScore;
+      const rhythmScore = recordScore.rhythmScore;
       const maxCombo = Math.max(0, Math.round(Number(scoreData.maxCombo) || 0));
-      const finalScore = Math.round(Number(scoreData.finalScore) || 0);
+      const finalScore = recordScore.scoreTotal;
 
       pitchEl.textContent = "0점";
       rhythmEl.textContent = "0점";
@@ -20769,6 +20844,7 @@ function drawRest(ctx, x, staffTop, duration) {
     }
 
     function resetScoreState() {
+      setLastRecordScore(null);
       scoreState = {
         totalFrames: 0,
         judgedFrames: 0,
@@ -20777,8 +20853,8 @@ function drawRest(ctx, x, staffTop, duration) {
         finalScore: 0,
         pitchAccuracy: 0,
         rhythmAccuracy: 0,
-        maxCombo: 0,
-        gradeKey: "retry",
+      maxCombo: 0,
+        gradeKey: "RETRY",
         gradeLabel: "다시 도전!"
       };
 
@@ -22142,20 +22218,42 @@ function startBasicPractice() {
       }
 
       try {
-        const finalScore = scoreState.finalScore || 0;
-        const grade = getScoreGrade(finalScore);
+        const lastRecordScore = (typeof app !== "undefined" && app && app.lastRecordScore)
+          || window.lastRecordScore
+          || scoreState;
+        let recordScore = normalizeFinalScoreForRecord(lastRecordScore);
+        const visibleScore = getVisibleResultScoreForRecord();
+        if ((!recordScore.scoreTotal || recordScore.scoreTotal <= 0)
+          && Number.isFinite(Number(visibleScore.displayScore))
+          && Number(visibleScore.displayScore) > 0) {
+          recordScore = normalizeFinalScoreForRecord({
+            ...recordScore,
+            scoreTotal: visibleScore.displayScore,
+            pitchScore: visibleScore.pitchScore,
+            rhythmScore: visibleScore.rhythmScore
+          });
+          setLastRecordScore(recordScore);
+        }
+
+        const finalScore = recordScore.scoreTotal;
+        const grade = {
+          key: recordScore.gradeKey,
+          label: recordScore.gradeLabel
+        };
         const activityType = getCurrentActivityTypeForRecord(song);
 
-        const saveResult = await app.api("saveRecord", {
+        const payload = {
           userId: app.user.userId,
           mode: "song",
           activityType,
           songId: song.songId,
           scoreTotal: finalScore,
+          pitchScore: recordScore.pitchScore,
+          rhythmScore: recordScore.rhythmScore,
           gradeKey: grade.key,
           gradeLabel: grade.label,
-          pitchAccuracy: scoreState.pitchAccuracy || 0,
-          rhythmAccuracy: scoreState.rhythmAccuracy || 0,
+          pitchAccuracy: recordScore.pitchScore,
+          rhythmAccuracy: recordScore.rhythmScore,
           maxCombo: scoreState.maxCombo || 0,
           meta: {
             grade: app.user.grade,
@@ -22167,11 +22265,28 @@ function startBasicPractice() {
             maxCombo: scoreState.maxCombo || 0,
             timeSignature: song.timeSignature || "4/4",
             speedMultiplier: getSpeedMultiplier(),
+            scoreTotal: finalScore,
+            pitchScore: recordScore.pitchScore,
+            rhythmScore: recordScore.rhythmScore,
+            pitchAccuracy: recordScore.pitchScore,
+            rhythmAccuracy: recordScore.rhythmScore,
             gradeKey: grade.key,
             gradeLabel: grade.label,
             activityType
           }
+        };
+
+        console.log("[SAVE_RECORD PAYLOAD SCORE CHECK]", {
+          songId: payload.songId,
+          activityType: payload.activityType,
+          scoreTotal: payload.scoreTotal,
+          pitchScore: payload.pitchScore,
+          rhythmScore: payload.rhythmScore,
+          gradeKey: payload.gradeKey,
+          gradeLabel: payload.gradeLabel
         });
+
+        const saveResult = await app.api("saveRecord", payload);
 
         if (!saveResult || saveResult.ok !== true) {
           throw new Error(saveResult?.message || "저장에 실패했습니다.");
