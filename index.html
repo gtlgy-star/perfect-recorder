@@ -13958,7 +13958,7 @@ body.theme-light .readyCardHint {
           <div class="comboSpark comboSpark-s3" aria-hidden="true"></div>
           <div class="comboRibbon" aria-hidden="true"></div>
           <div class="comboCore" aria-hidden="true"></div>
-          <div class="comboLabel">COMBO</div>
+          <div class="comboLabel">GREAT+ COMBO</div>
           <div id="comboValue" class="comboValue">5</div>
         </div>
         <div id="judgmentFeedbackLayer" class="judgmentFeedbackLayer" aria-hidden="true"></div>
@@ -14004,7 +14004,7 @@ body.theme-light .readyCardHint {
                 <span id="resultRhythmScore" class="resultScoreValue">0점</span>
               </div>
               <div class="resultScoreCard resultScoreCard-combo">
-                <span class="resultScoreLabel">MAX COMBO</span>
+                <span class="resultScoreLabel">MAX GREAT+ COMBO</span>
                 <span id="resultMaxCombo" class="resultScoreValue">0</span>
               </div>
             </div>
@@ -15435,6 +15435,9 @@ body.theme-light .readyCardHint {
     let noiseGuardBaseline = 0;
     const NOISE_GUARD_MULTIPLIER = 2.5;
     const NOISE_GUARD_MINIMUM = 0.035;
+    const STRICT_NOTE_PERFECT_RATIO = 0.85;
+    const STRICT_NOTE_GREAT_RATIO = 0.75;
+    const STRICT_NOTE_GOOD_RATIO = 0.65;
     const GRADE_RULES = [
       { min: 95, key: "PERFECT", label: "PERFECT!!" },
       { min: 85, key: "GREAT", label: "GREAT!" },
@@ -19722,6 +19725,86 @@ function drawRest(ctx, x, staffTop, duration) {
       return "miss";
     }
 
+    function getPitchJudgeMode() {
+      return noiseGuardEnabled ? "classroom" : "personal";
+    }
+
+    function getPitchJudgeThresholds() {
+      if (getPitchJudgeMode() === "classroom") {
+        return {
+          mode: "classroom",
+          perfectRatio: TARGET_NOTE_PERFECT_RATIO,
+          greatRatio: TARGET_NOTE_GREAT_RATIO,
+          goodRatio: TARGET_NOTE_GOOD_RATIO,
+          minCorrectRatioForPerfect: TARGET_NOTE_PERFECT_RATIO,
+          minCorrectRatioForGreat: TARGET_NOTE_GREAT_RATIO,
+          minCorrectRatioForGood: TARGET_NOTE_GOOD_RATIO
+        };
+      }
+
+      return {
+        mode: "personal",
+        perfectRatio: STRICT_NOTE_PERFECT_RATIO,
+        greatRatio: STRICT_NOTE_GREAT_RATIO,
+        goodRatio: STRICT_NOTE_GOOD_RATIO,
+        minCorrectRatioForPerfect: STRICT_NOTE_PERFECT_RATIO,
+        minCorrectRatioForGreat: STRICT_NOTE_GREAT_RATIO,
+        minCorrectRatioForGood: STRICT_NOTE_GOOD_RATIO
+      };
+    }
+
+    function getNoteJudgeGradeKey(noteResult) {
+      const result = noteResult || {};
+
+      if (result.isRest) {
+        return "REST";
+      }
+
+      if (result.gradeKey) {
+        return String(result.gradeKey).toUpperCase();
+      }
+
+      if (result.judgeKey) {
+        return String(result.judgeKey).toUpperCase();
+      }
+
+      if (result.label) {
+        const label = String(result.label).toUpperCase();
+        if (label.includes("PERFECT")) return "PERFECT";
+        if (label.includes("GREAT")) return "GREAT";
+        if (label.includes("GOOD")) return "GOOD";
+        if (label.includes("PASS")) return "PASS";
+      }
+
+      const ratioSource =
+        result.correctRatio ??
+        result.matchRatio ??
+        result.hitRatio ??
+        result.pitchRatio;
+
+      if (ratioSource !== undefined && ratioSource !== null && String(ratioSource).trim() !== "") {
+        const ratio = Number(ratioSource);
+        const thresholds = getPitchJudgeThresholds();
+
+        if (ratio >= thresholds.perfectRatio) return "PERFECT";
+        if (ratio >= thresholds.greatRatio) return "GREAT";
+        if (ratio >= thresholds.goodRatio) return "GOOD";
+        return "MISS";
+      }
+
+      const pitchScore = Number(result.pitchScore ?? result.score ?? 0);
+      if (pitchScore >= 0.95) return "PERFECT";
+      if (pitchScore >= 0.82) return "GREAT";
+      if (pitchScore >= 0.55) return "GOOD";
+
+      return "MISS";
+    }
+
+    function isGreatOrBetterNote(noteResult) {
+      const gradeKey = getNoteJudgeGradeKey(noteResult);
+      return gradeKey === "PERFECT" || gradeKey === "GREAT";
+    }
+
     function showJudgmentText(kind, label) {
       const layer = document.getElementById("judgmentFeedbackLayer");
       if (!layer) return;
@@ -20284,8 +20367,39 @@ function drawRest(ctx, x, staffTop, duration) {
       hideCombo();
     }
 
-    function applyComboForJudgment(feedbackKind) {
-      if (feedbackKind === "perfect" || feedbackKind === "great" || feedbackKind === "good") {
+    function logComboRuleCheck(combo = currentCombo, maxCombo = bestCombo) {
+      console.log("[COMBO RULE CHECK]", {
+        comboRule: "GREAT_OR_BETTER_ONLY",
+        judgeMode: typeof getPitchJudgeMode === "function" ? getPitchJudgeMode() : "unknown",
+        currentCombo: Math.max(0, Math.round(Number(combo) || 0)),
+        maxCombo: Math.max(0, Math.round(Number(maxCombo) || 0))
+      });
+    }
+
+    function logJudgeModeCheck() {
+      const pitchThresholds = getPitchJudgeThresholds();
+      console.log("[JUDGE MODE CHECK]", {
+        pitchMode: pitchThresholds.mode,
+        pitchThresholds: {
+          mode: pitchThresholds.mode,
+          perfectRatio: pitchThresholds.perfectRatio,
+          greatRatio: pitchThresholds.greatRatio,
+          goodRatio: pitchThresholds.goodRatio
+        },
+        rhythmThresholds: {
+          exactRatio: 0.9,
+          nearRatio: 0.75,
+          transitionRatio: 0.5
+        }
+      });
+    }
+
+    function applyComboForJudgment(noteResult) {
+      if (noteResult && noteResult.isRest) {
+        return;
+      }
+
+      if (isGreatOrBetterNote(noteResult)) {
         currentCombo += 1;
         bestCombo = Math.max(bestCombo, currentCombo);
         if (scoreState) {
@@ -20380,22 +20494,38 @@ function drawRest(ctx, x, staffTop, duration) {
     function getAccumulatedPitchScoreFromRatio(targetRatio, bestScore) {
       const safeRatio = Math.max(0, Math.min(1, Number(targetRatio) || 0));
       const safeBestScore = Math.max(0, Math.min(1, Number(bestScore) || 0));
+      const thresholds = getPitchJudgeThresholds();
 
-      if (safeRatio >= TARGET_NOTE_PERFECT_RATIO) {
+      if (safeRatio >= thresholds.perfectRatio) {
         return Math.max(PITCH_EXACT_SCORE, safeBestScore);
       }
 
-      if (safeRatio >= TARGET_NOTE_GREAT_RATIO) {
+      if (safeRatio >= thresholds.greatRatio) {
         return Math.max(PITCH_NEAR_SCORE, safeBestScore);
       }
 
-      if (safeRatio >= TARGET_NOTE_GOOD_RATIO) {
-        return Math.max(PITCH_LOOSE_SCORE, safeBestScore);
+      if (safeRatio >= thresholds.goodRatio) {
+        return PITCH_LOOSE_SCORE;
       }
 
       if (safeRatio > 0) {
-        return Math.max(PITCH_WIDE_SCORE, safeBestScore * 0.5);
+        return PITCH_WIDE_SCORE;
       }
+
+      return 0;
+    }
+
+    function getAccumulatedRhythmScoreFromRatio(validInputRatio, noteStartMs) {
+      const safeRatio = Math.max(0, Math.min(1, Number(validInputRatio) || 0));
+
+      if (Number(noteStartMs) < STARTUP_GRACE_MS && safeRatio > 0) {
+        return Math.max(RHYTHM_NEAR_SCORE, safeRatio >= 0.9 ? RHYTHM_EXACT_SCORE : RHYTHM_NEAR_SCORE);
+      }
+
+      if (safeRatio >= 0.9) return RHYTHM_EXACT_SCORE;
+      if (safeRatio >= 0.75) return RHYTHM_NEAR_SCORE;
+      if (safeRatio >= 0.5) return RHYTHM_TRANSITION_SCORE;
+      if (safeRatio > 0) return RHYTHM_LOOSE_SCORE;
 
       return 0;
     }
@@ -20469,14 +20599,8 @@ function drawRest(ctx, x, staffTop, duration) {
       }
 
       const noteStartMs = Number(note.startMs) || 0;
-      const noteDurMs = Number(note.durMs) || 0;
-      const noteEndMs = noteStartMs + noteDurMs;
-
-      const rhythmScore = getRhythmMatchScore(
-        Math.min(elapsedMs, noteEndMs),
-        note,
-        acc ? acc.validInputWeight > 0 : false
-      );
+      const validInputRatio = acc ? acc.validInputWeight / totalWeight : 0;
+      const rhythmScore = getAccumulatedRhythmScoreFromRatio(validInputRatio, noteStartMs);
 
       judgedNoteSet.add(signature);
       noteAccumulationMap.delete(signature);
@@ -20503,8 +20627,15 @@ function drawRest(ctx, x, staffTop, duration) {
         rhythmScore,
         acc ? acc.validInputWeight > 0 : false
       );
+      const noteResult = {
+        pitchScore: finalPitchScore,
+        rhythmScore: rhythmScore,
+        correctRatio: targetRatio,
+        pitchRatio: targetRatio,
+        hasValidInput: acc ? acc.validInputWeight > 0 : false
+      };
 
-      applyComboForJudgment(feedbackKind);
+      applyComboForJudgment(noteResult);
       enqueueJudgmentFeedback(feedbackKind);
       triggerJudgmentZonePulse(feedbackKind);
 
@@ -21185,6 +21316,10 @@ function drawRest(ctx, x, staffTop, duration) {
 
         if (elapsedMs >= activeTimeline.totalMs + 1500) {
           const completedScoreState = { ...scoreState };
+          const completedCurrentCombo = currentCombo;
+          const completedMaxCombo = bestCombo;
+          logJudgeModeCheck();
+          logComboRuleCheck(completedCurrentCombo, completedMaxCombo);
           stopPractice();
           const finalScore = completedScoreState.finalScore || 0;
           const grade = getScoreGrade(finalScore);
