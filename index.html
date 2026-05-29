@@ -16046,6 +16046,9 @@ function restorePracticeFromChallengePlay() {
 
       function firstValidNumber(list, fallback) {
         for (const value of list) {
+          if (value === undefined || value === null || String(value).trim() === "") {
+            continue;
+          }
           const n = Number(value);
           if (Number.isFinite(n)) return Math.max(0, Math.min(100, Math.round(n)));
         }
