@@ -14843,8 +14843,7 @@ body.theme-light .readyCardHint {
 
     function isBetaTesterUser(user) {
       const userId = String(user?.userId || "").trim().toUpperCase();
-      const loginCode = String(user?.loginCode || "").trim().toUpperCase();
-      return userId === "BETA_TESTER" || loginCode === "BETA";
+      return userId === "BETA_TESTER";
     }
 
     function getBetaDailyMissionData(user) {
@@ -18293,53 +18292,17 @@ function renderSongButtons() {
     }
 
     function fillTestData() {
-      document.getElementById("grade").value = "3";
-      document.getElementById("class").value = "1";
-      document.getElementById("number").value = "1";
+      document.getElementById("grade").value = "5";
+      document.getElementById("class").value = "6";
+      document.getElementById("number").value = "0";
       document.getElementById("name").value = "홍길동";
     }
 
-    function betaLogin() {
-      resetActivityGrowthRequestState();
-      app.user = {
-        userId: "BETA_TESTER",
-        loginCode: "BETA",
-        role: "STUDENT",
-        name: "이건영",
-        schoolName: "풍무초",
-        grade: "5",
-        class: "6",
-        number: "0",
-        level: 27,
-        exp: 3675
-      };
-
-      const newUserId = String(app.user?.userId || "").trim();
-      if (!newUserId || dailyMissionStateUserId !== newUserId) {
-        resetDailyMissionLocalState();
-      }
-      dailyMissionStateUserId = newUserId;
-
-      const gradeEl = document.getElementById("grade");
-      const classEl = document.getElementById("class");
-      const numberEl = document.getElementById("number");
-      const nameEl = document.getElementById("name");
-
-      if (gradeEl) gradeEl.value = app.user.grade;
-      if (classEl) classEl.value = app.user.class;
-      if (numberEl) numberEl.value = app.user.number;
-      if (nameEl) nameEl.value = app.user.name;
-
-      setStatus("loginStatus", "테스트 계정으로 입장합니다.", "ok");
-
-      history.replaceState({ screen: "screen-menu" }, "", "#screen-menu");
-      renderScreenOnly("screen-menu");
-      if (typeof loadShortSongMedalsFromServer === "function") {
-        loadShortSongMedalsFromServer().catch(() => {});
-      }
-      if (typeof preloadChallengeSongs === "function") {
-        preloadChallengeSongs().catch(() => {});
-      }
+    async function betaLogin() {
+      fillTestData();
+      const codeEl = document.getElementById("code");
+      if (codeEl) codeEl.value = "BETA";
+      await login();
     }
 
     function normalizeLoginField(value) {
@@ -24331,13 +24294,6 @@ function formatBonusSongTitle(title) {
 function getBonusBoatDisplayName() {
   const appState = typeof app !== "undefined" ? app : window.app;
   const user = appState?.user || null;
-  const userId = String(user?.userId || "").trim().toUpperCase();
-  const loginCode = String(user?.loginCode || "").trim().toUpperCase();
-
-  if (userId === "BETA_TESTER" || loginCode === "BETA") {
-    return "이건영";
-  }
-
   return String(user?.name || "").trim() || "학생";
 }
 
