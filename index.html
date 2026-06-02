@@ -17919,12 +17919,15 @@ function renderSongButtons() {
 
     async function runTonguingSpeakCells(rhythm) {
       const beatMs = 640;
+      const cells = rhythm?.speakCells || [];
 
       for (let i = 0; i < 8; i++) {
         if (tonguingSpeakStopFlag) break;
 
         setTonguingSpeakActiveCell(i);
-        playTonguingClick();
+        if (cells[i]) {
+          playTonguingClick();
+        }
 
         await tonguingSleep(beatMs * 0.5);
       }
@@ -17964,11 +17967,11 @@ function renderSongButtons() {
         const remaining = repeatTotal - repeat + 1;
         setTonguingLights("tonguingListenLights", repeatTotal, remaining);
 
-        await playTonguingRhythm(rhythm, true);
+        await playTonguingRhythm(rhythm, true, repeat - 1);
 
         if (tonguingListenStopFlag) break;
 
-        await playTonguingRhythm(rhythm, false);
+        await playTonguingRhythm(rhythm, false, repeat - 1);
       }
 
       setTonguingLights("tonguingListenLights", repeatTotal, 0);
@@ -18028,13 +18031,13 @@ function renderSongButtons() {
 
         setTonguingPhase("선생님의 연주 듣기");
         setTonguingGuide("선생님의 연주를 잘 들어보세요");
-        await playTonguingRhythm(rhythm, true);
+        await playTonguingRhythm(rhythm, true, repeat - 1);
 
         if (tonguingStopFlag) break;
 
         setTonguingPhase("학생 따라하기");
         setTonguingGuide("같은 리듬으로 따라 연주해요");
-        await playTonguingRhythm(rhythm, false);
+        await playTonguingRhythm(rhythm, false, repeat - 1);
       }
 
       if (!tonguingStopFlag) {
@@ -18141,24 +18144,27 @@ function renderSongButtons() {
       clearTonguingCount();
     }
 
-    async function playTonguingRhythm(rhythm, withSound) {
+    async function playTonguingRhythm(rhythm, withSound, roundIndex = 0) {
       const beatMs = 640;
       tonguingHighlightIndex = -1;
+      let targetTime = performance.now();
 
       for (let i = 0; i < rhythm.units.length; i++) {
         if (tonguingStopFlag || tonguingListenStopFlag) break;
 
         const unit = rhythm.units[i];
+        const durationMs = beatMs * unit.dur;
         tonguingHighlightIndex = i;
         drawTonguingPracticeStaff(rhythm, i);
 
         if (withSound && unit.type === "note") {
-          playTonguingTone(784, Math.max(90, beatMs * unit.dur * 0.72));
+          playTonguingTone(784, Math.max(90, durationMs * 0.72));
         } else if (!withSound && unit.type === "note") {
           playTonguingClick(0.035);
         }
 
-        await tonguingSleep(beatMs * unit.dur);
+        targetTime += durationMs;
+        await tonguingSleepUntil(targetTime);
       }
 
       tonguingHighlightIndex = -1;
@@ -18269,6 +18275,11 @@ function renderSongButtons() {
 
     function tonguingSleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function tonguingSleepUntil(targetTime) {
+      const delay = Math.max(0, targetTime - performance.now());
+      return tonguingSleep(delay);
     }
 
     function openBasicFingering(system) {
