@@ -14699,6 +14699,29 @@ body.theme-light .readyCardHint {
     const SONG_CLEAR_STATE_KEY = "recorder_song_clear_state_v1";
     const SONG_SCORE_STATE_KEY = "recorder_song_score_state_v1";
 
+    function getCurrentSongStateUserId() {
+      const userId = String(
+        typeof app !== "undefined" && app && app.user && app.user.userId
+          ? app.user.userId
+          : ""
+      ).trim();
+
+      return userId || "guest";
+    }
+
+    function getUserSongStorageKey(baseKey) {
+      return `${baseKey}_${encodeURIComponent(getCurrentSongStateUserId())}`;
+    }
+
+    function clearLegacySongStorageState() {
+      try {
+        localStorage.removeItem(SONG_SCORE_STATE_KEY);
+        localStorage.removeItem(SONG_CLEAR_STATE_KEY);
+      } catch (error) {
+        console.warn("[LEGACY SONG STATE CLEAR ERROR]", error);
+      }
+    }
+
     function getCurrentActivityTypeForRecord(song) {
       const id = String(song?.songId || "");
       const source = String(song?.source || song?.category || song?.type || "").toLowerCase();
@@ -15949,16 +15972,25 @@ function restorePracticeFromChallengePlay() {
 
     function loadSongClearState() {
       try {
-        return JSON.parse(localStorage.getItem(SONG_CLEAR_STATE_KEY) || "{}");
-      } catch (_) {
+        const storageKey = getUserSongStorageKey(SONG_CLEAR_STATE_KEY);
+        const parsed = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+        return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+          ? parsed
+          : {};
+      } catch (error) {
+        console.warn("[SONG CLEAR STATE LOAD ERROR]", error);
         return {};
       }
     }
 
     function saveSongClearState(state) {
       try {
-        localStorage.setItem(SONG_CLEAR_STATE_KEY, JSON.stringify(state || {}));
-      } catch (_) {}
+        const storageKey = getUserSongStorageKey(SONG_CLEAR_STATE_KEY);
+        localStorage.setItem(storageKey, JSON.stringify(state || {}));
+      } catch (error) {
+        console.warn("[SONG CLEAR STATE SAVE ERROR]", error);
+      }
     }
 
     function isSongCleared(songId) {
@@ -15974,16 +16006,25 @@ function restorePracticeFromChallengePlay() {
 
     function loadSongScoreState() {
       try {
-        return JSON.parse(localStorage.getItem(SONG_SCORE_STATE_KEY) || "{}");
-      } catch (_) {
+        const storageKey = getUserSongStorageKey(SONG_SCORE_STATE_KEY);
+        const parsed = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+        return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+          ? parsed
+          : {};
+      } catch (error) {
+        console.warn("[SONG SCORE STATE LOAD ERROR]", error);
         return {};
       }
     }
 
     function saveSongScoreState(state) {
       try {
-        localStorage.setItem(SONG_SCORE_STATE_KEY, JSON.stringify(state || {}));
-      } catch (_) {}
+        const storageKey = getUserSongStorageKey(SONG_SCORE_STATE_KEY);
+        localStorage.setItem(storageKey, JSON.stringify(state || {}));
+      } catch (error) {
+        console.warn("[SONG SCORE STATE SAVE ERROR]", error);
+      }
     }
 
     function getSongStoredScore(songId) {
@@ -18403,6 +18444,7 @@ function renderSongButtons() {
           resetDailyMissionLocalState();
         }
         dailyMissionStateUserId = newUserId;
+        clearLegacySongStorageState();
 
         setStatus(
           "loginStatus",
@@ -18436,8 +18478,14 @@ appHistoryLocked = false;
 pushAppHistory("screen-menu", { replace: true });
 showScreen("screen-menu", { skipHistory: true });
 if (app.user && String(app.user.role || "").trim().toUpperCase() === "STUDENT") {
+  if (typeof renderSongButtons === "function") {
+    renderSongButtons();
+  }
+
   claimActivityGrowth("LOGIN");
-  loadShortSongMedalsFromServer().catch(() => {});
+  loadShortSongMedalsFromServer().catch((error) => {
+    console.warn("[SHORT SONG MEDAL LOAD ERROR]", error);
+  });
 }
 app.refreshSongs().catch(() => {});
 preloadChallengeSongs().catch(() => {});
@@ -18520,10 +18568,14 @@ function logout() {
   resetDailyMissionLocalState();
   dailyMissionStateUserId = "";
   app.user = null;
+  clearLegacySongStorageState();
   resetSongMenuState("short");
   currentActivityTitle = DEFAULT_PAGE_TITLE;
   restorePracticeFromChallengePlay();
   setChallengePlayMode(false);
+  if (typeof renderSongButtons === "function") {
+    renderSongButtons();
+  }
 
   history.replaceState({ screen: "step1Section" }, "", "#screen-login");
   renderScreenOnly("step1Section");
