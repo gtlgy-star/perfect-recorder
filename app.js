@@ -11,12 +11,45 @@ const app = {
 
   async login(code, studentInfo = {}) {
     const result = await this.api("loginByCode", { code, ...studentInfo });
+    console.log("[LOGIN RAW RESPONSE]", result);
 
     if (!result || !result.user) {
       throw new Error("로그인 응답이 올바르지 않습니다.");
     }
 
-    this.user = result.user;
+    const rawUser = result.user || {};
+    const userId = String(
+      rawUser.userId ||
+      rawUser.user_id ||
+      result.userId ||
+      result.user_id ||
+      ""
+    ).trim();
+    const loginCode = String(
+      rawUser.loginCode ||
+      rawUser.login_code ||
+      result.loginCode ||
+      result.login_code ||
+      code ||
+      ""
+    ).trim();
+
+    this.user = {
+      ...rawUser,
+      userId,
+      loginCode
+    };
+
+    const role = String(this.user.role || "").trim().toUpperCase();
+    if (role === "STUDENT" && !this.user.userId) {
+      console.error("[LOGIN USER ID MISSING]", {
+        code,
+        result,
+        user: this.user
+      });
+      throw new Error("학생 userId를 불러오지 못했습니다. Users 시트의 userId 값을 확인해 주세요.");
+    }
+
     return this.user;
   },
 

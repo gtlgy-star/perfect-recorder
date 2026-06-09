@@ -14942,14 +14942,30 @@ body.theme-light .readyCardHint {
 
       try {
         const role = String(appState?.user?.role || "").trim().toUpperCase();
-        if (!appState || !appState.user || !appState.user.userId || role !== "STUDENT") {
+        const canViewDailyMissions = role === "STUDENT" || role === "TEACHER";
+        if (!appState || !appState.user || !canViewDailyMissions) {
           resetDailyMissionLocalState();
           dailyMissionStateUserId = "";
           return null;
         }
 
         const currentUserId = String(appState.user.userId || "").trim();
-        if (!currentUserId || dailyMissionStateUserId !== currentUserId) {
+        if (!currentUserId) {
+          console.warn("[DAILY MISSIONS SKIP] userId is empty", {
+            user: appState.user
+          });
+          dailyMissionState = {
+            ok: false,
+            error: "NO_USER_ID",
+            message: "사용자 userId를 불러오지 못했습니다. 다시 로그인해 주세요.",
+            missions: []
+          };
+          dailyMissionStateUserId = "";
+          if (isDailyMissionCardOpen()) renderDailyMissions(dailyMissionState);
+          return null;
+        }
+
+        if (dailyMissionStateUserId !== currentUserId) {
           resetDailyMissionLocalState();
         }
         dailyMissionStateUserId = currentUserId;
@@ -15229,6 +15245,20 @@ body.theme-light .readyCardHint {
         note.className = "daily-mission-note";
         note.textContent = "";
         list.innerHTML = '<div class="daily-mission-item">미션 확인 중...</div>';
+        return;
+      }
+
+      if (data.error || data.message) {
+        summary.textContent = "";
+        bonus.textContent = "";
+        note.className = "daily-mission-note";
+        note.textContent = "";
+        list.innerHTML = "";
+
+        const item = document.createElement("div");
+        item.className = "daily-mission-item";
+        item.textContent = String(data.message || data.error || "미션을 불러오지 못했습니다.");
+        list.appendChild(item);
         return;
       }
 
@@ -18411,6 +18441,19 @@ function renderSongButtons() {
         showLoadingScreen();
         const user = await app.login(code, inputStudent);
         assertLoginUserMatchesInput(user, inputStudent);
+
+        console.log("[LOGIN NORMALIZED USER]", {
+          userId: app.user?.userId || user?.userId || "",
+          loginCode: app.user?.loginCode || user?.loginCode || "",
+          role: app.user?.role || user?.role || "",
+          name: app.user?.name || user?.name || ""
+        });
+
+        const loginRole = String(app.user?.role || user?.role || "").trim().toUpperCase();
+        const loginUserId = String(app.user?.userId || user?.userId || "").trim();
+        if (loginRole === "STUDENT" && !loginUserId) {
+          throw new Error("학생 userId를 불러오지 못했습니다. 다시 로그인해 주세요.");
+        }
 
         resetActivityGrowthRequestState();
         const loginSchoolName = String(
