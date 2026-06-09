@@ -24051,6 +24051,14 @@ function getCurrentChallengeSongId() {
     return String(song.songId || song.id);
   }
 
+  const missionSong = Array.isArray(challengeSongsCache)
+    ? challengeSongsCache.find((item) => Number(item.slot) === 1)
+    : null;
+
+  if (missionSong && (missionSong.songId || missionSong.id)) {
+    return String(missionSong.songId || missionSong.id);
+  }
+
   return "";
 }
 
@@ -24204,6 +24212,14 @@ async function loadChallengeHallOfFame() {
     challengeHallState.recentRecord = result.recentRecord || null;
     challengeHallState.classRanking = Array.isArray(result.classRanking) ? result.classRanking : [];
     challengeHallState.hallOfFame = Array.isArray(result.hallOfFame) ? result.hallOfFame : [];
+
+    if (!challengeHallState.classRanking.length) {
+      console.warn("[CHALLENGE CLASS RANKING EMPTY]", {
+        userId: app.user?.userId || "",
+        songId: songId,
+        result: result
+      });
+    }
 
     renderChallengeHallState();
 
