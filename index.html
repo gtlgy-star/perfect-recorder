@@ -3350,6 +3350,13 @@ button:disabled {
       background: linear-gradient(180deg, #ffcf68 0%, #ff9f2f 52%, #f06f1f 100%);
     }
 
+    .practice-score-preview-btn {
+      grid-column: 7;
+      background: linear-gradient(180deg, #d8b4fe 0%, #8b5cf6 52%, #6d28d9 100%);
+      border-color: rgba(237, 223, 255, 0.8);
+      box-shadow: 0 10px 24px rgba(109, 40, 217, 0.28);
+    }
+
     .practiceMiniBtn .icon {
       font-size: 30px;
       line-height: 1;
@@ -3366,6 +3373,445 @@ button:disabled {
     .practiceMiniBtn.hidden,
     .practice-continue-btn.hidden {
       display: none;
+    }
+
+    .practice-continue-btn {
+      grid-column: 6;
+    }
+
+    .practice-score-preview-btn.hidden {
+      display: none;
+    }
+
+    .songPreviewOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(3px);
+    }
+
+    .songPreviewOverlay.open {
+      display: flex;
+    }
+
+    .songPreviewDialog {
+      width: min(1180px, 96vw);
+      max-height: 96vh;
+      display: grid;
+      grid-template-rows: 104px minmax(0, 1fr) 118px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #FCFDFF 0%, #F6F8FE 100%);
+      color: #111827;
+      box-shadow: 0 26px 74px rgba(36, 52, 91, 0.3);
+      border: 1px solid rgba(112, 87, 232, 0.28);
+    }
+
+    .songPreviewHeader {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 410px) auto;
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid rgba(112, 87, 232, 0.24);
+      background: linear-gradient(90deg, #E9EDFF, #F2ECFF);
+    }
+
+    .songPreviewTitle {
+      margin: 0 0 7px;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 1000;
+      color: #24345B;
+    }
+
+    .songPreviewMeta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #475569;
+    }
+
+    .songPreviewMetaChip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #E7E1FF;
+      color: #4F36B5;
+      border: 1px solid rgba(112, 87, 232, 0.3);
+    }
+
+    .songPreviewMetaChip:nth-child(2) {
+      background: #DDF0FF;
+      color: #1767A8;
+      border-color: rgba(75, 168, 245, 0.32);
+    }
+
+    .songPreviewMetaChip:nth-child(3) {
+      background: #DDF7EF;
+      color: #17745B;
+      border-color: rgba(54, 189, 152, 0.32);
+    }
+
+    .songPreviewTempoPanel {
+      align-self: start;
+      display: block;
+      align-items: center;
+      box-sizing: border-box;
+      margin-top: 0;
+      padding: 7px 14px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(75, 168, 245, 0.28);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 4px 14px rgba(75, 168, 245, 0.12);
+    }
+
+    .songPreviewTempoControl {
+      position: relative;
+      display: block;
+      min-width: 0;
+    }
+
+    .songPreviewTempoControl::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 2px;
+      height: 13px;
+      border-radius: 999px;
+      background: #FF9B4A;
+      box-shadow: 0 0 0 2px rgba(255, 155, 74, 0.18);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .songPreviewTempoTop {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #334155;
+    }
+
+    .songPreviewTempoValue {
+      color: #256FE6;
+    }
+
+    .songPreviewTempoSlider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 16px;
+      margin: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .songPreviewTempoSlider::-webkit-slider-runnable-track {
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 149, 236, 0.28);
+      background:
+        linear-gradient(90deg, #4BA8F5 0%, #6E77EE 50%, #7057E8 100%);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.18);
+    }
+
+    .songPreviewTempoSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      margin-top: -6px;
+      border-radius: 999px;
+      border: 3px solid #FFFFFF;
+      background: #5F45D9;
+      box-shadow: 0 3px 8px rgba(95, 69, 217, 0.34);
+    }
+
+    .songPreviewTempoSlider::-moz-range-track {
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 149, 236, 0.28);
+      background: linear-gradient(90deg, #4BA8F5 0%, #6E77EE 50%, #7057E8 100%);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.18);
+    }
+
+    .songPreviewTempoSlider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 3px solid #FFFFFF;
+      background: #5F45D9;
+      box-shadow: 0 3px 8px rgba(95, 69, 217, 0.34);
+    }
+
+    .songPreviewCountBadge {
+      position: absolute;
+      z-index: 3;
+      left: 112px;
+      top: 24px;
+      min-width: 36px;
+      height: 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      border: 1px solid rgba(249, 115, 22, 0.26);
+      background: #FFF4E8;
+      color: #F97316;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 1000;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+    }
+
+    .songPreviewCountBadge.is-counting {
+      display: inline-flex;
+    }
+
+    .songPreviewCloseIcon {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(98, 70, 201, 0.34);
+      background: #FFFFFF;
+      color: #6246C9;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(98, 70, 201, 0.2);
+      transition: background-color 140ms ease, transform 140ms ease;
+    }
+
+    .songPreviewCloseIcon:hover {
+      background: #F1EDFF;
+      transform: translateY(-1px);
+    }
+
+    .songPreviewBody {
+      position: relative;
+      min-height: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 18px 12px 8px;
+      overscroll-behavior: contain;
+    }
+
+    .songPreviewBody.scrollable {
+      overflow-y: auto;
+    }
+
+    .songPreviewScore {
+      min-width: 960px;
+      display: grid;
+      gap: 7px;
+      padding-bottom: 0;
+    }
+
+    .songPreviewLine {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      background: #FFFFFF;
+      border: 1px solid #C9D5E8;
+      box-shadow: 0 3px 10px rgba(36, 52, 91, 0.1);
+    }
+
+    .songPreviewLine.is-current-line {
+      border-color: #FFB36B;
+      background: #FFF9F2;
+      box-shadow: 0 0 0 2px rgba(255, 179, 107, 0.24), 0 4px 12px rgba(255, 138, 61, 0.18);
+    }
+
+    .songPreviewFooter {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      grid-template-rows: 34px 56px;
+      gap: 8px;
+      padding: 8px 12px 10px;
+      border-top: 1px solid rgba(112, 87, 232, 0.24);
+      background: rgba(252, 253, 255, 0.96);
+      backdrop-filter: blur(6px);
+    }
+
+    .songPreviewProgressRow {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .songPreviewPageControls {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .songPreviewPageControls.hidden {
+      display: none;
+    }
+
+    .songPreviewPageControls button {
+      min-width: 28px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(112, 87, 232, 0.24);
+      background: #FFFFFF;
+      color: #5F45D9;
+      font-size: 13px;
+      font-weight: 1000;
+      box-shadow: 0 2px 7px rgba(36, 52, 91, 0.1);
+    }
+
+    .songPreviewPageControls button:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .songPreviewPageText {
+      min-width: 42px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #475569;
+    }
+
+    .songPreviewProgressTrack {
+      height: 6px;
+      overflow: visible;
+      border-radius: 999px;
+      background: #D8DEEC;
+    }
+
+    .songPreviewProgressFill {
+      position: relative;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #5F45D9, #2F95EC);
+      transition: width 90ms linear;
+    }
+
+    .songPreviewProgressFill::after {
+      content: "";
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #F97316;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 7px rgba(249, 115, 22, 0.42);
+      transform: translateY(-50%);
+    }
+
+    .songPreviewProgressText {
+      min-width: 88px;
+      text-align: right;
+      font-size: 12px;
+      font-weight: 900;
+      color: #334155;
+    }
+
+    .songPreviewControls {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .songPreviewControls button {
+      min-height: 48px;
+      padding: 8px 8px;
+      border-radius: 11px;
+      border: 1px solid #C5D1E3;
+      background: #FFFFFF;
+      color: #24345B;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 4px 10px rgba(36, 52, 91, 0.12);
+      white-space: nowrap;
+      transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .songPreviewControls button.primary {
+      border-color: rgba(112, 87, 232, 0.4);
+      background: linear-gradient(135deg, #5F45D9, #2F95EC);
+      color: #fff;
+      box-shadow: 0 7px 16px rgba(75, 168, 245, 0.32);
+    }
+
+    .songPreviewControls button:not(:disabled):hover {
+      transform: translateY(-1px);
+      border-color: rgba(112, 87, 232, 0.38);
+      background: #E7E1FF;
+    }
+
+    .songPreviewControls button.primary:not(:disabled):hover {
+      background: linear-gradient(135deg, #5135C4, #1E88E5);
+      box-shadow: 0 8px 18px rgba(75, 168, 245, 0.38);
+    }
+
+    .songPreviewControls button[data-preview-action="prev"],
+    .songPreviewControls button[data-preview-action="next"],
+    .songPreviewControls button[data-preview-action="restart"] {
+      background: #E4ECF7;
+      color: #24345B;
+      border-color: #C3D4EA;
+    }
+
+    .songPreviewControls button[data-preview-action="close"] {
+      background: #F3F6FA;
+      color: #46566F;
+      border-color: #CCD6E4;
+      box-shadow: none;
+    }
+
+    .songPreviewControls button:disabled {
+      opacity: 0.46;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    @media (max-width: 720px) {
+      .songPreviewDialog {
+        grid-template-rows: 138px minmax(0, 1fr) 122px;
+      }
+
+      .songPreviewHeader {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .songPreviewTempoPanel {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        align-self: start;
+        padding: 6px 8px 7px;
+      }
+
+      .songPreviewCloseIcon {
+        grid-column: 2;
+        grid-row: 1;
+      }
     }
 
     .bottomBar {
@@ -5046,6 +5492,61 @@ button:disabled {
 
       .practiceMiniBtn .label {
         font-size: 12px;
+      }
+
+      .songPreviewOverlay {
+        padding: 8px;
+      }
+
+      .songPreviewDialog {
+        width: min(1180px, 98vw);
+        max-height: 96vh;
+        grid-template-rows: 138px minmax(0, 1fr) 122px;
+        border-radius: 16px;
+      }
+
+      .songPreviewHeader {
+        padding: 10px 12px 8px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .songPreviewTitle {
+        font-size: 20px;
+      }
+
+      .songPreviewTempoPanel {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        align-self: start;
+        padding: 6px 8px 7px;
+      }
+
+      .songPreviewCountBadge {
+        left: 108px;
+        top: 23px;
+        min-width: 34px;
+        height: 22px;
+        font-size: 16px;
+      }
+
+      .songPreviewBody {
+        padding: 7px 8px;
+      }
+
+      .songPreviewScore {
+        min-width: 900px;
+        gap: 6px;
+      }
+
+      .songPreviewControls {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .songPreviewControls button {
+        min-height: 38px;
+        font-size: 12px;
+        padding: 7px 6px;
       }
 
       .noiseGuardToggle {
@@ -15572,7 +16073,7 @@ body.theme-light .readyCardHint {
       "학교종",
       "똑같아요",
       "환희의 송가",
-      "작은별",
+      "핫 크로스 번",
       "나비야",
       "통통통통",
       "잠자리",
@@ -17060,6 +17561,7 @@ function renderSongButtons() {
       const existingPauseBtn = actionRow.querySelector('button[onclick="pauseSongPractice()"]');
       const existingBackBtn = actionRow.querySelector('button[onclick="jumpToPreviousMeasure()"]');
       const existingContinueBtn = actionRow.querySelector('button[onclick="continueFromMeasureJump()"]');
+      const existingPreviewBtn = actionRow.querySelector("#songPreviewBtn, #shortSongPreviewBtn");
       const stopBtn = actionRow.querySelector('button[onclick="stopPractice()"]');
       let recordBtn = actionRow.querySelector("#practiceRecordBtn");
       const saveBtn = saveRow.querySelector('button[onclick="save()"]');
@@ -17104,6 +17606,14 @@ function renderSongButtons() {
       continueBtn.setAttribute("aria-label", "\uACC4\uC18D \uC5F0\uC8FC");
       continueBtn.disabled = true;
 
+      const previewBtn = existingPreviewBtn || document.createElement("button");
+      previewBtn.id = "songPreviewBtn";
+      previewBtn.type = "button";
+      previewBtn.className = "practiceMiniBtn practice-control-btn practice-score-preview-btn hidden";
+      previewBtn.setAttribute("onclick", "openSongPreviewFromPractice()");
+      previewBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">🎼</span><span class="label practice-btn-label">연주곡 확인</span>';
+      previewBtn.setAttribute("aria-label", "연주곡 확인");
+
       stopBtn.className = "practiceMiniBtn practice-control-btn practice-stop-btn";
       stopBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">&#9632;</span><span class="label practice-btn-label">\uC5F0\uC2B5 \uC815\uC9C0</span>';
       stopBtn.setAttribute("aria-label", "\uC5F0\uC2B5 \uC815\uC9C0");
@@ -17125,7 +17635,8 @@ function renderSongButtons() {
       if (saveBtn) {
         saveBtn.style.display = "none";
       }
-      actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn, backBtn, continueBtn);
+      actionStack.append(startBtn, recordBtn, pauseBtn, stopBtn, saveBtn, backBtn, continueBtn, previewBtn);
+      updateSongPreviewButtonVisibility();
 
 
       controlPanel.append(practiceInfoBox, actionStack);
@@ -17140,6 +17651,41 @@ function renderSongButtons() {
       controlPanel.insertAdjacentElement("afterend", statusStack);
 
       practiceSection.dataset.layoutEnhanced = "true";
+    }
+
+    function isSongPreviewPracticeAvailable() {
+      const song = app.currentSong || getSelectedSong();
+      if (!song || currentPracticeMode === "fingering") return false;
+      if (typeof isFingeringPracticeMode === "function" && isFingeringPracticeMode()) return false;
+      const activityType = String(currentActivityType || "");
+      return [
+        "SHORT_SONG",
+        "TEXTBOOK_SONG",
+        "BONUS_ISLAND_SONG",
+        "CHALLENGE_SONG"
+      ].includes(activityType) || Boolean(song.songId && song.notation !== undefined);
+    }
+
+    function isShortSongPracticePreviewAvailable() {
+      return isSongPreviewPracticeAvailable();
+    }
+
+    function updateSongPreviewButtonVisibility() {
+      const previewBtn = document.getElementById("songPreviewBtn") || document.getElementById("shortSongPreviewBtn");
+      if (!previewBtn) return;
+
+      const song = app.currentSong || getSelectedSong();
+      const showButton = Boolean(isSongPreviewPracticeAvailable() && song);
+      const hasNotation = Boolean(String(song?.notation || "").trim());
+
+      previewBtn.classList.toggle("hidden", !showButton);
+      previewBtn.disabled = !showButton || !hasNotation;
+      previewBtn.title = showButton && !hasNotation ? "악보 정보 준비 중" : "";
+      previewBtn.setAttribute("aria-label", showButton && !hasNotation ? "연주곡 확인: 악보 정보 준비 중" : "연주곡 확인");
+    }
+
+    function updateShortSongPreviewButtonVisibility() {
+      updateSongPreviewButtonVisibility();
     }
 
     function setupUnifiedNavigation() {
@@ -17265,6 +17811,9 @@ function renderSongButtons() {
     }
 
     function showStep(stepId, options = {}) {
+      if (stepId !== "step34Section" && typeof closeShortSongPreviewModal === "function") {
+        closeShortSongPreviewModal();
+      }
       if (!options.skipHistory && stepId !== "step1Section") appHistoryLocked = false;
       if (stepId !== "step-basicSection") {
         stopBasicPracticeAudio();
@@ -17277,6 +17826,9 @@ function renderSongButtons() {
     }
 
     function showScreen(screenId, options = {}) {
+      if (screenId !== "step34Section" && screenId !== "screen-practice" && typeof closeShortSongPreviewModal === "function") {
+        closeShortSongPreviewModal();
+      }
       const skipHistory = options.skipHistory === true;
       if (!skipHistory) appHistoryLocked = false;
 
@@ -19034,6 +19586,7 @@ window.addEventListener("beforeunload", function () {
         if (infoEl) infoEl.textContent = "선택된 곡이 없습니다.";
         if (practiceSongTitleEl) practiceSongTitleEl.textContent = "-";
         if (practiceTimeSignatureEl) practiceTimeSignatureEl.textContent = "-";
+        updateSongPreviewButtonVisibility();
         return;
       }
 
@@ -19054,6 +19607,7 @@ window.addEventListener("beforeunload", function () {
 
       initSpeedStepper();
       updatePracticeSpeedInfo();
+      updateSongPreviewButtonVisibility();
     }
 
     const KEY_SIGNATURE_ACCIDENTALS = {
@@ -19293,6 +19847,7 @@ window.addEventListener("beforeunload", function () {
       }
 
       notes.forEach((note, index) => {
+        note.noteIndex = index;
         const previous = notes[index - 1];
         note.hideKoreanNoteName = Boolean(
           note?.note &&
@@ -19353,7 +19908,7 @@ window.addEventListener("beforeunload", function () {
       return bottomLineY - step * halfGap;
     }
 
-    function drawKeySignature(ctx, keySignature, topLineY, gap) {
+    function drawKeySignature(ctx, keySignature, topLineY, gap, options = {}) {
       const key = normalizeKeySignature(keySignature);
 
       if (key === "C") {
@@ -19362,7 +19917,7 @@ window.addEventListener("beforeunload", function () {
 
       ctx.save();
       ctx.fillStyle = "#111";
-      ctx.font = "34px serif";
+      ctx.font = `${Number(options.fontSize || 34)}px serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
@@ -19378,10 +19933,13 @@ window.addEventListener("beforeunload", function () {
       const accidentals = KEY_SIGNATURE_ACCIDENTALS[key] || {};
       const order = Object.keys(accidentals);
       let drawnCount = 0;
+      const startX = Number(options.startX || 98);
+      const stepX = Number(options.stepX || 18);
+      const baseOffset = Number(options.baseOffset || 28);
 
       order.forEach((letter) => {
         const accidental = accidentals[letter];
-        const x = 98 + drawnCount * 18;
+        const x = startX + drawnCount * stepX;
         if (accidental === "sharp") {
           ctx.fillText("♯", x, sharpPositions[letter] ?? topLineY + gap * 2);
           drawnCount += 1;
@@ -19393,7 +19951,7 @@ window.addEventListener("beforeunload", function () {
       });
 
       ctx.restore();
-      return drawnCount > 0 ? 28 + Math.max(0, drawnCount - 1) * 18 : 0;
+      return drawnCount > 0 ? baseOffset + Math.max(0, drawnCount - 1) * stepX : 0;
     }
 
     function drawPracticeBase(timeSignatureText = "4/4", keySignature = "C") {
@@ -19496,16 +20054,22 @@ window.addEventListener("beforeunload", function () {
 
    function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth, options = {}) {
   const beat = Number(noteObj.beat || 1);
-  const NOTE_COLOR = "#1e2a44";
-  const NOTE_BAR_COLOR = "#93c5fd";
-  const DOTTED_NOTE_COLOR = "#111827";
+  const NOTE_COLOR = options.noteColor || "#1e2a44";
+  const NOTE_BAR_COLOR = options.barColor || "#93c5fd";
+  const DOTTED_NOTE_COLOR = options.dotColor || NOTE_COLOR || "#111827";
+  const scale = Number(options.scale || 1);
 
-  const headW = 15;
-  const headH = 10;
-  const stemHeight = 52;
-  const staffLineGap = 20;
-  const extraStemLength = staffLineGap;
-  const stemLength = stemHeight + extraStemLength;
+  const headW = Number(options.noteHeadWidth || (15 * scale));
+  const headH = Number(options.noteHeadHeight || (10 * scale));
+  const staffLineGap = Number(options.staffGap || (20 * scale));
+  const stemLength = Number(options.stemLength || (72 * scale));
+  const stemWidth = Number(options.stemWidth || (3 * scale));
+  const durationBarHeight = Number(options.durationBarHeight || (10 * scale));
+  const flagScale = Number(options.flagScale || scale);
+  const noteNameFontSize = Number(options.noteNameFontSize || (16 * scale));
+  const noteNameBoxHeight = Number(options.noteNameBoxHeight || (20 * scale));
+  const noteNameYOffset = Number(options.noteNameYOffset || (54 * scale));
+  const noteNameBoxPadding = Number(options.noteNameBoxPadding || (12 * scale));
 
   const isWhole = beat >= 4;
   const isHalf = beat >= 2 && beat < 4;
@@ -19521,21 +20085,21 @@ window.addEventListener("beforeunload", function () {
 
   const rawBodyWidth = Math.max(12, Number(bodyWidth) || 12);
   const safeBodyWidth = hasRightLimit
-    ? Math.max(0, Math.min(rawBodyWidth, rightLimit - (noteX + 18) - 5))
+    ? Math.max(0, Math.min(rawBodyWidth, rightLimit - (noteX + 18 * scale) - 5 * scale))
     : rawBodyWidth;
-  const NOTE_NAME_Y = bottomLineY + 54;
-  const BAR_BOTTOM_LIMIT = NOTE_NAME_Y - 18;
-  const NOTE_MIN_Y = NOTE_NAME_Y - 24;
+  const NOTE_NAME_Y = bottomLineY + noteNameYOffset;
+  const BAR_BOTTOM_LIMIT = NOTE_NAME_Y - 18 * scale;
+  const NOTE_MIN_Y = NOTE_NAME_Y - 24 * scale;
   const barY = Math.min(y, BAR_BOTTOM_LIMIT);
   const noteY = Math.min(y, NOTE_MIN_Y);
 
   // 湲몄씠 ?쒖떆??
   ctx.strokeStyle = NOTE_BAR_COLOR;
-  ctx.lineWidth = 10;
+  ctx.lineWidth = durationBarHeight;
   ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.moveTo(noteX + 18, barY);
-  ctx.lineTo(noteX + 18 + safeBodyWidth, barY);
+  ctx.moveTo(noteX + 18 * scale, barY);
+  ctx.lineTo(noteX + 18 * scale + safeBodyWidth, barY);
   ctx.stroke();
 
   // ?뚰몴 癒몃━
@@ -19546,7 +20110,7 @@ window.addEventListener("beforeunload", function () {
   if (isWhole || isHalf) {
     ctx.fillStyle = "#fff";
     ctx.strokeStyle = NOTE_COLOR;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2.5 * scale;
     ctx.beginPath();
     ctx.ellipse(0, 0, headW, headH, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -19562,7 +20126,7 @@ window.addEventListener("beforeunload", function () {
   if (isDotted) {
     ctx.fillStyle = DOTTED_NOTE_COLOR;
     ctx.beginPath();
-    ctx.arc(noteX + 27, noteY - 2, 3.5, 0, Math.PI * 2);
+    ctx.arc(noteX + 27 * scale, noteY - 2 * scale, 3.5 * scale, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -19573,22 +20137,22 @@ window.addEventListener("beforeunload", function () {
   ) {
     ctx.save();
     ctx.fillStyle = NOTE_COLOR;
-    ctx.font = "30px Georgia, 'Times New Roman', serif";
+    ctx.font = `${Math.max(12, 30 * scale)}px Georgia, 'Times New Roman', serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const accidentalSymbol = noteObj.explicitAccidental === "sharp"
       ? "♯"
       : (noteObj.explicitAccidental === "flat" ? "♭" : "♮");
-    ctx.fillText(accidentalSymbol, noteX - 22, noteY);
+    ctx.fillText(accidentalSymbol, noteX - 22 * scale, noteY);
     ctx.restore();
   }
 
   // 以꾧린
   if (!isWhole) {
-    const stemX = stemDown ? noteX - 12 : noteX + 12;
+    const stemX = stemDown ? noteX - 12 * scale : noteX + 12 * scale;
     const stemEndY = stemDown ? noteY + stemLength : noteY - stemLength;
     ctx.strokeStyle = NOTE_COLOR;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = stemWidth;
     ctx.beginPath();
     ctx.moveTo(stemX, noteY);
     ctx.lineTo(stemX, stemEndY);
@@ -19597,10 +20161,10 @@ window.addEventListener("beforeunload", function () {
 
   // 8遺꾩쓬??瑗щ━
   if (isEighth) {
-    const stemX = stemDown ? noteX - 12 : noteX + 12;
+    const stemX = stemDown ? noteX - 12 * scale : noteX + 12 * scale;
     const stemEndY = stemDown ? noteY + stemLength : noteY - stemLength;
     ctx.strokeStyle = NOTE_COLOR;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = stemWidth;
     ctx.beginPath();
     ctx.moveTo(stemX, stemEndY);
     if (stemDown) {
@@ -19608,22 +20172,22 @@ window.addEventListener("beforeunload", function () {
       const drawDownFlag = (stemBottomY) => {
         ctx.fillStyle = NOTE_COLOR;
         ctx.beginPath();
-        ctx.moveTo(stemX + 1, stemBottomY - 2);
+        ctx.moveTo(stemX + 1 * flagScale, stemBottomY - 2 * flagScale);
         ctx.bezierCurveTo(
-          stemX + 22,
-          stemBottomY - 2,
-          stemX + 30,
-          stemBottomY - 24,
-          stemX + 16,
-          stemBottomY - 42
+          stemX + 22 * flagScale,
+          stemBottomY - 2 * flagScale,
+          stemX + 30 * flagScale,
+          stemBottomY - 24 * flagScale,
+          stemX + 16 * flagScale,
+          stemBottomY - 42 * flagScale
         );
         ctx.bezierCurveTo(
-          stemX + 18,
-          stemBottomY - 24,
-          stemX + 10,
-          stemBottomY - 8,
-          stemX + 4,
-          stemBottomY + 2
+          stemX + 18 * flagScale,
+          stemBottomY - 24 * flagScale,
+          stemX + 10 * flagScale,
+          stemBottomY - 8 * flagScale,
+          stemX + 4 * flagScale,
+          stemBottomY + 2 * flagScale
         );
         ctx.closePath();
         ctx.fill();
@@ -19640,22 +20204,22 @@ window.addEventListener("beforeunload", function () {
       const drawUpFlag = (stemTopY) => {
         ctx.fillStyle = NOTE_COLOR;
         ctx.beginPath();
-        ctx.moveTo(stemX + 1, stemTopY + 2);
+        ctx.moveTo(stemX + 1 * flagScale, stemTopY + 2 * flagScale);
         ctx.bezierCurveTo(
-          stemX + 22,
-          stemTopY + 2,
-          stemX + 30,
-          stemTopY + 24,
-          stemX + 16,
-          stemTopY + 42
+          stemX + 22 * flagScale,
+          stemTopY + 2 * flagScale,
+          stemX + 30 * flagScale,
+          stemTopY + 24 * flagScale,
+          stemX + 16 * flagScale,
+          stemTopY + 42 * flagScale
         );
         ctx.bezierCurveTo(
-          stemX + 18,
-          stemTopY + 24,
-          stemX + 10,
-          stemTopY + 8,
-          stemX + 4,
-          stemTopY - 2
+          stemX + 18 * flagScale,
+          stemTopY + 24 * flagScale,
+          stemX + 10 * flagScale,
+          stemTopY + 8 * flagScale,
+          stemX + 4 * flagScale,
+          stemTopY - 2 * flagScale
         );
         ctx.closePath();
         ctx.fill();
@@ -19673,10 +20237,10 @@ window.addEventListener("beforeunload", function () {
   // C5 蹂댁“??
   if (noteObj.note === "C5") {
     ctx.strokeStyle = NOTE_COLOR;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2 * scale;
     ctx.beginPath();
-    ctx.moveTo(noteX - 18, noteY);
-    ctx.lineTo(noteX + 18, noteY);
+    ctx.moveTo(noteX - 18 * scale, noteY);
+    ctx.lineTo(noteX + 18 * scale, noteY);
     ctx.stroke();
   }
 
@@ -19684,13 +20248,13 @@ window.addEventListener("beforeunload", function () {
   if (!noteObj.hideKoreanNoteName) {
     ctx.fillStyle = "rgba(255,255,255,0.8)";
     const noteName = getKoreanNoteName(noteObj);
-    const noteNameBoxWidth = noteName.length > 1 ? 38 : 26;
-    ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - 16, noteNameBoxWidth, 20);
+    const noteNameBoxWidth = Math.max(18 * scale, noteName.length * noteNameFontSize * 0.86 + noteNameBoxPadding);
+    ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - noteNameBoxHeight * 0.8, noteNameBoxWidth, noteNameBoxHeight);
     ctx.fillStyle = "#111";
-    ctx.font = "bold 16px system-ui";
+    ctx.font = `bold ${noteNameFontSize}px system-ui`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(noteName, noteX, NOTE_NAME_Y - 6);
+    ctx.fillText(noteName, noteX, NOTE_NAME_Y - noteNameBoxHeight * 0.3);
   }
   ctx.textAlign = "start";
   ctx.textBaseline = "alphabetic";
@@ -19814,10 +20378,12 @@ function drawSixteenthRestGlyph(ctx, x, centerY, options = {}) {
   ctx.restore();
 }
 
-function drawRest(ctx, x, staffTop, duration) {
-  const centerY = staffTop + 40;
+function drawRest(ctx, x, staffTop, duration, options = {}) {
+  const scale = Number(options.scale || 1);
+  const staffGap = Number(options.staffGap || (20 * scale));
+  const centerY = staffTop + staffGap * 2;
   const beat = Number(duration);
-  const NOTE_COLOR = "#1e2a44";
+  const NOTE_COLOR = options.color || "#1e2a44";
   const dottedRestMap = {
     0.75: 0.5,
     1.5: 1,
@@ -19830,29 +20396,29 @@ function drawRest(ctx, x, staffTop, duration) {
   ctx.fillStyle = NOTE_COLOR;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.font = "48px Arial, serif";
+  ctx.font = `${48 * scale}px Arial, serif`;
 
   if (baseBeat === 1) {
-    ctx.font = "80.64px Arial, serif";
+    ctx.font = `${80.64 * scale}px Arial, serif`;
     ctx.save();
-    ctx.translate(x, centerY + 2);
+    ctx.translate(x, centerY + 2 * scale);
     ctx.rotate(-10 * Math.PI / 180);
     ctx.fillText("𝄽", 0, 0);
     ctx.restore();
   } else if (baseBeat === 0.5) {
-    drawEighthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20 });
+    drawEighthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20, scale });
   } else if (baseBeat === 0.25) {
-    drawSixteenthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20 });
+    drawSixteenthRestGlyph(ctx, x, centerY, { color: NOTE_COLOR, staffGap: 20, scale });
   } else if (baseBeat === 2) {
-    ctx.fillRect(x - 18, centerY - 8, 36, 10);
+    ctx.fillRect(x - 18 * scale, centerY - 8 * scale, 36 * scale, 10 * scale);
   } else {
-    ctx.fillText("𝄽", x, centerY + 2);
+    ctx.fillText("𝄽", x, centerY + 2 * scale);
   }
 
   if (dottedBeat) {
-    const dotY = baseBeat === 1 ? centerY - 10 : centerY + 1;
+    const dotY = baseBeat === 1 ? centerY - 10 * scale : centerY + 1 * scale;
     ctx.beginPath();
-    ctx.arc(x + 28, dotY, 3.5, 0, Math.PI * 2);
+    ctx.arc(x + 28 * scale, dotY, 3.5 * scale, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -20430,6 +20996,1566 @@ function drawRest(ctx, x, staffTop, duration) {
 
       const octave = Number(m[3]);
       return (octave + 1) * 12 + semitone;
+    }
+
+    const shortSongPreviewState = {
+      overlay: null,
+      song: null,
+      timeline: null,
+      measures: [],
+      canvases: [],
+      visibleLines: [],
+      playbackEvents: [],
+      notePlaybackEventMap: new Map(),
+      tieWarnings: [],
+      audioCtx: null,
+      buffers: new Map(),
+      activeNodes: [],
+      timer: null,
+      countInTimer: null,
+      raf: null,
+      runId: 0,
+      playing: false,
+      paused: false,
+      countInActive: false,
+      countInValue: "",
+      playbackRate: 1,
+      currentPage: 0,
+      totalPages: 1,
+      userSelectedPage: false,
+      positionMs: 0,
+      clockStartMs: 0,
+      clockStartAudioTime: 0,
+      currentIndex: -1,
+      lastAutoScrollLine: -1,
+      userScrolledAt: 0,
+      previousFocus: null
+    };
+
+    function ensureShortSongPreviewModal() {
+      if (shortSongPreviewState.overlay) return shortSongPreviewState.overlay;
+
+      const overlay = document.createElement("div");
+      overlay.id = "shortSongPreviewOverlay";
+      overlay.className = "songPreviewOverlay";
+      overlay.setAttribute("aria-hidden", "true");
+      overlay.innerHTML = `
+        <div class="songPreviewDialog" role="dialog" aria-modal="true" aria-labelledby="shortSongPreviewTitle">
+          <header class="songPreviewHeader">
+            <div>
+              <h3 id="shortSongPreviewTitle" class="songPreviewTitle">연주곡 확인</h3>
+              <div id="shortSongPreviewMeta" class="songPreviewMeta"></div>
+            </div>
+            <div class="songPreviewTempoPanel" aria-label="연주 속도">
+              <label class="songPreviewTempoControl" for="shortSongPreviewTempo">
+                <span class="songPreviewTempoTop">
+                  <span>연주 속도</span>
+                  <span id="shortSongPreviewTempoValue" class="songPreviewTempoValue">1.00x</span>
+                </span>
+                <input id="shortSongPreviewTempo" class="songPreviewTempoSlider" type="range" min="0.6" max="1.4" step="0.05" value="1" aria-label="연주 속도 조절">
+              </label>
+            </div>
+            <button type="button" class="songPreviewCloseIcon" aria-label="연주곡 확인 닫기" data-preview-action="close">×</button>
+          </header>
+          <div id="shortSongPreviewBody" class="songPreviewBody">
+              <div id="shortSongPreviewCountBadge" class="songPreviewCountBadge" aria-live="polite"></div>
+            <div id="shortSongPreviewScore" class="songPreviewScore"></div>
+          </div>
+          <footer class="songPreviewFooter">
+            <div class="songPreviewProgressRow">
+              <div class="songPreviewProgressTrack" aria-hidden="true">
+                <div id="shortSongPreviewProgressFill" class="songPreviewProgressFill"></div>
+              </div>
+              <div id="shortSongPreviewPageControls" class="songPreviewPageControls hidden" aria-label="악보 페이지 이동">
+                <button type="button" data-preview-page-action="prev" aria-label="이전 악보 페이지">‹</button>
+                <span id="shortSongPreviewPageText" class="songPreviewPageText">1 / 1</span>
+                <button type="button" data-preview-page-action="next" aria-label="다음 악보 페이지">›</button>
+              </div>
+              <div id="shortSongPreviewProgressText" class="songPreviewProgressText">1 / 1마디</div>
+            </div>
+            <div class="songPreviewControls" aria-label="연주곡 듣기 조작">
+              <button type="button" class="primary" data-preview-action="play" aria-label="연주곡 듣기">연주곡 듣기</button>
+              <button type="button" data-preview-action="pause" aria-label="시범 연주 일시정지">일시정지</button>
+              <button type="button" data-preview-action="stop" aria-label="시범 연주 정지">정지</button>
+              <button type="button" data-preview-action="prev" aria-label="한 마디 이전">이전</button>
+              <button type="button" data-preview-action="next" aria-label="한 마디 앞으로">앞으로</button>
+              <button type="button" data-preview-action="restart" aria-label="처음부터 듣기">처음부터</button>
+              <button type="button" data-preview-action="close" aria-label="연주곡 확인 닫기">닫기</button>
+            </div>
+          </footer>
+        </div>
+      `;
+
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) closeShortSongPreviewModal();
+      });
+
+      overlay.addEventListener("click", (event) => {
+        const action = event.target?.closest?.("[data-preview-action]")?.dataset?.previewAction;
+        if (!action) return;
+        if (action === "play") playShortSongPreview();
+        if (action === "pause") pauseShortSongPreview();
+        if (action === "stop") stopShortSongPreview();
+        if (action === "prev") moveShortSongPreviewMeasure(-1);
+        if (action === "next") moveShortSongPreviewMeasure(1);
+        if (action === "restart") restartShortSongPreview();
+        if (action === "close") closeShortSongPreviewModal();
+      });
+
+      overlay.addEventListener("click", (event) => {
+        const action = event.target?.closest?.("[data-preview-page-action]")?.dataset?.previewPageAction;
+        if (!action) return;
+        moveSongPreviewPage(action === "next" ? 1 : -1, true);
+      });
+
+      const tempoSlider = overlay.querySelector("#shortSongPreviewTempo");
+      if (tempoSlider) {
+        tempoSlider.addEventListener("input", (event) => {
+          setShortSongPreviewPlaybackRate(event.target.value);
+        });
+      }
+
+      const body = overlay.querySelector("#shortSongPreviewBody");
+      if (body) {
+        body.addEventListener("scroll", () => {
+          shortSongPreviewState.userScrolledAt = performance.now();
+        }, { passive: true });
+      }
+
+      overlay.addEventListener("keydown", trapShortSongPreviewFocus);
+      document.body.appendChild(overlay);
+      shortSongPreviewState.overlay = overlay;
+      return overlay;
+    }
+
+    function trapShortSongPreviewFocus(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeShortSongPreviewModal();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+      const overlay = shortSongPreviewState.overlay;
+      if (!overlay?.classList.contains("open")) return;
+      const focusables = Array.from(overlay.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"))
+        .filter((el) => !el.disabled && el.offsetParent !== null);
+      if (!focusables.length) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && shortSongPreviewState.overlay?.classList.contains("open")) {
+        event.preventDefault();
+        closeShortSongPreviewModal();
+      }
+    });
+
+    function normalizeSongPreviewData(song) {
+      const source = song && typeof song === "object" ? song : {};
+      const normalized = {
+        ...source,
+        songId: String(source.songId || source.id || "").trim(),
+        title: String(source.title || "").trim() || "제목 없는 곡",
+        bpm: Math.max(1, Number(source.bpm) || 80),
+        timeSignature: parseTimeSignature(source.timeSignature || "4/4").text,
+        keySignature: normalizeKeySignature(source.keySignature || "C"),
+        notation: String(source.notation || "").trim(),
+        pickupBeats: source.pickupBeats == null || source.pickupBeats === ""
+          ? null
+          : Math.max(0, Number(source.pickupBeats) || 0),
+        composer: String(source.composer || "").trim()
+      };
+      return normalized;
+    }
+
+    function getSongPreviewMeasureNotes(timeline, startBeat, endBeat, isLast) {
+      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      return notes.filter((note) => {
+        const beat = Number(note.startBeat) || 0;
+        if (isLast) return beat >= startBeat - 0.001 && beat <= endBeat + 0.001;
+        return beat >= startBeat - 0.001 && beat < endBeat - 0.001;
+      });
+    }
+
+    function buildSongMeasures(song, timeline) {
+      const normalized = normalizeSongPreviewData(song);
+      const measureBeats = Math.max(0.25, Number(timeline?.measureBeats) || parseTimeSignature(normalized.timeSignature).measureBeats || 4);
+      const beatMs = Number(timeline?.beatMs) || (60000 / normalized.bpm);
+      const totalBeats = Math.max(0, Number(timeline?.totalBeats) || 0);
+      const totalMs = Math.max(0, Number(timeline?.totalMs) || 0);
+      const manualBeats = (Array.isArray(timeline?.barlines) ? timeline.barlines : [])
+        .map((barline) => Number(barline.beat))
+        .filter((beat) => Number.isFinite(beat) && beat > 0.001 && beat < totalBeats - 0.001)
+        .sort((a, b) => a - b)
+        .filter((beat, index, list) => index === 0 || Math.abs(beat - list[index - 1]) > 0.001);
+
+      let boundaries = [0];
+      if (manualBeats.length) {
+        boundaries = [0, ...manualBeats, totalBeats];
+      } else if (normalized.pickupBeats && normalized.pickupBeats > 0 && normalized.pickupBeats < measureBeats) {
+        boundaries.push(normalized.pickupBeats);
+        for (let beat = normalized.pickupBeats + measureBeats; beat < totalBeats - 0.001; beat += measureBeats) {
+          boundaries.push(beat);
+        }
+        boundaries.push(totalBeats);
+      } else {
+        for (let beat = measureBeats; beat < totalBeats - 0.001; beat += measureBeats) {
+          boundaries.push(beat);
+        }
+        boundaries.push(totalBeats);
+      }
+
+      boundaries = boundaries
+        .map((beat) => Math.max(0, Math.min(totalBeats, Number(beat) || 0)))
+        .sort((a, b) => a - b)
+        .filter((beat, index, list) => index === 0 || Math.abs(beat - list[index - 1]) > 0.001);
+
+      if (boundaries.length < 2) boundaries = [0, totalBeats || measureBeats];
+
+      const explicitPickup = normalized.pickupBeats && normalized.pickupBeats > 0 && normalized.pickupBeats < measureBeats;
+      const firstDuration = Math.max(0, boundaries[1] - boundaries[0]);
+      const autoPickup = !explicitPickup && manualBeats.length > 0 && firstDuration > 0.001 && firstDuration < measureBeats - 0.001;
+      const hasPickup = Boolean(explicitPickup || autoPickup);
+
+      let displayNumber = 1;
+      return boundaries.slice(0, -1).map((startBeat, index) => {
+        const endBeat = boundaries[index + 1];
+        const isPickup = index === 0 && hasPickup;
+        const measure = {
+          index,
+          isPickup,
+          displayNumber: isPickup ? null : displayNumber,
+          number: isPickup ? null : displayNumber,
+          beat: startBeat,
+          startBeat,
+          timeMs: startBeat * beatMs,
+          endBeat,
+          endMs: index === boundaries.length - 2 ? totalMs : endBeat * beatMs,
+          durationBeats: Math.max(0.001, endBeat - startBeat),
+          notes: getSongPreviewMeasureNotes(timeline, startBeat, endBeat, index === boundaries.length - 2)
+        };
+        if (!isPickup) displayNumber += 1;
+        return measure;
+      });
+    }
+
+    function getShortSongPreviewMeasureData(timeline) {
+      return shortSongPreviewState.measures?.length
+        ? shortSongPreviewState.measures
+        : buildSongMeasures(shortSongPreviewState.song || {}, timeline);
+    }
+
+    function getShortSongPreviewLineForMeasure(measureIndex) {
+      const state = shortSongPreviewState;
+      const visibleLines = Array.isArray(state.visibleLines) ? state.visibleLines : [];
+      const foundLine = visibleLines.findIndex((line) => line.some((measure) => Number(measure.index) === Number(measureIndex)));
+      if (foundLine >= 0) return foundLine;
+      const measure = (state.measures || [])[measureIndex];
+      if (measure?.isPickup) return 0;
+      return Math.max(0, Math.floor(Math.max(0, (Number(measure?.displayNumber) || 1) - 1) % 16 / 4));
+    }
+
+    function getShortSongPreviewMeasureIndexAt(positionMs) {
+      const measures = shortSongPreviewState.measures || [];
+      if (!measures.length) return 0;
+      const current = measures.findIndex((measure, index) => {
+        const endMs = index === measures.length - 1
+          ? Math.max(measure.endMs, Number(shortSongPreviewState.timeline?.totalMs) || 0)
+          : measure.endMs;
+        return positionMs >= measure.timeMs - 1 && positionMs < endMs - 1;
+      });
+      if (current >= 0) return current;
+      return positionMs >= (Number(shortSongPreviewState.timeline?.totalMs) || 0)
+        ? measures.length - 1
+        : 0;
+    }
+
+    function getSongPreviewMeasureCount() {
+      return (shortSongPreviewState.measures || []).filter((measure) => !measure.isPickup).length;
+    }
+
+    function getSongPreviewPageForMeasureIndex(measureIndex) {
+      const measure = (shortSongPreviewState.measures || [])[measureIndex];
+      if (!measure || measure.isPickup) return 0;
+      return Math.max(0, Math.floor(((Number(measure.displayNumber) || 1) - 1) / 16));
+    }
+
+    function getSongPreviewVisibleLines(page = shortSongPreviewState.currentPage || 0) {
+      const measures = shortSongPreviewState.measures || [];
+      const normalMeasures = measures.filter((measure) => !measure.isPickup);
+      const pickup = measures.find((measure) => measure.isPickup);
+      const pageIndex = Math.max(0, Number(page) || 0);
+      const firstDisplayNumber = pageIndex * 16 + 1;
+      const visibleNormalMeasures = normalMeasures.filter((measure) => {
+        const number = Number(measure.displayNumber) || 0;
+        return number >= firstDisplayNumber && number < firstDisplayNumber + 16;
+      });
+      const lines = [];
+
+      if (pageIndex === 0 && pickup) {
+        lines.push([pickup, ...visibleNormalMeasures.filter((measure) => measure.displayNumber >= 1 && measure.displayNumber <= 4)]);
+        for (let start = 5; start <= 13; start += 4) {
+          const line = visibleNormalMeasures.filter((measure) => measure.displayNumber >= start && measure.displayNumber < start + 4);
+          if (line.length) lines.push(line);
+        }
+        return lines.filter((line) => line.length).slice(0, 4);
+      }
+
+      for (let index = 0; index < visibleNormalMeasures.length; index += 4) {
+        lines.push(visibleNormalMeasures.slice(index, index + 4));
+      }
+      return lines.length ? lines.slice(0, 4) : [[]];
+    }
+
+    function moveSongPreviewPage(delta, userSelected = false) {
+      const state = shortSongPreviewState;
+      const nextPage = Math.min(Math.max(0, state.currentPage + Number(delta || 0)), Math.max(0, state.totalPages - 1));
+      if (nextPage === state.currentPage) return;
+      state.currentPage = nextPage;
+      state.userSelectedPage = Boolean(userSelected);
+      renderShortSongPreviewScore(state.song, state.timeline);
+      updateShortSongPreviewProgress();
+    }
+
+    function getShortSongPreviewNoteY(noteName, bottomLineY, gap) {
+      const RECORDER_STAFF_STEP_MAP = {
+        C5: -2,
+        D5: -1,
+        E5: 0,
+        F5: 1,
+        G5: 2,
+        A5: 3,
+        B5: 4,
+        C6: 5,
+        D6: 6,
+        E6: 7,
+        F6: 8,
+        G6: 9
+      };
+      const step = RECORDER_STAFF_STEP_MAP[String(noteName || "").toUpperCase()];
+      return step === undefined ? bottomLineY : bottomLineY - step * (gap / 2);
+    }
+
+    function getSongPreviewTieSignature(note) {
+      if (!note?.note) return "";
+      return `${String(note.note).toUpperCase()}|${note.effectiveAccidental || ""}`;
+    }
+
+    function analyzeSongPreviewTies(timeline, song = {}) {
+      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      const tieSegments = [];
+      const mergeGroups = [];
+      const warnings = [];
+      let index = 0;
+
+      while (index < notes.length) {
+        const current = notes[index];
+        if (!current?.tieGroupId) {
+          index += 1;
+          continue;
+        }
+
+        const group = [];
+        const tieGroupId = current.tieGroupId;
+        while (index < notes.length && notes[index]?.tieGroupId === tieGroupId) {
+          group.push(notes[index]);
+          index += 1;
+        }
+
+        for (let i = 0; i < group.length - 1; i += 1) {
+          const left = group[i];
+          const right = group[i + 1];
+          if (!left?.note || !right?.note) continue;
+          const samePitch = getSongPreviewTieSignature(left) === getSongPreviewTieSignature(right);
+          tieSegments.push({
+            tieGroupId,
+            fromIndex: Number(left.noteIndex),
+            toIndex: Number(right.noteIndex),
+            valid: samePitch
+          });
+          if (!samePitch) {
+            warnings.push({
+              songId: song.songId || "",
+              title: song.title || "",
+              tieGroupId,
+              fromIndex: Number(left.noteIndex),
+              toIndex: Number(right.noteIndex),
+              notes: [left.note, right.note]
+            });
+          }
+        }
+
+        let run = [];
+        const flushRun = () => {
+          if (run.length > 1) mergeGroups.push(run.slice());
+          run = [];
+        };
+
+        group.forEach((note) => {
+          if (!note?.note) {
+            flushRun();
+            return;
+          }
+          const last = run[run.length - 1];
+          if (!last || getSongPreviewTieSignature(last) === getSongPreviewTieSignature(note)) {
+            run.push(note);
+          } else {
+            flushRun();
+            run = [note];
+          }
+        });
+        flushRun();
+      }
+
+      return { tieSegments, mergeGroups, warnings };
+    }
+
+    function analyzeSongPreviewSlurs(timeline) {
+      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      const groups = [];
+      let index = 0;
+
+      while (index < notes.length) {
+        const current = notes[index];
+        if (!current?.slurGroupId) {
+          index += 1;
+          continue;
+        }
+
+        const slurGroupId = current.slurGroupId;
+        let segment = [];
+        while (index < notes.length && notes[index]?.slurGroupId === slurGroupId) {
+          const note = notes[index];
+          if (!note?.note) {
+            if (segment.length > 1) groups.push({ slurGroupId, notes: segment.slice() });
+            segment = [];
+          } else {
+            segment.push(note);
+          }
+          index += 1;
+        }
+        if (segment.length > 1) groups.push({ slurGroupId, notes: segment.slice() });
+      }
+
+      return groups;
+    }
+
+    function buildSongPreviewPlaybackEvents(timeline, song = {}) {
+      const notes = Array.isArray(timeline?.notes) ? timeline.notes : [];
+      const tieAnalysis = analyzeSongPreviewTies(timeline, song);
+      const mergedIndexSet = new Set();
+      const events = [];
+      const eventMap = new Map();
+
+      tieAnalysis.mergeGroups.forEach((group) => {
+        group.forEach((note) => mergedIndexSet.add(Number(note.noteIndex)));
+        const first = group[0];
+        const last = group[group.length - 1];
+        const startMs = Number(first.startMs) || 0;
+        const endMs = (Number(last.startMs) || 0) + (Number(last.durMs) || 0);
+        const event = {
+          ...first,
+          startMs,
+          durMs: Math.max(1, endMs - startMs),
+          beat: group.reduce((sum, note) => sum + (Number(note.beat) || 0), 0),
+          raw: group.map((note) => note.raw).join("~"),
+          tieMerged: true,
+          displayNotes: group,
+          noteIndices: group.map((note) => Number(note.noteIndex))
+        };
+        events.push(event);
+        group.forEach((note) => eventMap.set(Number(note.noteIndex), event));
+      });
+
+      notes.forEach((note) => {
+        const noteIndex = Number(note.noteIndex);
+        if (mergedIndexSet.has(noteIndex)) return;
+        const event = {
+          ...note,
+          noteIndices: [noteIndex],
+          displayNotes: [note]
+        };
+        events.push(event);
+        eventMap.set(noteIndex, event);
+      });
+
+      events.sort((a, b) => (Number(a.startMs) || 0) - (Number(b.startMs) || 0));
+      return {
+        events,
+        eventMap,
+        tieSegments: tieAnalysis.tieSegments,
+        slurGroups: analyzeSongPreviewSlurs(timeline),
+        warnings: tieAnalysis.warnings
+      };
+    }
+
+    function drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline) {
+      const w = canvas.width;
+      const gap = 11;
+      const topLineY = 39;
+      const bottomLineY = topLineY + gap * 4;
+      const leftX = 108;
+      const rightX = w - 22;
+      const usableWidth = rightX - leftX;
+      const measureBeats = Math.max(0.25, Number(timeline?.measureBeats) || 4);
+      const hasPickup = lineMeasures[0]?.isPickup;
+      const pickupRatio = hasPickup
+        ? Math.min(0.9, Math.max(0.14, (Number(lineMeasures[0].durationBeats) || measureBeats) / measureBeats))
+        : 0;
+      const regularSlotCount = hasPickup ? Math.max(1, lineMeasures.filter((measure) => !measure.isPickup).length) : 4;
+      const regularWidth = hasPickup ? usableWidth / (regularSlotCount + pickupRatio) : usableWidth / 4;
+      let cursorX = leftX;
+      const measureCells = lineMeasures.map((measure) => {
+        const width = measure.isPickup ? regularWidth * pickupRatio : regularWidth;
+        const cell = { measure, left: cursorX, right: cursorX + width, width };
+        cursorX += width;
+        return cell;
+      });
+
+      ctx.clearRect(0, 0, w, canvas.height);
+      const measureIndex = getShortSongPreviewMeasureIndexAt(getShortSongPreviewElapsedMs());
+      const currentLineIndex = getShortSongPreviewLineForMeasure(measureIndex);
+      const thisLineIndex = Number(canvas.dataset.lineIndex || 0);
+      ctx.fillStyle = thisLineIndex === currentLineIndex && shortSongPreviewState.playing
+        ? "#FFF9F2"
+        : "#FFFFFF";
+      ctx.fillRect(0, 0, w, canvas.height);
+
+      ctx.strokeStyle = "#111827";
+      ctx.lineWidth = 1.25;
+      for (let i = 0; i < 5; i++) {
+        const y = topLineY + i * gap;
+        ctx.beginPath();
+        ctx.moveTo(20, y);
+        ctx.lineTo(rightX, y);
+        ctx.stroke();
+      }
+
+      if (trebleReady) {
+        ctx.drawImage(trebleImg, 22, topLineY - 15, 48, 94);
+      } else {
+        ctx.fillStyle = "#111";
+        ctx.font = "52px serif";
+        ctx.fillText("𝄞", 24, topLineY + 42);
+      }
+
+      const keyOffset = drawKeySignature(ctx, timeline.keySignature || "C", topLineY, gap, {
+        fontSize: 18,
+        startX: 76,
+        stepX: 10,
+        baseOffset: 17
+      });
+      const timeSigX = keyOffset > 0 ? 82 + keyOffset : 82;
+      const parts = String(timeline.timeSignature || "4/4").split("/");
+      ctx.fillStyle = "#111827";
+      ctx.font = "17px system-ui";
+      ctx.textAlign = "left";
+      ctx.fillText(parts[0] || "4", timeSigX, topLineY + 22);
+      ctx.fillText(parts[1] || "4", timeSigX, topLineY + 42);
+
+      measureCells.forEach((cell) => {
+        const x = cell.right;
+        const measure = cell.measure;
+        const isFinalMeasure = !measure?.isPickup && Number(measure?.displayNumber) === getSongPreviewMeasureCount();
+        ctx.strokeStyle = "#111827";
+        ctx.lineWidth = isFinalMeasure ? 1.1 : 1.2;
+        ctx.beginPath();
+        ctx.moveTo(x, topLineY);
+        ctx.lineTo(x, bottomLineY);
+        ctx.stroke();
+
+        if (isFinalMeasure) {
+          ctx.lineWidth = 4.2;
+          ctx.beginPath();
+          ctx.moveTo(x + 5, topLineY);
+          ctx.lineTo(x + 5, bottomLineY);
+          ctx.stroke();
+          ctx.lineWidth = 1.2;
+        }
+      });
+
+      measureCells.forEach((cell) => {
+        const measure = cell.measure;
+        if (measure?.isPickup) return;
+        const label = `${measure.displayNumber}마디`;
+        const labelX = cell.left + cell.width / 2;
+        const labelY = 17;
+        ctx.save();
+        ctx.fillStyle = "rgba(112, 87, 232, 0.18)";
+        drawRoundedRectPath(ctx, labelX - 22, labelY - 13, 44, 17, 8);
+        ctx.fill();
+        ctx.fillStyle = "#5F45D9";
+        ctx.font = "900 11px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(label, labelX, labelY - 4);
+        ctx.restore();
+      });
+
+      return { topLineY, bottomLineY, gap, leftX, measureWidth: regularWidth, measureCells };
+    }
+
+    function getShortSongPreviewNoteColors(note, index, elapsedMs) {
+      const playbackEvent = shortSongPreviewState.notePlaybackEventMap?.get(Number(note.noteIndex)) || null;
+      const noteStart = Number(playbackEvent?.startMs ?? note.startMs) || 0;
+      const noteEnd = noteStart + (Number(playbackEvent?.durMs ?? note.durMs) || 0);
+      const isCurrent = elapsedMs >= noteStart && elapsedMs < noteEnd;
+      if (isCurrent) {
+        return {
+          noteColor: "#F97316",
+          barColor: "rgba(249, 115, 22, 0.52)",
+          restColor: "#F97316",
+          glow: "rgba(249, 115, 22, 0.24)"
+        };
+      }
+      if (noteEnd <= elapsedMs && elapsedMs > 0) {
+        return {
+          noteColor: "#256FE6",
+          barColor: "rgba(37, 111, 230, 0.46)",
+          restColor: "#256FE6",
+          glow: ""
+        };
+      }
+      return {
+        noteColor: "#0F172A",
+        barColor: "rgba(15, 23, 42, 0.24)",
+        restColor: "#0F172A",
+        glow: ""
+      };
+    }
+
+    function getSongPreviewCurveColor(notes, elapsedMs) {
+      const safeNotes = Array.isArray(notes) ? notes.filter(Boolean) : [];
+      if (!safeNotes.length) return "#0F172A";
+      const first = safeNotes[0];
+      const last = safeNotes[safeNotes.length - 1];
+      const event = shortSongPreviewState.notePlaybackEventMap?.get(Number(first.noteIndex));
+      const startMs = Number(event?.startMs ?? first.startMs) || 0;
+      const eventCoversLast = event?.noteIndices?.includes?.(Number(last.noteIndex));
+      const endMs = eventCoversLast
+        ? startMs + (Number(event?.durMs) || 0)
+        : ((Number(last.startMs) || 0) + (Number(last.durMs) || 0));
+      if (elapsedMs >= startMs && elapsedMs < endMs) return "#F97316";
+      if (endMs <= elapsedMs && elapsedMs > 0) return "#256FE6";
+      return "#0F172A";
+    }
+
+    function getSongPreviewCurveSide(metrics) {
+      const safeMetrics = Array.isArray(metrics) ? metrics.filter(Boolean) : [];
+      if (!safeMetrics.length) return "below";
+      const stemDownCount = safeMetrics.filter((metric) => metric.stemDirection === "down").length;
+      return stemDownCount > safeMetrics.length / 2 ? "above" : "below";
+    }
+
+    function drawSongPreviewCurve(ctx, startX, startY, endX, endY, side, color, width = 1.7, height = 16) {
+      if (!Number.isFinite(startX) || !Number.isFinite(endX)) return;
+      const midX = (startX + endX) / 2;
+      const controlY = side === "above"
+        ? Math.min(startY, endY) - height
+        : Math.max(startY, endY) + height;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.quadraticCurveTo(midX, controlY, endX, endY);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function getSongPreviewHeadCurvePoint(metric, side, edge) {
+      const xOffset = edge === "start" ? 6 : -6;
+      const yOffset = side === "above" ? -7 : 8;
+      return {
+        x: metric.x + xOffset,
+        y: metric.y + yOffset
+      };
+    }
+
+    function drawTieSegments(ctx, lineMetrics, lineContext, elapsedMs) {
+      const metricMap = new Map((lineMetrics || []).map((metric) => [Number(metric.noteIndex), metric]));
+      const visibleMeasureIndexes = new Set((lineContext.lineMeasures || []).map((measure) => Number(measure.index)));
+      const lineHasNote = (note) => (lineContext.lineMeasures || []).some((measure) =>
+        Number(note?.startBeat) >= Number(measure.startBeat) - 0.001 &&
+        Number(note?.startBeat) < Number(measure.endBeat) - 0.001
+      );
+
+      (shortSongPreviewState.tieSegments || []).forEach((segment) => {
+        if (!segment.valid) return;
+        const fromMetric = metricMap.get(Number(segment.fromIndex));
+        const toMetric = metricMap.get(Number(segment.toIndex));
+        const fromNote = shortSongPreviewState.timeline?.notes?.[segment.fromIndex];
+        const toNote = shortSongPreviewState.timeline?.notes?.[segment.toIndex];
+        const hasVisibleEnd = Boolean(fromMetric || toMetric);
+        if (!hasVisibleEnd) return;
+
+        const side = getSongPreviewCurveSide([fromMetric, toMetric].filter(Boolean));
+        const color = getSongPreviewCurveColor([fromNote, toNote], elapsedMs);
+
+        if (fromMetric && toMetric) {
+          const start = getSongPreviewHeadCurvePoint(fromMetric, side, "start");
+          const end = getSongPreviewHeadCurvePoint(toMetric, side, "end");
+          drawSongPreviewCurve(ctx, start.x, start.y, end.x, end.y, side, color, 1.8, 13);
+          return;
+        }
+
+        if (fromMetric && !toMetric && !visibleMeasureIndexes.has(getShortSongPreviewMeasureIndexAt(Number(toNote?.startMs) || 0))) {
+          const start = getSongPreviewHeadCurvePoint(fromMetric, side, "start");
+          drawSongPreviewCurve(ctx, start.x, start.y, lineContext.rightX - 10, start.y, side, color, 1.8, 12);
+          return;
+        }
+
+        if (!fromMetric && toMetric && !lineHasNote(fromNote)) {
+          const end = getSongPreviewHeadCurvePoint(toMetric, side, "end");
+          drawSongPreviewCurve(ctx, lineContext.leftX + 6, end.y, end.x, end.y, side, color, 1.8, 12);
+        }
+      });
+    }
+
+    function drawSlurSegments(ctx, lineMetrics, lineContext, elapsedMs) {
+      const metricMap = new Map((lineMetrics || []).map((metric) => [Number(metric.noteIndex), metric]));
+      (shortSongPreviewState.slurGroups || []).forEach((group) => {
+        const notes = group.notes || [];
+        const visible = notes
+          .map((note) => metricMap.get(Number(note.noteIndex)))
+          .filter(Boolean)
+          .sort((a, b) => a.noteIndex - b.noteIndex);
+        if (!visible.length) return;
+
+        const firstVisible = visible[0];
+        const lastVisible = visible[visible.length - 1];
+        const firstNoteIndex = Number(notes[0]?.noteIndex);
+        const lastNoteIndex = Number(notes[notes.length - 1]?.noteIndex);
+        const side = getSongPreviewCurveSide(visible);
+        const color = getSongPreviewCurveColor(notes, elapsedMs);
+        const start = Number(firstVisible.noteIndex) === firstNoteIndex
+          ? getSongPreviewHeadCurvePoint(firstVisible, side, "start")
+          : { x: lineContext.leftX + 6, y: firstVisible.y + (side === "above" ? -7 : 8) };
+        const end = Number(lastVisible.noteIndex) === lastNoteIndex
+          ? getSongPreviewHeadCurvePoint(lastVisible, side, "end")
+          : { x: lineContext.rightX - 10, y: lastVisible.y + (side === "above" ? -7 : 8) };
+
+        if (Math.abs(end.x - start.x) < 8) return;
+        drawSongPreviewCurve(ctx, start.x, start.y, end.x, end.y, side, color, 1.55, 18);
+      });
+    }
+
+    function drawShortSongPreviewScore() {
+      const state = shortSongPreviewState;
+      const timeline = state.timeline;
+      if (!timeline) return;
+
+      const elapsedMs = getShortSongPreviewElapsedMs();
+      const currentMeasureIndex = getShortSongPreviewMeasureIndexAt(elapsedMs);
+      const activePage = getSongPreviewPageForMeasureIndex(currentMeasureIndex);
+      if (state.playing && !state.userSelectedPage && activePage !== state.currentPage) {
+        state.currentPage = activePage;
+        state.userSelectedPage = false;
+        renderShortSongPreviewScore(state.song, state.timeline);
+        return;
+      }
+      state.canvases.forEach((canvas, lineIndex) => {
+        const ctx = canvas.getContext("2d");
+        const measureIsVisible = (state.visibleLines || []).some((line) =>
+          line.some((measure) => Number(measure.index) === Number(currentMeasureIndex))
+        );
+        const currentLineIndex = measureIsVisible ? getShortSongPreviewLineForMeasure(currentMeasureIndex) : -1;
+        canvas.classList.toggle("is-current-line", state.playing && lineIndex === currentLineIndex);
+        const lineMeasures = state.visibleLines?.[lineIndex] || [];
+        const layout = drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline);
+        const lineMetrics = [];
+        const drawItems = [];
+
+        lineMeasures.forEach((measure, localMeasureIndex) => {
+          const cell = layout.measureCells?.[localMeasureIndex] || {
+            left: layout.leftX + localMeasureIndex * layout.measureWidth,
+            right: layout.leftX + (localMeasureIndex + 1) * layout.measureWidth,
+            width: layout.measureWidth
+          };
+          const measureLeft = cell.left;
+          const measureRight = cell.right;
+          const measureWidth = cell.width;
+          const measureBeatSpan = Math.max(0.25, measure.endBeat - measure.beat || Number(timeline.measureBeats) || 4);
+          const measurePadding = Math.min(22, Math.max(8, measureWidth * 0.2));
+          const noteMetrics = measure.notes.map((note) => {
+            const globalIndex = timeline.notes.indexOf(note);
+            const offsetBeat = Math.max(0, (Number(note.startBeat) || 0) - measure.beat);
+            const beatRatio = Math.min(1, Math.max(0, offsetBeat / measureBeatSpan));
+            return {
+              note,
+              globalIndex,
+              noteX: measureLeft + measurePadding + beatRatio * (measureWidth - measurePadding * 2) + (note.explicitAccidental ? 8 : 0)
+            };
+          });
+
+          for (let i = 1; i < noteMetrics.length; i += 1) {
+            const previous = noteMetrics[i - 1];
+            const current = noteMetrics[i];
+            const hasSixteenth = Number(previous.note?.beat || 1) < 0.5 || Number(current.note?.beat || 1) < 0.5;
+            const hasEighth = Number(previous.note?.beat || 1) < 1 || Number(current.note?.beat || 1) < 1;
+            const minGap = hasSixteenth ? 12 : (hasEighth ? 15 : 18);
+            if (current.noteX - previous.noteX < minGap) {
+              current.noteX = previous.noteX + minGap;
+            }
+          }
+
+          for (let i = noteMetrics.length - 1; i >= 0; i -= 1) {
+            const current = noteMetrics[i];
+            const rightLimit = measureRight - 18;
+            if (current.noteX > rightLimit) current.noteX = rightLimit;
+            const previous = noteMetrics[i - 1];
+            if (previous) {
+              const hasSixteenth = Number(previous.note?.beat || 1) < 0.5 || Number(current.note?.beat || 1) < 0.5;
+              const hasEighth = Number(previous.note?.beat || 1) < 1 || Number(current.note?.beat || 1) < 1;
+              const minGap = hasSixteenth ? 12 : (hasEighth ? 15 : 18);
+              previous.noteX = Math.min(previous.noteX, current.noteX - minGap);
+            }
+          }
+
+          noteMetrics.forEach(({ note, globalIndex, noteX }) => {
+            const colors = getShortSongPreviewNoteColors(note, globalIndex, elapsedMs);
+            const y = note.note
+              ? getShortSongPreviewNoteY(note.note, layout.bottomLineY, layout.gap)
+              : layout.topLineY + 22;
+            const metric = {
+              note,
+              noteIndex: Number(note.noteIndex),
+              globalIndex,
+              x: noteX,
+              y,
+              headLeft: noteX - 4.4,
+              headRight: noteX + 4.4,
+              stemDirection: note.note && shouldStemDown(note.note) ? "down" : "up",
+              rowIndex: lineIndex,
+              pageIndex: state.currentPage,
+              tieGroupId: note.tieGroupId,
+              slurGroupId: note.slurGroupId,
+              measureLeft,
+              measureRight,
+              measureWidth,
+              colors
+            };
+            if (note.note) lineMetrics.push(metric);
+            drawItems.push(metric);
+          });
+        });
+
+        const lineContext = {
+          lineMeasures,
+          leftX: layout.leftX,
+          rightX: canvas.width - 22,
+          topLineY: layout.topLineY,
+          bottomLineY: layout.bottomLineY,
+          lineIndex,
+          pageIndex: state.currentPage
+        };
+        drawSlurSegments(ctx, lineMetrics, lineContext, elapsedMs);
+        drawTieSegments(ctx, lineMetrics, lineContext, elapsedMs);
+
+        drawItems.forEach((metric) => {
+            const { note, globalIndex, x: noteX, measureLeft, measureRight, measureWidth, colors } = metric;
+
+            if (colors.glow) {
+              ctx.save();
+              ctx.fillStyle = colors.glow;
+              ctx.beginPath();
+              ctx.arc(noteX, layout.topLineY + 22, 15, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+            }
+
+            if (!note.note) {
+              drawRest(ctx, noteX, layout.topLineY, note.beat, {
+                color: colors.restColor,
+                scale: 0.56,
+                staffGap: layout.gap
+              });
+              if (colors.glow) {
+                ctx.save();
+                ctx.strokeStyle = "rgba(249, 115, 22, 0.72)";
+                ctx.lineWidth = 1.6;
+                ctx.strokeRect(measureLeft + 5, layout.topLineY - 8, measureWidth - 10, layout.gap * 4 + 16);
+                ctx.restore();
+              }
+              return;
+            }
+
+            const y = metric.y;
+            const bodyWidth = Math.min(
+              getNoteBodyWidthByBeat(note.beat) * 0.24,
+              Math.max(12, measureRight - noteX - 14)
+            );
+            drawSingleNoteSymbol(ctx, note, noteX, y, layout.bottomLineY, bodyWidth, {
+              maxRightX: measureRight - 8,
+              noteColor: colors.noteColor,
+              barColor: colors.barColor,
+              dotColor: colors.noteColor,
+              scale: 0.58,
+              staffGap: layout.gap,
+              noteHeadWidth: 8.8,
+              noteHeadHeight: 5.8,
+              stemLength: 38.5,
+              stemWidth: 1.7,
+              flagScale: 0.45,
+              durationBarHeight: 3.6,
+              noteNameFontSize: 11,
+              noteNameYOffset: 24,
+              noteNameBoxHeight: 14,
+              noteNameBoxPadding: 7
+            });
+        });
+      });
+
+      updateShortSongPreviewProgress(elapsedMs);
+    }
+
+    function renderShortSongPreviewScore(song, timeline) {
+      const scoreEl = document.getElementById("shortSongPreviewScore");
+      const bodyEl = document.getElementById("shortSongPreviewBody");
+      if (!scoreEl) return;
+
+      const measures = shortSongPreviewState.measures?.length
+        ? shortSongPreviewState.measures
+        : buildSongMeasures(song, timeline);
+      const normalMeasureCount = measures.filter((measure) => !measure.isPickup).length;
+      shortSongPreviewState.measures = measures;
+      shortSongPreviewState.totalPages = Math.max(1, Math.ceil(Math.max(1, normalMeasureCount) / 16));
+      shortSongPreviewState.currentPage = Math.min(
+        Math.max(0, shortSongPreviewState.currentPage || 0),
+        shortSongPreviewState.totalPages - 1
+      );
+      shortSongPreviewState.visibleLines = getSongPreviewVisibleLines(shortSongPreviewState.currentPage);
+      shortSongPreviewState.canvases = [];
+      scoreEl.innerHTML = "";
+
+      const lineCount = Math.max(1, shortSongPreviewState.visibleLines.length);
+      if (bodyEl) bodyEl.classList.remove("scrollable");
+      for (let lineIndex = 0; lineIndex < lineCount; lineIndex += 1) {
+        const canvas = document.createElement("canvas");
+        canvas.className = "songPreviewLine";
+        canvas.width = 1040;
+        canvas.height = 120;
+        canvas.dataset.lineIndex = String(lineIndex);
+        scoreEl.appendChild(canvas);
+        shortSongPreviewState.canvases.push(canvas);
+      }
+
+      drawShortSongPreviewScore();
+    }
+
+    function updateShortSongPreviewProgress(elapsedMs = getShortSongPreviewElapsedMs()) {
+      const state = shortSongPreviewState;
+      const totalMs = Math.max(1, Number(state.timeline?.totalMs) || 1);
+      const measureIndex = getShortSongPreviewMeasureIndexAt(elapsedMs);
+      const currentMeasure = state.measures?.[measureIndex];
+      const currentDisplayMeasure = currentMeasure?.isPickup ? 1 : (Number(currentMeasure?.displayNumber) || 1);
+      const totalMeasures = Math.max(1, getSongPreviewMeasureCount());
+      const progressFill = document.getElementById("shortSongPreviewProgressFill");
+      const progressText = document.getElementById("shortSongPreviewProgressText");
+      const tempoValue = document.getElementById("shortSongPreviewTempoValue");
+      const tempoSlider = document.getElementById("shortSongPreviewTempo");
+      const countBadge = document.getElementById("shortSongPreviewCountBadge");
+      const pageControls = document.getElementById("shortSongPreviewPageControls");
+      const pageText = document.getElementById("shortSongPreviewPageText");
+      const playBtn = state.overlay?.querySelector("[data-preview-action='play']");
+      const pauseBtn = state.overlay?.querySelector("[data-preview-action='pause']");
+      const stopBtn = state.overlay?.querySelector("[data-preview-action='stop']");
+
+      if (progressFill) {
+        progressFill.style.width = `${Math.min(100, Math.max(0, elapsedMs / totalMs * 100))}%`;
+      }
+      if (progressText) {
+        progressText.textContent = state.countInActive
+          ? `${state.countInValue} 카운트`
+          : state.playing
+          ? `${currentDisplayMeasure}마디 연주 중`
+          : `${currentDisplayMeasure} / ${totalMeasures}마디`;
+      }
+      if (pageControls) {
+        pageControls.classList.toggle("hidden", state.totalPages <= 1);
+        const prevPageBtn = pageControls.querySelector("[data-preview-page-action='prev']");
+        const nextPageBtn = pageControls.querySelector("[data-preview-page-action='next']");
+        if (prevPageBtn) prevPageBtn.disabled = state.currentPage <= 0;
+        if (nextPageBtn) nextPageBtn.disabled = state.currentPage >= state.totalPages - 1;
+      }
+      if (pageText) {
+        pageText.textContent = `${state.currentPage + 1} / ${Math.max(1, state.totalPages)}`;
+      }
+      if (tempoValue) {
+        tempoValue.textContent = `${(Number(state.playbackRate) || 1).toFixed(2)}x`;
+      }
+      if (tempoSlider && document.activeElement !== tempoSlider) {
+        tempoSlider.value = String(Number(state.playbackRate) || 1);
+      }
+      if (countBadge) {
+        const isCounting = state.countInActive && state.countInValue;
+        countBadge.textContent = isCounting ? state.countInValue : "";
+        countBadge.classList.toggle("is-counting", Boolean(isCounting));
+        countBadge.setAttribute("aria-label", isCounting ? `${state.countInValue} 카운트` : "카운트 숨김");
+      }
+      if (playBtn) {
+        playBtn.textContent = state.countInActive
+          ? "카운트 중"
+          : (state.paused ? "계속 듣기" : "연주곡 듣기");
+        playBtn.disabled = state.countInActive;
+      }
+      if (pauseBtn) {
+        pauseBtn.disabled = state.countInActive || !state.playing;
+      }
+      if (stopBtn) {
+        stopBtn.disabled = !state.countInActive && !state.playing && !state.paused && elapsedMs <= 1;
+      }
+    }
+
+    function setShortSongPreviewPlaybackRate(value) {
+      const state = shortSongPreviewState;
+      const nextRate = Math.min(1.4, Math.max(0.6, Number(value) || 1));
+      const currentRate = Number(state.playbackRate) || 1;
+      if (Math.abs(nextRate - currentRate) < 0.001) return;
+
+      const wasPlaying = state.playing;
+      if (wasPlaying) {
+        state.positionMs = getShortSongPreviewElapsedMs();
+      }
+      state.playbackRate = nextRate;
+
+      if (wasPlaying) {
+        state.runId += 1;
+        if (state.timer) clearTimeout(state.timer);
+        if (state.raf) cancelAnimationFrame(state.raf);
+        state.timer = null;
+        state.raf = null;
+        stopShortSongPreviewNodes();
+        state.clockStartMs = state.positionMs;
+        state.clockStartAudioTime = state.audioCtx?.currentTime || 0;
+        state.playing = true;
+        startShortSongPreviewAnimation(state.runId);
+        scheduleShortSongPreviewStep(state.runId);
+      }
+
+      updateShortSongPreviewProgress();
+    }
+
+    function scrollShortSongPreviewToCurrentLine(force = false) {
+      const state = shortSongPreviewState;
+      const body = document.getElementById("shortSongPreviewBody");
+      if (!body) return;
+      if ((state.canvases || []).length <= 4 && body.scrollHeight <= body.clientHeight + 4) return;
+      const measureIndex = getShortSongPreviewMeasureIndexAt(getShortSongPreviewElapsedMs());
+      const lineIndex = getShortSongPreviewLineForMeasure(measureIndex);
+      const lineHasMeasure = (state.visibleLines?.[lineIndex] || []).some((measure) => Number(measure.index) === Number(measureIndex));
+      if (!lineHasMeasure) return;
+      if (!force && state.lastAutoScrollLine === lineIndex) return;
+      if (!force && performance.now() - state.userScrolledAt < 1600) return;
+
+      const canvas = state.canvases[lineIndex];
+      if (!canvas) return;
+      state.lastAutoScrollLine = lineIndex;
+      const targetTop = canvas.offsetTop - Math.max(0, (body.clientHeight - canvas.clientHeight) / 2);
+      body.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+    }
+
+    function openSongPreviewFromPractice() {
+      const song = app.currentSong || getSelectedSong();
+      return openSongPreview(song, { pausePractice: true });
+    }
+
+    async function openSongPreview(song, options = {}) {
+      if (!song || currentPracticeMode === "fingering") return;
+      if (typeof isFingeringPracticeMode === "function" && isFingeringPracticeMode()) return;
+      const previewSong = normalizeSongPreviewData(song);
+      if (!previewSong.notation) return;
+
+      if (options.pausePractice !== false && practiceRunning && currentTimeline && !practicePaused) {
+        pauseSongPractice();
+      }
+
+      const overlay = ensureShortSongPreviewModal();
+      stopShortSongPreview({ keepPosition: false });
+      const timeline = buildSongTimeline(previewSong, Number(previewSong.bpm) || 80);
+      const measures = buildSongMeasures(previewSong, timeline);
+      const previewPlayback = buildSongPreviewPlaybackEvents(timeline, previewSong);
+      shortSongPreviewState.song = previewSong;
+      shortSongPreviewState.timeline = timeline;
+      shortSongPreviewState.measures = measures;
+      shortSongPreviewState.visibleLines = [];
+      shortSongPreviewState.playbackEvents = previewPlayback.events;
+      shortSongPreviewState.notePlaybackEventMap = previewPlayback.eventMap;
+      shortSongPreviewState.tieSegments = previewPlayback.tieSegments;
+      shortSongPreviewState.slurGroups = previewPlayback.slurGroups;
+      shortSongPreviewState.tieWarnings = previewPlayback.warnings;
+      if (previewPlayback.warnings.length) {
+        console.warn("잘못된 붙임줄 데이터:", previewPlayback.warnings);
+      }
+      shortSongPreviewState.currentPage = 0;
+      shortSongPreviewState.totalPages = Math.max(1, Math.ceil(Math.max(1, measures.filter((measure) => !measure.isPickup).length) / 16));
+      shortSongPreviewState.userSelectedPage = false;
+      shortSongPreviewState.positionMs = 0;
+      shortSongPreviewState.currentIndex = -1;
+      shortSongPreviewState.paused = false;
+      shortSongPreviewState.playing = false;
+      shortSongPreviewState.countInActive = false;
+      shortSongPreviewState.countInValue = "";
+      shortSongPreviewState.lastAutoScrollLine = -1;
+      shortSongPreviewState.previousFocus = document.activeElement;
+
+      const titleEl = document.getElementById("shortSongPreviewTitle");
+      const metaEl = document.getElementById("shortSongPreviewMeta");
+      const tempoSlider = document.getElementById("shortSongPreviewTempo");
+      if (tempoSlider) tempoSlider.value = String(shortSongPreviewState.playbackRate || 1);
+      if (titleEl) titleEl.textContent = `🎼 ${previewSong.title || "연주곡 확인"}`;
+
+      const measureCount = measures.filter((measure) => !measure.isPickup).length || 1;
+      const keyText = normalizeKeySignature(previewSong.keySignature || timeline.keySignature || "C");
+      const metaParts = [
+        timeline.timeSignature || previewSong.timeSignature || "4/4",
+        `BPM ${Number(previewSong.bpm) || 80}`,
+        `전체 ${measureCount}마디`
+      ];
+      if (keyText && keyText !== "C") metaParts.push(`조표 ${keyText}`);
+      if (previewSong.composer) metaParts.push(previewSong.composer);
+      if (metaEl) {
+        metaEl.innerHTML = "";
+        metaParts.forEach((part) => {
+          const chip = document.createElement("span");
+          chip.className = "songPreviewMetaChip";
+          chip.textContent = part;
+          metaEl.appendChild(chip);
+        });
+      }
+
+      renderShortSongPreviewScore(previewSong, timeline);
+      updateShortSongPreviewProgress(0);
+
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        overlay.querySelector("[data-preview-action='play']")?.focus();
+      });
+    }
+
+    async function openShortSongPreviewModal() {
+      return openSongPreviewFromPractice();
+    }
+
+    function closeShortSongPreviewModal() {
+      const overlay = shortSongPreviewState.overlay;
+      stopShortSongPreview({ keepPosition: false });
+      if (overlay) {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+      document.body.style.overflow = "";
+
+      const previousFocus = shortSongPreviewState.previousFocus;
+      shortSongPreviewState.previousFocus = null;
+      if (previousFocus && typeof previousFocus.focus === "function") {
+        previousFocus.focus();
+      }
+    }
+
+    async function getShortSongPreviewAudioContext() {
+      if (!shortSongPreviewState.audioCtx || shortSongPreviewState.audioCtx.state === "closed") {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        shortSongPreviewState.audioCtx = Ctx ? new Ctx() : null;
+      }
+      if (shortSongPreviewState.audioCtx?.state === "suspended") {
+        await shortSongPreviewState.audioCtx.resume();
+      }
+      return shortSongPreviewState.audioCtx;
+    }
+
+    async function loadShortSongPreviewBuffer(noteName) {
+      const safeNote = String(noteName || "").toUpperCase().replace(/[^A-G0-9]/g, "");
+      if (!safeNote) return null;
+      if (shortSongPreviewState.buffers.has(safeNote)) {
+        return shortSongPreviewState.buffers.get(safeNote);
+      }
+
+      try {
+        const ctx = await getShortSongPreviewAudioContext();
+        if (!ctx) return null;
+        const response = await fetch(`audio/${safeNote}.wav`);
+        if (!response.ok) throw new Error(`missing audio ${safeNote}`);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+        shortSongPreviewState.buffers.set(safeNote, audioBuffer);
+        return audioBuffer;
+      } catch (error) {
+        shortSongPreviewState.buffers.set(safeNote, null);
+        return null;
+      }
+    }
+
+    function stopShortSongPreviewNodes() {
+      shortSongPreviewState.activeNodes.forEach((node) => {
+        try {
+          node.stop?.();
+        } catch {}
+        try {
+          node.disconnect?.();
+        } catch {}
+      });
+      shortSongPreviewState.activeNodes = [];
+    }
+
+    async function playShortSongPreviewNote(note, durationMs, offsetMs = 0, options = {}) {
+      if (!note?.note) return;
+      const ctx = await getShortSongPreviewAudioContext();
+      if (!ctx) return;
+
+      const midi = noteNameToMidi(note.note, note.effectiveAccidental);
+      const baseNote = String(note.note || "").toUpperCase().replace(/[^A-G0-9]/g, "");
+      const buffer = await loadShortSongPreviewBuffer(baseNote);
+      const now = ctx.currentTime + 0.015;
+      const durationSec = Math.max(0.04, Number(durationMs || 0) / 1000);
+      const releaseSec = options.slurContinue
+        ? Math.min(0.045, Math.max(0.016, durationSec * 0.14))
+        : Math.min(0.055, Math.max(0.018, durationSec * 0.18));
+      const offsetSec = Math.max(0, Number(offsetMs || 0) / 1000);
+      const skipWavAttack = Boolean(options.slurContinue) || offsetSec >= 0.08;
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0.0001, now);
+      masterGain.gain.linearRampToValueAtTime(options.slurContinue ? 0.82 : 0.92, now + (options.slurContinue ? 0.032 : 0.018));
+      masterGain.gain.setValueAtTime(options.slurContinue ? 0.82 : 0.92, Math.max(now + 0.02, now + durationSec - releaseSec));
+      masterGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
+      masterGain.connect(ctx.destination);
+      shortSongPreviewState.activeNodes.push(masterGain);
+
+      if (Number.isFinite(midi)) {
+        const oscillator = ctx.createOscillator();
+        const oscillatorGain = ctx.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = 440 * Math.pow(2, (midi - 69) / 12);
+        oscillatorGain.gain.setValueAtTime(0.0001, now);
+        oscillatorGain.gain.linearRampToValueAtTime(buffer && !skipWavAttack ? 0.28 : 0.46, now + (options.slurContinue ? 0.045 : 0.035));
+        oscillatorGain.gain.setValueAtTime(buffer && !skipWavAttack ? 0.28 : 0.46, Math.max(now + 0.04, now + durationSec - releaseSec));
+        oscillatorGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
+        oscillator.connect(oscillatorGain);
+        oscillatorGain.connect(masterGain);
+        oscillator.start(now);
+        oscillator.stop(now + durationSec + 0.01);
+        oscillator.onended = () => {
+          try { oscillator.disconnect(); } catch {}
+          try { oscillatorGain.disconnect(); } catch {}
+        };
+        shortSongPreviewState.activeNodes.push(oscillator, oscillatorGain);
+      }
+
+      if (buffer && !skipWavAttack) {
+        const source = ctx.createBufferSource();
+        const sourceGain = ctx.createGain();
+        source.buffer = buffer;
+        if (Number.isFinite(midi)) {
+          const naturalMidi = noteNameToMidi(note.note, null);
+          if (Number.isFinite(naturalMidi)) {
+            source.playbackRate.value = Math.pow(2, (midi - naturalMidi) / 12);
+          }
+        }
+        source.loop = false;
+        const sourceDurationSec = Math.min(durationSec, Math.max(0.04, buffer.duration));
+        const sourceReleaseSec = Math.min(0.05, Math.max(0.014, sourceDurationSec * 0.22));
+        sourceGain.gain.setValueAtTime(0.0001, now);
+        sourceGain.gain.linearRampToValueAtTime(0.78, now + 0.012);
+        sourceGain.gain.setValueAtTime(0.78, Math.max(now + 0.02, now + sourceDurationSec - sourceReleaseSec));
+        sourceGain.gain.linearRampToValueAtTime(0.0001, now + sourceDurationSec);
+        source.connect(sourceGain);
+        sourceGain.connect(masterGain);
+        source.start(now, 0);
+        source.stop(now + sourceDurationSec + 0.01);
+        source.onended = () => {
+          try { source.disconnect(); } catch {}
+          try { sourceGain.disconnect(); } catch {}
+        };
+        shortSongPreviewState.activeNodes.push(source, sourceGain);
+      }
+
+      window.setTimeout(() => {
+        try { masterGain.disconnect(); } catch {}
+      }, Math.ceil((durationSec + 0.08) * 1000));
+    }
+
+    function getShortSongPreviewElapsedMs() {
+      const state = shortSongPreviewState;
+      if (!state.playing || !state.audioCtx) return Math.max(0, state.positionMs || 0);
+      const delta = (state.audioCtx.currentTime - state.clockStartAudioTime) * 1000 * (Number(state.playbackRate) || 1);
+      return Math.min(Number(state.timeline?.totalMs) || 0, Math.max(0, state.clockStartMs + delta));
+    }
+
+    function findShortSongPreviewNoteIndex(positionMs) {
+      const notes = shortSongPreviewState.playbackEvents?.length
+        ? shortSongPreviewState.playbackEvents
+        : (shortSongPreviewState.timeline?.notes || []);
+      const activeIndex = notes.findIndex((note) => positionMs >= note.startMs - 1 && positionMs < note.startMs + note.durMs - 1);
+      if (activeIndex >= 0) return activeIndex;
+      return notes.findIndex((note) => note.startMs + note.durMs > positionMs + 1);
+    }
+
+    function startShortSongPreviewAnimation(runId) {
+      if (shortSongPreviewState.raf) cancelAnimationFrame(shortSongPreviewState.raf);
+
+      const tick = () => {
+        if (runId !== shortSongPreviewState.runId) return;
+        const elapsedMs = getShortSongPreviewElapsedMs();
+        shortSongPreviewState.currentIndex = findShortSongPreviewNoteIndex(elapsedMs);
+        drawShortSongPreviewScore();
+        scrollShortSongPreviewToCurrentLine(false);
+        if (shortSongPreviewState.playing) {
+          shortSongPreviewState.raf = requestAnimationFrame(tick);
+        }
+      };
+
+      shortSongPreviewState.raf = requestAnimationFrame(tick);
+    }
+
+    async function scheduleShortSongPreviewStep(runId) {
+      if (runId !== shortSongPreviewState.runId || !shortSongPreviewState.playing) return;
+      const state = shortSongPreviewState;
+      const notes = state.playbackEvents?.length ? state.playbackEvents : (state.timeline?.notes || []);
+      const positionMs = state.positionMs;
+      const noteIndex = findShortSongPreviewNoteIndex(positionMs);
+
+      if (noteIndex < 0 || positionMs >= (Number(state.timeline?.totalMs) || 0) - 1) {
+        stopShortSongPreview({ keepPosition: false });
+        return;
+      }
+
+      const note = notes[noteIndex];
+      const noteEndMs = (Number(note.startMs) || 0) + (Number(note.durMs) || 0);
+      const waitMs = Math.max(0, (Number(note.startMs) || 0) - positionMs);
+      const playbackRate = Math.max(0.1, Number(state.playbackRate) || 1);
+      const realWaitMs = waitMs / playbackRate;
+      const previousNote = notes[noteIndex - 1];
+      const nextNote = notes[noteIndex + 1];
+      const slurContinue = Boolean(
+        note?.note &&
+        previousNote?.note &&
+        note.slurGroupId &&
+        previousNote.slurGroupId === note.slurGroupId
+      );
+      const slurToNext = Boolean(
+        note?.note &&
+        nextNote?.note &&
+        note.slurGroupId &&
+        nextNote.slurGroupId === note.slurGroupId
+      );
+
+      state.currentIndex = noteIndex;
+      drawShortSongPreviewScore();
+      scrollShortSongPreviewToCurrentLine(false);
+
+      state.timer = setTimeout(async () => {
+        if (runId !== state.runId || !state.playing) return;
+        const currentScoreMs = getShortSongPreviewElapsedMs();
+        const offsetMs = Math.max(0, currentScoreMs - (Number(note.startMs) || 0));
+        const remainingScoreMs = Math.max(1, noteEndMs - Math.max(currentScoreMs, Number(note.startMs) || 0));
+        const remainingRealMs = remainingScoreMs / playbackRate;
+        const overlapMs = slurToNext ? Math.min(40, Math.max(20, remainingRealMs * 0.18)) : 0;
+        await playShortSongPreviewNote(note, remainingRealMs + overlapMs, offsetMs, {
+          slurContinue: slurContinue || offsetMs > 1
+        });
+        state.timer = setTimeout(() => {
+          if (runId !== state.runId || !state.playing) return;
+          state.positionMs = noteEndMs;
+          state.clockStartMs = state.positionMs;
+          state.clockStartAudioTime = state.audioCtx?.currentTime || 0;
+          scheduleShortSongPreviewStep(runId);
+        }, remainingRealMs);
+      }, realWaitMs);
+    }
+
+    function clearShortSongPreviewCountIn() {
+      const state = shortSongPreviewState;
+      if (state.countInTimer) {
+        clearTimeout(state.countInTimer);
+        state.countInTimer = null;
+      }
+      state.countInActive = false;
+      state.countInValue = "";
+    }
+
+    function getShortSongPreviewCountInNumbers() {
+      const timeSignature = shortSongPreviewState.timeline?.timeSignature || "4/4";
+      if (typeof getCountInNumbersByTimeSignature === "function") {
+        return getCountInNumbersByTimeSignature(timeSignature);
+      }
+      return String(timeSignature).trim() === "3/4" ? [3, 2, 1] : [4, 3, 2, 1];
+    }
+
+    async function startShortSongPreviewPlayback() {
+      const state = shortSongPreviewState;
+      if (!state.timeline) return;
+      await getShortSongPreviewAudioContext();
+      await Promise.all(
+        Array.from(new Set((state.timeline.notes || [])
+          .map((note) => note?.note)
+          .filter(Boolean)
+          .map((note) => String(note).toUpperCase().replace(/[^A-G0-9]/g, ""))))
+          .map((note) => loadShortSongPreviewBuffer(note))
+      );
+      stopShortSongPreviewNodes();
+      if (state.timer) clearTimeout(state.timer);
+      if (state.raf) cancelAnimationFrame(state.raf);
+
+      state.runId += 1;
+      state.playing = true;
+      state.paused = false;
+      state.userSelectedPage = false;
+      state.positionMs = Math.min(Math.max(0, state.positionMs || 0), Math.max(0, (Number(state.timeline.totalMs) || 0) - 1));
+      state.clockStartMs = state.positionMs;
+      state.clockStartAudioTime = state.audioCtx?.currentTime || 0;
+
+      startShortSongPreviewAnimation(state.runId);
+      scheduleShortSongPreviewStep(state.runId);
+      updateShortSongPreviewProgress(state.positionMs);
+    }
+
+    async function playShortSongPreview(options = {}) {
+      const state = shortSongPreviewState;
+      if (!state.timeline || state.countInActive) return;
+
+      const shouldCountIn = options.countIn !== false && !state.paused;
+      if (!shouldCountIn) {
+        await startShortSongPreviewPlayback();
+        return;
+      }
+
+      await getShortSongPreviewAudioContext();
+      stopShortSongPreviewNodes();
+      if (state.timer) clearTimeout(state.timer);
+      if (state.raf) cancelAnimationFrame(state.raf);
+
+      state.runId += 1;
+      const runId = state.runId;
+      const numbers = getShortSongPreviewCountInNumbers();
+      const beatMs = Math.max(120, (Number(state.timeline.beatMs) || 600) / (Number(state.playbackRate) || 1));
+      let index = 0;
+
+      state.playing = false;
+      state.paused = false;
+      state.countInActive = true;
+      state.currentIndex = -1;
+      state.userSelectedPage = false;
+
+      const tick = () => {
+        if (runId !== state.runId || !state.countInActive) return;
+
+        if (index >= numbers.length) {
+          clearShortSongPreviewCountIn();
+          startShortSongPreviewPlayback();
+          return;
+        }
+
+        state.countInValue = String(numbers[index]);
+        drawShortSongPreviewScore();
+        updateShortSongPreviewProgress(state.positionMs);
+        index += 1;
+        state.countInTimer = setTimeout(tick, beatMs);
+      };
+
+      tick();
+    }
+
+    function pauseShortSongPreview() {
+      const state = shortSongPreviewState;
+      if (!state.timeline) return;
+      if (state.countInActive) return;
+      if (!state.playing) {
+        state.paused = true;
+        updateShortSongPreviewProgress();
+        return;
+      }
+
+      state.positionMs = getShortSongPreviewElapsedMs();
+      state.playing = false;
+      state.paused = true;
+      state.runId += 1;
+      if (state.timer) clearTimeout(state.timer);
+      if (state.raf) cancelAnimationFrame(state.raf);
+      state.timer = null;
+      state.raf = null;
+      stopShortSongPreviewNodes();
+      state.currentIndex = findShortSongPreviewNoteIndex(state.positionMs);
+      drawShortSongPreviewScore();
+    }
+
+    function stopShortSongPreview(options = {}) {
+      const keepPosition = options.keepPosition === true;
+      const state = shortSongPreviewState;
+      state.runId += 1;
+      state.playing = false;
+      state.paused = false;
+      clearShortSongPreviewCountIn();
+      if (state.timer) clearTimeout(state.timer);
+      if (state.raf) cancelAnimationFrame(state.raf);
+      state.timer = null;
+      state.raf = null;
+      stopShortSongPreviewNodes();
+      if (!keepPosition) {
+        state.positionMs = 0;
+        state.currentIndex = -1;
+        state.currentPage = 0;
+        state.userSelectedPage = false;
+      }
+      renderShortSongPreviewScore(state.song, state.timeline);
+    }
+
+    function moveShortSongPreviewMeasure(delta) {
+      const state = shortSongPreviewState;
+      if (!state.timeline || !state.measures.length) return;
+      const wasPlaying = state.playing;
+      const currentMs = getShortSongPreviewElapsedMs();
+      const currentMeasureIndex = getShortSongPreviewMeasureIndexAt(currentMs);
+      const currentMeasure = state.measures[currentMeasureIndex];
+      const currentDisplayNumber = currentMeasure?.isPickup ? 1 : (Number(currentMeasure?.displayNumber) || 1);
+      const totalMeasures = getSongPreviewMeasureCount();
+      const targetDisplayNumber = Math.min(
+        totalMeasures,
+        Math.max(1, currentDisplayNumber + Number(delta || 0))
+      );
+      const nextMeasureIndex = state.measures.findIndex((measure) => !measure.isPickup && Number(measure.displayNumber) === targetDisplayNumber);
+      if (nextMeasureIndex < 0) return;
+      state.positionMs = state.measures[nextMeasureIndex]?.timeMs || 0;
+      state.currentIndex = findShortSongPreviewNoteIndex(state.positionMs);
+      state.runId += 1;
+      clearShortSongPreviewCountIn();
+      state.currentPage = getSongPreviewPageForMeasureIndex(nextMeasureIndex);
+      state.userSelectedPage = false;
+      if (state.timer) clearTimeout(state.timer);
+      if (state.raf) cancelAnimationFrame(state.raf);
+      state.timer = null;
+      state.raf = null;
+      stopShortSongPreviewNodes();
+      drawShortSongPreviewScore();
+      scrollShortSongPreviewToCurrentLine(true);
+      if (wasPlaying) {
+        playShortSongPreview({ countIn: false });
+      } else {
+        state.paused = true;
+        updateShortSongPreviewProgress(state.positionMs);
+      }
+    }
+
+    function restartShortSongPreview() {
+      shortSongPreviewState.runId += 1;
+      clearShortSongPreviewCountIn();
+      shortSongPreviewState.positionMs = 0;
+      shortSongPreviewState.currentIndex = 0;
+      shortSongPreviewState.currentPage = 0;
+      shortSongPreviewState.userSelectedPage = false;
+      playShortSongPreview();
     }
 
     function getDetectedMidiValue() {
@@ -22756,6 +24882,8 @@ function startBasicPractice() {
         renderFingeringPracticeFrame();
         updateFingeringStartButtonState();
       }
+
+      updateSongPreviewButtonVisibility();
     }
 
     function isFingeringPracticeMode() {
