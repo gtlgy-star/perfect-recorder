@@ -24,12 +24,13 @@ const LOCAL_SHORT_SONGS = [
     notation: "E5/1 E5/1 F5/1 G5/1 G5/1 F5/1 E5/1 D5/1 C5/1 C5/1 D5/1 E5/1 E5/1 D5/1 D5/2 E5/1 E5/1 F5/1 G5/1 G5/1 F5/1 E5/1 D5/1 C5/1 C5/1 D5/1 E5/1 D5/1 C5/1 C5/2"
   },
   {
-    songId: "JAGEUNBYEOL",
-    title: "작은별",
-    bpm: 90,
+    songId: "HOT_CROSS_BUNS",
+    title: "핫 크로스 번",
+    bpm: 84,
     timeSignature: "4/4",
+    keySignature: "C",
     recorderImage: "",
-    notation: "C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 G5/1 G5/1 F5/1 F5/1 E5/1 E5/1 D5/2 C5/1 C5/1 G5/1 G5/1 A5/1 A5/1 G5/2 F5/1 F5/1 E5/1 E5/1 D5/1 D5/1 C5/2"
+    notation: "b/4 a/4 g/2 | b/4 a/4 g/2 | g/8 g/8 g/8 g/8 a/8 a/8 a/8 a/8 | b/4 a/4 g/2 | b/4 a/4 g/2 | b/4 a/4 g/2 |g/8 g/8 g/8 g/8 a/8 a/8 a/8 a/8 | b/4 a/4 g/2"
   },
   {
     songId: "NABIYA",
