@@ -3780,7 +3780,7 @@ button:disabled {
 
     .songPreviewControls {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(8, minmax(0, 1fr));
       gap: 7px;
     }
 
@@ -3831,11 +3831,349 @@ button:disabled {
       box-shadow: none;
     }
 
+    .songPreviewControls button[data-preview-action="print"] {
+      background: linear-gradient(180deg, #F4FBFF 0%, #DDF2FF 52%, #BCE7FF 100%);
+      color: #24345B;
+      border-color: rgba(131, 201, 244, 0.72);
+      box-shadow: 0 6px 14px rgba(131, 201, 244, 0.22);
+    }
+
+    .songPreviewControls button[data-preview-action="print"]:not(:disabled):hover {
+      background: linear-gradient(180deg, #FFFFFF 0%, #EAF8FF 52%, #CBEFFF 100%);
+      border-color: rgba(121, 104, 223, 0.42);
+      transform: translateY(-1px);
+    }
+
     .songPreviewControls button:disabled {
       opacity: 0.46;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
+    }
+
+    #songPrintRoot {
+      display: block;
+      position: fixed;
+      left: -10000px;
+      top: 0;
+      width: 186mm;
+      height: auto;
+      overflow: visible;
+      pointer-events: none;
+      background: #FFFFFF;
+    }
+
+    .songPrintPage {
+      box-sizing: border-box;
+      width: 186mm;
+      min-height: 274mm;
+      margin: 0 auto;
+      padding: 0;
+      color: #26385F;
+      background: #FFFFFF;
+      break-after: page;
+      page-break-after: always;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .songPrintPage:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .songPrintHero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #D9E2F1;
+      background: linear-gradient(135deg, #EEE9FF 0%, #E6F6FF 100%);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .songPrintHeroTitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .songPrintHeroIcon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid rgba(121, 104, 223, 0.28);
+      font-size: 21px;
+    }
+
+    .songPrintHero h1 {
+      margin: 0;
+      color: #26385F;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 1000;
+    }
+
+    .songPrintMeta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .songPrintMeta span,
+    .songPrintSmallMeta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #26385F;
+      border: 1px solid rgba(38, 56, 95, 0.12);
+      background: #EEE9FF;
+    }
+
+    .songPrintMeta span:nth-child(2n) {
+      background: #E6F6FF;
+    }
+
+    .songPrintMeta span:nth-child(3n) {
+      background: #DDF7EF;
+    }
+
+    .songPrintStudentRow {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin: 8px 0 10px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #D9E2F1;
+      background: #FFFFFF;
+      color: #26385F;
+      font-size: 13px;
+      font-weight: 800;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .songPrintBlank {
+      display: inline-block;
+      min-width: 56px;
+      border-bottom: 1.5px solid #83C9F4;
+      transform: translateY(-1px);
+    }
+
+    .songPrintBlank.name {
+      min-width: 98px;
+    }
+
+    .songPrintCompactHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 2px 8px;
+      border-bottom: 2px solid #D9E2F1;
+      color: #26385F;
+      font-size: 13px;
+      font-weight: 1000;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .songPrintSmallMeta {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .songPrintRows {
+      display: grid;
+      gap: 6px;
+    }
+
+    .songPrintScoreCard {
+      border-radius: 10px;
+      border: 1px solid #D9E2F1;
+      background: #FFFFFF;
+      overflow: hidden;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .songPrintScoreCard:nth-child(5n + 1) {
+      border-color: #E1D9FF;
+    }
+
+    .songPrintScoreCard:nth-child(5n + 2) {
+      border-color: #CDEBFC;
+    }
+
+    .songPrintScoreCard:nth-child(5n + 3) {
+      border-color: #CDEFE4;
+    }
+
+    .songPrintScoreCard:nth-child(5n + 4) {
+      border-color: #FFE1CB;
+    }
+
+    .songPrintScoreCanvas {
+      display: block;
+      width: 100%;
+      height: 25mm;
+    }
+
+    .songPrintScoreImage {
+      display: block;
+      width: 100%;
+      height: 25mm;
+      object-fit: contain;
+      opacity: 1;
+      filter: contrast(1.15);
+    }
+
+    .songPrintFooter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 7px;
+      color: #26385F;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 11mm 12mm 12mm;
+      }
+
+      html,
+      body {
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #FFFFFF !important;
+      }
+
+      body.song-score-printing > *:not(#songPrintRoot) {
+        display: none !important;
+      }
+
+      body > #songPrintRoot {
+        display: block !important;
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        background: #FFFFFF !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body #songPrintRoot {
+        color: #26385F !important;
+        font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif !important;
+      }
+
+      body #songPrintRoot h1,
+      body #songPrintRoot h2,
+      body #songPrintRoot h3,
+      body #songPrintRoot p,
+      body #songPrintRoot span,
+      body #songPrintRoot div,
+      body #songPrintRoot label {
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: #26385F !important;
+        -webkit-text-fill-color: currentColor !important;
+        text-shadow: none !important;
+        filter: none !important;
+        mix-blend-mode: normal !important;
+        background-clip: border-box !important;
+        -webkit-background-clip: border-box !important;
+      }
+
+      body #songPrintRoot .songPrintTitle {
+        color: #26385F !important;
+        -webkit-text-fill-color: #26385F !important;
+      }
+
+      body #songPrintRoot .songPrintFooter,
+      body #songPrintRoot .songPrintPageNumber {
+        color: #506080 !important;
+        -webkit-text-fill-color: #506080 !important;
+      }
+
+      body > #songPrintRoot .songPrintPage {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        min-height: 270mm;
+        overflow: visible !important;
+        box-sizing: border-box;
+        break-after: page;
+        page-break-after: always;
+      }
+
+      body > #songPrintRoot .songPrintPage:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+
+      body > #songPrintRoot .songPrintScoreCard {
+        display: block !important;
+        visibility: visible !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      body > #songPrintRoot canvas {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-width: 100% !important;
+      }
+
+      body > #songPrintRoot .songPrintScoreImage {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        height: 25mm !important;
+        object-fit: contain !important;
+        filter: none !important;
+        mix-blend-mode: normal !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
     }
 
     @media (max-width: 720px) {
@@ -20147,7 +20485,7 @@ window.addEventListener("beforeunload", function () {
     }
 
    function drawSingleNoteSymbol(ctx, noteObj, noteX, y, bottomLineY, bodyWidth, options = {}) {
-  const beat = Number(noteObj.beat || 1);
+  const beat = Number(noteObj.displayBeat || noteObj.originalBeat || noteObj.beat || 1);
   const NOTE_COLOR = options.noteColor || "#1e2a44";
   const NOTE_BAR_COLOR = options.barColor || "#93c5fd";
   const DOTTED_NOTE_COLOR = options.dotColor || NOTE_COLOR || "#111827";
@@ -21242,6 +21580,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
               <button type="button" data-preview-action="prev" aria-label="한 마디 이전">이전</button>
               <button type="button" data-preview-action="next" aria-label="한 마디 앞으로">앞으로</button>
               <button type="button" data-preview-action="restart" aria-label="처음부터 듣기">처음부터</button>
+              <button type="button" data-preview-action="print" aria-label="현재 곡 전체 악보 출력" title="전체 악보를 인쇄하거나 PDF로 저장합니다">🖨 악보 출력</button>
               <button type="button" data-preview-action="close" aria-label="연주곡 확인 닫기">닫기</button>
             </div>
           </footer>
@@ -21267,6 +21606,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         if (action === "prev") moveShortSongPreviewMeasure(-1);
         if (action === "next") moveShortSongPreviewMeasure(1);
         if (action === "restart") restartShortSongPreview();
+        if (action === "print") printShortSongPreviewScore();
         if (action === "close") closeShortSongPreviewModal();
       });
 
@@ -21667,8 +22007,10 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       };
     }
 
-    function drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline) {
-      const w = canvas.width;
+    function drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline, options = {}) {
+      const w = Number(options.logicalWidth || canvas.width);
+      const h = Number(options.logicalHeight || canvas.height);
+      const printMode = options.mode === "print";
       const gap = 11;
       const topLineY = 39;
       const bottomLineY = topLineY + gap * 4;
@@ -21690,14 +22032,14 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         return cell;
       });
 
-      ctx.clearRect(0, 0, w, canvas.height);
+      ctx.clearRect(0, 0, w, h);
       const measureIndex = getShortSongPreviewMeasureIndexAt(getShortSongPreviewElapsedMs());
       const currentLineIndex = getShortSongPreviewLineForMeasure(measureIndex);
       const thisLineIndex = Number(canvas.dataset.lineIndex || 0);
-      ctx.fillStyle = thisLineIndex === currentLineIndex && shortSongPreviewState.playing
+      ctx.fillStyle = !printMode && thisLineIndex === currentLineIndex && shortSongPreviewState.playing
         ? "#FFF9F2"
         : "#FFFFFF";
-      ctx.fillRect(0, 0, w, canvas.height);
+      ctx.fillRect(0, 0, w, h);
 
       ctx.strokeStyle = "#111827";
       ctx.lineWidth = 1.25;
@@ -21759,10 +22101,10 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         const labelX = cell.left + cell.width / 2;
         const labelY = 17;
         ctx.save();
-        ctx.fillStyle = "rgba(112, 87, 232, 0.18)";
+        ctx.fillStyle = printMode ? "rgba(238, 233, 255, 0.92)" : "rgba(112, 87, 232, 0.18)";
         drawRoundedRectPath(ctx, labelX - 22, labelY - 13, 44, 17, 8);
         ctx.fill();
-        ctx.fillStyle = "#5F45D9";
+        ctx.fillStyle = printMode ? "#26385F" : "#5F45D9";
         ctx.font = "900 11px system-ui";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -22020,9 +22362,11 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
           for (let i = 1; i < noteMetrics.length; i += 1) {
             const previous = noteMetrics[i - 1];
             const current = noteMetrics[i];
-            const hasSixteenth = Number(previous.note?.beat || 1) < 0.5 || Number(current.note?.beat || 1) < 0.5;
-            const hasEighth = Number(previous.note?.beat || 1) < 1 || Number(current.note?.beat || 1) < 1;
-            const minGap = hasSixteenth ? 12 : (hasEighth ? 15 : 18);
+            const previousBeat = getSongPreviewDisplayBeat(previous.note);
+            const currentBeat = getSongPreviewDisplayBeat(current.note);
+            const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+            const hasEighth = previousBeat < 1 || currentBeat < 1;
+            const minGap = hasSixteenth ? 14 : (hasEighth ? 18 : 20);
             if (current.noteX - previous.noteX < minGap) {
               current.noteX = previous.noteX + minGap;
             }
@@ -22034,9 +22378,11 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
             if (current.noteX > rightLimit) current.noteX = rightLimit;
             const previous = noteMetrics[i - 1];
             if (previous) {
-              const hasSixteenth = Number(previous.note?.beat || 1) < 0.5 || Number(current.note?.beat || 1) < 0.5;
-              const hasEighth = Number(previous.note?.beat || 1) < 1 || Number(current.note?.beat || 1) < 1;
-              const minGap = hasSixteenth ? 12 : (hasEighth ? 15 : 18);
+              const previousBeat = getSongPreviewDisplayBeat(previous.note);
+              const currentBeat = getSongPreviewDisplayBeat(current.note);
+              const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+              const hasEighth = previousBeat < 1 || currentBeat < 1;
+              const minGap = hasSixteenth ? 14 : (hasEighth ? 18 : 20);
               previous.noteX = Math.min(previous.noteX, current.noteX - minGap);
             }
           }
@@ -22112,7 +22458,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
 
             const y = metric.y;
             const bodyWidth = Math.min(
-              getNoteBodyWidthByBeat(note.beat) * 0.24,
+              getNoteBodyWidthByBeat(getSongPreviewDisplayBeat(note)) * 0.24,
               Math.max(12, measureRight - noteX - 14)
             );
             drawSingleNoteSymbol(ctx, note, noteX, y, layout.bottomLineY, bodyWidth, {
@@ -22137,6 +22483,679 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       });
 
       updateShortSongPreviewProgress(elapsedMs);
+    }
+
+    function drawSongPrintScoreLine(canvas, lineMeasures, timeline, rowIndex = 0) {
+      if (!canvas || !timeline) return;
+      const ratio = 2;
+      const logicalWidth = 1040;
+      const logicalHeight = 132;
+      canvas.width = logicalWidth * ratio;
+      canvas.height = logicalHeight * ratio;
+      canvas.style.width = "100%";
+      canvas.style.height = "25mm";
+      canvas.dataset.lineIndex = String(rowIndex);
+
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const layout = drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline, {
+        mode: "print",
+        logicalWidth,
+        logicalHeight
+      });
+      const lineMetrics = [];
+      const drawItems = [];
+
+      lineMeasures.forEach((measure, localMeasureIndex) => {
+        const cell = layout.measureCells?.[localMeasureIndex] || {
+          left: layout.leftX + localMeasureIndex * layout.measureWidth,
+          right: layout.leftX + (localMeasureIndex + 1) * layout.measureWidth,
+          width: layout.measureWidth
+        };
+        const measureLeft = cell.left;
+        const measureRight = cell.right;
+        const measureWidth = cell.width;
+        const measureBeatSpan = Math.max(0.25, measure.endBeat - measure.beat || Number(timeline.measureBeats) || 4);
+        const measurePadding = Math.min(24, Math.max(10, measureWidth * 0.18));
+        const noteMetrics = measure.notes.map((note) => {
+          const globalIndex = timeline.notes.indexOf(note);
+          const offsetBeat = Math.max(0, (Number(note.startBeat) || 0) - measure.beat);
+          const beatRatio = Math.min(1, Math.max(0, offsetBeat / measureBeatSpan));
+          return {
+            note,
+            globalIndex,
+            noteX: measureLeft + measurePadding + beatRatio * (measureWidth - measurePadding * 2) + (note.explicitAccidental ? 8 : 0)
+          };
+        });
+
+        for (let i = 1; i < noteMetrics.length; i += 1) {
+          const previous = noteMetrics[i - 1];
+          const current = noteMetrics[i];
+          const previousBeat = getSongPreviewDisplayBeat(previous.note);
+          const currentBeat = getSongPreviewDisplayBeat(current.note);
+          const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+          const hasEighth = previousBeat < 1 || currentBeat < 1;
+          const minGap = hasSixteenth ? 15 : (hasEighth ? 19 : 21);
+          if (current.noteX - previous.noteX < minGap) current.noteX = previous.noteX + minGap;
+        }
+
+        for (let i = noteMetrics.length - 1; i >= 0; i -= 1) {
+          const current = noteMetrics[i];
+          const rightLimit = measureRight - 18;
+          if (current.noteX > rightLimit) current.noteX = rightLimit;
+          const previous = noteMetrics[i - 1];
+          if (previous) {
+            const previousBeat = getSongPreviewDisplayBeat(previous.note);
+            const currentBeat = getSongPreviewDisplayBeat(current.note);
+            const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+            const hasEighth = previousBeat < 1 || currentBeat < 1;
+            const minGap = hasSixteenth ? 15 : (hasEighth ? 19 : 21);
+            previous.noteX = Math.min(previous.noteX, current.noteX - minGap);
+          }
+        }
+
+        noteMetrics.forEach(({ note, globalIndex, noteX }) => {
+          const y = note.note
+            ? getShortSongPreviewNoteY(note.note, layout.bottomLineY, layout.gap)
+            : layout.topLineY + 22;
+          const metric = {
+            note,
+            noteIndex: Number(note.noteIndex),
+            globalIndex,
+            x: noteX,
+            y,
+            headLeft: noteX - 4.4,
+            headRight: noteX + 4.4,
+            stemDirection: note.note && shouldStemDown(note.note) ? "down" : "up",
+            rowIndex,
+            pageIndex: 0,
+            tieGroupId: note.tieGroupId,
+            slurGroupId: note.slurGroupId,
+            measureLeft,
+            measureRight,
+            measureWidth,
+            colors: {
+              noteColor: "#111827",
+              barColor: "rgba(131, 201, 244, 0.5)",
+              restColor: "#111827",
+              glow: ""
+            }
+          };
+          if (note.note) lineMetrics.push(metric);
+          drawItems.push(metric);
+        });
+      });
+
+      const lineContext = {
+        lineMeasures,
+        leftX: layout.leftX,
+        rightX: logicalWidth - 22,
+        topLineY: layout.topLineY,
+        bottomLineY: layout.bottomLineY,
+        lineIndex: rowIndex,
+        pageIndex: 0
+      };
+      drawSongPreviewTupletBrackets(ctx, lineMetrics);
+      drawSlurSegments(ctx, lineMetrics, lineContext, -1);
+      drawTieSegments(ctx, lineMetrics, lineContext, -1);
+
+      drawItems.forEach((metric) => {
+        const { note, x: noteX, measureLeft, measureRight, measureWidth, colors } = metric;
+        if (!note.note) {
+          drawRest(ctx, noteX, layout.topLineY, getSongPreviewDisplayBeat(note), {
+            color: colors.restColor,
+            scale: 0.58,
+            staffGap: layout.gap
+          });
+          return;
+        }
+
+        const bodyWidth = Math.min(
+          getNoteBodyWidthByBeat(getSongPreviewDisplayBeat(note)) * 0.24,
+          Math.max(12, measureRight - noteX - 14)
+        );
+        drawSingleNoteSymbol(ctx, note, noteX, metric.y, layout.bottomLineY, bodyWidth, {
+          maxRightX: measureRight - 8,
+          noteColor: colors.noteColor,
+          barColor: colors.barColor,
+          dotColor: colors.noteColor,
+          scale: 0.6,
+          staffGap: layout.gap,
+          noteHeadWidth: 9,
+          noteHeadHeight: 6,
+          stemLength: 39,
+          stemWidth: 1.8,
+          flagScale: 0.46,
+          durationBarHeight: 3.4,
+          noteNameFontSize: 11,
+          noteNameYOffset: 24,
+          noteNameBoxHeight: 15,
+          noteNameBoxPadding: 8
+        });
+      });
+    }
+
+    function ensureSongPrintRoot() {
+      let root = document.getElementById("songPrintRoot");
+      if (!root) {
+        root = document.createElement("div");
+        root.id = "songPrintRoot";
+        document.body.appendChild(root);
+      }
+      root.removeAttribute("hidden");
+      root.classList.remove("hidden");
+      root.removeAttribute("aria-hidden");
+      root.style.display = "";
+      return root;
+    }
+
+    function clearSongPrintRoot() {
+      const root = document.getElementById("songPrintRoot");
+      if (root) root.innerHTML = "";
+    }
+
+    function buildSongPrintLines(measures) {
+      const normalMeasures = (measures || []).filter((measure) => !measure.isPickup);
+      const pickup = (measures || []).find((measure) => measure.isPickup);
+      const lines = [];
+      if (pickup) {
+        lines.push([pickup, ...normalMeasures.filter((measure) => Number(measure.displayNumber) >= 1 && Number(measure.displayNumber) <= 4)]);
+        for (let start = 5; start <= normalMeasures.length; start += 4) {
+          const line = normalMeasures.filter((measure) => Number(measure.displayNumber) >= start && Number(measure.displayNumber) < start + 4);
+          if (line.length) lines.push(line);
+        }
+        return lines.filter((line) => line.length);
+      }
+      for (let index = 0; index < normalMeasures.length; index += 4) {
+        lines.push(normalMeasures.slice(index, index + 4));
+      }
+      return lines.length ? lines : [[]];
+    }
+
+    function paginateSongPrintLines(lines) {
+      const PRINT_SCORE_LINES_PER_PAGE = 8;
+      const pages = [];
+      let index = 0;
+      while (index < lines.length) {
+        pages.push(lines.slice(index, index + PRINT_SCORE_LINES_PER_PAGE));
+        index += PRINT_SCORE_LINES_PER_PAGE;
+      }
+      return pages.length ? pages : [[]];
+    }
+
+    function makeSongPrintMetaParts(song, timeline, measureCount) {
+      const keyText = normalizeKeySignature(song.keySignature || timeline.keySignature || "C");
+      const parts = [
+        `박자 ${timeline.timeSignature || song.timeSignature || "4/4"}`,
+        `BPM ${Number(song.bpm) || Number(timeline.bpm) || 80}`,
+        `전체 ${measureCount}마디`
+      ];
+      if (keyText && keyText !== "C") parts.push(`조표 ${keyText}`);
+      if (song.composer) parts.push(song.composer);
+      return parts;
+    }
+
+    function createSongPrintHeader(song, metaParts, pageNumber, totalPages) {
+      if (pageNumber === 1) {
+        const header = document.createElement("div");
+        header.className = "songPrintHero";
+        header.innerHTML = `
+          <div class="songPrintHeroTitle">
+            <span class="songPrintHeroIcon" aria-hidden="true">🎼</span>
+            <h1 class="songPrintTitle"></h1>
+          </div>
+          <div class="songPrintMeta"></div>
+        `;
+        header.querySelector("h1").textContent = song.title || "연주곡";
+        const meta = header.querySelector(".songPrintMeta");
+        metaParts.forEach((part) => {
+          const chip = document.createElement("span");
+          chip.textContent = part;
+          meta.appendChild(chip);
+        });
+        return header;
+      }
+
+      const header = document.createElement("div");
+      header.className = "songPrintCompactHeader";
+      const left = document.createElement("div");
+      left.textContent = `🎼 ${song.title || "연주곡"}`;
+      const right = document.createElement("div");
+      right.className = "songPrintPageNumber";
+      right.textContent = `${pageNumber} / ${totalPages}`;
+      header.append(left, right);
+      return header;
+    }
+
+    function createSongPrintStudentRow() {
+      const row = document.createElement("div");
+      row.className = "songPrintStudentRow songPrintStudentInfo";
+      row.innerHTML = `
+        <span>학년 <i class="songPrintBlank"></i></span>
+        <span>반 <i class="songPrintBlank"></i></span>
+        <span>번호 <i class="songPrintBlank"></i></span>
+        <span>이름 <i class="songPrintBlank name"></i></span>
+      `;
+      return row;
+    }
+
+    function createSongPrintFooter(pageNumber, totalPages, isLastPage) {
+      const footer = document.createElement("div");
+      footer.className = "songPrintFooter";
+      const message = document.createElement("div");
+      message.textContent = isLastPage
+        ? "멋진 연주를 기대할게요!"
+        : "천천히 바른 손가락으로 아름답게 연주해요!";
+      const page = document.createElement("div");
+      page.className = "songPrintPageNumber";
+      page.textContent = `${pageNumber} / ${totalPages}`;
+      footer.append(message, page);
+      return footer;
+    }
+
+    function forceSongPrintTextVisibility(root) {
+      if (!root) return;
+      const textNodes = root.querySelectorAll("h1, h2, h3, p, div, span, label, i");
+      textNodes.forEach((el) => {
+        el.style.visibility = "visible";
+        el.style.opacity = "1";
+        el.style.color = el.classList.contains("songPrintPageNumber") || el.classList.contains("songPrintFooter")
+          ? "#506080"
+          : "#26385F";
+        el.style.webkitTextFillColor = "currentColor";
+        el.style.textShadow = "none";
+        el.style.filter = "none";
+        el.style.mixBlendMode = "normal";
+      });
+    }
+
+    function buildSongPrintPages(song, timeline, measures) {
+      const root = ensureSongPrintRoot();
+      root.innerHTML = "";
+
+      const lines = buildSongPrintLines(measures);
+      const pages = paginateSongPrintLines(lines);
+      const measureCount = measures.filter((measure) => !measure.isPickup).length || 1;
+      const metaParts = makeSongPrintMetaParts(song, timeline, measureCount);
+
+      pages.forEach((pageLines, pageIndex) => {
+        const pageNumber = pageIndex + 1;
+        const pageEl = document.createElement("section");
+        pageEl.className = "songPrintPage";
+        pageEl.appendChild(createSongPrintHeader(song, metaParts, pageNumber, pages.length));
+        if (pageIndex === 0) pageEl.appendChild(createSongPrintStudentRow());
+
+        const rows = document.createElement("div");
+        rows.className = "songPrintRows";
+        pageLines.forEach((lineMeasures, rowIndex) => {
+          const card = document.createElement("div");
+          card.className = "songPrintScoreCard songPrintScoreLine";
+          const canvas = document.createElement("canvas");
+          canvas.className = "songPrintScoreCanvas";
+          card.appendChild(canvas);
+          rows.appendChild(card);
+          drawSongPrintScoreLine(canvas, lineMeasures, timeline, pageIndex * 10 + rowIndex);
+        });
+        pageEl.appendChild(rows);
+        pageEl.appendChild(createSongPrintFooter(pageNumber, pages.length, pageNumber === pages.length));
+        root.appendChild(pageEl);
+      });
+
+      forceSongPrintTextVisibility(root);
+      return root;
+    }
+
+    function setSongPrintButtonBusy(isBusy) {
+      const button = shortSongPreviewState.overlay?.querySelector("[data-preview-action='print']");
+      if (!button) return;
+      button.disabled = Boolean(isBusy);
+      button.textContent = isBusy ? "악보 준비 중" : "🖨 악보 출력";
+    }
+
+    function hasVisibleCanvasInk(canvas) {
+      if (!canvas || canvas.width <= 0 || canvas.height <= 0) return false;
+      let data;
+      try {
+        data = canvas.getContext("2d")?.getImageData(0, 0, canvas.width, canvas.height).data;
+      } catch {
+        return false;
+      }
+      if (!data) return false;
+
+      const pixelCount = canvas.width * canvas.height;
+      const step = Math.max(4, Math.floor(pixelCount / 22000) * 4);
+      for (let i = 0; i < data.length; i += step) {
+        const alpha = data[i + 3];
+        if (alpha < 12) continue;
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        if (r < 245 || g < 245 || b < 245) return true;
+      }
+      return false;
+    }
+
+    async function freezePrintCanvasAsImage(canvas) {
+      if (!hasVisibleCanvasInk(canvas)) return null;
+      const image = new Image();
+      image.className = "songPrintScoreImage";
+      image.alt = "인쇄용 리코더 악보";
+      image.src = canvas.toDataURL("image/png");
+      if (typeof image.decode === "function") {
+        await image.decode();
+      } else {
+        await new Promise((resolve, reject) => {
+          image.onload = resolve;
+          image.onerror = reject;
+        });
+      }
+      canvas.replaceWith(image);
+      return image;
+    }
+
+    async function freezeSongPrintCanvases(root) {
+      const canvases = Array.from(root?.querySelectorAll("canvas") || []);
+      if (!canvases.length) return [];
+
+      const images = [];
+      for (const canvas of canvases) {
+        const image = await freezePrintCanvasAsImage(canvas);
+        if (image) images.push(image);
+      }
+      return images;
+    }
+
+    function isSongPrintRootReady() {
+      const printRoot = document.getElementById("songPrintRoot");
+      const pages = printRoot?.querySelectorAll(".songPrintPage") || [];
+      const canvases = printRoot?.querySelectorAll("canvas") || [];
+      const images = printRoot?.querySelectorAll(".songPrintScoreImage") || [];
+      return Boolean(
+        printRoot &&
+        printRoot.parentElement === document.body &&
+        pages.length >= 1 &&
+        (canvases.length >= 1 || images.length >= 1) &&
+        Array.from(canvases).every((canvas) => canvas.width > 0 && canvas.height > 0) &&
+        Array.from(images).every((image) => image.naturalWidth > 0 && image.naturalHeight > 0) &&
+        printRoot.innerHTML.trim()
+      );
+    }
+
+    function showSongPrintError(message = "인쇄할 악보가 만들어지지 않았어요. 다시 시도해 주세요.") {
+      const statusEl = document.getElementById("practiceStatus");
+      if (statusEl) statusEl.textContent = message;
+    }
+
+    function escapePrintHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function getSongPrintDocumentHtml(printRoot, songTitle = "악보 출력") {
+      const closeStyle = "</" + "style>";
+      const closeHead = "</" + "head>";
+      const closeBody = "</" + "body>";
+      const closeHtml = "</" + "html>";
+      return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>${escapePrintHtml(songTitle)}</title>
+  <style>
+    @page { size: A4 portrait; margin: 11mm 12mm 12mm; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #26385F;
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    }
+    #songPrintRoot { display: block; width: 100%; background: #ffffff; color: #26385F; }
+    .songPrintPage {
+      width: 186mm;
+      min-height: 274mm;
+      margin: 0 auto;
+      color: #26385F;
+      background: #FFFFFF;
+      break-after: page;
+      page-break-after: always;
+    }
+    .songPrintPage:last-child { break-after: auto; page-break-after: auto; }
+    .songPrintHero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #D9E2F1;
+      background: linear-gradient(135deg, #EEE9FF 0%, #E6F6FF 100%);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .songPrintHeroTitle { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .songPrintHeroIcon {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid rgba(121, 104, 223, 0.28);
+      font-size: 21px;
+    }
+    .songPrintHero h1 {
+      margin: 0;
+      color: #26385F;
+      -webkit-text-fill-color: #26385F;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 1000;
+    }
+    .songPrintMeta { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; font-size: 11px; font-weight: 900; }
+    .songPrintMeta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #26385F;
+      -webkit-text-fill-color: #26385F;
+      border: 1px solid rgba(38, 56, 95, 0.12);
+      background: #EEE9FF;
+    }
+    .songPrintMeta span:nth-child(2n) { background: #E6F6FF; }
+    .songPrintMeta span:nth-child(3n) { background: #DDF7EF; }
+    .songPrintStudentRow {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin: 8px 0 10px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #D9E2F1;
+      background: #FFFFFF;
+      color: #26385F;
+      -webkit-text-fill-color: #26385F;
+      font-size: 13px;
+      font-weight: 800;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .songPrintBlank { display: inline-block; min-width: 56px; border-bottom: 1.5px solid #83C9F4; transform: translateY(-1px); }
+    .songPrintBlank.name { min-width: 98px; }
+    .songPrintCompactHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 2px 8px;
+      border-bottom: 2px solid #D9E2F1;
+      color: #26385F;
+      -webkit-text-fill-color: #26385F;
+      font-size: 13px;
+      font-weight: 1000;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .songPrintRows { display: grid; gap: 6px; }
+    .songPrintScoreCard {
+      border-radius: 10px;
+      border: 1px solid #D9E2F1;
+      background: #FFFFFF;
+      overflow: hidden;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .songPrintScoreCard:nth-child(5n + 1) { border-color: #E1D9FF; }
+    .songPrintScoreCard:nth-child(5n + 2) { border-color: #CDEBFC; }
+    .songPrintScoreCard:nth-child(5n + 3) { border-color: #CDEFE4; }
+    .songPrintScoreCard:nth-child(5n + 4) { border-color: #FFE1CB; }
+    .songPrintScoreImage {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 100% !important;
+      height: 25mm !important;
+      object-fit: contain !important;
+      filter: contrast(1.15);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .songPrintFooter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 7px;
+      color: #506080;
+      -webkit-text-fill-color: #506080;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    #songPrintRoot, #songPrintRoot * {
+      visibility: visible !important;
+      opacity: 1 !important;
+      text-shadow: none !important;
+      mix-blend-mode: normal !important;
+    }
+  ${closeStyle}
+${closeHead}
+<body>
+  <div id="songPrintRoot">${printRoot ? printRoot.innerHTML : ""}</div>
+${closeBody}
+${closeHtml}`;
+    }
+
+    async function waitForPopupPrintAssets(popup) {
+      if (!popup?.document) return;
+      const images = Array.from(popup.document.images || []);
+      await Promise.all(images.map((image) => {
+        if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+        if (typeof image.decode === "function") return image.decode().catch(() => {});
+        return new Promise((resolve) => {
+          image.onload = resolve;
+          image.onerror = resolve;
+        });
+      }));
+      if (popup.document.fonts?.ready) await popup.document.fonts.ready;
+    }
+
+    async function printPopupWhenReady(popup) {
+      await waitForPopupPrintAssets(popup);
+      if (!popup || popup.closed) return;
+      const frame = popup.requestAnimationFrame
+        ? popup.requestAnimationFrame.bind(popup)
+        : (callback) => setTimeout(callback, 16);
+      await new Promise((resolve) => {
+        frame(() => frame(resolve));
+      });
+      if (popup.closed) return;
+      popup.focus();
+      popup.print();
+    }
+
+    async function openSongPrintPopup(printRoot, songTitle) {
+      const popup = window.open("", "song-score-print", "popup=yes,width=980,height=900");
+      if (!popup) {
+        showSongPrintError("팝업이 차단되어 악보 출력 창을 열지 못했어요. 팝업 허용 후 다시 시도해 주세요.");
+        return null;
+      }
+      popup.document.open();
+      popup.document.write(getSongPrintDocumentHtml(printRoot, songTitle));
+      popup.document.close();
+      await printPopupWhenReady(popup);
+      return popup;
+    }
+
+    async function printShortSongPreviewScore() {
+      const state = shortSongPreviewState;
+      const printButton = state.overlay?.querySelector("[data-preview-action='print']");
+      if (printButton?.disabled) return;
+      const song = state.song || app.currentSong || getSelectedSong();
+      const previewSong = normalizeSongPreviewData(song);
+      if (!previewSong.notation) {
+        const statusEl = document.getElementById("practiceStatus");
+        if (statusEl) statusEl.textContent = "이 곡은 아직 출력할 악보가 준비되지 않았어요.";
+        return;
+      }
+
+      const popup = window.open("", "song-score-print", "popup=yes,width=980,height=900");
+      if (!popup) {
+        showSongPrintError("팝업이 차단되어 악보 출력 창을 열지 못했어요. 팝업 허용 후 다시 시도해 주세요.");
+        return;
+      }
+      popup.document.open();
+      popup.document.write("<!doctype html><title>악보 준비 중</title><body style=\"font-family:system-ui,sans-serif;padding:24px;color:#26385F\">악보를 준비하고 있어요..." + "</" + "body>");
+      popup.document.close();
+
+      setSongPrintButtonBusy(true);
+      try {
+        clearSongPrintRoot();
+        document.body.classList.remove("song-score-printing");
+        const wasPlaying = state.playing;
+        if (wasPlaying) pauseShortSongPreview();
+
+        const timeline = state.timeline || buildSongTimeline(previewSong, Number(previewSong.bpm) || 80);
+        const measures = state.measures?.length ? state.measures : buildSongMeasures(previewSong, timeline);
+        const printRoot = buildSongPrintPages(previewSong, timeline, measures);
+        const frozenImages = await freezeSongPrintCanvases(printRoot);
+        if (!frozenImages.length) {
+          popup.close();
+          setSongPrintButtonBusy(false);
+          showSongPrintError("인쇄용 악보를 그리지 못했어요. 다시 시도해 주세요.");
+          return;
+        }
+
+        if (document.fonts?.ready) {
+          await document.fonts.ready;
+        }
+
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        if (!isSongPrintRootReady()) {
+          popup.close();
+          setSongPrintButtonBusy(false);
+          showSongPrintError();
+          return;
+        }
+
+        popup.document.open();
+        popup.document.write(getSongPrintDocumentHtml(printRoot, previewSong.title || "악보 출력"));
+        popup.document.close();
+        await printPopupWhenReady(popup);
+        setSongPrintButtonBusy(false);
+      } catch (error) {
+        console.error("print score failed", error);
+        try { popup.close(); } catch {}
+        document.body.classList.remove("song-score-printing");
+        setSongPrintButtonBusy(false);
+        showSongPrintError("악보를 준비하지 못했어요. 다시 시도해 주세요.");
+      }
     }
 
     function renderShortSongPreviewScore(song, timeline) {
@@ -22432,6 +23451,10 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
 
     function getEqualTemperamentFrequency(midi) {
       return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+
+    function getSongPreviewDisplayBeat(note) {
+      return Number(note?.displayBeat || note?.originalBeat || note?.beat || 1);
     }
 
     function updateShortSongPreviewInstrumentUI() {
