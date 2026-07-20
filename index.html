@@ -3320,7 +3320,9 @@ button:disabled {
     }
 
     .practice-stop-btn {
-      background: linear-gradient(180deg, #ffe47a, #ff9f3f);
+      background: linear-gradient(180deg, #d8b4fe 0%, #8b5cf6 52%, #6d28d9 100%);
+      border-color: rgba(237, 223, 255, 0.8);
+      box-shadow: 0 10px 24px rgba(109, 40, 217, 0.28);
     }
 
     .practice-record-btn {
@@ -3352,9 +3354,10 @@ button:disabled {
 
     .practice-score-preview-btn {
       grid-column: 7;
-      background: linear-gradient(180deg, #d8b4fe 0%, #8b5cf6 52%, #6d28d9 100%);
-      border-color: rgba(237, 223, 255, 0.8);
-      box-shadow: 0 10px 24px rgba(109, 40, 217, 0.28);
+      background: linear-gradient(180deg, #ffe47a, #ff9f3f);
+      color: #1f2937;
+      border-color: rgba(255, 239, 173, 0.82);
+      box-shadow: 0 10px 24px rgba(255, 159, 63, 0.28);
     }
 
     .practiceMiniBtn .icon {
@@ -3414,7 +3417,7 @@ button:disabled {
 
     .songPreviewHeader {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(330px, 410px) auto;
+      grid-template-columns: minmax(0, 1fr) auto minmax(330px, 410px) auto;
       gap: 14px;
       align-items: start;
       padding: 16px 18px 14px;
@@ -3473,6 +3476,49 @@ button:disabled {
       border: 1px solid rgba(75, 168, 245, 0.28);
       background: rgba(255, 255, 255, 0.82);
       box-shadow: 0 4px 14px rgba(75, 168, 245, 0.12);
+    }
+
+    .songPreviewInstrumentPanel {
+      align-self: start;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-sizing: border-box;
+      margin-top: 0;
+      padding: 7px 9px;
+      border-radius: 14px;
+      border: 1px solid rgba(112, 87, 232, 0.22);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 4px 14px rgba(112, 87, 232, 0.1);
+    }
+
+    .songPreviewInstrumentBtn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid #D7DFF0;
+      background: #F8FAFF;
+      color: #24345B;
+      font-size: 21px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(36, 52, 91, 0.1);
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background-color 140ms ease;
+    }
+
+    .songPreviewInstrumentBtn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(112, 87, 232, 0.38);
+      background: #EEE9FF;
+    }
+
+    .songPreviewInstrumentBtn.active {
+      border-color: rgba(112, 87, 232, 0.72);
+      background: linear-gradient(180deg, #FFFFFF 0%, #E6DDFF 100%);
+      box-shadow: 0 0 0 3px rgba(112, 87, 232, 0.16), 0 5px 12px rgba(112, 87, 232, 0.18);
     }
 
     .songPreviewTempoControl {
@@ -3794,7 +3840,7 @@ button:disabled {
 
     @media (max-width: 720px) {
       .songPreviewDialog {
-        grid-template-rows: 138px minmax(0, 1fr) 122px;
+        grid-template-rows: 188px minmax(0, 1fr) 122px;
       }
 
       .songPreviewHeader {
@@ -3806,6 +3852,14 @@ button:disabled {
         grid-row: 2;
         align-self: start;
         padding: 6px 8px 7px;
+      }
+
+      .songPreviewInstrumentPanel {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        width: max-content;
+        max-width: 100%;
+        padding: 6px 8px;
       }
 
       .songPreviewCloseIcon {
@@ -18811,21 +18865,21 @@ function renderSongButtons() {
       if (!tonguingAudioCtx) return;
 
       const now = tonguingAudioCtx.currentTime;
-      const osc = tonguingAudioCtx.createOscillator();
-      const gain = tonguingAudioCtx.createGain();
+      const durationSec = Math.max(0.04, Number(durationMs || 0) / 1000);
+      const masterGain = tonguingAudioCtx.createGain();
+      const peak = 0.18;
 
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, now);
+      masterGain.gain.setValueAtTime(0.0001, now);
+      masterGain.gain.linearRampToValueAtTime(peak, now + 0.035);
+      masterGain.gain.setValueAtTime(peak, Math.max(now + 0.04, now + durationSec - 0.055));
+      masterGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
+      masterGain.connect(tonguingAudioCtx.destination);
 
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + durationMs / 1000);
+      createSteadyRecorderPreviewVoice(tonguingAudioCtx, freq, now, durationSec, masterGain);
 
-      osc.connect(gain);
-      gain.connect(tonguingAudioCtx.destination);
-
-      osc.start(now);
-      osc.stop(now + durationMs / 1000 + 0.03);
+      window.setTimeout(() => {
+        try { masterGain.disconnect(); } catch {}
+      }, Math.ceil((durationSec + 0.08) * 1000));
     }
 
     function playTonguingClick(volume = 0.08) {
@@ -19650,7 +19704,7 @@ window.addEventListener("beforeunload", function () {
         token = token.slice(1);
       }
 
-      const m = token.match(/^([A-GR])([#b]?)(\d?)(?:\/(\d+(?:\.\d+)?|[028]|[248]\.))?$/i);
+      const m = token.match(/^([A-GR])([#b]?)(\d?)(?:\/(\d+(?:\.\d+)?|[028]|[248]\.|t))?$/i);
       if (!m) return null;
 
       const letter = m[1].toUpperCase();
@@ -19670,7 +19724,10 @@ window.addEventListener("beforeunload", function () {
         "8.": 0.75,
         "16": 0.25
       };
-      const beat = Object.prototype.hasOwnProperty.call(noteValueToBeat, durationText)
+      const isTriplet = durationText.toLowerCase() === "t";
+      const beat = isTriplet
+        ? (1 / 3)
+        : Object.prototype.hasOwnProperty.call(noteValueToBeat, durationText)
         ? noteValueToBeat[durationText]
         : parseFloat(durationText);
 
@@ -19679,6 +19736,7 @@ window.addEventListener("beforeunload", function () {
       return {
         note: normalizedNote === "R" ? null : normalizedNote,
         beat: beat,
+        tuplet: isTriplet ? "triplet" : null,
         explicitAccidental: parsedExplicitAccidental
       };
     }
@@ -19776,6 +19834,8 @@ window.addEventListener("beforeunload", function () {
       }
 
       const tokens = notation
+        .replace(/T\[/gi, " T[ ")
+        .replace(/\]/g, " ] ")
         .replace(/([|()<>])/g, " $1 ")
         .replace(/\|/g, " | ")
         .split(/\s+/)
@@ -19786,10 +19846,25 @@ window.addEventListener("beforeunload", function () {
       const manualBarlines = [];
       let tieGroupSeq = 0;
       let slurGroupSeq = 0;
+      let tupletGroupSeq = 0;
       let activeTieGroupId = null;
       let activeSlurGroupId = null;
+      let activeTupletGroupId = null;
+      let activeTupletRatio = 1;
 
       for (const token of tokens) {
+        if (token.toUpperCase() === "T[") {
+          activeTupletGroupId = ++tupletGroupSeq;
+          activeTupletRatio = 2 / 3;
+          continue;
+        }
+
+        if (token === "]") {
+          activeTupletGroupId = null;
+          activeTupletRatio = 1;
+          continue;
+        }
+
         if (token === "<") {
           activeTieGroupId = ++tieGroupSeq;
           continue;
@@ -19821,7 +19896,9 @@ window.addEventListener("beforeunload", function () {
         const parsed = parseNotationToken(token);
         if (!parsed) continue;
 
-        const durMs = parsed.beat * beatMs;
+        const displayBeat = parsed.beat * activeTupletRatio;
+        const isTupletNote = parsed.tuplet === "triplet" || activeTupletGroupId !== null;
+        const durMs = displayBeat * beatMs;
         const keyAccidental = parsed.note ? getKeySignatureAccidental(parsed.note, keySignature) : null;
         const explicitAccidental = parsed.explicitAccidental || null;
         const effectiveAccidental = !parsed.note
@@ -19833,7 +19910,10 @@ window.addEventListener("beforeunload", function () {
           explicitAccidental,
           effectiveAccidental,
           accidental: effectiveAccidental,
-          beat: parsed.beat,
+          beat: displayBeat,
+          originalBeat: parsed.beat,
+          tuplet: isTupletNote ? "triplet" : null,
+          tupletGroupId: activeTupletGroupId,
           startMs: cursorMs,
           durMs,
           startBeat: cursorBeat,
@@ -19843,7 +19923,7 @@ window.addEventListener("beforeunload", function () {
         });
 
         cursorMs += durMs;
-        cursorBeat += parsed.beat;
+        cursorBeat += displayBeat;
       }
 
       notes.forEach((note, index) => {
@@ -19857,6 +19937,20 @@ window.addEventListener("beforeunload", function () {
           note.note === previous.note &&
           (note.effectiveAccidental || null) === (previous.effectiveAccidental || null)
         );
+      });
+
+      const tupletGroups = new Map();
+      notes.forEach((note) => {
+        if (!note.tupletGroupId) return;
+        if (!tupletGroups.has(note.tupletGroupId)) tupletGroups.set(note.tupletGroupId, []);
+        tupletGroups.get(note.tupletGroupId).push(note);
+      });
+      tupletGroups.forEach((group) => {
+        const middleIndex = Math.floor((group.length - 1) / 2);
+        group.forEach((note, index) => {
+          note.showTupletNumber = index === middleIndex;
+          note.tupletGroupSize = group.length;
+        });
       });
 
       return {
@@ -20232,6 +20326,16 @@ window.addEventListener("beforeunload", function () {
       }
       ctx.restore();
     }
+  }
+
+  if (noteObj.tuplet === "triplet" && !noteObj.tupletGroupId) {
+    ctx.save();
+    ctx.fillStyle = NOTE_COLOR;
+    ctx.font = `bold ${Math.max(10, 18 * scale)}px system-ui`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("3", noteX, noteY - (stemDown ? 22 * scale : 42 * scale));
+    ctx.restore();
   }
 
   // C5 蹂댁“??
@@ -20913,6 +21017,55 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         });
       }
 
+      function drawTupletBrackets(noteMetrics) {
+        const groups = new Map();
+
+        noteMetrics.forEach((metric) => {
+          if (!metric.note?.note || !metric.note.tupletGroupId) return;
+          if (!groups.has(metric.note.tupletGroupId)) groups.set(metric.note.tupletGroupId, []);
+          groups.get(metric.note.tupletGroupId).push(metric);
+        });
+
+        groups.forEach((group) => {
+          const visible = group
+            .filter((metric) => metric.x <= canvas.width + 80 && metric.x + metric.w >= judgeX - 20)
+            .sort((a, b) => Number(a.note?.noteIndex) - Number(b.note?.noteIndex));
+          if (visible.length < 2) return;
+
+          const first = visible[0];
+          const last = visible[visible.length - 1];
+          const startX = first.noteX - 18;
+          const endX = last.noteX + 18;
+          if (endX - startX < 34) return;
+
+          const noteYs = visible.map((metric) => metric.y);
+          const bracketY = Math.min(...noteYs) - 74;
+          const hook = 12;
+          const midX = (startX + endX) / 2;
+          const numberGap = 19;
+
+          ctx.save();
+          ctx.strokeStyle = "#1e2a44";
+          ctx.fillStyle = "#1e2a44";
+          ctx.lineWidth = 2.4;
+          ctx.lineCap = "square";
+          ctx.beginPath();
+          ctx.moveTo(startX, bracketY + hook);
+          ctx.lineTo(startX, bracketY);
+          ctx.lineTo(midX - numberGap, bracketY);
+          ctx.moveTo(midX + numberGap, bracketY);
+          ctx.lineTo(endX, bracketY);
+          ctx.lineTo(endX, bracketY + hook);
+          ctx.stroke();
+
+          ctx.font = "900 28px system-ui";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("3", midX, bracketY - 3);
+          ctx.restore();
+        });
+      }
+
       const noteMetrics = timeline.notes.map(n => {
         const x = judgeX + (n.startMs - elapsedMs) * pxPerMs;
         const w = Math.max(24, n.durMs * pxPerMs);
@@ -20944,6 +21097,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         drawSingleNoteSymbol(ctx, n, noteX, y, bottomLineY, bodyWidth, { maxRightX });
       });
 
+      drawTupletBrackets(noteMetrics);
       drawTieAndSlurMarks(noteMetrics);
 
       if (elapsedMs < 0) {
@@ -21009,6 +21163,8 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       notePlaybackEventMap: new Map(),
       tieWarnings: [],
       audioCtx: null,
+      outputCompressor: null,
+      outputGain: null,
       buffers: new Map(),
       activeNodes: [],
       timer: null,
@@ -21029,6 +21185,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       currentIndex: -1,
       lastAutoScrollLine: -1,
       userScrolledAt: 0,
+      instrument: "recorder",
       previousFocus: null
     };
 
@@ -21045,6 +21202,11 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
             <div>
               <h3 id="shortSongPreviewTitle" class="songPreviewTitle">연주곡 확인</h3>
               <div id="shortSongPreviewMeta" class="songPreviewMeta"></div>
+            </div>
+            <div class="songPreviewInstrumentPanel" aria-label="연주 악기 선택">
+              <button type="button" class="songPreviewInstrumentBtn active" data-preview-instrument="recorder" aria-label="리코더" title="리코더">🪈</button>
+              <button type="button" class="songPreviewInstrumentBtn" data-preview-instrument="piano" aria-label="피아노" title="피아노">🎹</button>
+              <button type="button" class="songPreviewInstrumentBtn" data-preview-instrument="xylophone" aria-label="실로폰" title="실로폰">▥</button>
             </div>
             <div class="songPreviewTempoPanel" aria-label="연주 속도">
               <label class="songPreviewTempoControl" for="shortSongPreviewTempo">
@@ -21088,6 +21250,12 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
 
       overlay.addEventListener("click", (event) => {
         if (event.target === overlay) closeShortSongPreviewModal();
+      });
+
+      overlay.addEventListener("click", (event) => {
+        const instrument = event.target?.closest?.("[data-preview-instrument]")?.dataset?.previewInstrument;
+        if (!instrument) return;
+        setShortSongPreviewInstrument(instrument);
       });
 
       overlay.addEventListener("click", (event) => {
@@ -21751,6 +21919,56 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       });
     }
 
+    function drawSongPreviewTupletBrackets(ctx, lineMetrics) {
+      const groups = new Map();
+
+      (lineMetrics || []).forEach((metric) => {
+        if (!metric.note?.note || !metric.note.tupletGroupId) return;
+        const key = `${metric.pageIndex}:${metric.rowIndex}:${metric.note.tupletGroupId}`;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(metric);
+      });
+
+      groups.forEach((group) => {
+        const visible = group
+          .slice()
+          .sort((a, b) => Number(a.noteIndex) - Number(b.noteIndex));
+        if (visible.length < 2) return;
+
+        const first = visible[0];
+        const last = visible[visible.length - 1];
+        const startX = first.x - 11;
+        const endX = last.x + 11;
+        if (endX - startX < 24) return;
+
+        const noteYs = visible.map((metric) => metric.y);
+        const bracketY = Math.min(...noteYs) - 45;
+        const hook = 8;
+        const midX = (startX + endX) / 2;
+        const numberGap = 12;
+
+        ctx.save();
+        ctx.strokeStyle = "#0F172A";
+        ctx.fillStyle = "#0F172A";
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = "square";
+        ctx.beginPath();
+        ctx.moveTo(startX, bracketY + hook);
+        ctx.lineTo(startX, bracketY);
+        ctx.lineTo(midX - numberGap, bracketY);
+        ctx.moveTo(midX + numberGap, bracketY);
+        ctx.lineTo(endX, bracketY);
+        ctx.lineTo(endX, bracketY + hook);
+        ctx.stroke();
+
+        ctx.font = "900 18px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("3", midX, bracketY - 2);
+        ctx.restore();
+      });
+    }
+
     function drawShortSongPreviewScore() {
       const state = shortSongPreviewState;
       const timeline = state.timeline;
@@ -21860,6 +22078,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
           lineIndex,
           pageIndex: state.currentPage
         };
+        drawSongPreviewTupletBrackets(ctx, lineMetrics);
         drawSlurSegments(ctx, lineMetrics, lineContext, elapsedMs);
         drawTieSegments(ctx, lineMetrics, lineContext, elapsedMs);
 
@@ -22107,7 +22326,9 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       shortSongPreviewState.playing = false;
       shortSongPreviewState.countInActive = false;
       shortSongPreviewState.countInValue = "";
+      shortSongPreviewState.playbackRate = 1;
       shortSongPreviewState.lastAutoScrollLine = -1;
+      shortSongPreviewState.instrument = "recorder";
       shortSongPreviewState.previousFocus = document.activeElement;
 
       const titleEl = document.getElementById("shortSongPreviewTitle");
@@ -22137,6 +22358,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
 
       renderShortSongPreviewScore(previewSong, timeline);
       updateShortSongPreviewProgress(0);
+      updateShortSongPreviewInstrumentUI();
 
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden", "false");
@@ -22170,11 +22392,250 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       if (!shortSongPreviewState.audioCtx || shortSongPreviewState.audioCtx.state === "closed") {
         const Ctx = window.AudioContext || window.webkitAudioContext;
         shortSongPreviewState.audioCtx = Ctx ? new Ctx() : null;
+        shortSongPreviewState.outputCompressor = null;
+        shortSongPreviewState.outputGain = null;
       }
       if (shortSongPreviewState.audioCtx?.state === "suspended") {
         await shortSongPreviewState.audioCtx.resume();
       }
       return shortSongPreviewState.audioCtx;
+    }
+
+    function getShortSongPreviewOutputNode(ctx) {
+      if (!ctx) return null;
+
+      if (
+        shortSongPreviewState.outputCompressor &&
+        shortSongPreviewState.outputGain &&
+        shortSongPreviewState.outputCompressor.context === ctx
+      ) {
+        return shortSongPreviewState.outputCompressor;
+      }
+
+      const compressor = ctx.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-12, ctx.currentTime);
+      compressor.knee.setValueAtTime(24, ctx.currentTime);
+      compressor.ratio.setValueAtTime(1.7, ctx.currentTime);
+      compressor.attack.setValueAtTime(0.018, ctx.currentTime);
+      compressor.release.setValueAtTime(0.16, ctx.currentTime);
+
+      const outputGain = ctx.createGain();
+      outputGain.gain.setValueAtTime(0.72, ctx.currentTime);
+
+      compressor.connect(outputGain);
+      outputGain.connect(ctx.destination);
+
+      shortSongPreviewState.outputCompressor = compressor;
+      shortSongPreviewState.outputGain = outputGain;
+      return compressor;
+    }
+
+    function getEqualTemperamentFrequency(midi) {
+      return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+
+    function updateShortSongPreviewInstrumentUI() {
+      const current = shortSongPreviewState.instrument || "recorder";
+      shortSongPreviewState.overlay?.querySelectorAll("[data-preview-instrument]").forEach((button) => {
+        const active = button.dataset.previewInstrument === current;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    }
+
+    function setShortSongPreviewInstrument(instrument) {
+      const allowed = new Set(["recorder", "piano", "xylophone"]);
+      shortSongPreviewState.instrument = allowed.has(instrument) ? instrument : "recorder";
+      updateShortSongPreviewInstrumentUI();
+    }
+
+    function createSteadyRecorderPreviewVoice(ctx, frequency, now, durationSec, destination, options = {}) {
+      const noteName = String(options.noteName || "").toUpperCase();
+      const isSolG5 = noteName === "G5" && !options.accidental;
+      const highNoteSoftener = isSolG5 ? 0.56 : (frequency >= 740 ? 0.82 : 1);
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(isSolG5 ? 1850 : (frequency >= 740 ? 2350 : 2850), now);
+      filter.Q.setValueAtTime(isSolG5 ? 0.24 : (frequency >= 740 ? 0.34 : 0.42), now);
+
+      const body = ctx.createBiquadFilter();
+      body.type = "peaking";
+      body.frequency.setValueAtTime(Math.min(1350, frequency * 2.1), now);
+      body.Q.setValueAtTime(0.7, now);
+      body.gain.setValueAtTime(isSolG5 ? 0.25 : (frequency >= 740 ? 0.8 : 1.4), now);
+
+      const harmonicPlan = isSolG5
+        ? [
+          { type: "sine", ratio: 1, gain: 0.78 },
+          { type: "sine", ratio: 2, gain: 0.018 }
+        ]
+        : [
+          { type: "sine", ratio: 1, gain: 0.9 },
+          { type: "sine", ratio: 2, gain: 0.058 },
+          { type: "sine", ratio: 3, gain: 0.014 }
+        ];
+
+      const nodes = [filter, body];
+      filter.connect(body);
+      body.connect(destination);
+
+      harmonicPlan.forEach((part) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const peak = part.gain * highNoteSoftener * (options.repeatedNote ? 0.86 : 1);
+
+        osc.type = part.type;
+        osc.frequency.setValueAtTime(frequency * part.ratio, now);
+        gain.gain.setValueAtTime(peak, now);
+
+        osc.connect(gain);
+        gain.connect(filter);
+        osc.start(now);
+        osc.stop(now + durationSec + 0.012);
+        osc.onended = () => {
+          try { osc.disconnect(); } catch {}
+          try { gain.disconnect(); } catch {}
+        };
+
+        nodes.push(osc, gain);
+      });
+
+      const noiseLength = Math.max(1, Math.floor(ctx.sampleRate * durationSec));
+      const noiseBuffer = ctx.createBuffer(1, noiseLength, ctx.sampleRate);
+      const noiseData = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseLength; i += 1) {
+        noiseData[i] = (Math.random() * 2 - 1) * 0.18;
+      }
+
+      const noise = ctx.createBufferSource();
+      const noiseHighpass = ctx.createBiquadFilter();
+      const noiseLowpass = ctx.createBiquadFilter();
+      const noiseGain = ctx.createGain();
+      const breathPeak = (options.slurContinue ? 0.009 : 0.023) * (isSolG5 ? 1.7 : (frequency >= 740 ? 1.14 : 1));
+      const breathTail = durationSec >= 0.7 ? breathPeak * 0.74 : breathPeak * 0.48;
+      const breathHold = Math.max(now + 0.045, now + durationSec - Math.min(0.09, durationSec * 0.2));
+
+      noise.buffer = noiseBuffer;
+      noiseHighpass.type = "highpass";
+      noiseHighpass.frequency.setValueAtTime(680, now);
+      noiseLowpass.type = "lowpass";
+      noiseLowpass.frequency.setValueAtTime(isSolG5 ? 2450 : (frequency >= 740 ? 2700 : 3150), now);
+      noiseLowpass.Q.setValueAtTime(0.32, now);
+      noiseGain.gain.setValueAtTime(0.0001, now);
+      noiseGain.gain.linearRampToValueAtTime(breathPeak, now + 0.024);
+      noiseGain.gain.linearRampToValueAtTime(breathTail, now + Math.min(0.14, durationSec * 0.34));
+      noiseGain.gain.setValueAtTime(breathTail, breathHold);
+      noiseGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
+
+      noise.connect(noiseHighpass);
+      noiseHighpass.connect(noiseLowpass);
+      noiseLowpass.connect(noiseGain);
+      noiseGain.connect(destination);
+      noise.start(now);
+      noise.stop(now + durationSec + 0.012);
+      noise.onended = () => {
+        try { noise.disconnect(); } catch {}
+        try { noiseHighpass.disconnect(); } catch {}
+        try { noiseLowpass.disconnect(); } catch {}
+        try { noiseGain.disconnect(); } catch {}
+      };
+      nodes.push(noise, noiseHighpass, noiseLowpass, noiseGain);
+
+      window.setTimeout(() => {
+        try { filter.disconnect(); } catch {}
+        try { body.disconnect(); } catch {}
+      }, Math.ceil((durationSec + 0.08) * 1000));
+
+      return nodes;
+    }
+
+    function createPianoPreviewVoice(ctx, frequency, now, durationSec, destination, options = {}) {
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(5200, now);
+      filter.frequency.exponentialRampToValueAtTime(2600, now + Math.min(0.5, durationSec));
+      filter.Q.setValueAtTime(0.55, now);
+      filter.connect(destination);
+
+      const harmonicPlan = [
+        { ratio: 1, gain: 0.78, detune: 0 },
+        { ratio: 1, gain: 0.18, detune: 4 },
+        { ratio: 2, gain: 0.13, detune: -2 },
+        { ratio: 3, gain: 0.045, detune: 0 }
+      ];
+      const nodes = [filter];
+      const tailSec = Math.min(0.48, Math.max(0.22, durationSec * 0.34));
+      const voiceDuration = Math.min(durationSec + tailSec, 2.25);
+      const sustainLevel = options.repeatedNote ? 0.18 : 0.26;
+      const keyReleaseAt = Math.max(now + 0.08, now + Math.min(durationSec, voiceDuration - 0.08));
+
+      harmonicPlan.forEach((part) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(frequency * part.ratio, now);
+        osc.detune.setValueAtTime(part.detune, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(part.gain, now + 0.012);
+        gain.gain.exponentialRampToValueAtTime(Math.max(0.0001, part.gain * sustainLevel), keyReleaseAt);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + voiceDuration);
+        osc.connect(gain);
+        gain.connect(filter);
+        osc.start(now);
+        osc.stop(now + voiceDuration + 0.02);
+        osc.onended = () => {
+          try { osc.disconnect(); } catch {}
+          try { gain.disconnect(); } catch {}
+        };
+        nodes.push(osc, gain);
+      });
+
+      window.setTimeout(() => {
+        try { filter.disconnect(); } catch {}
+      }, Math.ceil((voiceDuration + 0.08) * 1000));
+
+      return nodes;
+    }
+
+    function createXylophonePreviewVoice(ctx, frequency, now, durationSec, destination) {
+      const filter = ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(Math.min(4200, frequency * 3.2), now);
+      filter.Q.setValueAtTime(1.1, now);
+      filter.connect(destination);
+
+      const harmonicPlan = [
+        { ratio: 1, gain: 0.88 },
+        { ratio: 2.76, gain: 0.26 },
+        { ratio: 5.4, gain: 0.08 }
+      ];
+      const nodes = [filter];
+      const voiceDuration = Math.min(durationSec, 0.95);
+
+      harmonicPlan.forEach((part) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(frequency * part.ratio, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(part.gain, now + 0.006);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + voiceDuration);
+        osc.connect(gain);
+        gain.connect(filter);
+        osc.start(now);
+        osc.stop(now + voiceDuration + 0.02);
+        osc.onended = () => {
+          try { osc.disconnect(); } catch {}
+          try { gain.disconnect(); } catch {}
+        };
+        nodes.push(osc, gain);
+      });
+
+      window.setTimeout(() => {
+        try { filter.disconnect(); } catch {}
+      }, Math.ceil((voiceDuration + 0.08) * 1000));
+
+      return nodes;
     }
 
     async function loadShortSongPreviewBuffer(noteName) {
@@ -22217,74 +22678,54 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       if (!ctx) return;
 
       const midi = noteNameToMidi(note.note, note.effectiveAccidental);
-      const baseNote = String(note.note || "").toUpperCase().replace(/[^A-G0-9]/g, "");
-      const buffer = await loadShortSongPreviewBuffer(baseNote);
       const now = ctx.currentTime + 0.015;
       const durationSec = Math.max(0.04, Number(durationMs || 0) / 1000);
       const releaseSec = options.slurContinue
-        ? Math.min(0.045, Math.max(0.016, durationSec * 0.14))
-        : Math.min(0.055, Math.max(0.018, durationSec * 0.18));
-      const offsetSec = Math.max(0, Number(offsetMs || 0) / 1000);
-      const skipWavAttack = Boolean(options.slurContinue) || offsetSec >= 0.08;
+        ? Math.min(0.07, Math.max(0.026, durationSec * 0.16))
+        : Math.min(0.085, Math.max(0.032, durationSec * 0.2));
+      const repeatedNote = Boolean(options.repeatedNote);
+      const instrument = shortSongPreviewState.instrument || "recorder";
+      const outputNode = getShortSongPreviewOutputNode(ctx);
       const masterGain = ctx.createGain();
+      const noteTailSec = instrument === "piano" ? Math.min(0.48, Math.max(0.22, durationSec * 0.34)) : 0;
+      const stopAtSec = durationSec + noteTailSec;
+      const masterPeak = instrument === "piano"
+        ? 0.5
+        : instrument === "xylophone"
+        ? 0.46
+        : repeatedNote ? 0.48 : (options.slurContinue ? 0.54 : 0.62);
+      const sustainPeak = instrument === "recorder" && durationSec >= 0.7 ? masterPeak * 0.84 : masterPeak;
+      const attackSec = instrument === "recorder"
+        ? (repeatedNote ? 0.045 : (options.slurContinue ? 0.055 : 0.038))
+        : 0.01;
       masterGain.gain.setValueAtTime(0.0001, now);
-      masterGain.gain.linearRampToValueAtTime(options.slurContinue ? 0.82 : 0.92, now + (options.slurContinue ? 0.032 : 0.018));
-      masterGain.gain.setValueAtTime(options.slurContinue ? 0.82 : 0.92, Math.max(now + 0.02, now + durationSec - releaseSec));
-      masterGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
-      masterGain.connect(ctx.destination);
+      masterGain.gain.linearRampToValueAtTime(masterPeak, now + attackSec);
+      if (instrument === "recorder" && durationSec >= 0.7) {
+        masterGain.gain.linearRampToValueAtTime(sustainPeak, now + durationSec * 0.72);
+      }
+      masterGain.gain.setValueAtTime(sustainPeak, Math.max(now + attackSec, now + durationSec - releaseSec));
+      masterGain.gain.linearRampToValueAtTime(0.0001, now + stopAtSec);
+      masterGain.connect(outputNode || ctx.destination);
       shortSongPreviewState.activeNodes.push(masterGain);
 
       if (Number.isFinite(midi)) {
-        const oscillator = ctx.createOscillator();
-        const oscillatorGain = ctx.createGain();
-        oscillator.type = "sine";
-        oscillator.frequency.value = 440 * Math.pow(2, (midi - 69) / 12);
-        oscillatorGain.gain.setValueAtTime(0.0001, now);
-        oscillatorGain.gain.linearRampToValueAtTime(buffer && !skipWavAttack ? 0.28 : 0.46, now + (options.slurContinue ? 0.045 : 0.035));
-        oscillatorGain.gain.setValueAtTime(buffer && !skipWavAttack ? 0.28 : 0.46, Math.max(now + 0.04, now + durationSec - releaseSec));
-        oscillatorGain.gain.linearRampToValueAtTime(0.0001, now + durationSec);
-        oscillator.connect(oscillatorGain);
-        oscillatorGain.connect(masterGain);
-        oscillator.start(now);
-        oscillator.stop(now + durationSec + 0.01);
-        oscillator.onended = () => {
-          try { oscillator.disconnect(); } catch {}
-          try { oscillatorGain.disconnect(); } catch {}
-        };
-        shortSongPreviewState.activeNodes.push(oscillator, oscillatorGain);
-      }
-
-      if (buffer && !skipWavAttack) {
-        const source = ctx.createBufferSource();
-        const sourceGain = ctx.createGain();
-        source.buffer = buffer;
-        if (Number.isFinite(midi)) {
-          const naturalMidi = noteNameToMidi(note.note, null);
-          if (Number.isFinite(naturalMidi)) {
-            source.playbackRate.value = Math.pow(2, (midi - naturalMidi) / 12);
-          }
-        }
-        source.loop = false;
-        const sourceDurationSec = Math.min(durationSec, Math.max(0.04, buffer.duration));
-        const sourceReleaseSec = Math.min(0.05, Math.max(0.014, sourceDurationSec * 0.22));
-        sourceGain.gain.setValueAtTime(0.0001, now);
-        sourceGain.gain.linearRampToValueAtTime(0.78, now + 0.012);
-        sourceGain.gain.setValueAtTime(0.78, Math.max(now + 0.02, now + sourceDurationSec - sourceReleaseSec));
-        sourceGain.gain.linearRampToValueAtTime(0.0001, now + sourceDurationSec);
-        source.connect(sourceGain);
-        sourceGain.connect(masterGain);
-        source.start(now, 0);
-        source.stop(now + sourceDurationSec + 0.01);
-        source.onended = () => {
-          try { source.disconnect(); } catch {}
-          try { sourceGain.disconnect(); } catch {}
-        };
-        shortSongPreviewState.activeNodes.push(source, sourceGain);
+        const frequency = getEqualTemperamentFrequency(midi);
+        const voiceNodes = instrument === "piano"
+          ? createPianoPreviewVoice(ctx, frequency, now, durationSec, masterGain, { repeatedNote })
+          : instrument === "xylophone"
+          ? createXylophonePreviewVoice(ctx, frequency, now, durationSec, masterGain)
+          : createSteadyRecorderPreviewVoice(ctx, frequency, now, durationSec, masterGain, {
+            noteName: note.note,
+            accidental: note.effectiveAccidental,
+            repeatedNote,
+            slurContinue: Boolean(options.slurContinue)
+          });
+        shortSongPreviewState.activeNodes.push(...voiceNodes);
       }
 
       window.setTimeout(() => {
         try { masterGain.disconnect(); } catch {}
-      }, Math.ceil((durationSec + 0.08) * 1000));
+      }, Math.ceil((stopAtSec + 0.08) * 1000));
     }
 
     function getShortSongPreviewElapsedMs() {
@@ -22351,6 +22792,11 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         note.slurGroupId &&
         nextNote.slurGroupId === note.slurGroupId
       );
+      const repeatedNote = Boolean(
+        note?.note &&
+        previousNote?.note &&
+        noteNameToMidi(note.note, note.effectiveAccidental) === noteNameToMidi(previousNote.note, previousNote.effectiveAccidental)
+      );
 
       state.currentIndex = noteIndex;
       drawShortSongPreviewScore();
@@ -22364,7 +22810,8 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         const remainingRealMs = remainingScoreMs / playbackRate;
         const overlapMs = slurToNext ? Math.min(40, Math.max(20, remainingRealMs * 0.18)) : 0;
         await playShortSongPreviewNote(note, remainingRealMs + overlapMs, offsetMs, {
-          slurContinue: slurContinue || offsetMs > 1
+          slurContinue: slurContinue || offsetMs > 1,
+          repeatedNote
         });
         state.timer = setTimeout(() => {
           if (runId !== state.runId || !state.playing) return;
