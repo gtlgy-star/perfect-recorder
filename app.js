@@ -270,7 +270,101 @@ window.addEventListener("load", () => {
   initRecorderUI();
 });
 
+function getFallbackClientLevelFromExp(exp) {
+  const safeExp = Math.max(0, Math.min(10000, Math.floor(Number(exp) || 0)));
+  const steps = [
+    80, 80, 80, 80, 80,
+    100, 100, 100, 100, 100,
+    120, 120, 120, 120, 120,
+    150, 150, 150, 150, 150,
+    180, 180, 180, 180, 180,
+    210, 210, 210, 210, 210,
+    240, 240, 240, 240, 240,
+    270, 270, 270, 270, 270,
+    310, 310, 310, 310, 310,
+    340, 340, 340, 340, 340
+  ];
+  let total = 0;
+
+  for (let level = 0; level < steps.length; level += 1) {
+    total += steps[level];
+    if (safeExp < total) return level;
+  }
+
+  return 50;
+}
+
+function applyServerGrowthResultSafely(saveResult, previousGrowthState) {
+  if (!app.user) {
+    return { applied: false, reason: "missingUser" };
+  }
+
+  const previousExp = Math.max(0, Math.min(10000, Math.floor(Number(previousGrowthState?.exp ?? app.user.exp ?? 0) || 0)));
+  const previousLevel = Math.max(0, Math.min(50, Math.floor(Number(previousGrowthState?.level ?? app.user.level ?? 0) || 0)));
+
+  function restorePreviousGrowth_() {
+    app.user.exp = previousExp;
+    app.user.level = previousLevel;
+  }
+
+  if (!saveResult || saveResult.ok !== true) {
+    restorePreviousGrowth_();
+    console.warn("[GROWTH RESULT IGNORED]", {
+      reason: "serverReturnedNotOk",
+      saveResult,
+      previousExp,
+      previousLevel
+    });
+    return { applied: false, reason: "serverReturnedNotOk" };
+  }
+
+  const growth = saveResult.growth || {};
+  const serverExp = Number(growth.expAfter);
+  const serverLevel = Number(growth.levelAfter);
+  const hasValidServerExp = Number.isFinite(serverExp) && serverExp >= 0 && serverExp <= 10000;
+  const hasValidServerLevel = Number.isFinite(serverLevel) && serverLevel >= 0 && serverLevel <= 50;
+  const suspiciousDrop = hasValidServerExp && (
+    serverExp < previousExp ||
+    (previousExp > 0 && serverExp === 0)
+  );
+
+  if (!hasValidServerExp || !hasValidServerLevel || suspiciousDrop) {
+    const originalServerExp = growth.expAfter;
+    const originalServerLevel = growth.levelAfter;
+    restorePreviousGrowth_();
+    growth.expAfter = previousExp;
+    growth.levelAfter = previousLevel;
+    console.warn("[GROWTH RESULT IGNORED]", {
+      reason: "invalidOrDecreasedServerGrowth",
+      serverExp: originalServerExp,
+      serverLevel: originalServerLevel,
+      previousExp,
+      previousLevel
+    });
+    return { applied: false, reason: "invalidOrDecreasedServerGrowth" };
+  }
+
+  const expAfter = typeof clampClientExp === "function"
+    ? clampClientExp(serverExp)
+    : Math.max(0, Math.min(10000, Math.floor(serverExp)));
+  const levelAfter = typeof getClientGrowthProgress === "function"
+    ? getClientGrowthProgress(expAfter).level
+    : getFallbackClientLevelFromExp(expAfter);
+
+  app.user.exp = expAfter;
+  app.user.level = levelAfter;
+  growth.expAfter = expAfter;
+  growth.levelAfter = levelAfter;
+
+  return {
+    applied: true,
+    expAfter,
+    levelAfter
+  };
+}
+
 window.app = app;
+window.applyServerGrowthResultSafely = applyServerGrowthResultSafely;
 
 function toggleMission() {
   const panel = document.getElementById("missionPanel");

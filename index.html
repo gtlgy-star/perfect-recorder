@@ -26146,6 +26146,11 @@ function startBasicPractice() {
         throw error;
       }
 
+      const previousGrowthState = {
+        exp: Number(app.user.exp || 0),
+        level: Number(app.user.level || 0)
+      };
+
       try {
         const lastRecordScore = (typeof app !== "undefined" && app && app.lastRecordScore)
           || window.lastRecordScore
@@ -26178,6 +26183,7 @@ function startBasicPractice() {
 
         const payload = {
           userId: app.user.userId,
+          user: app.user,
           mode: "song",
           activityType,
           songId: song.songId,
@@ -26227,14 +26233,12 @@ function startBasicPractice() {
         }
 
         if (app.user && saveResult && saveResult.ok && saveResult.growth) {
-          if (typeof saveResult.growth.expAfter === "number") {
-            app.user.exp = saveResult.growth.expAfter;
-          }
-          if (typeof saveResult.growth.levelAfter === "number") {
-            app.user.level = saveResult.growth.levelAfter;
-          }
+          const appliedGrowth = typeof applyServerGrowthResultSafely === "function"
+            ? applyServerGrowthResultSafely(saveResult, previousGrowthState)
+            : { applied: false, reason: "missingGrowthGuard" };
+
           window.lastGrowthResult = saveResult.growth;
-          console.log("[GROWTH RESULT]", saveResult.growth);
+          console.log("[GROWTH RESULT]", saveResult.growth, appliedGrowth);
           if (typeof renderMenuStudentGrowthInfo === "function") {
             renderMenuStudentGrowthInfo();
           }
@@ -26272,6 +26276,10 @@ function startBasicPractice() {
           "ok"
         );
       } catch (e) {
+        if (app.user) {
+          app.user.exp = previousGrowthState.exp;
+          app.user.level = previousGrowthState.level;
+        }
         renderGrowthResult(null);
         setStatus("saveStatus", e.message, "bad");
         throw e;
