@@ -16414,7 +16414,7 @@ body.theme-light .readyCardHint {
     }
     const THEME_STORAGE_KEY = "recorder_theme_v1";
     const STARTUP_GRACE_MS = 450;
-    const NOTE_TRANSITION_GRACE_MS = 140;
+    const NOTE_TRANSITION_GRACE_MS = 160;
     const NOTE_ACCUMULATED_END_GRACE_MS = 35;
     const NOTE_ACCUMULATED_MIN_SAMPLES = 2;
     const TARGET_NOTE_PERFECT_RATIO = 0.7;
@@ -16424,6 +16424,12 @@ body.theme-light .readyCardHint {
     const PITCH_EXACT_TOLERANCE_CENTS = 25;
     const PITCH_NEAR_TOLERANCE_CENTS = 60;
     const PITCH_LOOSE_TOLERANCE_CENTS = 95;
+    const SONG_PITCH_EXACT_TOLERANCE_CENTS = 30;
+    const SONG_PITCH_NEAR_TOLERANCE_CENTS = 70;
+    const SONG_PITCH_LOOSE_TOLERANCE_CENTS = 95;
+    const SONG_RHYTHM_EXACT_RATIO = 0.85;
+    const SONG_RHYTHM_NEAR_RATIO = 0.70;
+    const SONG_RHYTHM_MIN_RATIO = 0.45;
     const PITCH_WIDE_TOLERANCE_CENTS = 140;
     const RHYTHM_EXACT_SCORE = 1.0;
     const RHYTHM_NEAR_SCORE = 0.88;
@@ -16445,8 +16451,8 @@ body.theme-light .readyCardHint {
     const NOISE_GUARD_MULTIPLIER = 2.5;
     const NOISE_GUARD_MINIMUM = 0.035;
     const STRICT_NOTE_PERFECT_RATIO = 0.85;
-    const STRICT_NOTE_GREAT_RATIO = 0.75;
-    const STRICT_NOTE_GOOD_RATIO = 0.65;
+    const STRICT_NOTE_GREAT_RATIO = 0.70;
+    const STRICT_NOTE_GOOD_RATIO = 0.60;
     const GRADE_RULES = [
       { min: 95, key: "PERFECT", label: "PERFECT!!" },
       { min: 85, key: "GREAT", label: "GREAT!" },
@@ -20982,6 +20988,10 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       return gradeKey === "PERFECT" || gradeKey === "GREAT";
     }
 
+    function isGoodNote(noteResult) {
+      return getNoteJudgeGradeKey(noteResult) === "GOOD";
+    }
+
     function showJudgmentText(kind, label) {
       const layer = document.getElementById("judgmentFeedbackLayer");
       if (!layer) return;
@@ -24152,9 +24162,9 @@ ${closeHtml}`;
           goodRatio: pitchThresholds.goodRatio
         },
         rhythmThresholds: {
-          exactRatio: 0.9,
-          nearRatio: 0.75,
-          transitionRatio: 0.5
+          exactRatio: SONG_RHYTHM_EXACT_RATIO,
+          nearRatio: SONG_RHYTHM_NEAR_RATIO,
+          transitionRatio: SONG_RHYTHM_MIN_RATIO
         }
       });
     }
@@ -24171,6 +24181,10 @@ ${closeHtml}`;
           scoreState.maxCombo = bestCombo;
         }
         updateComboUI(currentCombo);
+        return;
+      }
+
+      if (isGoodNote(noteResult)) {
         return;
       }
 
@@ -24237,15 +24251,15 @@ ${closeHtml}`;
         }
       });
 
-      if (bestDiffCents <= PITCH_EXACT_TOLERANCE_CENTS) {
+      if (bestDiffCents <= SONG_PITCH_EXACT_TOLERANCE_CENTS) {
         return matchedAdjacentNote ? PITCH_TRANSITION_NEAR_SCORE : PITCH_EXACT_SCORE;
       }
 
-      if (bestDiffCents <= PITCH_NEAR_TOLERANCE_CENTS) {
+      if (bestDiffCents <= SONG_PITCH_NEAR_TOLERANCE_CENTS) {
         return matchedAdjacentNote ? PITCH_TRANSITION_NEAR_SCORE : PITCH_NEAR_SCORE;
       }
 
-      if (bestDiffCents <= PITCH_LOOSE_TOLERANCE_CENTS) {
+      if (bestDiffCents <= SONG_PITCH_LOOSE_TOLERANCE_CENTS) {
         return matchedAdjacentNote ? PITCH_TRANSITION_LOOSE_SCORE : PITCH_LOOSE_SCORE;
       }
 
@@ -24284,13 +24298,15 @@ ${closeHtml}`;
       const safeRatio = Math.max(0, Math.min(1, Number(validInputRatio) || 0));
 
       if (Number(noteStartMs) < STARTUP_GRACE_MS && safeRatio > 0) {
-        return Math.max(RHYTHM_NEAR_SCORE, safeRatio >= 0.9 ? RHYTHM_EXACT_SCORE : RHYTHM_NEAR_SCORE);
+        if (safeRatio >= SONG_RHYTHM_EXACT_RATIO) return RHYTHM_EXACT_SCORE;
+        if (safeRatio >= SONG_RHYTHM_NEAR_RATIO) return RHYTHM_NEAR_SCORE;
+        if (safeRatio >= SONG_RHYTHM_MIN_RATIO) return RHYTHM_TRANSITION_SCORE;
+        return 0;
       }
 
-      if (safeRatio >= 0.9) return RHYTHM_EXACT_SCORE;
-      if (safeRatio >= 0.75) return RHYTHM_NEAR_SCORE;
-      if (safeRatio >= 0.5) return RHYTHM_TRANSITION_SCORE;
-      if (safeRatio > 0) return RHYTHM_LOOSE_SCORE;
+      if (safeRatio >= SONG_RHYTHM_EXACT_RATIO) return RHYTHM_EXACT_SCORE;
+      if (safeRatio >= SONG_RHYTHM_NEAR_RATIO) return RHYTHM_NEAR_SCORE;
+      if (safeRatio >= SONG_RHYTHM_MIN_RATIO) return RHYTHM_TRANSITION_SCORE;
 
       return 0;
     }
