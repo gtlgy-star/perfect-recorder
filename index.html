@@ -24324,13 +24324,13 @@ ${closeHtml}`;
       if (Number(noteStartMs) < STARTUP_GRACE_MS && safeRatio > 0) {
         if (safeRatio >= thresholds.exactRatio) return RHYTHM_EXACT_SCORE;
         if (safeRatio >= thresholds.nearRatio) return RHYTHM_NEAR_SCORE;
-        if (safeRatio >= thresholds.minRatio) return RHYTHM_TRANSITION_SCORE;
+        if (safeRatio >= thresholds.minRatio) return RHYTHM_LOOSE_SCORE;
         return 0;
       }
 
       if (safeRatio >= thresholds.exactRatio) return RHYTHM_EXACT_SCORE;
       if (safeRatio >= thresholds.nearRatio) return RHYTHM_NEAR_SCORE;
-      if (safeRatio >= thresholds.minRatio) return RHYTHM_TRANSITION_SCORE;
+      if (safeRatio >= thresholds.minRatio) return RHYTHM_LOOSE_SCORE;
 
       return 0;
     }
