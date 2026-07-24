@@ -14902,7 +14902,7 @@ body.theme-light .readyCardHint {
           <span class="noiseGuardIcon" aria-hidden="true">🎙</span>
           <span class="noiseGuardCopy">
             <span class="noiseGuardTitle">주변 소음 차단 켜기</span>
-            <span class="noiseGuardDesc">누르면 주변 소음 기준을 자동으로 맞춥니다.</span>
+            <span class="noiseGuardDesc">여럿이 함께 연주할 때 판정을 넓게 적용합니다.</span>
           </span>
         </button>
         <div class="muted">휴대폰에서는 버튼을 눌러 마이크 권한을 허용해야 합니다.</div>
@@ -16417,9 +16417,9 @@ body.theme-light .readyCardHint {
     const NOTE_TRANSITION_GRACE_MS = 160;
     const NOTE_ACCUMULATED_END_GRACE_MS = 35;
     const NOTE_ACCUMULATED_MIN_SAMPLES = 2;
-    const TARGET_NOTE_PERFECT_RATIO = 0.7;
-    const TARGET_NOTE_GREAT_RATIO = 0.5;
-    const TARGET_NOTE_GOOD_RATIO = 0.25;
+    const TARGET_NOTE_PERFECT_RATIO = 0.60;
+    const TARGET_NOTE_GREAT_RATIO = 0.40;
+    const TARGET_NOTE_GOOD_RATIO = 0.20;
     const TARGET_NOTE_SAMPLE_MAX_STEP_MS = 80;
     const PITCH_EXACT_TOLERANCE_CENTS = 25;
     const PITCH_NEAR_TOLERANCE_CENTS = 60;
@@ -16430,6 +16430,9 @@ body.theme-light .readyCardHint {
     const SONG_RHYTHM_EXACT_RATIO = 0.85;
     const SONG_RHYTHM_NEAR_RATIO = 0.70;
     const SONG_RHYTHM_MIN_RATIO = 0.45;
+    const CLASSROOM_RHYTHM_EXACT_RATIO = 0.70;
+    const CLASSROOM_RHYTHM_NEAR_RATIO = 0.50;
+    const CLASSROOM_RHYTHM_MIN_RATIO = 0.30;
     const PITCH_WIDE_TOLERANCE_CENTS = 140;
     const RHYTHM_EXACT_SCORE = 1.0;
     const RHYTHM_NEAR_SCORE = 0.88;
@@ -20936,6 +20939,24 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       };
     }
 
+    function getRhythmJudgeThresholds() {
+      if (getPitchJudgeMode() === "classroom") {
+        return {
+          mode: "classroom",
+          exactRatio: CLASSROOM_RHYTHM_EXACT_RATIO,
+          nearRatio: CLASSROOM_RHYTHM_NEAR_RATIO,
+          minRatio: CLASSROOM_RHYTHM_MIN_RATIO
+        };
+      }
+
+      return {
+        mode: "personal",
+        exactRatio: SONG_RHYTHM_EXACT_RATIO,
+        nearRatio: SONG_RHYTHM_NEAR_RATIO,
+        minRatio: SONG_RHYTHM_MIN_RATIO
+      };
+    }
+
     function getNoteJudgeGradeKey(noteResult) {
       const result = noteResult || {};
 
@@ -24153,6 +24174,7 @@ ${closeHtml}`;
 
     function logJudgeModeCheck() {
       const pitchThresholds = getPitchJudgeThresholds();
+      const rhythmThresholds = getRhythmJudgeThresholds();
       console.log("[JUDGE MODE CHECK]", {
         pitchMode: pitchThresholds.mode,
         pitchThresholds: {
@@ -24162,9 +24184,10 @@ ${closeHtml}`;
           goodRatio: pitchThresholds.goodRatio
         },
         rhythmThresholds: {
-          exactRatio: SONG_RHYTHM_EXACT_RATIO,
-          nearRatio: SONG_RHYTHM_NEAR_RATIO,
-          transitionRatio: SONG_RHYTHM_MIN_RATIO
+          mode: rhythmThresholds.mode,
+          exactRatio: rhythmThresholds.exactRatio,
+          nearRatio: rhythmThresholds.nearRatio,
+          transitionRatio: rhythmThresholds.minRatio
         }
       });
     }
@@ -24296,17 +24319,18 @@ ${closeHtml}`;
 
     function getAccumulatedRhythmScoreFromRatio(validInputRatio, noteStartMs) {
       const safeRatio = Math.max(0, Math.min(1, Number(validInputRatio) || 0));
+      const thresholds = getRhythmJudgeThresholds();
 
       if (Number(noteStartMs) < STARTUP_GRACE_MS && safeRatio > 0) {
-        if (safeRatio >= SONG_RHYTHM_EXACT_RATIO) return RHYTHM_EXACT_SCORE;
-        if (safeRatio >= SONG_RHYTHM_NEAR_RATIO) return RHYTHM_NEAR_SCORE;
-        if (safeRatio >= SONG_RHYTHM_MIN_RATIO) return RHYTHM_TRANSITION_SCORE;
+        if (safeRatio >= thresholds.exactRatio) return RHYTHM_EXACT_SCORE;
+        if (safeRatio >= thresholds.nearRatio) return RHYTHM_NEAR_SCORE;
+        if (safeRatio >= thresholds.minRatio) return RHYTHM_TRANSITION_SCORE;
         return 0;
       }
 
-      if (safeRatio >= SONG_RHYTHM_EXACT_RATIO) return RHYTHM_EXACT_SCORE;
-      if (safeRatio >= SONG_RHYTHM_NEAR_RATIO) return RHYTHM_NEAR_SCORE;
-      if (safeRatio >= SONG_RHYTHM_MIN_RATIO) return RHYTHM_TRANSITION_SCORE;
+      if (safeRatio >= thresholds.exactRatio) return RHYTHM_EXACT_SCORE;
+      if (safeRatio >= thresholds.nearRatio) return RHYTHM_NEAR_SCORE;
+      if (safeRatio >= thresholds.minRatio) return RHYTHM_TRANSITION_SCORE;
 
       return 0;
     }
@@ -24898,8 +24922,8 @@ ${closeHtml}`;
       const desc = btn.querySelector(".noiseGuardDesc");
       if (desc) {
         desc.textContent = noiseGuardEnabled
-          ? "작은 주변 소리는 판정에서 제외합니다."
-          : "누르면 주변 소음 기준을 자동으로 맞춥니다.";
+          ? "주변 소음 상황에 맞춰 판정을 넓게 적용 중입니다."
+          : "여럿이 함께 연주할 때 판정을 넓게 적용합니다.";
       }
     }
 
