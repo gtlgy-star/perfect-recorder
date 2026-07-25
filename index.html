@@ -16593,6 +16593,10 @@ body.theme-light .readyCardHint {
       hoverWrongNoteIndex: null,
       selectedWrongNoteIndex: null
     };
+    let fingeringPitchSampleMap = new Map();
+    let currentFingeringNoteIndex = null;
+    let currentFingeringNoteStartedAt = 0;
+    let lastFingeringPitchSampleAt = 0;
     let practiceState = {
       mode: "cards",
       notes: [],
@@ -16629,6 +16633,81 @@ body.theme-light .readyCardHint {
         hoverWrongNoteIndex: null,
         selectedWrongNoteIndex: null
       };
+      resetFingeringPitchSamples();
+    }
+
+    function resetFingeringPitchSamples() {
+      fingeringPitchSampleMap = new Map();
+      currentFingeringNoteIndex = null;
+      currentFingeringNoteStartedAt = 0;
+      lastFingeringPitchSampleAt = 0;
+    }
+
+    function getCurrentFingeringNoteIndex() {
+      if (!fingeringJudgeState.active || !Array.isArray(practiceState.notes)) return null;
+      const noteIndex = Number(practiceState.index) - 1;
+      if (!Number.isInteger(noteIndex) || noteIndex < 0 || noteIndex >= practiceState.notes.length) {
+        return null;
+      }
+      return noteIndex;
+    }
+
+    function hasValidFingeringInput() {
+      return livePitchHz > 0 &&
+        currentInputLevel >= Math.max(getActiveInputThreshold() * 0.72, 0.008);
+    }
+
+    function collectFingeringPitchSample() {
+      const noteIndex = getCurrentFingeringNoteIndex();
+      if (noteIndex == null || noteIndex !== currentFingeringNoteIndex) return;
+
+      const targetNote = practiceState.notes[noteIndex];
+      if (!targetNote || /^R/i.test(String(targetNote))) return;
+
+      const now = performance.now();
+      const noteDurationMs = Math.max(0, Number(practiceState.speed) || 0);
+      const transitionExclusionMs = Math.min(100, noteDurationMs * 0.15);
+      const elapsedMs = now - currentFingeringNoteStartedAt;
+      if (
+        !currentFingeringNoteStartedAt ||
+        elapsedMs < transitionExclusionMs ||
+        elapsedMs > noteDurationMs - transitionExclusionMs ||
+        now - lastFingeringPitchSampleAt < 30 ||
+        !hasValidFingeringInput()
+      ) {
+        return;
+      }
+
+      const targetMidi = noteNameToMidi(targetNote);
+      const detectedMidiValue = getDetectedMidiValue();
+      if (targetMidi == null || detectedMidiValue == null) return;
+
+      const diffCents = Math.abs((detectedMidiValue - targetMidi) * 100);
+      const detectedNote = getDetectedFingeringNoteName();
+      const sampleData = fingeringPitchSampleMap.get(noteIndex) || {
+        totalValidSamples: 0,
+        correctSamples: 0,
+        detectedNotes: new Map(),
+        bestDetectedNote: "",
+        bestDiffCents: null,
+        lastValidSampleAt: 0
+      };
+
+      sampleData.totalValidSamples += 1;
+      if (diffCents <= PITCH_NEAR_TOLERANCE_CENTS) sampleData.correctSamples += 1;
+      if (detectedNote) {
+        sampleData.detectedNotes.set(
+          detectedNote,
+          (sampleData.detectedNotes.get(detectedNote) || 0) + 1
+        );
+      }
+      if (sampleData.bestDiffCents == null || diffCents < sampleData.bestDiffCents) {
+        sampleData.bestDiffCents = diffCents;
+        sampleData.bestDetectedNote = detectedNote;
+      }
+      sampleData.lastValidSampleAt = now;
+      lastFingeringPitchSampleAt = now;
+      fingeringPitchSampleMap.set(noteIndex, sampleData);
     }
 
     function getDetectedFingeringNoteName() {
@@ -16663,6 +16742,7 @@ body.theme-light .readyCardHint {
     function stopFingeringPitchJudge() {
       fingeringJudgeState.active = false;
       stopMicMonitoring();
+      resetFingeringPitchSamples();
     }
 
     function judgeFingeringNoteAtIndex(noteIndex) {
@@ -16678,17 +16758,30 @@ body.theme-light .readyCardHint {
       );
       if (alreadyJudged) return;
 
-      const detectedNote = getDetectedFingeringNoteName();
-      const hasInput = hasValidPerformanceInput();
-      const judgeStatus = hasInput && isFingeringPitchCorrect(targetNote)
-        ? "correct"
-        : "wrong";
+      const sampleData = fingeringPitchSampleMap.get(noteIndex);
+      const totalValidSamples = Number(sampleData?.totalValidSamples || 0);
+      const correctSamples = Number(sampleData?.correctSamples || 0);
+      const correctRatio = totalValidSamples > 0 ? correctSamples / totalValidSamples : 0;
+      const mostDetectedNote = sampleData?.detectedNotes instanceof Map
+        ? [...sampleData.detectedNotes.entries()]
+          .sort((a, b) => b[1] - a[1])[0]?.[0] || ""
+        : "";
+      const detectedNote = sampleData?.bestDetectedNote || mostDetectedNote;
+      const isCorrect =
+        (totalValidSamples >= 2 && correctRatio >= 0.45) ||
+        (totalValidSamples === 1 && correctSamples === 1) ||
+        (correctSamples >= 3 && correctRatio >= 0.35);
+      const judgeStatus = isCorrect ? "correct" : "wrong";
       const judgedEntry = {
         index: noteIndex,
         targetNote,
         detectedNote,
         judgeStatus,
-        fingeringJudgeStatus: judgeStatus
+        fingeringJudgeStatus: judgeStatus,
+        sampleCount: totalValidSamples,
+        correctSampleCount: correctSamples,
+        correctRatio,
+        bestDiffCents: sampleData?.bestDiffCents ?? null
       };
 
       fingeringJudgeState.judgedNotes.push(judgedEntry);
@@ -16716,6 +16809,7 @@ body.theme-light .readyCardHint {
         hoverWrongNoteIndex: null,
         selectedWrongNoteIndex: null
       };
+      resetFingeringPitchSamples();
     }
     let scoreState = {
       totalFrames: 0,
@@ -24986,7 +25080,10 @@ ${closeHtml}`;
       analyser.getFloatTimeDomainData(pitchBuffer);
       currentInputLevel = getCurrentInputRms(pitchBuffer);
       const activeInputThreshold = getActiveInputThreshold();
-      const freq = currentInputLevel >= activeInputThreshold
+      const pitchDetectionThreshold = fingeringJudgeState.active
+        ? Math.max(activeInputThreshold * 0.72, 0.008)
+        : activeInputThreshold;
+      const freq = currentInputLevel >= pitchDetectionThreshold
         ? autoCorrelate(pitchBuffer, audioCtx.sampleRate)
         : -1;
 
@@ -25010,6 +25107,10 @@ ${closeHtml}`;
 
         const el = document.getElementById("liveDetectedNote");
         if (el) el.textContent = "-";
+      }
+
+      if (fingeringJudgeState.active) {
+        collectFingeringPitchSample();
       }
 
       if (practiceRunning && !practicePaused && currentTimeline) {
@@ -27253,6 +27354,10 @@ function startBasicPractice() {
       const nextEl = document.getElementById("nextNote");
       const stepEl = document.getElementById("practiceStep");
 
+      currentFingeringNoteIndex = i;
+      currentFingeringNoteStartedAt = performance.now();
+      lastFingeringPitchSampleAt = 0;
+
       if (currentEl) currentEl.textContent = getPracticeNoteLabel(current);
       if (prevEl) prevEl.textContent = getPracticeNoteLabel(prev);
       if (nextEl) nextEl.textContent = getPracticeNoteLabel(next);
@@ -27270,6 +27375,7 @@ function startBasicPractice() {
       stopFingeringPitchJudge();
       resetFingeringPracticeResultButton();
       setFingeringPracticeActionButtonsRunning(false);
+      resetFingeringPitchSamples();
       practiceState.index = 0;
       fingeringPracticeSetGrowthClaimRequested = false;
 
@@ -27308,6 +27414,7 @@ function startBasicPractice() {
       stopFingeringPracticeTimer();
       stopFingeringPitchJudge();
       resetFingeringJudgeState();
+      resetFingeringPitchSamples();
       resetFingeringPracticeResultButton();
       selectedFingeringPattern = null;
       selectedPracticePatterns = [null, null];
