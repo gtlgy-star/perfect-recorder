@@ -18186,11 +18186,19 @@ function renderSongButtons() {
       const song = app.currentSong || getSelectedSong();
       const showButton = Boolean(isSongPreviewPracticeAvailable() && song);
       const hasNotation = Boolean(String(song?.notation || "").trim());
+      const isRestricted = Boolean(song?.songId && PRINT_RESTRICTED_SONG_IDS.has(song.songId));
 
       previewBtn.classList.toggle("hidden", !showButton);
-      previewBtn.disabled = !showButton || !hasNotation;
-      previewBtn.title = showButton && !hasNotation ? "악보 정보 준비 중" : "";
-      previewBtn.setAttribute("aria-label", showButton && !hasNotation ? "연주곡 확인: 악보 정보 준비 중" : "연주곡 확인");
+      previewBtn.disabled = !showButton || !hasNotation || isRestricted;
+      previewBtn.title = isRestricted
+        ? "저작권 보호를 위해 연주곡 확인이 제한됩니다"
+        : (showButton && !hasNotation ? "악보 정보 준비 중" : "");
+      previewBtn.setAttribute(
+        "aria-label",
+        isRestricted
+          ? "연주곡 확인: 저작권 보호를 위해 이용할 수 없음"
+          : (showButton && !hasNotation ? "연주곡 확인: 악보 정보 준비 중" : "연주곡 확인")
+      );
     }
 
     function updateShortSongPreviewButtonVisibility() {
