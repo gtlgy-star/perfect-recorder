@@ -3849,6 +3849,20 @@ button:disabled {
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
+      filter: grayscale(1);
+    }
+
+    .songPrintRestrictionNotice {
+      display: none;
+      margin: 8px 0 0;
+      color: #8a5260;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .songPrintRestrictionNotice.visible {
+      display: block;
     }
 
     #songPrintRoot {
@@ -21708,6 +21722,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
               <button type="button" data-preview-action="print" aria-label="현재 곡 전체 악보 출력" title="전체 악보를 인쇄하거나 PDF로 저장합니다">🖨 악보 출력</button>
               <button type="button" data-preview-action="close" aria-label="연주곡 확인 닫기">닫기</button>
             </div>
+            <p class="songPrintRestrictionNotice" data-print-restriction-notice role="status">저작권 보호를 위해 이 곡의 악보 출력은 제공되지 않습니다.</p>
           </footer>
         </div>
       `;
@@ -22933,8 +22948,24 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
     function setSongPrintButtonBusy(isBusy) {
       const button = shortSongPreviewState.overlay?.querySelector("[data-preview-action='print']");
       if (!button) return;
-      button.disabled = Boolean(isBusy);
-      button.textContent = isBusy ? "악보 준비 중" : "🖨 악보 출력";
+      const restricted = !canPrintSong(shortSongPreviewState.song);
+      button.disabled = restricted || Boolean(isBusy);
+      button.textContent = restricted ? "악보 출력 제한" : (isBusy ? "악보 준비 중" : "🖨 악보 출력");
+    }
+
+    function updateSongPrintAvailability(song) {
+      const restricted = !canPrintSong(song);
+      const button = shortSongPreviewState.overlay?.querySelector("[data-preview-action='print']");
+      const notice = shortSongPreviewState.overlay?.querySelector("[data-print-restriction-notice]");
+      const message = "저작권 보호를 위해 이 곡의 악보 출력은 제공되지 않습니다.";
+      if (button) {
+        button.disabled = restricted;
+        button.classList.toggle("is-print-restricted", restricted);
+        button.textContent = restricted ? "악보 출력 제한" : "🖨 악보 출력";
+        button.title = restricted ? message : "전체 악보를 인쇄하거나 PDF로 저장합니다";
+        button.setAttribute("aria-label", restricted ? `악보 출력 제한. ${message}` : "현재 곡 전체 악보 출력");
+      }
+      if (notice) notice.classList.toggle("visible", restricted);
     }
 
     function hasVisibleCanvasInk(canvas) {
@@ -23219,9 +23250,13 @@ ${closeHtml}`;
 
     async function printShortSongPreviewScore() {
       const state = shortSongPreviewState;
+      const song = state.song || app.currentSong || getSelectedSong();
+      if (!canPrintSong(song)) {
+        alert("저작권 보호를 위해 이 곡의 악보 출력은 제공되지 않습니다.");
+        return;
+      }
       const printButton = state.overlay?.querySelector("[data-preview-action='print']");
       if (printButton?.disabled) return;
-      const song = state.song || app.currentSong || getSelectedSong();
       const previewSong = normalizeSongPreviewData(song);
       if (!previewSong.notation) {
         const statusEl = document.getElementById("practiceStatus");
@@ -23503,6 +23538,7 @@ ${closeHtml}`;
       renderShortSongPreviewScore(previewSong, timeline);
       updateShortSongPreviewProgress(0);
       updateShortSongPreviewInstrumentUI();
+      updateSongPrintAvailability(previewSong);
 
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden", "false");

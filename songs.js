@@ -136,3 +136,32 @@ const BONUS_SONGS = [
 ];
 
 const BONUS_GROWTH_SONGS = [];
+
+const PRINT_RESTRICTED_SONG_IDS = new Set([
+  "HAKGYOJONG", "SAME_SAME", "TONGTONG", "DRAGONFLY",
+  "TB3_RAIN", "TB3_AUTUMN", "TB3_SPIDER", "TB3_LITTLE_BEE",
+  "TB4_MUSIC_FOREVER", "TB4_ALWAYS_WITH_ME", "TB4_SMALL_WORLD",
+  "TB4_VROOM_VROOM", "TB4_DO_YOU_WANT_TO_BUILD_A_SNOWMAN", "TB4_DREAM",
+  "TB5_WINDY_PLACE", "TB5_TRY_EVERYTHING", "TB5_YOU_RAISE_ME_UP",
+  "TB5_ROAD_TO_SCHOOL", "TB5_COLORS_OF_THE_WIND_ANIME", "TB5_PINOCCHIO",
+  "TB5_HAPPY_TRAVELER", "TB5_SUMMER", "TB6_STAR_MOON", "TB6_GOOD_JOB_TODAY",
+  "TB6_OVER_THE_RAINBOW", "TB6_SEA_TOWN", "TB6_OCTOBER_DAY",
+  "BONUS_BANANA_CHA_CHA", "BONUS_FLOWERS", "BONUS_BIBBIDI_BOBBIDI_BOO",
+  "BONUS_LOVE_SCENARIO", "BONUS_CAT_BUS", "BONUS_OCTOPUS_DREAM",
+  "BONUS_OVER_THE_RAINBOW", "BONUS_A_WHOLE_NEW_WORLD", "BONUS_CAROUSEL",
+  "BONUS_HES_PIRATE"
+]);
+
+function applySongPrintRestrictions(songs) {
+  (songs || []).forEach((song) => {
+    if (song && PRINT_RESTRICTED_SONG_IDS.has(song.songId)) song.printable = false;
+  });
+}
+
+function canPrintSong(song) {
+  return Boolean(song) && song.printable !== false && !PRINT_RESTRICTED_SONG_IDS.has(song.songId);
+}
+
+applySongPrintRestrictions(LOCAL_SHORT_SONGS);
+Object.values(TEXTBOOK_SONGS_BY_GRADE).forEach(applySongPrintRestrictions);
+applySongPrintRestrictions(BONUS_SONGS);
