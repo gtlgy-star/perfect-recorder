@@ -5031,7 +5031,7 @@ button:disabled {
       height: auto;
       min-height: 0;
       flex: 0 0 auto;
-      padding: 18px 126px 14px clamp(16px, 3vw, 34px);
+      padding: 18px clamp(16px, 3vw, 34px) 14px;
       border-bottom: 1px solid rgba(15, 23, 42, 0.12);
       background: rgba(255, 255, 255, 0.96);
     }
@@ -5043,6 +5043,10 @@ button:disabled {
     }
 
     .performanceDetailHeader h2 {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 10px;
       width: auto;
       margin: 0;
       font-size: clamp(20px, 2.8vw, 32px);
@@ -5055,6 +5059,33 @@ button:disabled {
       line-height: 1.22;
     }
 
+    .performanceDetailTitleIcon {
+      flex: 0 0 auto;
+      font-size: 0.95em;
+      line-height: 1;
+    }
+
+    .performanceDetailSongTitle {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-width: 0;
+      padding: 4px 12px 6px;
+      border: 1px solid rgba(245, 158, 11, 0.42);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #FEF3C7 0%, #FFF7ED 100%);
+      color: #111827;
+      box-shadow:
+        0 8px 18px rgba(245, 158, 11, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
+      overflow-wrap: anywhere;
+    }
+
+    .performanceDetailTitleSuffix {
+      flex: 0 1 auto;
+      min-width: 0;
+    }
+
     .performanceDetailSubtitle {
       margin: 6px 0 0;
       color: #475569;
@@ -5064,27 +5095,6 @@ button:disabled {
       overflow-wrap: normal;
       white-space: normal;
       line-height: 1.35;
-    }
-
-    .performanceDetailCloseBtn {
-      position: absolute;
-      top: 14px;
-      right: clamp(16px, 3vw, 28px);
-      width: auto;
-      min-width: 0;
-      max-width: none;
-      min-height: 0;
-      height: auto;
-      flex: 0 0 auto;
-      border: 1px solid rgba(15, 23, 42, 0.16);
-      border-radius: 18px;
-      padding: 9px 14px;
-      background: #FFFFFF;
-      color: #0F172A;
-      font-size: 14px;
-      line-height: 1.2;
-      font-weight: 900;
-      cursor: pointer;
     }
 
     .performanceDetailBody {
@@ -5100,17 +5110,19 @@ button:disabled {
     }
 
     .performanceSummaryGroup {
-      border: 1px solid rgba(15, 23, 42, 0.1);
+      border: 1px solid rgba(15, 23, 42, 0.18);
       border-radius: 10px;
       padding: 10px;
     }
 
     .performanceSummaryGroup-score {
-      background: linear-gradient(180deg, #DBEAFE 0%, #EFF6FF 100%);
+      border-color: rgba(37, 99, 235, 0.28);
+      background: linear-gradient(180deg, #BFDBFE 0%, #DBEAFE 100%);
     }
 
     .performanceSummaryGroup-check {
-      background: linear-gradient(180deg, #FFEDD5 0%, #FFF7ED 100%);
+      border-color: rgba(234, 88, 12, 0.28);
+      background: linear-gradient(180deg, #FED7AA 0%, #FFEDD5 100%);
     }
 
     .performanceSummaryGroupTitle {
@@ -5135,9 +5147,9 @@ button:disabled {
 
     .performanceSummaryItem {
       min-height: 68px;
-      border: 1px solid rgba(15, 23, 42, 0.1);
+      border: 1px solid rgba(15, 23, 42, 0.18);
       border-radius: 8px;
-      background: #FFFFFF;
+      background: rgba(255, 255, 255, 0.86);
       padding: 10px;
     }
 
@@ -5175,9 +5187,9 @@ button:disabled {
       gap: 8px;
       margin: 0 0 12px;
       padding: 12px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.2);
       border-radius: 8px;
-      background: #FFFFFF;
+      background: #F1F5F9;
     }
 
     .performanceLegendItem {
@@ -5187,7 +5199,7 @@ button:disabled {
       min-height: 42px;
       padding: 8px 12px;
       border-radius: 8px;
-      background: #F8FAFC;
+      background: #E2E8F0;
       color: #334155;
       font-size: 15px;
       font-weight: 800;
@@ -5208,8 +5220,9 @@ button:disabled {
     .performanceDetailGuide {
       margin: 0 0 14px;
       padding: 12px 14px;
+      border: 1px solid rgba(22, 163, 74, 0.22);
       border-radius: 8px;
-      background: #ECFDF5;
+      background: #D1FAE5;
       color: #14532D;
       font-weight: 850;
       line-height: 1.55;
@@ -5224,7 +5237,7 @@ button:disabled {
 
     .performanceDetailLine {
       position: relative;
-      border: 1px solid rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(15, 23, 42, 0.18);
       border-radius: 8px;
       background: #FFFFFF;
       overflow: hidden;
@@ -5247,9 +5260,9 @@ button:disabled {
     .performanceDetailCompareHint {
       margin: 0 0 12px;
       padding: 11px 14px;
-      border: 1px solid rgba(185, 28, 28, 0.18);
+      border: 1px solid rgba(185, 28, 28, 0.32);
       border-radius: 8px;
-      background: #FEF2F2;
+      background: #FEE2E2;
       color: #7F1D1D;
       font-size: 15px;
       font-weight: 900;
@@ -5303,9 +5316,9 @@ button:disabled {
       align-items: center;
       gap: 10px;
       padding: 9px 12px;
-      border: 1px solid rgba(185, 28, 28, 0.2);
+      border: 1px solid rgba(185, 28, 28, 0.34);
       border-radius: 10px;
-      background: #FFF1F2;
+      background: #FFE4E6;
       color: #7F1D1D;
     }
 
@@ -5318,6 +5331,7 @@ button:disabled {
       font-size: 14px;
       font-weight: 950;
       line-height: 1.35;
+      white-space: pre-line;
     }
 
     .performanceComparisonControls {
@@ -5337,14 +5351,14 @@ button:disabled {
     }
 
     .performanceDetailActions #performanceCompareStudentBtn {
-      border-color: rgba(37, 99, 235, 0.3);
-      background: linear-gradient(180deg, #DBEAFE 0%, #EFF6FF 100%);
+      border-color: rgba(37, 99, 235, 0.42);
+      background: linear-gradient(180deg, #BFDBFE 0%, #DBEAFE 100%);
       color: #1E3A8A;
     }
 
     .performanceDetailActions #performanceCompareReferenceBtn {
-      border-color: rgba(126, 34, 206, 0.32);
-      background: linear-gradient(180deg, #F3E8FF 0%, #FAF5FF 100%);
+      border-color: rgba(126, 34, 206, 0.44);
+      background: linear-gradient(180deg, #E9D5FF 0%, #F3E8FF 100%);
       color: #581C87;
     }
 
@@ -5388,7 +5402,7 @@ button:disabled {
     @media (max-width: 760px) {
       .performanceDetailHeader {
         align-items: flex-start;
-        padding: 14px 98px 12px 14px;
+        padding: 14px;
       }
 
       .performanceDetailHeader h2 {
@@ -5396,14 +5410,11 @@ button:disabled {
         line-height: 1.25;
       }
 
-      .performanceDetailSubtitle {
-        font-size: 13px;
+      .performanceDetailSongTitle {
+        padding: 3px 9px 5px;
       }
 
-      .performanceDetailCloseBtn {
-        top: 12px;
-        right: 12px;
-        padding: 8px 11px;
+      .performanceDetailSubtitle {
         font-size: 13px;
       }
 
@@ -15519,10 +15530,13 @@ body.theme-light .readyCardHint {
         <div class="performanceDetailDialog" role="dialog" aria-modal="true" aria-labelledby="performanceDetailTitle">
           <header class="performanceDetailHeader">
             <div>
-              <h2 id="performanceDetailTitle">🎼 상세 결과</h2>
+              <h2 id="performanceDetailTitle">
+                <span class="performanceDetailTitleIcon" aria-hidden="true">🎼</span>
+                <span id="performanceDetailSongTitle" class="performanceDetailSongTitle">곡</span>
+                <span class="performanceDetailTitleSuffix">상세 연주 결과</span>
+              </h2>
               <p id="performanceDetailSubtitle" class="performanceDetailSubtitle">이번 연주를 음표별로 확인해 보세요.</p>
             </div>
-            <button id="performanceDetailCloseBtn" class="performanceDetailCloseBtn" type="button">✕ 닫기</button>
           </header>
 
           <div id="performanceDetailBody" class="performanceDetailBody">
@@ -18645,7 +18659,7 @@ function restorePracticeFromChallengePlay() {
       const rangeText = range.startMeasureNumber === range.endMeasureNumber
         ? `${range.startMeasureNumber}마디 비교`
         : `${range.startMeasureNumber}~${range.endMeasureNumber}마디 비교`;
-      text.textContent = `${range.selectedMeasureNumber}마디 선택 · ${rangeText}`;
+      text.textContent = `${range.selectedMeasureNumber}번째 마디\n(${rangeText})`;
       const hasRecording = isPerformanceRecordingForDetail(detail, detail.recording);
       studentBtn.disabled = !hasRecording;
       studentBtn.textContent = performanceComparisonPlaybackMode === "student"
@@ -19085,10 +19099,15 @@ function restorePracticeFromChallengePlay() {
       }
       const overlay = document.getElementById("performanceDetailOverlay");
       const titleEl = document.getElementById("performanceDetailTitle");
+      const songTitleEl = document.getElementById("performanceDetailSongTitle");
       const subtitleEl = document.getElementById("performanceDetailSubtitle");
       if (!overlay) return;
       performanceDetailPreviousFocus = document.activeElement;
-      if (titleEl) titleEl.textContent = `🎼 ${lastPerformanceDetail.songTitle || "곡"} 상세 연주 결과`;
+      if (songTitleEl) {
+        songTitleEl.textContent = lastPerformanceDetail.songTitle || "곡";
+      } else if (titleEl) {
+        titleEl.textContent = `🎼 ${lastPerformanceDetail.songTitle || "곡"} 상세 연주 결과`;
+      }
       if (subtitleEl) {
         subtitleEl.textContent = `${lastPerformanceDetail.timeSignature || "4/4"} · BPM ${lastPerformanceDetail.bpm || "-"} · ${formatPlaybackSpeed(lastPerformanceDetail.speedMultiplier || 1)}`;
       }
@@ -19098,7 +19117,7 @@ function restorePracticeFromChallengePlay() {
       updatePerformanceDetailAudioUi();
       overlay.classList.remove("hidden");
       overlay.setAttribute("aria-hidden", "false");
-      setTimeout(() => document.getElementById("performanceDetailCloseBtn")?.focus(), 0);
+      setTimeout(() => document.getElementById("performanceDetailSaveBtn")?.focus(), 0);
     }
 
     function confirmDiscardUnsavedPerformance() {
@@ -19114,17 +19133,23 @@ function restorePracticeFromChallengePlay() {
       resetScoreState();
       resetJudgmentZoneState();
       const song = app.currentSong || getSelectedSong();
+      const normalizedStartMs = Math.max(0, Number(startMs) || 0);
       if (song) {
         document.getElementById("practiceSongTitle").textContent = song.title || "-";
         document.getElementById("practiceTimeSignature").textContent = song.timeSignature || "-";
       }
+      const practiceInfoEl = document.getElementById("practiceInfo");
+      if (practiceInfoEl) {
+        practiceInfoEl.textContent = normalizedStartMs > 0
+          ? "연습 시작 버튼을 누르면 선택한 마디부터 카운트 후 시작합니다."
+          : "연습 시작 버튼을 누르면 처음부터 카운트 후 시작합니다.";
+      }
       setStatus(
         "practiceStatus",
-        startMs > 0 ? "틀린 마디부터 다시 연습을 시작합니다." : "다시 연주할 준비가 되었습니다.",
+        normalizedStartMs > 0 ? "틀린 마디부터 다시 연습할 준비가 되었습니다." : "처음부터 다시 연주할 준비가 되었습니다.",
         "ok"
       );
-      pendingPracticeStartOffsetMs = Math.max(0, Number(startMs) || 0);
-      await startPractice();
+      pendingPracticeStartOffsetMs = normalizedStartMs;
     }
 
     function retryWrongMeasureFromDetail() {
@@ -23485,11 +23510,20 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
           ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        ctx.fillStyle = remain <= 2 ? "rgba(17, 24, 39, 0.82)" : "#111";
+        ctx.save();
         ctx.font = "bold 72px system-ui";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.lineWidth = 10;
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "rgba(30, 58, 138, 0.92)";
+        ctx.fillStyle = "#FDE047";
+        ctx.shadowColor = "rgba(15, 23, 42, 0.32)";
+        ctx.shadowBlur = 18;
+        ctx.shadowOffsetY = 4;
+        ctx.strokeText(String(remain || 1), canvas.width / 2, canvas.height / 2);
         ctx.fillText(String(remain || 1), canvas.width / 2, canvas.height / 2);
+        ctx.restore();
 
         ctx.textAlign = "start";
         ctx.textBaseline = "alphabetic";
@@ -28547,7 +28581,6 @@ function startBasicPractice() {
       const resultConfirmBtn = document.getElementById("resultConfirmBtn");
       const resultDetailBtn = document.getElementById("resultDetailBtn");
       const detailOverlay = document.getElementById("performanceDetailOverlay");
-      const detailCloseBtn = document.getElementById("performanceDetailCloseBtn");
       const detailSaveBtn = document.getElementById("performanceDetailSaveBtn");
       const replayBtn = document.getElementById("performanceReplayBtn");
       const compareStudentBtn = document.getElementById("performanceCompareStudentBtn");
@@ -28582,11 +28615,6 @@ function startBasicPractice() {
           openPerformanceDetailOverlay();
         });
         resultDetailBtn.dataset.detailBound = "true";
-      }
-
-      if (detailCloseBtn && !detailCloseBtn.dataset.detailBound) {
-        detailCloseBtn.addEventListener("click", () => closePerformanceDetailOverlay());
-        detailCloseBtn.dataset.detailBound = "true";
       }
 
       if (detailOverlay && !detailOverlay.dataset.detailBound) {
