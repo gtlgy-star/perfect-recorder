@@ -4955,6 +4955,493 @@ button:disabled {
         inset 0 1px 0 rgba(255,255,255,0.22);
     }
 
+    .resultActionRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: stretch;
+      width: min(100%, 760px);
+      margin: 0 auto;
+    }
+
+    .resultActionRow .resultConfirmBtn,
+    .resultActionRow .resultDetailBtn {
+      flex: 1 1 260px;
+      min-width: 0;
+    }
+
+    .resultDetailBtn {
+      width: auto;
+      min-width: 132px;
+      min-height: 52px;
+      margin-top: 18px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.42);
+      background: linear-gradient(180deg, rgba(224,242,254,0.96) 0%, rgba(186,230,253,0.86) 100%);
+      color: #17406F;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow:
+        0 10px 22px rgba(14, 116, 144, 0.18),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .resultDetailBtn:disabled,
+    .resultConfirmBtn:disabled {
+      opacity: 0.68;
+      cursor: wait;
+    }
+
+    .performanceDetailOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10020;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      background: rgba(12, 18, 32, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .performanceDetailOverlay.hidden {
+      display: none;
+    }
+
+    .performanceDetailDialog {
+      width: 100%;
+      height: 100%;
+      background: #F8FAFC;
+      color: #0F172A;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+    }
+
+    .performanceDetailHeader {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 16px;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      flex: 0 0 auto;
+      padding: 18px 126px 14px clamp(16px, 3vw, 34px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .performanceDetailHeader > div {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: auto;
+    }
+
+    .performanceDetailHeader h2 {
+      width: auto;
+      margin: 0;
+      font-size: clamp(20px, 2.8vw, 32px);
+      font-weight: 950;
+      letter-spacing: 0;
+      writing-mode: horizontal-tb;
+      word-break: keep-all;
+      overflow-wrap: normal;
+      white-space: normal;
+      line-height: 1.22;
+    }
+
+    .performanceDetailSubtitle {
+      margin: 6px 0 0;
+      color: #475569;
+      font-weight: 700;
+      writing-mode: horizontal-tb;
+      word-break: keep-all;
+      overflow-wrap: normal;
+      white-space: normal;
+      line-height: 1.35;
+    }
+
+    .performanceDetailCloseBtn {
+      position: absolute;
+      top: 14px;
+      right: clamp(16px, 3vw, 28px);
+      width: auto;
+      min-width: 0;
+      max-width: none;
+      min-height: 0;
+      height: auto;
+      flex: 0 0 auto;
+      border: 1px solid rgba(15, 23, 42, 0.16);
+      border-radius: 18px;
+      padding: 9px 14px;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .performanceDetailBody {
+      overflow-y: auto;
+      padding: 18px clamp(14px, 3vw, 34px) 104px;
+    }
+
+    .performanceDetailSummary {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .performanceSummaryGroup {
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .performanceSummaryGroup-score {
+      background: linear-gradient(180deg, #DBEAFE 0%, #EFF6FF 100%);
+    }
+
+    .performanceSummaryGroup-check {
+      background: linear-gradient(180deg, #FFEDD5 0%, #FFF7ED 100%);
+    }
+
+    .performanceSummaryGroupTitle {
+      margin: 0 0 8px;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .performanceSummaryGrid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .performanceSummaryGrid-score {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .performanceSummaryGrid-check {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .performanceSummaryItem {
+      min-height: 68px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 8px;
+      background: #FFFFFF;
+      padding: 10px;
+    }
+
+    .performanceSummaryLabel {
+      display: block;
+      color: #64748B;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .performanceSummaryValue {
+      display: block;
+      margin-top: 6px;
+      color: #0F172A;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    @media (max-width: 980px) {
+      .performanceDetailSummary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .performanceSummaryGrid-score,
+      .performanceSummaryGrid-check {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .performanceDetailLegend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 8px;
+      background: #FFFFFF;
+    }
+
+    .performanceLegendItem {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #F8FAFC;
+      color: #334155;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .performanceLegendNote {
+      font-size: 26px;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .result-note-correct { color: #2563EB; }
+    .result-note-pitch { color: #DC2626; }
+    .result-note-rhythm { color: #EAB308; text-shadow: 0 0 0 #854D0E, 0 1px 0 rgba(255,255,255,0.9); }
+    .result-note-both { color: #F97316; }
+    .result-note-no-input { color: #94A3B8; }
+
+    .performanceDetailGuide {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #ECFDF5;
+      color: #14532D;
+      font-weight: 850;
+      line-height: 1.55;
+    }
+
+    .performanceDetailScore {
+      display: grid;
+      gap: 12px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .performanceDetailLine {
+      position: relative;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 8px;
+      background: #FFFFFF;
+      overflow: hidden;
+    }
+
+    .performanceDetailLine.is-active {
+      outline: 5px solid rgba(37, 99, 235, 0.42);
+      box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.95),
+        0 0 0 8px rgba(37, 99, 235, 0.12),
+        0 10px 24px rgba(37, 99, 235, 0.16);
+    }
+
+    .performanceDetailLine canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .performanceDetailCompareHint {
+      margin: 0 0 12px;
+      padding: 11px 14px;
+      border: 1px solid rgba(185, 28, 28, 0.18);
+      border-radius: 8px;
+      background: #FEF2F2;
+      color: #7F1D1D;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .performanceNoteBadge {
+      position: absolute;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      padding: 2px 5px;
+      border-radius: 999px;
+      color: #FFFFFF;
+      font-size: 10px;
+      line-height: 1.1;
+      font-weight: 950;
+      pointer-events: none;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.28);
+      white-space: nowrap;
+    }
+
+    .performanceNoteBadge-pitch { background: #DC2626; }
+    .performanceNoteBadge-rhythm { background: #A16207; }
+    .performanceNoteBadge-both { background: #F97316; }
+    .performanceNoteBadge-no-input { background: #64748B; }
+
+    .performanceDetailActions {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) repeat(4, minmax(130px, auto));
+      gap: 10px;
+      align-items: center;
+      padding: 12px clamp(14px, 3vw, 34px);
+      border-top: 1px solid rgba(15, 23, 42, 0.12);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .performanceAudioNotice {
+      color: #64748B;
+      font-size: 13px;
+      font-weight: 800;
+      min-height: 18px;
+    }
+
+    .performanceComparisonPanel {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(74px, 0.16fr) minmax(0, 0.84fr);
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border: 1px solid rgba(185, 28, 28, 0.2);
+      border-radius: 10px;
+      background: #FFF1F2;
+      color: #7F1D1D;
+    }
+
+    .performanceComparisonPanel.hidden {
+      display: none;
+    }
+
+    .performanceComparisonText {
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 950;
+      line-height: 1.35;
+    }
+
+    .performanceComparisonControls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+      max-width: none;
+    }
+
+    .performanceDetailActions .performanceComparisonControls button {
+      width: 100%;
+      min-width: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+    }
+
+    .performanceDetailActions #performanceCompareStudentBtn {
+      border-color: rgba(37, 99, 235, 0.3);
+      background: linear-gradient(180deg, #DBEAFE 0%, #EFF6FF 100%);
+      color: #1E3A8A;
+    }
+
+    .performanceDetailActions #performanceCompareReferenceBtn {
+      border-color: rgba(126, 34, 206, 0.32);
+      background: linear-gradient(180deg, #F3E8FF 0%, #FAF5FF 100%);
+      color: #581C87;
+    }
+
+    .performanceComparisonNotice {
+      grid-column: 2;
+      width: 100%;
+      min-height: 0;
+      padding-left: 4px;
+      color: #991B1B;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .performanceComparisonNotice.hidden {
+      display: none;
+    }
+
+    .performanceDetailActions button {
+      border: 1px solid rgba(15, 23, 42, 0.14);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .performanceDetailActions button.primary {
+      border-color: transparent;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #16A34A, #2563EB);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    .performanceDetailActions button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    @media (max-width: 760px) {
+      .performanceDetailHeader {
+        align-items: flex-start;
+        padding: 14px 98px 12px 14px;
+      }
+
+      .performanceDetailHeader h2 {
+        font-size: 21px;
+        line-height: 1.25;
+      }
+
+      .performanceDetailSubtitle {
+        font-size: 13px;
+      }
+
+      .performanceDetailCloseBtn {
+        top: 12px;
+        right: 12px;
+        padding: 8px 11px;
+        font-size: 13px;
+      }
+
+      .performanceDetailActions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .performanceAudioNotice {
+        grid-column: 1 / -1;
+      }
+
+      .performanceComparisonPanel {
+        grid-template-columns: 1fr;
+      }
+
+      .performanceComparisonControls {
+        grid-column: 1;
+        width: 100%;
+        max-width: none;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .performanceComparisonNotice {
+        grid-column: 1;
+        padding-left: 0;
+      }
+
+      .performanceDetailActions button {
+        min-height: 48px;
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+
+      .performanceLegendItem {
+        flex: 1 1 170px;
+      }
+    }
+
     @media (max-width: 640px) {
       .comboOverlay {
         left: 28px;
@@ -15021,7 +15508,52 @@ body.theme-light .readyCardHint {
             </div>
           </div>
 
-          <button id="resultConfirmBtn" class="resultConfirmBtn" type="button">확인하고 성장 포인트 받기</button>
+          <div class="resultActionRow">
+            <button id="resultConfirmBtn" class="resultConfirmBtn" type="button">확인</button>
+            <button id="resultDetailBtn" class="resultDetailBtn" type="button">상세 결과 확인</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="performanceDetailOverlay" class="performanceDetailOverlay hidden" aria-hidden="true">
+        <div class="performanceDetailDialog" role="dialog" aria-modal="true" aria-labelledby="performanceDetailTitle">
+          <header class="performanceDetailHeader">
+            <div>
+              <h2 id="performanceDetailTitle">🎼 상세 결과</h2>
+              <p id="performanceDetailSubtitle" class="performanceDetailSubtitle">이번 연주를 음표별로 확인해 보세요.</p>
+            </div>
+            <button id="performanceDetailCloseBtn" class="performanceDetailCloseBtn" type="button">✕ 닫기</button>
+          </header>
+
+          <div id="performanceDetailBody" class="performanceDetailBody">
+            <section id="performanceDetailSummary" class="performanceDetailSummary" aria-label="연주 결과 요약"></section>
+            <div id="performanceDetailGuide" class="performanceDetailGuide"></div>
+            <div class="performanceDetailCompareHint">틀린 음표가 있는 마디를 눌러 내 연주와 시범 연주를 비교해 보세요.</div>
+            <section class="performanceDetailLegend" aria-label="범례">
+              <div class="performanceLegendItem"><span class="performanceLegendNote result-note-correct">♪</span><strong>정확한 연주</strong></div>
+              <div class="performanceLegendItem"><span class="performanceLegendNote result-note-pitch">♪</span><strong>음정 확인</strong></div>
+              <div class="performanceLegendItem"><span class="performanceLegendNote result-note-rhythm">♪</span><strong>박자 확인</strong></div>
+              <div class="performanceLegendItem"><span class="performanceLegendNote result-note-both">♪</span><strong>음정, 박자 모두 확인</strong></div>
+              <div class="performanceLegendItem"><span class="performanceLegendNote result-note-no-input">♪</span><strong>소리 미감지</strong></div>
+            </section>
+            <div id="performanceDetailScore" class="performanceDetailScore"></div>
+          </div>
+
+          <footer class="performanceDetailActions" aria-label="상세 결과 작업">
+            <div id="performanceComparisonPanel" class="performanceComparisonPanel hidden" aria-live="polite">
+              <div id="performanceComparisonText" class="performanceComparisonText"></div>
+              <div class="performanceComparisonControls">
+                <button id="performanceCompareStudentBtn" type="button">🎙 내 연주 듣기</button>
+                <button id="performanceCompareReferenceBtn" type="button">🎵 시범 연주 듣기</button>
+              </div>
+              <div id="performanceComparisonNotice" class="performanceComparisonNotice"></div>
+            </div>
+            <div class="performanceAudioNotice" id="performanceAudioNotice"></div>
+            <button id="performanceReplayBtn" type="button">▶ 전체 내 연주 듣기</button>
+            <button id="performanceRetryWrongBtn" type="button">🎯 틀린 마디부터 다시 연습</button>
+            <button id="performanceRestartBtn" type="button">🔄 전체 다시 연주</button>
+            <button id="performanceDetailSaveBtn" class="primary" type="button">✅ 닫기</button>
+          </footer>
         </div>
       </div>
     </section>
@@ -15551,7 +16083,15 @@ body.theme-light .readyCardHint {
     let practiceRecorder = null;
     let practiceRecordingChunks = [];
     let practiceRecordingActive = false;
+    let practiceRecordingPending = false;
+    let practiceRecordingStarting = false;
     let practiceRecordingStartedAt = 0;
+    let practiceRecordingStartedPerfAt = 0;
+    let recordingStartPerfMs = 0;
+    let scoreStartPerfMs = 0;
+    let practiceRecordingSongStartPerfAt = 0;
+    let practiceRecordingCountdownMs = 0;
+    let practiceRecordingScoreStartPerfMs = 0;
 
     let livePitchHz = 0;
     let liveDetectedNote = null;
@@ -15565,6 +16105,7 @@ body.theme-light .readyCardHint {
     let currentTimeline = null;
     let currentPracticeStartedAt = 0;
     let currentCountdownMs = 5000;
+    let currentPracticeStartOffsetMs = 0;
     let currentBasicFingeringSystem = "german";
     let selectedFingeringSystem = localStorage.getItem("selectedFingeringSystem") === "baroque" ? "baroque" : "german";
     let currentBasicNote = "C5";
@@ -15589,6 +16130,41 @@ body.theme-light .readyCardHint {
       saving: false,
       saved: false,
       lastResultId: 0
+    };
+    let performanceDetailDraft = null;
+    let lastPerformanceDetail = null;
+    let performanceDetailAttemptSeq = 0;
+    let performanceDetailPreviousFocus = null;
+    let performanceDetailAudio = null;
+    let performanceDetailPlaybackRaf = null;
+    let performanceDetailActiveNoteIndex = null;
+    let performanceDetailActiveMeasureNumber = null;
+    let performanceDetailSyncLoggedAttemptId = "";
+    let performanceComparisonSelectedMeasureNumber = null;
+    let performanceComparisonRange = null;
+    let performanceComparisonPlaybackMode = null;
+    let performanceComparisonPlaybackRaf = null;
+    let performanceComparisonPlaybackSessionId = 0;
+    let performanceComparisonReferenceNodes = [];
+    let performanceComparisonReferenceTimers = [];
+    let performanceComparisonReferenceStartedPerfMs = 0;
+    let currentPracticeAttemptId = "";
+    let lastPracticeRecording = null;
+    let pendingPracticeStartOffsetMs = 0;
+    const PERFORMANCE_RESULT_COLORS = {
+      correct: "#2563EB",
+      pitch: "#DC2626",
+      rhythm: "#EAB308",
+      both: "#F97316",
+      "no-input": "#94A3B8",
+      pending: "#0F172A"
+    };
+    const PERFORMANCE_RESULT_LABELS = {
+      correct: "정확함",
+      pitch: "음정",
+      rhythm: "박자",
+      both: "둘 다",
+      "no-input": "미감지"
     };
     const activityGrowthRequestState = {};
     let dailyMissionState = null;
@@ -16438,9 +17014,9 @@ body.theme-light .readyCardHint {
     const PITCH_EXACT_TOLERANCE_CENTS = 25;
     const PITCH_NEAR_TOLERANCE_CENTS = 60;
     const PITCH_LOOSE_TOLERANCE_CENTS = 95;
-    const SONG_PITCH_EXACT_TOLERANCE_CENTS = 30;
-    const SONG_PITCH_NEAR_TOLERANCE_CENTS = 70;
-    const SONG_PITCH_LOOSE_TOLERANCE_CENTS = 95;
+    const SONG_PITCH_EXACT_TOLERANCE_CENTS = 24;
+    const SONG_PITCH_NEAR_TOLERANCE_CENTS = 58;
+    const SONG_PITCH_LOOSE_TOLERANCE_CENTS = 82;
     const SONG_RHYTHM_EXACT_RATIO = 0.85;
     const SONG_RHYTHM_NEAR_RATIO = 0.70;
     const SONG_RHYTHM_MIN_RATIO = 0.45;
@@ -17269,6 +17845,1303 @@ function restorePracticeFromChallengePlay() {
       };
     }
 
+    function performanceDetailEscapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function makePerformanceAttemptId() {
+      performanceDetailAttemptSeq += 1;
+      const userId = String(app?.user?.userId || "guest").replace(/[^a-zA-Z0-9_-]/g, "");
+      return `perf-${Date.now()}-${performanceDetailAttemptSeq}-${userId || "guest"}`;
+    }
+
+    function revokePracticeRecording(recording) {
+      if (recording?.objectUrl) {
+        try { URL.revokeObjectURL(recording.objectUrl); } catch (_) {}
+      }
+    }
+
+    function stopPerformanceDetailPlayback() {
+      stopPerformanceComparisonPlayback({ keepSelection: false });
+      if (performanceDetailPlaybackRaf) {
+        cancelAnimationFrame(performanceDetailPlaybackRaf);
+        performanceDetailPlaybackRaf = null;
+      }
+      if (performanceDetailAudio) {
+        try {
+          performanceDetailAudio.pause();
+        } catch (_) {}
+      }
+      performanceDetailActiveNoteIndex = null;
+      performanceDetailActiveMeasureNumber = null;
+      renderPerformanceDetailActiveNote();
+      updatePerformanceDetailAudioUi();
+    }
+
+    function clearLastPracticeRecording({ keepCurrent = false } = {}) {
+      if (lastPracticeRecording && (!keepCurrent || lastPracticeRecording.attemptId !== currentPracticeAttemptId)) {
+        revokePracticeRecording(lastPracticeRecording);
+      }
+      if (!keepCurrent) lastPracticeRecording = null;
+    }
+
+    function getPerformanceDisplayNoteIndices(note) {
+      if (Array.isArray(note?.displayNotes) && note.displayNotes.length) {
+        return note.displayNotes
+          .map((displayNote) => Number(displayNote?.noteIndex))
+          .filter((value) => Number.isInteger(value));
+      }
+      const noteIndex = Number(note?.noteIndex);
+      return Number.isInteger(noteIndex) ? [noteIndex] : [];
+    }
+
+    function findPerformanceMeasureInfo(note, timeline) {
+      const song = app.currentSong || getSelectedSong() || {};
+      const measures = buildSongMeasures(song, timeline);
+      const noteStartBeat = Number(note?.startBeat) || 0;
+      const measure = measures.find((item) =>
+        noteStartBeat >= Number(item.startBeat) - 0.001 &&
+        noteStartBeat < Number(item.endBeat) - 0.001
+      ) || measures[0] || null;
+      const noteOrderInMeasure = measure
+        ? (measure.notes || []).filter((item) => item?.note && Number(item.startBeat) <= noteStartBeat + 0.001).length
+        : 0;
+
+      return {
+        measureNumber: measure?.isPickup ? 0 : Math.max(1, Number(measure?.displayNumber) || 1),
+        measureStartMs: Math.max(0, Number(measure?.timeMs) || 0),
+        noteOrderInMeasure: Math.max(1, noteOrderInMeasure || 1)
+      };
+    }
+
+    function classifyPerformanceNoteResult({ pitchScore, rhythmScore, hasValidInput }) {
+      if (!hasValidInput) return "no-input";
+      const pitchOk = Number(pitchScore) >= PITCH_LOOSE_SCORE;
+      const rhythmOk = Number(rhythmScore) >= RHYTHM_LOOSE_SCORE;
+      if (pitchOk && rhythmOk) return "correct";
+      if (!pitchOk && !rhythmOk) return "both";
+      if (!pitchOk) return "pitch";
+      return "rhythm";
+    }
+
+    function createPerformanceDetailDraft(song, timeline, scoreSeed = {}) {
+      const speed = getSpeedMultiplier();
+      currentPracticeAttemptId = makePerformanceAttemptId();
+      performanceDetailDraft = {
+        attemptId: currentPracticeAttemptId,
+        userId: app?.user?.userId || "",
+        songId: song?.songId || "",
+        songTitle: song?.title || "",
+        bpm: Number(timeline?.bpm) || Number(song?.bpm) || 80,
+        timeSignature: timeline?.timeSignature || song?.timeSignature || "4/4",
+        keySignature: timeline?.keySignature || song?.keySignature || "C",
+        speedMultiplier: speed,
+        scoreTotal: Number(scoreSeed.finalScore || scoreSeed.scoreTotal || 0),
+        pitchScore: Number(scoreSeed.pitchAccuracy || scoreSeed.pitchScore || 0),
+        rhythmScore: Number(scoreSeed.rhythmAccuracy || scoreSeed.rhythmScore || 0),
+        maxCombo: Number(scoreSeed.maxCombo || 0),
+        completedAt: "",
+        timeline,
+        noteResults: [],
+        noteResultMap: new Map(),
+        recording: null
+      };
+      return performanceDetailDraft;
+    }
+
+    function recordPerformanceNoteResult(note, timeline, values) {
+      if (!performanceDetailDraft || !isPlayableScoringNote(note)) return null;
+      const signature = getNoteSignature(note);
+      if (!signature || performanceDetailDraft.noteResultMap.has(signature)) {
+        return performanceDetailDraft.noteResultMap.get(signature) || null;
+      }
+
+      const measureInfo = findPerformanceMeasureInfo(note, timeline);
+      const displayNoteIndices = getPerformanceDisplayNoteIndices(note);
+      const pitchScore = Number(values.pitchScore) || 0;
+      const rhythmScore = Number(values.rhythmScore) || 0;
+      const validInputRatio = Math.max(0, Math.min(1, Number(values.validInputRatio) || 0));
+      const targetRatio = Math.max(0, Math.min(1, Number(values.targetRatio) || 0));
+      const resultType = classifyPerformanceNoteResult({
+        pitchScore,
+        rhythmScore,
+        hasValidInput: Boolean(values.hasValidInput)
+      });
+      const result = {
+        scoringIndex: performanceDetailDraft.noteResults.length,
+        noteIndex: Number(note.noteIndex),
+        displayNoteIndices,
+        measureNumber: measureInfo.measureNumber,
+        measureStartMs: measureInfo.measureStartMs,
+        noteOrderInMeasure: measureInfo.noteOrderInMeasure,
+        targetNote: note.note || "",
+        effectiveAccidental: note.effectiveAccidental || note.explicitAccidental || "",
+        startMs: Math.max(0, Math.round(Number(note.startMs) || 0)),
+        durMs: Math.max(1, Math.round(Number(note.durMs) || 0)),
+        beat: Number(note.beat) || 0,
+        pitchScore,
+        rhythmScore,
+        targetRatio,
+        validInputRatio,
+        hasDetectedSound: Boolean(values.hasValidInput),
+        pitchOk: pitchScore >= PITCH_LOOSE_SCORE,
+        rhythmOk: rhythmScore >= RHYTHM_LOOSE_SCORE,
+        resultType,
+        colorType: resultType
+      };
+
+      performanceDetailDraft.noteResults.push(result);
+      performanceDetailDraft.noteResultMap.set(signature, result);
+      return result;
+    }
+
+    function finalizePerformanceDetail(scoreData = {}) {
+      if (!performanceDetailDraft) return null;
+      const recordScore = normalizeFinalScoreForRecord(scoreData);
+      const maxCombo = Math.max(
+        0,
+        Math.round(Number(scoreData.maxCombo ?? performanceDetailDraft.maxCombo ?? bestCombo ?? scoreState.maxCombo) || 0)
+      );
+
+      performanceDetailDraft.scoreTotal = recordScore.scoreTotal;
+      performanceDetailDraft.pitchScore = recordScore.pitchScore;
+      performanceDetailDraft.rhythmScore = recordScore.rhythmScore;
+      performanceDetailDraft.maxCombo = maxCombo;
+      performanceDetailDraft.completedAt = new Date().toISOString();
+      performanceDetailDraft.recording = lastPracticeRecording?.attemptId === performanceDetailDraft.attemptId
+        ? lastPracticeRecording
+        : null;
+
+      const snapshot = {
+        ...performanceDetailDraft,
+        noteResults: performanceDetailDraft.noteResults.map((item) => ({ ...item })),
+        noteResultMap: null
+      };
+      snapshot.measureTimings = buildPerformanceMeasureTimings(snapshot);
+      snapshot.noteResultByDisplayIndex = new Map();
+      snapshot.noteResults.forEach((item) => {
+        (item.displayNoteIndices || [item.noteIndex]).forEach((noteIndex) => {
+          snapshot.noteResultByDisplayIndex.set(Number(noteIndex), item);
+        });
+      });
+      lastPerformanceDetail = snapshot;
+      return snapshot;
+    }
+
+    function getPerformanceCounts(detail = lastPerformanceDetail) {
+      const counts = { correct: 0, pitch: 0, rhythm: 0, both: 0, "no-input": 0 };
+      (detail?.noteResults || []).forEach((item) => {
+        const key = item?.resultType || "correct";
+        if (Object.prototype.hasOwnProperty.call(counts, key)) counts[key] += 1;
+      });
+      return counts;
+    }
+
+    function buildPerformanceMeasureTimings(detail) {
+      const timeline = detail?.timeline;
+      if (!timeline) return [];
+      const song = app.currentSong || getSelectedSong() || {
+        songId: detail.songId,
+        title: detail.songTitle,
+        timeSignature: detail.timeSignature,
+        keySignature: detail.keySignature
+      };
+      return buildSongMeasures(song, timeline)
+        .filter((measure) => !measure?.isPickup)
+        .map((measure) => ({
+          measureNumber: Math.max(1, Number(measure.displayNumber) || 1),
+          scoreStartMs: Math.max(0, Math.round(Number(measure.timeMs) || 0)),
+          scoreEndMs: Math.max(0, Math.round(Number(measure.endMs) || Number(timeline.totalMs) || 0))
+        }));
+    }
+
+    function getPerformanceRecordingLeadInMs(recording) {
+      const leadIn = Number(recording?.recordingLeadInMs);
+      if (Number.isFinite(leadIn)) return leadIn;
+      const legacyOffset = Number(recording?.scoreStartOffsetMs);
+      if (Number.isFinite(legacyOffset)) return -legacyOffset;
+      const recordingStart = Number(recording?.recordingStartPerfMs);
+      const scoreStart = Number(recording?.scoreStartPerfMs);
+      if (Number.isFinite(recordingStart) && Number.isFinite(scoreStart)) {
+        return scoreStart - recordingStart;
+      }
+      return 0;
+    }
+
+    function isPerformanceRecordingForDetail(detail, recording) {
+      if (!detail || !recording?.objectUrl) return false;
+      const attemptOk = !recording.attemptId || !detail.attemptId || String(recording.attemptId) === String(detail.attemptId);
+      const songOk = !recording.songId || !detail.songId || String(recording.songId) === String(detail.songId);
+      return attemptOk && songOk;
+    }
+
+    function getPerformanceMeasureTiming(detail, measureNumber) {
+      const target = Number(measureNumber);
+      if (!Number.isFinite(target)) return null;
+      return (detail?.measureTimings || []).find((item) => Number(item.measureNumber) === target) || null;
+    }
+
+    function getPerformanceWrongMeasureSet(detail = lastPerformanceDetail) {
+      const wrongMeasures = new Set();
+      (detail?.noteResults || []).forEach((item) => {
+        if (!item || item.resultType === "correct") return;
+        const measureNumber = Number(item.measureNumber);
+        if (Number.isFinite(measureNumber) && measureNumber > 0) {
+          wrongMeasures.add(measureNumber);
+        }
+      });
+      return wrongMeasures;
+    }
+
+    function getPerformanceComparisonMeasureRole(measureNumber, detail = lastPerformanceDetail) {
+      const selected = Number(performanceComparisonSelectedMeasureNumber);
+      const current = Number(performanceDetailActiveMeasureNumber);
+      const measure = Number(measureNumber);
+      if (!Number.isFinite(measure) || !Number.isFinite(selected)) return "";
+      if (performanceComparisonPlaybackMode && Number.isFinite(current) && measure === current) return "playing";
+      if (measure === selected) return "selected";
+      if (performanceComparisonRange?.measureNumbers?.includes(measure)) return "range";
+      return "";
+    }
+
+    function extendPerformanceComparisonEndForTies(detail, endScoreMs) {
+      const baseEnd = Math.max(0, Number(endScoreMs) || 0);
+      const events = buildSongPreviewPlaybackEvents(detail?.timeline, detail || {}).events || [];
+      return events.reduce((maxEnd, event) => {
+        if (!event?.tieMerged) return maxEnd;
+        const start = Number(event.startMs) || 0;
+        const end = start + Math.max(1, Number(event.durMs) || 0);
+        return start < baseEnd && end > baseEnd ? Math.max(maxEnd, end) : maxEnd;
+      }, baseEnd);
+    }
+
+    function buildPerformanceComparisonRange(detail, selectedMeasureNumber) {
+      const timings = Array.isArray(detail?.measureTimings) ? detail.measureTimings : [];
+      const selectedIndex = timings.findIndex((item) => Number(item.measureNumber) === Number(selectedMeasureNumber));
+      if (selectedIndex < 0) return null;
+      const startIndex = Math.max(0, selectedIndex - 1);
+      const endIndex = Math.min(timings.length - 1, selectedIndex + 1);
+      const startTiming = timings[startIndex];
+      const endTiming = timings[endIndex];
+      const startScoreMs = Math.max(0, Number(startTiming?.scoreStartMs) || 0);
+      const rawEndScoreMs = Math.max(startScoreMs + 1, Number(endTiming?.scoreEndMs) || startScoreMs + 1);
+      const endScoreMs = extendPerformanceComparisonEndForTies(detail, rawEndScoreMs);
+      return {
+        selectedMeasureNumber: Number(selectedMeasureNumber),
+        startMeasureNumber: Number(startTiming.measureNumber),
+        endMeasureNumber: Number(endTiming.measureNumber),
+        measureNumbers: timings.slice(startIndex, endIndex + 1).map((item) => Number(item.measureNumber)),
+        startScoreMs,
+        endScoreMs
+      };
+    }
+
+    function getPerformanceMeasureAtScorePosition(detail, scoreMs) {
+      if (!Number.isFinite(Number(scoreMs)) || Number(scoreMs) < 0) return null;
+      const timings = detail?.measureTimings || [];
+      return timings.find((item) =>
+        Number(scoreMs) >= Number(item.scoreStartMs) &&
+        Number(scoreMs) < Number(item.scoreEndMs)
+      ) || timings[timings.length - 1] || null;
+    }
+
+    function getPerformanceSummaryText(detail = lastPerformanceDetail) {
+      const counts = getPerformanceCounts(detail);
+      const wrong = ["pitch", "rhythm", "both", "no-input"].reduce((sum, key) => sum + counts[key], 0);
+      if (!wrong) {
+        return "모든 음표를 정확하게 연주했어요! 정말 훌륭해요.";
+      }
+      const totalNotes = Math.max(1, (detail?.noteResults || []).length);
+      const correctPercent = Math.round((counts.correct / totalNotes) * 100);
+      const wrongMeasureCounts = new Map();
+      (detail?.noteResults || [])
+        .filter((item) => item.resultType !== "correct")
+        .forEach((item) => {
+          const measureNumber = Number(item.measureNumber);
+          if (!Number.isFinite(measureNumber) || measureNumber <= 0) return;
+          wrongMeasureCounts.set(measureNumber, (wrongMeasureCounts.get(measureNumber) || 0) + 1);
+        });
+      const wrongMeasures = Array.from(wrongMeasureCounts.entries())
+        .sort((a, b) => {
+          const countDiff = b[1] - a[1];
+          return countDiff || a[0] - b[0];
+        })
+        .slice(0, 4)
+        .map(([measureNumber]) => measureNumber)
+        .sort((a, b) => a - b);
+      const measureText = wrongMeasures.length
+        ? `${wrongMeasures.join(", ")}번째 마디를 다시 연습해 보세요.`
+        : "틀린 부분을 다시 연습해 보세요.";
+      return [
+        `정확한 연주 ${correctPercent}%`,
+        measureText
+      ].join("<br>");
+    }
+
+    function getPerformanceNoteResultForDisplayNote(note, detail = lastPerformanceDetail) {
+      const noteIndex = Number(note?.noteIndex);
+      if (!Number.isInteger(noteIndex)) return null;
+      return detail?.noteResultByDisplayIndex?.get(noteIndex) || null;
+    }
+
+    function getPerformanceNoteColors(note, detail = lastPerformanceDetail) {
+      if (!note?.note) {
+        return {
+          noteColor: "#0F172A",
+          barColor: "rgba(15, 23, 42, 0.24)",
+          restColor: "#0F172A",
+          glow: ""
+        };
+      }
+      const result = getPerformanceNoteResultForDisplayNote(note, detail);
+      const type = result?.colorType || "pending";
+      const color = PERFORMANCE_RESULT_COLORS[type] || PERFORMANCE_RESULT_COLORS.pending;
+      const isRhythm = type === "rhythm";
+      const active = performanceDetailActiveNoteIndex != null && (
+        Number(result?.scoringIndex) === Number(performanceDetailActiveNoteIndex) ||
+        (Array.isArray(result?.displayNoteIndices) && result.displayNoteIndices.includes(Number(note.noteIndex)))
+      );
+      return {
+        noteColor: color,
+        barColor: isRhythm ? "rgba(133, 77, 14, 0.68)" : color,
+        restColor: "#0F172A",
+        glow: "",
+        active,
+        result
+      };
+    }
+
+    function drawPerformanceDetailScoreLine(canvas, lineMeasures, timeline, detail, rowIndex = 0) {
+      const ctx = canvas.getContext("2d");
+      const originalTimeline = shortSongPreviewState.timeline;
+      const originalTieSegments = shortSongPreviewState.tieSegments;
+      const originalSlurGroups = shortSongPreviewState.slurGroups;
+      const originalResultDetailColorMap = shortSongPreviewState.resultDetailColorMap;
+      const originalMeasures = shortSongPreviewState.measures;
+      shortSongPreviewState.timeline = timeline;
+      shortSongPreviewState.measures = buildSongMeasures(app.currentSong || getSelectedSong() || {}, timeline);
+      shortSongPreviewState.tieSegments = buildSongPreviewPlaybackEvents(timeline, detail).tieSegments;
+      shortSongPreviewState.slurGroups = analyzeSongPreviewSlurs(timeline);
+      shortSongPreviewState.resultDetailColorMap = detail?.noteResultByDisplayIndex || null;
+      const layout = drawShortSongPreviewStaffBase(ctx, canvas, lineMeasures, timeline, { mode: "result-detail" });
+      const lineMetrics = [];
+      const drawItems = [];
+
+      lineMeasures.forEach((measure, localMeasureIndex) => {
+        const cell = layout.measureCells?.[localMeasureIndex] || {
+          left: layout.leftX + localMeasureIndex * layout.measureWidth,
+          right: layout.leftX + (localMeasureIndex + 1) * layout.measureWidth,
+          width: layout.measureWidth
+        };
+        const measureLeft = cell.left;
+        const measureRight = cell.right;
+        const measureWidth = cell.width;
+        const measureBeatSpan = Math.max(0.25, measure.endBeat - measure.beat || Number(timeline.measureBeats) || 4);
+        const measurePadding = Math.min(22, Math.max(8, measureWidth * 0.2));
+        const noteMetrics = measure.notes.map((note) => {
+          const globalIndex = timeline.notes.indexOf(note);
+          const offsetBeat = Math.max(0, (Number(note.startBeat) || 0) - measure.beat);
+          const beatRatio = Math.min(1, Math.max(0, offsetBeat / measureBeatSpan));
+          return {
+            note,
+            globalIndex,
+            noteX: measureLeft + measurePadding + beatRatio * (measureWidth - measurePadding * 2) + (note.explicitAccidental ? 8 : 0)
+          };
+        });
+
+        for (let i = 1; i < noteMetrics.length; i += 1) {
+          const previous = noteMetrics[i - 1];
+          const current = noteMetrics[i];
+          const previousBeat = getSongPreviewDisplayBeat(previous.note);
+          const currentBeat = getSongPreviewDisplayBeat(current.note);
+          const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+          const hasEighth = previousBeat < 1 || currentBeat < 1;
+          const minGap = hasSixteenth ? 14 : (hasEighth ? 18 : 20);
+          if (current.noteX - previous.noteX < minGap) current.noteX = previous.noteX + minGap;
+        }
+
+        for (let i = noteMetrics.length - 1; i >= 0; i -= 1) {
+          const current = noteMetrics[i];
+          const rightLimit = measureRight - 18;
+          if (current.noteX > rightLimit) current.noteX = rightLimit;
+          const previous = noteMetrics[i - 1];
+          if (previous) {
+            const previousBeat = getSongPreviewDisplayBeat(previous.note);
+            const currentBeat = getSongPreviewDisplayBeat(current.note);
+            const hasSixteenth = previousBeat < 0.5 || currentBeat < 0.5;
+            const hasEighth = previousBeat < 1 || currentBeat < 1;
+            const minGap = hasSixteenth ? 14 : (hasEighth ? 18 : 20);
+            previous.noteX = Math.min(previous.noteX, current.noteX - minGap);
+          }
+        }
+
+        noteMetrics.forEach(({ note, globalIndex, noteX }) => {
+          const colors = getPerformanceNoteColors(note, detail);
+          const y = note.note
+            ? getShortSongPreviewNoteY(note.note, layout.bottomLineY, layout.gap)
+            : layout.topLineY + 22;
+          const metric = {
+            note,
+            noteIndex: Number(note.noteIndex),
+            globalIndex,
+            x: noteX,
+            y,
+            headLeft: noteX - 4.4,
+            headRight: noteX + 4.4,
+            stemDirection: note.note && shouldStemDown(note.note) ? "down" : "up",
+            rowIndex,
+            pageIndex: 0,
+            tieGroupId: note.tieGroupId,
+            slurGroupId: note.slurGroupId,
+            measureLeft,
+            measureRight,
+            measureWidth,
+            colors
+          };
+          if (note.note) lineMetrics.push(metric);
+          drawItems.push(metric);
+        });
+      });
+
+      (layout.measureCells || []).forEach((cell) => {
+        if (cell.measure?.isPickup) return;
+        const measureNumber = Math.max(1, Number(cell.measure?.displayNumber) || 1);
+        const role = getPerformanceComparisonMeasureRole(measureNumber, detail);
+        if (!role) return;
+        ctx.save();
+        const top = layout.topLineY - 18;
+        const height = layout.bottomLineY - layout.topLineY + 50;
+        ctx.fillStyle = role === "selected" || role === "playing"
+          ? "rgba(185, 28, 28, 0.18)"
+          : "rgba(248, 113, 113, 0.12)";
+        ctx.strokeStyle = role === "selected" || role === "playing"
+          ? "rgba(127, 29, 29, 0.86)"
+          : "rgba(248, 113, 113, 0.48)";
+        ctx.lineWidth = role === "playing" ? 4 : 2;
+        ctx.beginPath();
+        ctx.roundRect(cell.left + 3, top, Math.max(10, cell.width - 6), height, 8);
+        ctx.fill();
+        ctx.stroke();
+        if (role === "playing") {
+          ctx.strokeStyle = "rgba(127, 29, 29, 0.98)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.roundRect(cell.left + 10, top + 7, Math.max(10, cell.width - 20), height - 14, 6);
+          ctx.stroke();
+        }
+        ctx.restore();
+      });
+
+      const lineContext = {
+        lineMeasures,
+        leftX: layout.leftX,
+        rightX: canvas.width - 22,
+        topLineY: layout.topLineY,
+        bottomLineY: layout.bottomLineY,
+        lineIndex: rowIndex,
+        pageIndex: 0
+      };
+      drawSongPreviewTupletBrackets(ctx, lineMetrics);
+      drawSlurSegments(ctx, lineMetrics, lineContext, 0);
+      drawTieSegments(ctx, lineMetrics, lineContext, 0);
+      shortSongPreviewState.timeline = originalTimeline;
+      shortSongPreviewState.tieSegments = originalTieSegments;
+      shortSongPreviewState.slurGroups = originalSlurGroups;
+      shortSongPreviewState.resultDetailColorMap = originalResultDetailColorMap;
+      shortSongPreviewState.measures = originalMeasures;
+
+      drawItems.forEach((metric) => {
+        const { note, x: noteX, measureRight, colors } = metric;
+        if (colors.glow) {
+          ctx.save();
+          ctx.strokeStyle = "rgba(37, 99, 235, 0.88)";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(noteX, metric.y, 18, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        if (!note.note) {
+          drawRest(ctx, noteX, layout.topLineY, note.beat, {
+            color: colors.restColor,
+            scale: 0.56,
+            staffGap: layout.gap
+          });
+          return;
+        }
+
+        const bodyWidth = Math.min(
+          getNoteBodyWidthByBeat(getSongPreviewDisplayBeat(note)) * 0.24,
+          Math.max(12, measureRight - noteX - 14)
+        );
+        drawSingleNoteSymbol(ctx, note, noteX, metric.y, layout.bottomLineY, bodyWidth, {
+          maxRightX: measureRight - 8,
+          noteColor: colors.noteColor,
+          barColor: colors.barColor,
+          dotColor: colors.noteColor,
+          noteNameColor: colors.noteColor,
+          scale: 0.58,
+          staffGap: layout.gap,
+          noteHeadWidth: 8.8,
+          noteHeadHeight: 5.8,
+          stemLength: 38.5,
+          stemWidth: 1.7,
+          flagScale: 0.45,
+          durationBarHeight: 3.6,
+          noteNameFontSize: 11,
+          noteNameYOffset: 24,
+          noteNameBoxHeight: 14,
+          noteNameBoxPadding: 7
+        });
+      });
+
+      const measureHitBoxes = (layout.measureCells || [])
+        .filter((cell) => !cell.measure?.isPickup)
+        .map((cell) => ({
+          rowIndex,
+          measureNumber: Math.max(1, Number(cell.measure?.displayNumber) || 1),
+          scoreStartMs: Math.max(0, Math.round(Number(cell.measure?.timeMs) || 0)),
+          x: cell.left,
+          y: layout.topLineY - 14,
+          width: cell.width,
+          height: layout.bottomLineY - layout.topLineY + 44,
+          canvas
+        }));
+
+      return { metrics: lineMetrics, measureHitBoxes };
+    }
+
+    function renderPerformanceDetailSummary(detail) {
+      const summaryEl = document.getElementById("performanceDetailSummary");
+      const guideEl = document.getElementById("performanceDetailGuide");
+      if (!summaryEl || !guideEl || !detail) return;
+      const counts = getPerformanceCounts(detail);
+      const scoreItems = [
+        ["종합 점수", `${detail.scoreTotal || 0}점`],
+        ["음정 점수", `${detail.pitchScore || 0}점`],
+        ["박자 점수", `${detail.rhythmScore || 0}점`]
+      ];
+      const checkItems = [
+        ["음정 오류 수", `${counts.pitch}개`],
+        ["박자 오류 수", `${counts.rhythm}개`],
+        ["동시 오류 수", `${counts.both}개`],
+        ["소리 미감지 수", `${counts["no-input"]}개`]
+      ];
+
+      const renderItems = (items) => items.map(([label, value]) => `
+          <div class="performanceSummaryItem">
+            <span class="performanceSummaryLabel">${performanceDetailEscapeHtml(label)}</span>
+            <span class="performanceSummaryValue">${performanceDetailEscapeHtml(value)}</span>
+          </div>
+        `).join("");
+
+      summaryEl.innerHTML = `
+        <div class="performanceSummaryGroup performanceSummaryGroup-score">
+          <div class="performanceSummaryGroupTitle">점수</div>
+          <div class="performanceSummaryGrid performanceSummaryGrid-score">
+            ${renderItems(scoreItems)}
+          </div>
+        </div>
+        <div class="performanceSummaryGroup performanceSummaryGroup-check">
+          <div class="performanceSummaryGroupTitle">확인할 부분</div>
+          <div class="performanceSummaryGrid performanceSummaryGrid-check">
+            ${renderItems(checkItems)}
+          </div>
+        </div>
+      `;
+      guideEl.innerHTML = getPerformanceSummaryText(detail);
+    }
+
+    function renderPerformanceDetailScore(detail = lastPerformanceDetail) {
+      const scoreEl = document.getElementById("performanceDetailScore");
+      if (!scoreEl || !detail?.timeline) return;
+      scoreEl.innerHTML = "";
+      const song = app.currentSong || getSelectedSong() || { title: detail.songTitle };
+      if (!Array.isArray(detail.measureTimings) || !detail.measureTimings.length) {
+        detail.measureTimings = buildPerformanceMeasureTimings(detail);
+      }
+      const measures = buildSongMeasures(song, detail.timeline);
+      const lines = buildSongPrintLines(measures);
+      detail.renderedHitBoxes = [];
+      detail.renderedMeasureHitBoxes = [];
+      lines.forEach((lineMeasures, rowIndex) => {
+        const wrap = document.createElement("div");
+        wrap.className = "performanceDetailLine";
+        wrap.dataset.rowIndex = String(rowIndex);
+        const canvas = document.createElement("canvas");
+        canvas.width = 980;
+        canvas.height = 126;
+        canvas.dataset.rowIndex = String(rowIndex);
+        wrap.appendChild(canvas);
+        scoreEl.appendChild(wrap);
+        const renderedLine = drawPerformanceDetailScoreLine(canvas, lineMeasures, detail.timeline, detail, rowIndex);
+        const metrics = renderedLine.metrics || [];
+        detail.renderedMeasureHitBoxes.push(...(renderedLine.measureHitBoxes || []));
+        metrics.forEach((metric) => {
+          const result = metric.colors?.result;
+          if (!result) return;
+          detail.renderedHitBoxes.push({
+            rowIndex,
+            noteIndex: Number(metric.noteIndex),
+            result,
+            x: metric.x,
+            y: metric.y,
+            width: 34,
+            height: 44,
+            canvas
+          });
+          if (result.resultType === "correct") return;
+          const badgeLabel = PERFORMANCE_RESULT_LABELS[result.resultType] || "";
+          if (!badgeLabel) return;
+          const tooDense = metrics.length > 11 && metric.measureWidth < 180;
+          if (tooDense) return;
+          const badge = document.createElement("span");
+          badge.className = `performanceNoteBadge performanceNoteBadge-${result.resultType}`;
+          badge.textContent = badgeLabel;
+          badge.style.left = `${(metric.x / canvas.width) * 100}%`;
+          badge.style.top = `${Math.max(8, metric.y - 25)}px`;
+          wrap.appendChild(badge);
+        });
+      });
+      renderPerformanceDetailActiveNote();
+    }
+
+    function renderPerformanceDetailActiveNote() {
+      const detail = lastPerformanceDetail;
+      document.querySelectorAll(".performanceDetailLine").forEach((line) => {
+        line.classList.remove("is-active");
+      });
+      if (!detail) return;
+      const isFullRecordingPlayback = performanceDetailAudio &&
+        !performanceDetailAudio.paused &&
+        !performanceComparisonPlaybackMode;
+      if (!isFullRecordingPlayback) return;
+      const hit = performanceDetailActiveNoteIndex != null
+        ? (detail.renderedHitBoxes || []).find((item) => Number(item.result?.scoringIndex) === Number(performanceDetailActiveNoteIndex))
+        : null;
+      const measureHit = !hit && performanceDetailActiveMeasureNumber != null
+        ? (detail.renderedMeasureHitBoxes || []).find((item) => Number(item.measureNumber) === Number(performanceDetailActiveMeasureNumber))
+        : null;
+      const active = hit || measureHit;
+      if (!active) return;
+      const line = active.canvas?.parentElement;
+      if (line) line.classList.add("is-active");
+    }
+
+    function clampPerformanceAudioMs(audio, targetAudioMs) {
+      const durationMs = Number.isFinite(Number(audio?.duration)) && Number(audio.duration) > 0
+        ? Number(audio.duration) * 1000
+        : Infinity;
+      const safeTarget = Math.max(0, Number(targetAudioMs) || 0);
+      return Math.min(safeTarget, durationMs);
+    }
+
+    function getPerformanceAudioDurationMs(audio) {
+      return Number.isFinite(Number(audio?.duration)) && Number(audio.duration) > 0
+        ? Math.round(Number(audio.duration) * 1000)
+        : null;
+    }
+
+    function logRecordingSyncCheckOnce(data) {
+      const attemptId = String(lastPerformanceDetail?.attemptId || "");
+      if (performanceDetailSyncLoggedAttemptId === attemptId) return;
+      performanceDetailSyncLoggedAttemptId = attemptId;
+      console.log("[RECORDING SYNC CHECK]", data);
+    }
+
+    async function ensurePerformanceDetailAudio(recording) {
+      if (!recording?.objectUrl) return null;
+      if (!performanceDetailAudio || performanceDetailAudio.src !== recording.objectUrl) {
+        if (performanceDetailAudio) {
+          try { performanceDetailAudio.pause(); } catch (_) {}
+        }
+        performanceDetailAudio = new Audio(recording.objectUrl);
+        performanceDetailAudio.addEventListener("ended", () => {
+          performanceDetailActiveNoteIndex = null;
+          performanceDetailActiveMeasureNumber = null;
+          renderPerformanceDetailScore(lastPerformanceDetail);
+          updatePerformanceDetailAudioUi();
+        });
+      }
+      if (Number.isFinite(Number(performanceDetailAudio.duration))) return performanceDetailAudio;
+      await new Promise((resolve) => {
+        if (Number.isFinite(Number(performanceDetailAudio.duration))) {
+          resolve();
+          return;
+        }
+        performanceDetailAudio.addEventListener("loadedmetadata", resolve, { once: true });
+        performanceDetailAudio.addEventListener("error", resolve, { once: true });
+      });
+      return performanceDetailAudio;
+    }
+
+    function stopPerformanceComparisonReferenceNodes() {
+      performanceComparisonReferenceTimers.forEach((timerId) => clearTimeout(timerId));
+      performanceComparisonReferenceTimers = [];
+      performanceComparisonReferenceNodes.forEach((node) => {
+        try { node.stop?.(); } catch (_) {}
+        try { node.disconnect?.(); } catch (_) {}
+      });
+      performanceComparisonReferenceNodes = [];
+      if (typeof stopShortSongPreviewNodes === "function") {
+        stopShortSongPreviewNodes();
+      }
+    }
+
+    function stopPerformanceDetailFullPlaybackOnly() {
+      if (performanceDetailPlaybackRaf) {
+        cancelAnimationFrame(performanceDetailPlaybackRaf);
+        performanceDetailPlaybackRaf = null;
+      }
+      if (performanceDetailAudio) {
+        try { performanceDetailAudio.pause(); } catch (_) {}
+      }
+    }
+
+    function stopPerformanceComparisonPlayback(options = {}) {
+      const keepSelection = options.keepSelection !== false;
+      performanceComparisonPlaybackSessionId += 1;
+      if (performanceComparisonPlaybackRaf) {
+        cancelAnimationFrame(performanceComparisonPlaybackRaf);
+        performanceComparisonPlaybackRaf = null;
+      }
+      if (performanceComparisonPlaybackMode === "student" && performanceDetailAudio) {
+        try { performanceDetailAudio.pause(); } catch (_) {}
+      }
+      stopPerformanceComparisonReferenceNodes();
+      performanceComparisonPlaybackMode = null;
+      performanceComparisonReferenceStartedPerfMs = 0;
+      performanceDetailActiveNoteIndex = null;
+      performanceDetailActiveMeasureNumber = null;
+      if (!keepSelection) {
+        performanceComparisonSelectedMeasureNumber = null;
+        performanceComparisonRange = null;
+      }
+      renderPerformanceComparisonPanel();
+      renderPerformanceDetailScore(lastPerformanceDetail);
+      updatePerformanceDetailAudioUi();
+    }
+
+    function renderPerformanceComparisonPanel() {
+      const panel = document.getElementById("performanceComparisonPanel");
+      const text = document.getElementById("performanceComparisonText");
+      const studentBtn = document.getElementById("performanceCompareStudentBtn");
+      const referenceBtn = document.getElementById("performanceCompareReferenceBtn");
+      const notice = document.getElementById("performanceComparisonNotice");
+      const detail = lastPerformanceDetail;
+      if (!panel || !text || !studentBtn || !referenceBtn || !notice) return;
+      if (!detail || !performanceComparisonRange) {
+        panel.classList.add("hidden");
+        return;
+      }
+      panel.classList.remove("hidden");
+      const range = performanceComparisonRange;
+      const rangeText = range.startMeasureNumber === range.endMeasureNumber
+        ? `${range.startMeasureNumber}마디 비교`
+        : `${range.startMeasureNumber}~${range.endMeasureNumber}마디 비교`;
+      text.textContent = `${range.selectedMeasureNumber}마디 선택 · ${rangeText}`;
+      const hasRecording = isPerformanceRecordingForDetail(detail, detail.recording);
+      studentBtn.disabled = !hasRecording;
+      studentBtn.textContent = performanceComparisonPlaybackMode === "student"
+        ? "⏸ 내 연주 멈춤"
+        : "🎙 내 연주 듣기";
+      referenceBtn.disabled = !detail.timeline;
+      referenceBtn.textContent = performanceComparisonPlaybackMode === "reference"
+        ? "⏸ 시범 연주 멈춤"
+        : "🎵 시범 연주 듣기";
+      notice.textContent = hasRecording ? "" : "이번 연주의 녹음이 없습니다";
+      notice.classList.toggle("hidden", hasRecording);
+    }
+
+    function selectPerformanceComparisonMeasure(measureNumber) {
+      const detail = lastPerformanceDetail;
+      if (!detail) return;
+      const wrongMeasures = getPerformanceWrongMeasureSet(detail);
+      if (!wrongMeasures.has(Number(measureNumber))) return;
+      stopPerformanceComparisonPlayback({ keepSelection: false });
+      performanceComparisonSelectedMeasureNumber = Number(measureNumber);
+      performanceComparisonRange = buildPerformanceComparisonRange(detail, measureNumber);
+      performanceDetailActiveNoteIndex = null;
+      performanceDetailActiveMeasureNumber = Number(measureNumber);
+      renderPerformanceComparisonPanel();
+      renderPerformanceDetailScore(detail);
+      scrollPerformanceDetailActiveLineIntoView();
+    }
+
+    function getPerformanceScoreCanvasHit(event) {
+      const detail = lastPerformanceDetail;
+      const canvas = event.target?.closest?.("canvas");
+      if (!detail || !canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / Math.max(1, rect.width);
+      const scaleY = canvas.height / Math.max(1, rect.height);
+      const x = (event.clientX - rect.left) * scaleX;
+      const y = (event.clientY - rect.top) * scaleY;
+      const noteHit = (detail.renderedHitBoxes || []).find((item) =>
+        item.canvas === canvas &&
+        Math.abs(x - item.x) <= item.width / 2 &&
+        Math.abs(y - item.y) <= item.height / 2
+      ) || null;
+      const measureHit = (detail.renderedMeasureHitBoxes || []).find((item) =>
+        item.canvas === canvas &&
+        x >= item.x &&
+        x <= item.x + item.width &&
+        y >= item.y &&
+        y <= item.y + item.height
+      ) || null;
+      return { canvas, noteHit, measureHit };
+    }
+
+    function setPerformancePlaybackHighlightFromScoreMs(scoreMs) {
+      const detail = lastPerformanceDetail;
+      if (!detail || !Number.isFinite(Number(scoreMs)) || Number(scoreMs) < 0) {
+        const changed = performanceDetailActiveNoteIndex != null || performanceDetailActiveMeasureNumber != null;
+        performanceDetailActiveNoteIndex = null;
+        performanceDetailActiveMeasureNumber = null;
+        return changed;
+      }
+      const activeNote = getPerformanceNoteAtAudioPosition(detail, scoreMs);
+      const activeMeasure = getPerformanceMeasureAtScorePosition(detail, scoreMs);
+      const nextNoteIndex = activeNote ? Number(activeNote.scoringIndex) : null;
+      const nextMeasureNumber = activeMeasure ? Number(activeMeasure.measureNumber) : null;
+      const changed = nextNoteIndex !== performanceDetailActiveNoteIndex
+        || nextMeasureNumber !== performanceDetailActiveMeasureNumber;
+      performanceDetailActiveNoteIndex = nextNoteIndex;
+      performanceDetailActiveMeasureNumber = nextMeasureNumber;
+      return changed;
+    }
+
+    function startPerformanceComparisonHighlightLoop(getScoreMs, sessionId) {
+      if (performanceComparisonPlaybackRaf) cancelAnimationFrame(performanceComparisonPlaybackRaf);
+      const tick = () => {
+        if (sessionId !== performanceComparisonPlaybackSessionId || !performanceComparisonPlaybackMode || !performanceComparisonRange) {
+          performanceComparisonPlaybackRaf = null;
+          return;
+        }
+        const scoreMs = Number(getScoreMs());
+        if (!Number.isFinite(scoreMs) || scoreMs >= performanceComparisonRange.endScoreMs - 1) {
+          stopPerformanceComparisonPlayback({ keepSelection: true });
+          return;
+        }
+        if (setPerformancePlaybackHighlightFromScoreMs(scoreMs)) {
+          renderPerformanceDetailScore(lastPerformanceDetail);
+        }
+        performanceComparisonPlaybackRaf = requestAnimationFrame(tick);
+      };
+      performanceComparisonPlaybackRaf = requestAnimationFrame(tick);
+    }
+
+    async function togglePerformanceComparisonStudentPlayback() {
+      const detail = lastPerformanceDetail;
+      const range = performanceComparisonRange;
+      if (!detail || !range) return;
+      if (performanceComparisonPlaybackMode === "student") {
+        stopPerformanceComparisonPlayback({ keepSelection: true });
+        return;
+      }
+      stopPerformanceComparisonPlayback({ keepSelection: true });
+      stopPerformanceDetailFullPlaybackOnly();
+      const recording = detail.recording;
+      if (!isPerformanceRecordingForDetail(detail, recording)) {
+        renderPerformanceComparisonPanel();
+        updatePerformanceDetailAudioUi();
+        return;
+      }
+      const audio = await ensurePerformanceDetailAudio(recording);
+      if (!audio) return;
+      const recordingLeadInMs = getPerformanceRecordingLeadInMs(recording);
+      const startAudioMs = recordingLeadInMs + range.startScoreMs;
+      const endAudioMs = recordingLeadInMs + range.endScoreMs;
+      if (startAudioMs < 0) {
+        const notice = document.getElementById("performanceComparisonNotice");
+        if (notice) notice.textContent = "이 부분은 녹음되지 않았습니다.";
+        return;
+      }
+      const clampedStartMs = clampPerformanceAudioMs(audio, startAudioMs);
+      const clampedEndMs = clampPerformanceAudioMs(audio, Math.max(startAudioMs + 1, endAudioMs));
+      audio.currentTime = clampedStartMs / 1000;
+      performanceComparisonPlaybackMode = "student";
+      performanceComparisonPlaybackSessionId += 1;
+      const sessionId = performanceComparisonPlaybackSessionId;
+      setPerformancePlaybackHighlightFromScoreMs(range.startScoreMs);
+      renderPerformanceComparisonPanel();
+      renderPerformanceDetailScore(detail);
+      try {
+        await audio.play();
+        updatePerformanceDetailAudioUi();
+        startPerformanceComparisonHighlightLoop(() => {
+          const audioMs = performanceDetailAudio ? performanceDetailAudio.currentTime * 1000 : 0;
+          if (audioMs >= clampedEndMs) return range.endScoreMs;
+          return audioMs - recordingLeadInMs;
+        }, sessionId);
+      } catch (_) {
+        const notice = document.getElementById("performanceComparisonNotice");
+        if (notice) notice.textContent = "녹음을 재생할 수 없습니다.";
+        stopPerformanceComparisonPlayback({ keepSelection: true });
+      }
+    }
+
+    function schedulePerformanceComparisonReferenceNote(event, delayMs, durationMs, previousEvent, sessionId) {
+      if (!event?.note || durationMs <= 0) return;
+      const timerId = setTimeout(() => {
+        if (sessionId !== performanceComparisonPlaybackSessionId || performanceComparisonPlaybackMode !== "reference") return;
+        const repeatedNote = Boolean(
+          previousEvent?.note &&
+          noteNameToMidi(previousEvent.note, previousEvent.effectiveAccidental) === noteNameToMidi(event.note, event.effectiveAccidental)
+        );
+        const slurContinue = Boolean(
+          previousEvent?.note &&
+          event.slurGroupId &&
+          previousEvent.slurGroupId === event.slurGroupId
+        );
+        playShortSongPreviewNote(event, durationMs, 0, {
+          repeatedNote,
+          slurContinue
+        });
+      }, Math.max(0, Math.round(delayMs)));
+      performanceComparisonReferenceTimers.push(timerId);
+    }
+
+    async function togglePerformanceComparisonReferencePlayback() {
+      const detail = lastPerformanceDetail;
+      const range = performanceComparisonRange;
+      if (!detail?.timeline || !range) return;
+      if (performanceComparisonPlaybackMode === "reference") {
+        stopPerformanceComparisonPlayback({ keepSelection: true });
+        return;
+      }
+      stopPerformanceComparisonPlayback({ keepSelection: true });
+      stopPerformanceDetailFullPlaybackOnly();
+      const ctx = await getShortSongPreviewAudioContext();
+      if (!ctx) return;
+      const events = buildSongPreviewPlaybackEvents(detail.timeline, detail).events || [];
+      const leadMs = 60;
+      const rangeDurationMs = Math.max(1, range.endScoreMs - range.startScoreMs);
+      performanceComparisonPlaybackMode = "reference";
+      performanceComparisonPlaybackSessionId += 1;
+      const sessionId = performanceComparisonPlaybackSessionId;
+      const rangeEndTimer = setTimeout(() => {
+        stopPerformanceComparisonPlayback({ keepSelection: true });
+      }, Math.ceil(rangeDurationMs + leadMs + 80));
+      performanceComparisonReferenceTimers.push(rangeEndTimer);
+      events.forEach((event, index) => {
+        const eventStartMs = Number(event.startMs) || 0;
+        const eventEndMs = eventStartMs + Math.max(1, Number(event.durMs) || 0);
+        if (eventEndMs <= range.startScoreMs || eventStartMs >= range.endScoreMs) return;
+        const clipStartMs = Math.max(eventStartMs, range.startScoreMs);
+        const clipEndMs = Math.min(eventEndMs, range.endScoreMs);
+        const delayMs = leadMs + clipStartMs - range.startScoreMs;
+        const durationMs = Math.max(40, clipEndMs - clipStartMs);
+        schedulePerformanceComparisonReferenceNote(event, delayMs, durationMs, events[index - 1], sessionId);
+      });
+      performanceComparisonReferenceStartedPerfMs = performance.now() + leadMs;
+      setPerformancePlaybackHighlightFromScoreMs(range.startScoreMs);
+      renderPerformanceComparisonPanel();
+      renderPerformanceDetailScore(detail);
+      startPerformanceComparisonHighlightLoop(() => {
+        const elapsedMs = performance.now() - performanceComparisonReferenceStartedPerfMs;
+        return range.startScoreMs + Math.max(0, elapsedMs);
+      }, sessionId);
+    }
+
+    async function seekPerformanceRecordingToScoreMs(scoreStartMs, options = {}) {
+      const detail = lastPerformanceDetail;
+      const recording = detail?.recording;
+      if (!isPerformanceRecordingForDetail(detail, recording)) {
+        updatePerformanceDetailAudioUi();
+        return;
+      }
+      const audio = await ensurePerformanceDetailAudio(recording);
+      if (!audio) return;
+      const recordingLeadInMs = getPerformanceRecordingLeadInMs(recording);
+      const measureStartScoreMs = Math.max(0, Number(scoreStartMs) || 0);
+      const targetAudioMs = recordingLeadInMs + measureStartScoreMs;
+      if (targetAudioMs < 0) {
+        const notice = document.getElementById("performanceAudioNotice");
+        if (notice) notice.textContent = "이 부분은 녹음되지 않았습니다.";
+        return;
+      }
+      const clampedAudioMs = clampPerformanceAudioMs(audio, targetAudioMs);
+      audio.currentTime = clampedAudioMs / 1000;
+      setPerformancePlaybackHighlightFromScoreMs(measureStartScoreMs);
+      renderPerformanceDetailScore(detail);
+      logRecordingSyncCheckOnce({
+        recordingStartPerfMs: recording.recordingStartPerfMs,
+        scoreStartPerfMs: recording.scoreStartPerfMs,
+        recordingLeadInMs,
+        selectedMeasureNumber: options.measureNumber ?? null,
+        measureStartScoreMs,
+        targetAudioMs: clampedAudioMs,
+        audioDurationMs: getPerformanceAudioDurationMs(audio)
+      });
+      try {
+        await audio.play();
+        updatePerformanceDetailAudioUi();
+        if (performanceDetailPlaybackRaf) cancelAnimationFrame(performanceDetailPlaybackRaf);
+        performanceDetailPlaybackRaf = requestAnimationFrame(tickPerformanceDetailPlayback);
+      } catch (_) {
+        const notice = document.getElementById("performanceAudioNotice");
+        if (notice) notice.textContent = "녹음을 재생할 수 없습니다.";
+      }
+    }
+
+    function updatePerformanceDetailAudioUi() {
+      const btn = document.getElementById("performanceReplayBtn");
+      const notice = document.getElementById("performanceAudioNotice");
+      const retryWrongBtn = document.getElementById("performanceRetryWrongBtn");
+      const detail = lastPerformanceDetail;
+      const recording = detail?.recording;
+      const hasRecording = isPerformanceRecordingForDetail(detail, recording);
+      if (btn) {
+        const fullRecordingPlaying = performanceDetailAudio &&
+          !performanceDetailAudio.paused &&
+          performanceComparisonPlaybackMode !== "student";
+        btn.disabled = !hasRecording;
+        btn.textContent = fullRecordingPlaying
+          ? "⏸ 내 연주 일시정지"
+          : "▶ 전체 내 연주 듣기";
+      }
+      if (notice) {
+        notice.textContent = hasRecording ? "" : "이번 연주의 녹음이 없습니다";
+      }
+      if (retryWrongBtn) {
+        const hasWrong = (detail?.noteResults || []).some((item) => item.resultType !== "correct");
+        retryWrongBtn.disabled = !hasWrong;
+        retryWrongBtn.textContent = hasWrong ? "🎯 틀린 마디부터 다시 연습" : "틀린 부분 없음";
+      }
+      renderPerformanceComparisonPanel();
+    }
+
+    function getPerformanceNoteAtAudioPosition(detail, scoreMs) {
+      const results = detail?.noteResults || [];
+      return results.find((item) => {
+        const start = Number(item.startMs) || 0;
+        const end = start + Math.max(1, Number(item.durMs) || 0);
+        return scoreMs >= start && scoreMs < end;
+      }) || null;
+    }
+
+    function tickPerformanceDetailPlayback() {
+      if (!performanceDetailAudio || performanceDetailAudio.paused || !lastPerformanceDetail) {
+        performanceDetailPlaybackRaf = null;
+        return;
+      }
+      const recordingLeadInMs = getPerformanceRecordingLeadInMs(lastPerformanceDetail.recording);
+      const scoreMs = performanceDetailAudio.currentTime * 1000 - recordingLeadInMs;
+      if (setPerformancePlaybackHighlightFromScoreMs(scoreMs)) {
+        renderPerformanceDetailScore(lastPerformanceDetail);
+        scrollPerformanceDetailActiveLineIntoView();
+      }
+      performanceDetailPlaybackRaf = requestAnimationFrame(tickPerformanceDetailPlayback);
+    }
+
+    function scrollPerformanceDetailActiveLineIntoView() {
+      const activeLine = document.querySelector(".performanceDetailLine.is-active");
+      const body = document.getElementById("performanceDetailBody");
+      if (!activeLine || !body) return;
+      const bodyRect = body.getBoundingClientRect();
+      const lineRect = activeLine.getBoundingClientRect();
+      if (lineRect.top >= bodyRect.top + 16 && lineRect.bottom <= bodyRect.bottom - 80) return;
+      activeLine.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    async function togglePerformanceDetailPlayback() {
+      const detail = lastPerformanceDetail;
+      const recording = detail?.recording;
+      if (!isPerformanceRecordingForDetail(detail, recording)) {
+        updatePerformanceDetailAudioUi();
+        return;
+      }
+      stopPerformanceComparisonPlayback({ keepSelection: true });
+      await ensurePerformanceDetailAudio(recording);
+      if (!performanceDetailAudio.paused) {
+        performanceDetailAudio.pause();
+        updatePerformanceDetailAudioUi();
+        return;
+      }
+      try {
+        await performanceDetailAudio.play();
+        updatePerformanceDetailAudioUi();
+        if (performanceDetailPlaybackRaf) cancelAnimationFrame(performanceDetailPlaybackRaf);
+        performanceDetailPlaybackRaf = requestAnimationFrame(tickPerformanceDetailPlayback);
+      } catch (_) {
+        const notice = document.getElementById("performanceAudioNotice");
+        if (notice) notice.textContent = "녹음을 재생할 수 없습니다.";
+      }
+    }
+
+    function seekPerformanceRecordingToNote(result) {
+      if (!result) return;
+      seekPerformanceRecordingToScoreMs(Number(result.startMs) || 0, {
+        measureNumber: result.measureNumber ?? null
+      });
+    }
+
+    function handlePerformanceScoreClick(event) {
+      const detail = lastPerformanceDetail;
+      if (!detail) return;
+      const hit = getPerformanceScoreCanvasHit(event);
+      const measureNumber = hit?.noteHit?.result?.measureNumber ?? hit?.measureHit?.measureNumber;
+      if (measureNumber == null) return;
+      selectPerformanceComparisonMeasure(measureNumber);
+    }
+
+    function handlePerformanceScorePointerMove(event) {
+      const detail = lastPerformanceDetail;
+      const canvas = event.target?.closest?.("canvas");
+      if (!detail || !canvas) return;
+      const hit = getPerformanceScoreCanvasHit(event);
+      const measureNumber = hit?.noteHit?.result?.measureNumber ?? hit?.measureHit?.measureNumber;
+      const canSelect = getPerformanceWrongMeasureSet(detail).has(Number(measureNumber));
+      canvas.style.cursor = canSelect ? "pointer" : "default";
+    }
+
+    function syncPerformanceDetailSaveButtons() {
+      const buttons = [
+        document.getElementById("resultConfirmBtn"),
+        document.getElementById("performanceDetailSaveBtn")
+      ].filter(Boolean);
+      buttons.forEach((button) => {
+        button.disabled = false;
+      });
+      const resultConfirmBtn = document.getElementById("resultConfirmBtn");
+      const detailSaveBtn = document.getElementById("performanceDetailSaveBtn");
+      if (resultConfirmBtn) {
+        resultConfirmBtn.textContent = "확인";
+      }
+      if (detailSaveBtn) {
+        detailSaveBtn.textContent = "✅ 닫기";
+      }
+    }
+
+    async function claimResultGrowthOnce({ closeAll = false, silent = false } = {}) {
+      if (resultSaveState.saving) return false;
+      if (resultSaveState.saved) {
+        if (closeAll) {
+          closePerformanceDetailOverlay({ restoreFocus: false });
+          hideResultStamp();
+        }
+        return true;
+      }
+      resultSaveState.saving = true;
+      syncPerformanceDetailSaveButtons();
+      try {
+        await save({ silent });
+        resultSaveState.saved = true;
+        syncPerformanceDetailSaveButtons();
+        if (closeAll) {
+          closePerformanceDetailOverlay({ restoreFocus: false });
+          hideResultStamp();
+        }
+        return true;
+      } catch (error) {
+        resultSaveState.saved = false;
+        if (!silent) {
+          setStatus("saveStatus", error?.message || "저장에 실패했습니다.", "bad");
+        }
+        return false;
+      } finally {
+        resultSaveState.saving = false;
+        syncPerformanceDetailSaveButtons();
+      }
+    }
+
+    function claimResultGrowthInBackground() {
+      if (resultSaveState.saved || resultSaveState.saving) return;
+      claimResultGrowthOnce({ silent: true }).catch(() => {});
+    }
+
+    async function claimResultGrowthBeforePracticeReset() {
+      if (resultSaveState.saved || resultSaveState.saving) return true;
+      try {
+        await claimResultGrowthOnce({ silent: true });
+      } catch (_) {}
+      return true;
+    }
+
+    function closePerformanceDetailOverlay({ restoreFocus = true } = {}) {
+      const overlay = document.getElementById("performanceDetailOverlay");
+      if (!overlay) return;
+      claimResultGrowthInBackground();
+      stopPerformanceDetailPlayback();
+      overlay.classList.add("hidden");
+      overlay.setAttribute("aria-hidden", "true");
+      if (restoreFocus && performanceDetailPreviousFocus?.focus) {
+        try { performanceDetailPreviousFocus.focus(); } catch (_) {}
+      }
+      performanceDetailPreviousFocus = null;
+    }
+
+    function openPerformanceDetailOverlay() {
+      if (!lastPerformanceDetail || currentPracticeMode !== "song") {
+        setStatus("practiceStatus", "상세 결과를 표시할 연주 결과가 없습니다.", "");
+        return;
+      }
+      const overlay = document.getElementById("performanceDetailOverlay");
+      const titleEl = document.getElementById("performanceDetailTitle");
+      const subtitleEl = document.getElementById("performanceDetailSubtitle");
+      if (!overlay) return;
+      performanceDetailPreviousFocus = document.activeElement;
+      if (titleEl) titleEl.textContent = `🎼 ${lastPerformanceDetail.songTitle || "곡"} 상세 연주 결과`;
+      if (subtitleEl) {
+        subtitleEl.textContent = `${lastPerformanceDetail.timeSignature || "4/4"} · BPM ${lastPerformanceDetail.bpm || "-"} · ${formatPlaybackSpeed(lastPerformanceDetail.speedMultiplier || 1)}`;
+      }
+      renderPerformanceDetailSummary(lastPerformanceDetail);
+      stopPerformanceComparisonPlayback({ keepSelection: false });
+      renderPerformanceDetailScore(lastPerformanceDetail);
+      updatePerformanceDetailAudioUi();
+      overlay.classList.remove("hidden");
+      overlay.setAttribute("aria-hidden", "false");
+      setTimeout(() => document.getElementById("performanceDetailCloseBtn")?.focus(), 0);
+    }
+
+    function confirmDiscardUnsavedPerformance() {
+      return true;
+    }
+
+    async function restartCurrentSongFromDetail(startMs = 0) {
+      await claimResultGrowthBeforePracticeReset();
+      closePerformanceDetailOverlay({ restoreFocus: false });
+      hideResultStamp({ immediate: true });
+      stopPerformanceDetailPlayback();
+      showStep("step34Section");
+      resetScoreState();
+      resetJudgmentZoneState();
+      const song = app.currentSong || getSelectedSong();
+      if (song) {
+        document.getElementById("practiceSongTitle").textContent = song.title || "-";
+        document.getElementById("practiceTimeSignature").textContent = song.timeSignature || "-";
+      }
+      setStatus(
+        "practiceStatus",
+        startMs > 0 ? "틀린 마디부터 다시 연습을 시작합니다." : "다시 연주할 준비가 되었습니다.",
+        "ok"
+      );
+      pendingPracticeStartOffsetMs = Math.max(0, Number(startMs) || 0);
+      await startPractice();
+    }
+
+    function retryWrongMeasureFromDetail() {
+      const detail = lastPerformanceDetail;
+      const selectedTiming = getPerformanceMeasureTiming(detail, performanceComparisonSelectedMeasureNumber);
+      if (selectedTiming) {
+        restartCurrentSongFromDetail(Number(selectedTiming.scoreStartMs) || 0);
+        return;
+      }
+      const wrong = (detail?.noteResults || []).find((item) => item.resultType !== "correct");
+      if (!wrong) {
+        setStatus("practiceStatus", "틀린 부분 없음", "ok");
+        return;
+      }
+      restartCurrentSongFromDetail(Number(wrong.measureStartMs) || 0);
+    }
+
     function setLastRecordScore(recordScore) {
       window.lastRecordScore = recordScore;
       if (typeof app !== "undefined" && app) {
@@ -17544,7 +19417,8 @@ function restorePracticeFromChallengePlay() {
         key: recordScore.gradeKey,
         label: recordScore.gradeLabel
       };
-      setLastRecordScore(recordScore);
+      const maxCombo = Math.max(0, Math.round(Number(scoreData.maxCombo) || Number(lastPerformanceDetail?.maxCombo) || 0));
+      setLastRecordScore({ ...recordScore, maxCombo });
 
       const overlay = document.getElementById("resultOverlay");
       const stamp = document.getElementById("resultStamp");
@@ -17562,9 +19436,13 @@ function restorePracticeFromChallengePlay() {
       };
 
       const resultConfirmBtn = document.getElementById("resultConfirmBtn");
+      const resultDetailBtn = document.getElementById("resultDetailBtn");
       if (resultConfirmBtn) {
         resultConfirmBtn.disabled = false;
-        resultConfirmBtn.textContent = "확인하고 성장 포인트 받기";
+        resultConfirmBtn.textContent = "확인";
+      }
+      if (resultDetailBtn) {
+        resultDetailBtn.disabled = !lastPerformanceDetail;
       }
 
       if (!overlay || !stamp || !pitchEl || !rhythmEl || !comboEl || !totalEl || !text) return;
@@ -17573,7 +19451,6 @@ function restorePracticeFromChallengePlay() {
 
       const pitchScore = recordScore.pitchScore;
       const rhythmScore = recordScore.rhythmScore;
-      const maxCombo = Math.max(0, Math.round(Number(scoreData.maxCombo) || 0));
       const finalScore = recordScore.scoreTotal;
 
       pitchEl.textContent = "0점";
@@ -17609,6 +19486,7 @@ function restorePracticeFromChallengePlay() {
       void stamp.offsetWidth;
       stamp.classList.add("show");
       playStampSound().catch(() => {});
+      claimResultGrowthInBackground();
     }
 
     function getShortSongCandidates() {
@@ -19675,6 +21553,9 @@ function logout() {
   stopTonguingExampleAudio();
   stopBasicPracticeSession();
   stopPractice();
+  stopPerformanceDetailPlayback();
+  closePerformanceDetailOverlay({ restoreFocus: false });
+  clearLastPracticeRecording();
   releaseSharedMicrophone();
   resetActivityGrowthRequestState();
   resetDailyMissionLocalState();
@@ -19727,6 +21608,8 @@ window.addEventListener("popstate", function (event) {
 });
 
 window.addEventListener("beforeunload", function () {
+  stopPerformanceDetailPlayback();
+  clearLastPracticeRecording();
   releaseSharedMicrophone();
 });
 
@@ -20062,6 +21945,8 @@ window.addEventListener("beforeunload", function () {
 
       currentTimeline = nextTimeline;
       currentPracticeStartedAt = pauseAnchorNow - nextElapsedMs - currentCountdownMs;
+      currentPracticeStartOffsetMs = 0;
+      scoreStartPerfMs = currentPracticeStartedAt + currentCountdownMs;
       practicePausedAt = pauseAnchorNow;
       practicePausedDuration = 0;
 
@@ -20817,7 +22702,7 @@ window.addEventListener("beforeunload", function () {
     const noteName = getKoreanNoteName(noteObj);
     const noteNameBoxWidth = Math.max(18 * scale, noteName.length * noteNameFontSize * 0.86 + noteNameBoxPadding);
     ctx.fillRect(noteX - noteNameBoxWidth / 2, NOTE_NAME_Y - noteNameBoxHeight * 0.8, noteNameBoxWidth, noteNameBoxHeight);
-    ctx.fillStyle = "#111";
+    ctx.fillStyle = options.noteNameColor || NOTE_COLOR || "#111";
     ctx.font = `bold ${noteNameFontSize}px system-ui`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -21282,7 +23167,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       ctx.restore();
     }
 
-    function drawTimelineNotes(elapsedMs, timeline, now = performance.now()) {
+    function drawTimelineNotes(elapsedMs, timeline, now = performance.now(), options = {}) {
       const canvas = document.getElementById("practiceCanvas");
       const ctx = canvas.getContext("2d");
 
@@ -21585,9 +23470,15 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       drawTupletBrackets(noteMetrics);
       drawTieAndSlurMarks(noteMetrics);
 
-      if (elapsedMs < 0) {
-        const remain = Math.ceil(Math.abs(elapsedMs) / 1000);
-        const veilAlpha = remain >= 5 ? 0.34 : remain === 4 ? 0.22 : remain === 3 ? 0.1 : 0;
+      const countdownElapsedMs = Number.isFinite(Number(options.countdownElapsedMs))
+        ? Number(options.countdownElapsedMs)
+        : elapsedMs;
+      if (countdownElapsedMs < 0) {
+        const remain = getPracticeCountInDisplayValue(countdownElapsedMs, timeline);
+        if (remain === 1) {
+          maybeStartPendingPracticeRecordingAtCountdownOne();
+        }
+        const veilAlpha = remain === 4 ? 0.22 : remain === 3 ? 0.1 : 0;
 
         if (veilAlpha > 0) {
           ctx.fillStyle = `rgba(255,255,255,${veilAlpha})`;
@@ -21598,7 +23489,7 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         ctx.font = "bold 72px system-ui";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(String(remain), canvas.width / 2, canvas.height / 2);
+        ctx.fillText(String(remain || 1), canvas.width / 2, canvas.height / 2);
 
         ctx.textAlign = "start";
         ctx.textBaseline = "alphabetic";
@@ -22297,6 +24188,12 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       if (!safeNotes.length) return "#0F172A";
       const first = safeNotes[0];
       const last = safeNotes[safeNotes.length - 1];
+      if (shortSongPreviewState.resultDetailColorMap) {
+        const result = shortSongPreviewState.resultDetailColorMap.get(Number(first.noteIndex))
+          || shortSongPreviewState.resultDetailColorMap.get(Number(last.noteIndex));
+        const color = PERFORMANCE_RESULT_COLORS[result?.colorType || result?.resultType];
+        if (color) return color;
+      }
       const event = shortSongPreviewState.notePlaybackEventMap?.get(Number(first.noteIndex));
       const startMs = Number(event?.startMs ?? first.startMs) || 0;
       const eventCoversLast = event?.noteIndices?.includes?.(Number(last.noteIndex));
@@ -24575,8 +26472,17 @@ ${closeHtml}`;
         rhythmScore: rhythmScore,
         correctRatio: targetRatio,
         pitchRatio: targetRatio,
+        validInputRatio,
         hasValidInput: acc ? acc.validInputWeight > 0 : false
       };
+
+      recordPerformanceNoteResult(note, timeline, {
+        pitchScore: finalPitchScore,
+        rhythmScore,
+        targetRatio,
+        validInputRatio,
+        hasValidInput: noteResult.hasValidInput
+      });
 
       applyComboForJudgment(noteResult);
       enqueueJudgmentFeedback(feedbackKind);
@@ -24970,9 +26876,10 @@ ${closeHtml}`;
 
     function updateScoringFrame() {
       const now = performance.now();
-      const elapsedMs = (now - currentPracticeStartedAt) - currentCountdownMs;
+      const rawElapsedMs = (now - currentPracticeStartedAt) - currentCountdownMs;
 
-      if (elapsedMs < 0) return;
+      if (rawElapsedMs < 0) return;
+      const elapsedMs = rawElapsedMs + currentPracticeStartOffsetMs;
 
       const target = findCurrentTargetNote(elapsedMs, currentTimeline);
 
@@ -25203,11 +27110,23 @@ ${closeHtml}`;
       const baseBpm = Number(song.bpm) || 80;
       const timeline = buildCurrentPracticeTimelineForSpeed(song, speed);
       let startedAt = performance.now();
-      const countdownMs = 5000;
+      const countInNumbers = getCountInNumbersByTimeSignature(timeline.timeSignature || song.timeSignature || "4/4");
+      const countInBeatMs = Math.max(120, Number(timeline.beatMs) || 800);
+      const countdownMs = countInNumbers.length * countInBeatMs;
+      const startOffsetMs = Math.max(0, Math.min(Number(pendingPracticeStartOffsetMs) || 0, Math.max(0, Number(timeline.totalMs) || 0)));
+      pendingPracticeStartOffsetMs = 0;
 
+      resetPendingPracticeRecording();
+      stopPerformanceDetailPlayback();
+      closePerformanceDetailOverlay({ restoreFocus: false });
+      lastPerformanceDetail = null;
+      clearLastPracticeRecording();
+      createPerformanceDetailDraft(song, timeline);
       currentTimeline = timeline;
       currentPracticeStartedAt = startedAt;
       currentCountdownMs = countdownMs;
+      currentPracticeStartOffsetMs = startOffsetMs;
+      scoreStartPerfMs = currentPracticeStartedAt + currentCountdownMs - currentPracticeStartOffsetMs;
       practicePaused = false;
       practicePausedAt = 0;
       practicePausedDuration = 0;
@@ -25231,6 +27150,9 @@ ${closeHtml}`;
         if (icon) icon.textContent = "⏸";
       }
       resetScoreState();
+      if (startOffsetMs > 0) {
+        setJudgedNotesBeforeElapsed(timeline, startOffsetMs);
+      }
       resetJudgmentZoneState();
 
       practiceRunning = true;
@@ -25244,7 +27166,11 @@ ${closeHtml}`;
       document.getElementById("practiceInfo").innerHTML =
         `곡 제목: ${song.title || "-"}<br>박자: ${timeline.timeSignature || "4/4"} (BPM ${baseBpm})<br>전체 음표수: ${timeline.notes.length}개`;
 
-      setStatus("practiceStatus", "5초 카운트 후 시작 · 마이크 판정중", "ok");
+      setStatus(
+        "practiceStatus",
+        startOffsetMs > 0 ? "해당 마디부터 박자 카운트 후 시작 · 마이크 판정중" : "박자 카운트 후 시작 · 마이크 판정중",
+        "ok"
+      );
       let hasShownMicJudgingOnly = false;
 
       function loop(now) {
@@ -25256,21 +27182,30 @@ ${closeHtml}`;
           return;
         }
 
-        const elapsedMs = (now - currentPracticeStartedAt) - countdownMs;
-        if (!hasShownMicJudgingOnly && elapsedMs >= 0) {
+        const rawElapsedMs = (now - currentPracticeStartedAt) - countdownMs;
+        const elapsedMs = rawElapsedMs + currentPracticeStartOffsetMs;
+        if (!hasShownMicJudgingOnly && rawElapsedMs >= 0) {
           hasShownMicJudgingOnly = true;
           setStatus("practiceStatus", "마이크 판정중", "ok");
         }
         const activeTimeline = currentTimeline || timeline;
-        drawTimelineNotes(elapsedMs, activeTimeline, now);
+        const drawElapsedMs = rawElapsedMs < 0 && currentPracticeStartOffsetMs > 0
+          ? currentPracticeStartOffsetMs
+          : elapsedMs;
+        drawTimelineNotes(drawElapsedMs, activeTimeline, now, { countdownElapsedMs: rawElapsedMs });
 
         if (elapsedMs >= activeTimeline.totalMs + 1500) {
           const completedScoreState = { ...scoreState };
           const completedCurrentCombo = currentCombo;
           const completedMaxCombo = bestCombo;
+          completedScoreState.maxCombo = Math.max(
+            Number(completedScoreState.maxCombo) || 0,
+            Number(completedMaxCombo) || 0
+          );
           logJudgeModeCheck();
           logComboRuleCheck(completedCurrentCombo, completedMaxCombo);
           stopPractice();
+          finalizePerformanceDetail(completedScoreState);
           const finalScore = completedScoreState.finalScore || 0;
           const grade = getScoreGrade(finalScore);
           setStatus(
@@ -25339,12 +27274,22 @@ ${closeHtml}`;
       return [4, 3, 2, 1];
     }
 
+    function getPracticeCountInDisplayValue(elapsedMs, timeline = currentTimeline) {
+      if (!timeline || !Number.isFinite(Number(elapsedMs)) || Number(elapsedMs) >= 0) return 0;
+      const numbers = getCountInNumbersByTimeSignature(timeline.timeSignature || "4/4");
+      const beatMs = Math.max(120, Number(timeline.beatMs) || 800);
+      const countdownMs = numbers.length * beatMs;
+      const elapsedInCountInMs = Math.max(0, countdownMs + Number(elapsedMs));
+      const index = Math.min(numbers.length - 1, Math.max(0, Math.floor(elapsedInCountInMs / beatMs)));
+      return Number(numbers[index]) || 0;
+    }
+
     function getPracticeElapsedMsForJump() {
       if (!currentTimeline) return 0;
       if (isMeasureJumpPaused) return resumeMsAfterJump;
 
       const now = practicePaused && practicePausedAt ? practicePausedAt : performance.now();
-      return Math.max(0, (now - currentPracticeStartedAt) - currentCountdownMs);
+      return Math.max(0, (now - currentPracticeStartedAt) - currentCountdownMs + currentPracticeStartOffsetMs);
     }
 
     function getMeasureStartPoints(timeline) {
@@ -25450,6 +27395,7 @@ ${closeHtml}`;
       if (practicePausedAt) {
         practicePausedDuration += performance.now() - practicePausedAt;
         currentPracticeStartedAt += practicePausedDuration;
+        scoreStartPerfMs = currentPracticeStartedAt + currentCountdownMs - currentPracticeStartOffsetMs;
         practicePausedAt = 0;
         practicePausedDuration = 0;
       }
@@ -25607,6 +27553,8 @@ ${closeHtml}`;
           practiceResumeCounting = false;
 
           currentPracticeStartedAt = performance.now() - resumeMsAfterJump - currentCountdownMs;
+          currentPracticeStartOffsetMs = 0;
+          scoreStartPerfMs = currentPracticeStartedAt + currentCountdownMs;
           practicePaused = false;
           practicePausedAt = 0;
           practicePausedDuration = 0;
@@ -25642,17 +27590,62 @@ ${closeHtml}`;
 
       const canRecord = practiceRunning && !isFingeringPracticeMode();
 
-      recordBtn.disabled = !canRecord && !practiceRecordingActive;
+      recordBtn.disabled = !canRecord && !practiceRecordingActive && !practiceRecordingPending;
 
-      if (practiceRecordingActive) {
-        recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">⏹</span><span class="label practice-btn-label">녹음 종료</span>';
-        recordBtn.setAttribute("aria-label", "녹음 종료");
+      if (practiceRecordingActive || practiceRecordingStarting) {
+        recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">⏹</span><span class="label practice-btn-label">녹음 중지</span>';
+        recordBtn.setAttribute("aria-label", "녹음 중지");
         recordBtn.classList.add("recording-active");
+      } else if (practiceRecordingPending) {
+        recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">⏳</span><span class="label practice-btn-label">녹음 준비 중</span>';
+        recordBtn.setAttribute("aria-label", "녹음 예약 취소");
+        recordBtn.classList.remove("recording-active");
       } else {
         recordBtn.innerHTML = '<span class="icon practice-btn-icon" aria-hidden="true">🔴</span><span class="label practice-btn-label">녹음하기</span>';
         recordBtn.setAttribute("aria-label", "녹음하기");
         recordBtn.classList.remove("recording-active");
       }
+    }
+
+    function getCurrentPracticeCountdownValue() {
+      if (!practiceRunning || !currentPracticeStartedAt || !currentCountdownMs) return 0;
+      const elapsedMs = (performance.now() - currentPracticeStartedAt) - currentCountdownMs;
+      if (elapsedMs >= 0) return 0;
+      return getPracticeCountInDisplayValue(elapsedMs, currentTimeline);
+    }
+
+    function shouldReservePracticeRecording() {
+      const countValue = getCurrentPracticeCountdownValue();
+      return countValue > 1;
+    }
+
+    function cancelPendingPracticeRecording(message = "") {
+      if (!practiceRecordingPending) return;
+      practiceRecordingPending = false;
+      updatePracticeRecordButton();
+      if (message) setStatus("practiceStatus", message, "");
+    }
+
+    function resetPendingPracticeRecording() {
+      practiceRecordingPending = false;
+      updatePracticeRecordButton();
+    }
+
+    function isPracticeRecorderStartingOrRecording() {
+      if (practiceRecordingStarting || practiceRecordingActive) return true;
+      const state = practiceRecorder?.state;
+      return state === "recording";
+    }
+
+    function maybeStartPendingPracticeRecordingAtCountdownOne() {
+      if (!practiceRecordingPending) return;
+      if (isPracticeRecorderStartingOrRecording()) return;
+
+      practiceRecordingPending = false;
+      updatePracticeRecordButton();
+      startPracticeRecording({ fromPending: true }).catch((error) => {
+        setStatus("practiceStatus", error?.message || "녹음을 시작할 수 없습니다.", "bad");
+      });
     }
 
     function getRecordingMimeType() {
@@ -25687,8 +27680,8 @@ ${closeHtml}`;
         .slice(0, 60);
     }
 
-    async function startPracticeRecording() {
-      if (practiceRecordingActive) return;
+    async function startPracticeRecording(startOptions = {}) {
+      if (isPracticeRecorderStartingOrRecording()) return;
 
       if (!window.MediaRecorder) {
         setStatus("practiceStatus", "이 브라우저에서는 녹음 기능을 지원하지 않습니다.", "bad");
@@ -25704,11 +27697,26 @@ ${closeHtml}`;
         await ensureSharedMicrophone();
 
         const mimeType = getRecordingMimeType();
-        const options = mimeType ? { mimeType } : undefined;
+        const recorderOptions = mimeType ? { mimeType } : undefined;
 
         practiceRecordingChunks = [];
-        practiceRecorder = new MediaRecorder(sharedMicStream || micStream, options);
+        practiceRecorder = new MediaRecorder(sharedMicStream || micStream, recorderOptions);
+        practiceRecordingStarting = true;
+        recordingStartPerfMs = 0;
         practiceRecordingStartedAt = Date.now();
+        practiceRecordingStartedPerfAt = performance.now();
+        practiceRecordingSongStartPerfAt = Number(currentPracticeStartedAt) || performance.now();
+        practiceRecordingCountdownMs = Number(currentCountdownMs) || 0;
+        practiceRecordingScoreStartPerfMs = Number(scoreStartPerfMs)
+          || (Number(practiceRecordingSongStartPerfAt) + Number(practiceRecordingCountdownMs))
+          || performance.now();
+
+        practiceRecorder.onstart = () => {
+          recordingStartPerfMs = performance.now();
+          practiceRecordingStarting = false;
+          practiceRecordingActive = true;
+          updatePracticeRecordButton();
+        };
 
         practiceRecorder.ondataavailable = (event) => {
           if (event.data && event.data.size > 0) {
@@ -25741,21 +27749,61 @@ ${closeHtml}`;
           document.body.appendChild(a);
           a.click();
           a.remove();
+
+          const playbackUrl = URL.createObjectURL(blob);
+          const actualRecordingStartPerfMs = Number(recordingStartPerfMs) || Number(practiceRecordingStartedPerfAt) || performance.now();
+          const actualScoreStartPerfMs = Number(practiceRecordingScoreStartPerfMs)
+            || (Number(practiceRecordingSongStartPerfAt) + Number(practiceRecordingCountdownMs))
+            || performance.now();
+          const recordingLeadInMs = Math.round(actualScoreStartPerfMs - actualRecordingStartPerfMs);
+          const recording = {
+            blob,
+            objectUrl: playbackUrl,
+            mimeType: usedMimeType,
+            fileName,
+            startedAt: new Date(practiceRecordingStartedAt || Date.now()).toISOString(),
+            recordingStartPerfMs: actualRecordingStartPerfMs,
+            scoreStartPerfMs: actualScoreStartPerfMs,
+            recordingLeadInMs,
+            scoreStartOffsetMs: Math.max(
+              0,
+              Math.round(
+                (Number(practiceRecordingStartedPerfAt) || performance.now())
+                - (Number(practiceRecordingSongStartPerfAt) || performance.now())
+                - (Number(practiceRecordingCountdownMs) || 0)
+              )
+            ),
+            endedAt: new Date().toISOString(),
+            attemptId: currentPracticeAttemptId,
+            songId: song?.songId || ""
+          };
           URL.revokeObjectURL(url);
+          if (lastPracticeRecording && lastPracticeRecording.objectUrl !== playbackUrl) {
+            revokePracticeRecording(lastPracticeRecording);
+          }
+          lastPracticeRecording = recording;
+          if (performanceDetailDraft?.attemptId === recording.attemptId) {
+            performanceDetailDraft.recording = recording;
+          }
+          if (lastPerformanceDetail?.attemptId === recording.attemptId) {
+            lastPerformanceDetail.recording = recording;
+            updatePerformanceDetailAudioUi();
+          }
 
           practiceRecordingChunks = [];
           practiceRecorder = null;
           practiceRecordingActive = false;
+          practiceRecordingStarting = false;
           updatePracticeRecordButton();
           setStatus("practiceStatus", `녹음 저장 완료 · ${fileName}`, "ok");
         };
 
         practiceRecorder.start();
-        practiceRecordingActive = true;
         updatePracticeRecordButton();
-        setStatus("practiceStatus", "녹음 중입니다. 다시 누르면 녹음이 저장됩니다.", "ok");
+        setStatus("practiceStatus", startOptions?.fromPending ? "카운트 1에 맞춰 녹음을 시작했습니다." : "녹음 중입니다. 다시 누르면 녹음이 저장됩니다.", "ok");
       } catch (e) {
         practiceRecordingActive = false;
+        practiceRecordingStarting = false;
         updatePracticeRecordButton();
         logMicDebugError(e);
         setStatus("practiceStatus", getMicPermissionGuideMessageWithError(e), "bad");
@@ -25763,8 +27811,9 @@ ${closeHtml}`;
     }
 
     function stopPracticeRecording() {
-      if (!practiceRecorder || !practiceRecordingActive) {
+      if (!practiceRecorder || (!practiceRecordingActive && !practiceRecordingStarting)) {
         practiceRecordingActive = false;
+        practiceRecordingStarting = false;
         updatePracticeRecordButton();
         return;
       }
@@ -25773,14 +27822,24 @@ ${closeHtml}`;
         practiceRecorder.stop();
       } catch (e) {
         practiceRecordingActive = false;
+        practiceRecordingStarting = false;
         practiceRecorder = null;
         updatePracticeRecordButton();
       }
     }
 
     function togglePracticeRecording() {
-      if (practiceRecordingActive) {
+      if (practiceRecordingPending) {
+        cancelPendingPracticeRecording("녹음 예약을 취소했습니다.");
+        return;
+      }
+
+      if (practiceRecordingActive || practiceRecordingStarting) {
         stopPracticeRecording();
+      } else if (shouldReservePracticeRecording()) {
+        practiceRecordingPending = true;
+        updatePracticeRecordButton();
+        setStatus("practiceStatus", "카운트 1에 맞춰 녹음을 시작할게요.", "ok");
       } else {
         startPracticeRecording();
       }
@@ -25788,6 +27847,7 @@ ${closeHtml}`;
 
     function stopPractice() {
       stopFingeringPracticeTimer();
+      resetPendingPracticeRecording();
 
       practiceRunning = false;
       practicePaused = false;
@@ -25817,6 +27877,8 @@ ${closeHtml}`;
       currentTimeline = null;
       currentPracticeStartedAt = 0;
       currentCountdownMs = 0;
+      currentPracticeStartOffsetMs = 0;
+      scoreStartPerfMs = 0;
       currentInputLevel = 0;
 
       const pauseBtn = document.querySelector(".practice-pause-btn");
@@ -26317,17 +28379,18 @@ function startBasicPractice() {
       setStatus("saveStatus", "저장 전", "");
     }
 
-    async function save() {
+    async function save(options = {}) {
+      const silent = options?.silent === true;
       if (!app.user) {
         const error = new Error("먼저 로그인하세요.");
-        setStatus("saveStatus", error.message, "bad");
+        if (!silent) setStatus("saveStatus", error.message, "bad");
         throw error;
       }
 
       const song = app.currentSong || getSelectedSong();
       if (!song) {
         const error = new Error("곡을 먼저 선택하세요.");
-        setStatus("saveStatus", error.message, "bad");
+        if (!silent) setStatus("saveStatus", error.message, "bad");
         throw error;
       }
 
@@ -26365,6 +28428,10 @@ function startBasicPractice() {
           label: recordScore.gradeLabel
         };
         const activityType = getCurrentActivityTypeForRecord(song);
+        const completedMaxCombo = Math.max(
+          0,
+          Math.round(Number(lastPerformanceDetail?.maxCombo ?? lastRecordScore?.maxCombo ?? scoreState.maxCombo) || 0)
+        );
 
         const payload = {
           userId: app.user.userId,
@@ -26372,6 +28439,7 @@ function startBasicPractice() {
           mode: "song",
           activityType,
           songId: song.songId,
+          songTitle: song.title || "",
           scoreTotal: finalScore,
           pitchScore: recordScore.pitchScore,
           rhythmScore: recordScore.rhythmScore,
@@ -26379,15 +28447,16 @@ function startBasicPractice() {
           gradeLabel: grade.label,
           pitchAccuracy: recordScore.pitchScore,
           rhythmAccuracy: recordScore.rhythmScore,
-          maxCombo: scoreState.maxCombo || 0,
+          maxCombo: completedMaxCombo,
           meta: {
             grade: app.user.grade,
             class: app.user.class,
             number: app.user.number,
             name: app.user.name,
+            songTitle: song.title || "",
             detectedNote: liveDetectedNote || "",
             judgedFrames: scoreState.judgedFrames || 0,
-            maxCombo: scoreState.maxCombo || 0,
+            maxCombo: completedMaxCombo,
             timeSignature: song.timeSignature || "4/4",
             speedMultiplier: getSpeedMultiplier(),
             scoreTotal: finalScore,
@@ -26455,18 +28524,20 @@ function startBasicPractice() {
           }).catch(() => {});
         }
 
-        setStatus(
-          "saveStatus",
-          `저장 완료 · ${finalScore}점 · ${grade.label}`,
-          "ok"
-        );
+        if (!silent) {
+          setStatus(
+            "saveStatus",
+            `저장 완료 · ${finalScore}점 · ${grade.label}`,
+            "ok"
+          );
+        }
       } catch (e) {
         if (app.user) {
           app.user.exp = previousGrowthState.exp;
           app.user.level = previousGrowthState.level;
         }
         renderGrowthResult(null);
-        setStatus("saveStatus", e.message, "bad");
+        if (!silent) setStatus("saveStatus", e.message, "bad");
         throw e;
       }
     }
@@ -26474,51 +28545,105 @@ function startBasicPractice() {
     function setupResultOverlayInteractions() {
       const resultOverlay = document.getElementById("resultOverlay");
       const resultConfirmBtn = document.getElementById("resultConfirmBtn");
+      const resultDetailBtn = document.getElementById("resultDetailBtn");
+      const detailOverlay = document.getElementById("performanceDetailOverlay");
+      const detailCloseBtn = document.getElementById("performanceDetailCloseBtn");
+      const detailSaveBtn = document.getElementById("performanceDetailSaveBtn");
+      const replayBtn = document.getElementById("performanceReplayBtn");
+      const compareStudentBtn = document.getElementById("performanceCompareStudentBtn");
+      const compareReferenceBtn = document.getElementById("performanceCompareReferenceBtn");
+      const restartBtn = document.getElementById("performanceRestartBtn");
+      const retryWrongBtn = document.getElementById("performanceRetryWrongBtn");
+      const detailScore = document.getElementById("performanceDetailScore");
 
       prepareStampAudio();
 
       if (resultOverlay && !resultOverlay.dataset.dismissBound) {
         resultOverlay.addEventListener("click", () => {
-          if (resultSaveState.saved) {
-            hideResultStamp();
-          }
+          claimResultGrowthInBackground();
+          hideResultStamp();
         });
         resultOverlay.dataset.dismissBound = "true";
       }
 
       if (resultConfirmBtn && !resultConfirmBtn.dataset.dismissBound) {
-        resultConfirmBtn.addEventListener("click", async (event) => {
+        resultConfirmBtn.addEventListener("click", (event) => {
           event.stopPropagation();
-
-          if (resultSaveState.saving) {
-            return;
-          }
-
-          if (resultSaveState.saved) {
-            hideResultStamp();
-            return;
-          }
-
-          resultSaveState.saving = true;
-          resultConfirmBtn.disabled = true;
-          resultConfirmBtn.textContent = "성장 포인트 받는 중...";
+          claimResultGrowthInBackground();
           hideResultStamp();
-
-          try {
-            await save();
-
-            resultSaveState.saved = true;
-          } catch (error) {
-            resultSaveState.saved = false;
-            resultConfirmBtn.disabled = false;
-            resultConfirmBtn.textContent = "다시 시도하기";
-            setStatus("saveStatus", error?.message || "저장에 실패했습니다.", "bad");
-          } finally {
-            resultSaveState.saving = false;
-          }
         });
 
         resultConfirmBtn.dataset.dismissBound = "true";
+      }
+
+      if (resultDetailBtn && !resultDetailBtn.dataset.detailBound) {
+        resultDetailBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          openPerformanceDetailOverlay();
+        });
+        resultDetailBtn.dataset.detailBound = "true";
+      }
+
+      if (detailCloseBtn && !detailCloseBtn.dataset.detailBound) {
+        detailCloseBtn.addEventListener("click", () => closePerformanceDetailOverlay());
+        detailCloseBtn.dataset.detailBound = "true";
+      }
+
+      if (detailOverlay && !detailOverlay.dataset.detailBound) {
+        detailOverlay.addEventListener("click", (event) => {
+          event.stopPropagation();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !detailOverlay.classList.contains("hidden")) {
+            event.preventDefault();
+            closePerformanceDetailOverlay();
+          }
+        });
+        detailOverlay.dataset.detailBound = "true";
+      }
+
+      if (detailSaveBtn && !detailSaveBtn.dataset.detailBound) {
+        detailSaveBtn.addEventListener("click", () => {
+          closePerformanceDetailOverlay({ restoreFocus: false });
+          hideResultStamp();
+        });
+        detailSaveBtn.dataset.detailBound = "true";
+      }
+
+      if (replayBtn && !replayBtn.dataset.detailBound) {
+        replayBtn.addEventListener("click", togglePerformanceDetailPlayback);
+        replayBtn.dataset.detailBound = "true";
+      }
+
+      if (compareStudentBtn && !compareStudentBtn.dataset.detailBound) {
+        compareStudentBtn.addEventListener("click", togglePerformanceComparisonStudentPlayback);
+        compareStudentBtn.dataset.detailBound = "true";
+      }
+
+      if (compareReferenceBtn && !compareReferenceBtn.dataset.detailBound) {
+        compareReferenceBtn.addEventListener("click", togglePerformanceComparisonReferencePlayback);
+        compareReferenceBtn.dataset.detailBound = "true";
+      }
+
+      if (restartBtn && !restartBtn.dataset.detailBound) {
+        restartBtn.addEventListener("click", () => restartCurrentSongFromDetail(0));
+        restartBtn.dataset.detailBound = "true";
+      }
+
+      if (retryWrongBtn && !retryWrongBtn.dataset.detailBound) {
+        retryWrongBtn.addEventListener("click", retryWrongMeasureFromDetail);
+        retryWrongBtn.dataset.detailBound = "true";
+      }
+
+      if (detailScore && !detailScore.dataset.detailBound) {
+        detailScore.addEventListener("click", handlePerformanceScoreClick);
+        detailScore.addEventListener("mousemove", handlePerformanceScorePointerMove);
+        detailScore.addEventListener("mouseleave", () => {
+          detailScore.querySelectorAll("canvas").forEach((canvas) => {
+            canvas.style.cursor = "default";
+          });
+        });
+        detailScore.dataset.detailBound = "true";
       }
     }
 
