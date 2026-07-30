@@ -5212,9 +5212,9 @@ button:disabled {
     }
 
     .result-note-correct { color: #2563EB; }
-    .result-note-pitch { color: #DC2626; }
-    .result-note-rhythm { color: #EAB308; text-shadow: 0 0 0 #854D0E, 0 1px 0 rgba(255,255,255,0.9); }
-    .result-note-both { color: #F97316; }
+    .result-note-pitch { color: #EAB308; text-shadow: 0 0 0 #854D0E, 0 1px 0 rgba(255,255,255,0.9); }
+    .result-note-rhythm { color: #F97316; }
+    .result-note-both { color: #DC2626; }
     .result-note-no-input { color: #94A3B8; }
 
     .performanceDetailGuide {
@@ -5284,9 +5284,9 @@ button:disabled {
       white-space: nowrap;
     }
 
-    .performanceNoteBadge-pitch { background: #DC2626; }
-    .performanceNoteBadge-rhythm { background: #A16207; }
-    .performanceNoteBadge-both { background: #F97316; }
+    .performanceNoteBadge-pitch { background: #A16207; }
+    .performanceNoteBadge-rhythm { background: #F97316; }
+    .performanceNoteBadge-both { background: #DC2626; }
     .performanceNoteBadge-no-input { background: #64748B; }
 
     .performanceDetailActions {
@@ -16167,9 +16167,9 @@ body.theme-light .readyCardHint {
     let pendingPracticeStartOffsetMs = 0;
     const PERFORMANCE_RESULT_COLORS = {
       correct: "#2563EB",
-      pitch: "#DC2626",
-      rhythm: "#EAB308",
-      both: "#F97316",
+      pitch: "#EAB308",
+      rhythm: "#F97316",
+      both: "#DC2626",
       "no-input": "#94A3B8",
       pending: "#0F172A"
     };
@@ -18222,7 +18222,7 @@ function restorePracticeFromChallengePlay() {
       );
       return {
         noteColor: color,
-        barColor: isRhythm ? "rgba(133, 77, 14, 0.68)" : color,
+        barColor: isRhythm ? "rgba(249, 115, 22, 0.72)" : color,
         restColor: "#0F172A",
         glow: "",
         active,
