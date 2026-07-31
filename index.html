@@ -31837,6 +31837,8 @@ function startBasicPractice() {
 
     let composerState = createComposerState();
     let composerEntryIdCounter = 0;
+    let composerPreviewTimers = [];
+    let composerPreviewPlaying = false;
 
     function createComposerState(settings = {}) {
       const measureCount = Number(settings.measureCount) || null;
@@ -32006,8 +32008,117 @@ function startBasicPractice() {
       setStatus(id, message, "");
     }
 
+    function stopComposerPreviewPlayback(message = "") {
+      composerPreviewTimers.forEach((timerId) => clearTimeout(timerId));
+      composerPreviewTimers = [];
+      stopShortSongPreviewNodes();
+      composerPreviewPlaying = false;
+      updateComposerPreviewButtons();
+      if (message) setComposerStatus("composerEditorStatus", message);
+    }
+
+    function updateComposerPreviewButtons() {
+      const enabled = isComposerSetupComplete();
+      document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
+        const mode = btn.dataset.composerPreview;
+        if (composerPreviewPlaying) {
+          btn.textContent = mode === "measure" ? "■ 선택마디 멈추기" : "■ 전체 멈추기";
+        } else {
+          btn.textContent = mode === "measure" ? "♪ 선택마디 들어보기" : "♫ 전체 들어보기";
+        }
+        btn.disabled = !enabled;
+      });
+      const stopBtn = document.getElementById("composerStopBtn");
+      if (stopBtn) stopBtn.disabled = !composerPreviewPlaying;
+    }
+
     function isComposerSetupComplete(state = composerState) {
       return !!state.timeSignature && !!state.measureCount && !!state.tempoKey;
+    }
+
+    function getComposerBeatMs() {
+      const bpm = Number(composerState.bpm) || 90;
+      return 60000 / Math.max(20, bpm);
+    }
+
+    function getComposerUnitMs() {
+      return getComposerBeatMs() / 4;
+    }
+
+    function getComposerPlaybackMeasures(mode) {
+      if (!isComposerSetupComplete()) return [];
+      if (mode === "measure") {
+        const measure = getSelectedComposerMeasure();
+        return measure ? [measure] : [];
+      }
+      return Array.isArray(composerState.measures) ? composerState.measures : [];
+    }
+
+    function buildComposerPreviewEvents(mode) {
+      const measures = getComposerPlaybackMeasures(mode);
+      const unitMs = getComposerUnitMs();
+      const capacity = getComposerMeasureCapacityUnits();
+      const events = [];
+      let cursorMs = 0;
+      measures.forEach((measure) => {
+        let usedUnits = 0;
+        (measure.notes || []).forEach((item) => {
+          const units = Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
+          const durMs = Math.max(40, units * unitMs);
+          if (item.type === "note") {
+            events.push({
+              note: COMPOSER_PITCH_NOTE_NAMES[item.pitch] || "",
+              startMs: cursorMs,
+              durMs,
+              effectiveAccidental: null,
+              raw: item.pitch || ""
+            });
+          }
+          cursorMs += durMs;
+          usedUnits += units;
+        });
+        const restUnits = Math.max(0, capacity - usedUnits);
+        cursorMs += restUnits * unitMs;
+      });
+      return {
+        events,
+        totalMs: cursorMs
+      };
+    }
+
+    async function playComposerPreview(mode = "measure") {
+      if (composerPreviewPlaying) {
+        stopComposerPreviewPlayback("재생을 멈췄어요.");
+        return;
+      }
+      if (!isComposerSetupComplete()) {
+        setComposerStatus("composerEditorStatus", "박자, 곡의 길이, 곡의 빠르기를 먼저 선택해 주세요.");
+        return;
+      }
+      const { events, totalMs } = buildComposerPreviewEvents(mode);
+      if (!events.length) {
+        setComposerStatus("composerEditorStatus", mode === "measure" ? "선택한 마디에 들을 음표가 없어요." : "들을 음표가 없어요.");
+        return;
+      }
+      await getShortSongPreviewAudioContext();
+      stopComposerPreviewPlayback();
+      composerPreviewPlaying = true;
+      updateComposerPreviewButtons();
+      setComposerStatus("composerEditorStatus", mode === "measure" ? "선택한 마디를 들려주고 있어요." : "전체 곡을 들려주고 있어요.");
+      events.forEach((event, index) => {
+        const timerId = setTimeout(() => {
+          if (!composerPreviewPlaying) return;
+          const previous = events[index - 1];
+          playShortSongPreviewNote(event, event.durMs, 0, {
+            repeatedNote: Boolean(previous?.note && previous.note === event.note)
+          });
+        }, Math.max(0, Math.round(event.startMs)));
+        composerPreviewTimers.push(timerId);
+      });
+      const stopTimer = setTimeout(() => {
+        stopComposerPreviewPlayback("들어보기가 끝났어요.");
+      }, Math.max(80, Math.ceil(totalMs + 120)));
+      composerPreviewTimers.push(stopTimer);
     }
 
     function getComposerDraftStorageKey() {
@@ -32552,6 +32663,7 @@ function startBasicPractice() {
       document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
         btn.disabled = !enabled;
       });
+      updateComposerPreviewButtons();
       document.querySelectorAll("[data-composer-note-length], [data-composer-pitch]").forEach((btn) => {
         btn.disabled = !enabled;
       });
@@ -32673,14 +32785,15 @@ function startBasicPractice() {
 
       document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
         if (btn.dataset.composerBound === "true") return;
-        btn.addEventListener("click", () => {
-          const message = btn.dataset.composerPreview === "measure"
-            ? "마디 듣기는 음표 입력 기능 제작 후 연결합니다."
-            : "전체 듣기는 음표 입력 기능 제작 후 연결합니다.";
-          setComposerStatus("composerEditorStatus", message);
-        });
+        btn.addEventListener("click", () => playComposerPreview(btn.dataset.composerPreview));
         btn.dataset.composerBound = "true";
       });
+
+      const stopBtn = document.getElementById("composerStopBtn");
+      if (stopBtn && stopBtn.dataset.composerBound !== "true") {
+        stopBtn.addEventListener("click", () => stopComposerPreviewPlayback("재생을 멈췄어요."));
+        stopBtn.dataset.composerBound = "true";
+      }
 
       document.querySelectorAll("[data-composer-note-length]").forEach((btn) => {
         if (btn.dataset.composerBound === "true") return;
