@@ -10547,12 +10547,10 @@ body.menu-title-active #screen-menu-title {
 #composerHomeScreen .composerHomePrompt {
   margin: 0;
   min-width: 0;
-  color: #06215F;
-  font-size: clamp(16px, 2.35vw, 32px);
-  line-height: 1.18;
-  font-weight: 980;
   letter-spacing: 0;
-  text-shadow: 0 2px 0 rgba(147, 197, 253, 0.2);
+  text-shadow:
+    0 3px 0 rgba(147, 197, 253, 0.24),
+    0 8px 16px rgba(15, 23, 42, 0.16);
   word-break: keep-all;
   overflow-wrap: normal;
 }
@@ -10603,18 +10601,18 @@ body.menu-title-active #screen-menu-title {
 
 #composerHomeScreen #composerCreateNewBtn {
   display: grid;
-  grid-template-columns: minmax(100px, 0.28fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(120px, 0.3fr) minmax(0, 1fr) auto;
   align-items: center;
-  gap: clamp(10px, 1.6vw, 20px);
+  gap: clamp(12px, 1.7vw, 22px);
   min-height: clamp(128px, 15vw, 182px);
   padding: clamp(12px, 1.9vw, 22px);
   background:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.72), transparent 18%),
-    linear-gradient(180deg, #fff7ed 0%, #ffd8a8 48%, #ffb454 100%);
-  border-color: #f2a542;
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.62), transparent 20%),
+    linear-gradient(90deg, #c9a2ff 0%, #d8c8ff 42%, #93ceff 100%);
+  border-color: rgba(255,255,255,0.92);
   box-shadow:
-    0 14px 26px rgba(240, 164, 60, 0.26),
-    inset 0 3px 0 rgba(255,255,255,0.8),
+    0 18px 30px rgba(87, 133, 231, 0.24),
+    inset 0 3px 0 rgba(255,255,255,0.86),
     inset 0 -4px 0 rgba(31,49,71,0.06);
 }
 
@@ -10627,7 +10625,7 @@ body.menu-title-active #screen-menu-title {
 }
 
 #composerHomeScreen .composerCreateImageWrap {
-  width: clamp(90px, 15vw, 184px);
+  width: clamp(110px, 16vw, 200px);
   aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
@@ -10647,7 +10645,7 @@ body.menu-title-active #screen-menu-title {
 #composerHomeScreen .composerCardTitle {
   display: block;
   color: #071A4D;
-  font-size: clamp(20px, 2.55vw, 34px);
+  font-size: clamp(25px, 3.1vw, 41px);
   line-height: 1.05;
   font-weight: 950;
   overflow-wrap: anywhere;
@@ -10673,18 +10671,18 @@ body.menu-title-active #screen-menu-title {
 
 #composerHomeScreen .composerPrimaryDesc {
   margin-top: 8px;
-  color: #10245F;
-  font-size: clamp(13px, 1.35vw, 18px);
+  color: #0A1E55;
+  font-size: clamp(14px, 1.45vw, 19px);
   line-height: 1.34;
-  font-weight: 850;
+  font-weight: 900;
 }
 
 #composerHomeScreen .composerPrimaryNote {
   margin-top: 4px;
-  color: rgba(15, 34, 87, 0.72);
-  font-size: clamp(12px, 1.05vw, 15px);
+  color: rgba(10, 30, 85, 0.78);
+  font-size: clamp(13px, 1.15vw, 16px);
   line-height: 1.34;
-  font-weight: 760;
+  font-weight: 800;
 }
 
 #composerHomeScreen .composerArrow {
@@ -10718,34 +10716,34 @@ body.menu-title-active #screen-menu-title {
 }
 
 #composerHomeScreen #composerMySongsBtn {
-  background: linear-gradient(180deg, #f2fff9 0%, #c7f3df 100%);
-  border-color: #7dd5aa;
+  background: linear-gradient(180deg, #f3fff8 0%, #d2f6e2 100%);
+  border-color: rgba(255,255,255,0.94);
   box-shadow:
-    0 12px 22px rgba(59, 186, 128, 0.18),
+    0 14px 24px rgba(76, 188, 128, 0.18),
     inset 0 3px 0 rgba(255,255,255,0.8),
     inset 0 -4px 0 rgba(31,49,71,0.06);
 }
 
 #composerHomeScreen #composerClassSongsBtn {
-  background: linear-gradient(180deg, #f3f8ff 0%, #cbdcff 100%);
-  border-color: #8fb1ee;
+  background: linear-gradient(180deg, #f7fbff 0%, #d9e7ff 100%);
+  border-color: rgba(255,255,255,0.94);
   box-shadow:
-    0 12px 22px rgba(91, 132, 222, 0.18),
+    0 14px 24px rgba(91, 132, 222, 0.18),
     inset 0 3px 0 rgba(255,255,255,0.8),
     inset 0 -4px 0 rgba(31,49,71,0.06);
 }
 
 #composerHomeScreen #composerCommunitySongsBtn {
-  background: linear-gradient(180deg, #f0fbff 0%, #bee7ff 100%);
-  border-color: #78c7ee;
+  background: linear-gradient(180deg, #f0fbff 0%, #c9ecff 100%);
+  border-color: rgba(255,255,255,0.94);
   box-shadow:
-    0 12px 22px rgba(79, 171, 226, 0.18),
+    0 14px 24px rgba(79, 171, 226, 0.18),
     inset 0 3px 0 rgba(255,255,255,0.8),
     inset 0 -4px 0 rgba(31,49,71,0.06);
 }
 
 #composerHomeScreen .composerSmallIcon {
-  width: clamp(54px, 7vw, 92px);
+  width: clamp(62px, 8vw, 110px);
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
@@ -10761,20 +10759,36 @@ body.menu-title-active #screen-menu-title {
 }
 
 #composerHomeScreen .composerSmallCard .composerCardTitle {
-  font-size: clamp(15px, 1.55vw, 21px);
+  font-size: clamp(18px, 1.85vw, 25px);
+  line-height: 1.08;
 }
 
 #composerHomeScreen .composerSmallCard .composerCardDesc {
-  margin-top: 3px;
-  font-size: clamp(10px, 0.9vw, 13px);
+  margin-top: 4px;
+  color: #0B1F58;
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-weight: 850;
+  line-height: 1.25;
 }
 
 #composerHomeScreen .composerSmallCard .composerArrow {
-  width: clamp(30px, 3.1vw, 38px);
-  height: clamp(30px, 3.1vw, 38px);
-  margin-top: 5px;
+  width: clamp(32px, 3.3vw, 42px);
+  height: clamp(32px, 3.3vw, 42px);
+  margin-top: 6px;
   color: #1D4ED8;
-  font-size: clamp(19px, 2vw, 26px);
+  font-size: clamp(20px, 2.2vw, 28px);
+}
+
+#composerHomeScreen #composerMySongsBtn .composerArrow {
+  color: #26A957;
+}
+
+#composerHomeScreen #composerClassSongsBtn .composerArrow {
+  color: #2563EB;
+}
+
+#composerHomeScreen #composerCommunitySongsBtn .composerArrow {
+  color: #1685DB;
 }
 
 @media (max-width: 900px) {
@@ -10784,6 +10798,10 @@ body.menu-title-active #screen-menu-title {
 
   #composerHomeScreen #composerCreateNewBtn {
     grid-template-columns: minmax(84px, 0.25fr) minmax(0, 1fr) auto;
+  }
+
+  #composerHomeScreen .composerCreateImageWrap {
+    width: clamp(90px, 16vw, 130px);
   }
 
   #composerHomeScreen .composerSmallGrid {
@@ -10804,6 +10822,10 @@ body.menu-title-active #screen-menu-title {
 
   #composerHomeScreen .composerCreateImageWrap {
     display: none;
+  }
+
+  #composerHomeScreen #composerCreateNewBtn .composerCardTitle {
+    font-size: clamp(24px, 6.2vw, 30px);
   }
 
   #composerHomeScreen .composerPrimaryDesc {
@@ -10835,7 +10857,23 @@ body.menu-title-active #screen-menu-title {
   }
 
   #composerHomeScreen .composerSmallCard .composerSmallIcon {
-    width: 44px;
+    width: 56px;
+  }
+
+  #composerHomeScreen .composerSmallCard .composerCardTitle {
+    font-size: clamp(18px, 4.8vw, 22px);
+  }
+
+  #composerHomeScreen .composerSmallCard .composerCardDesc {
+    margin-top: 3px;
+    font-size: clamp(11px, 3vw, 13px);
+  }
+
+  #composerHomeScreen .composerSmallCard .composerArrow {
+    width: 34px;
+    height: 34px;
+    margin-top: 0;
+    font-size: 23px;
   }
 }
 
@@ -16376,7 +16414,7 @@ body.theme-light .readyCardHint {
       <div class="composerHomeTitleRow">
         <span class="composerHomeNoteIcon" aria-hidden="true">♪</span>
         <span class="composerHomeRecorderIcon" aria-hidden="true">🪈</span>
-        <h2 id="composerHomeTitle" class="composerHomePrompt">나만의 곡을 만들고 연주해 보세요.</h2>
+        <h2 id="composerHomeTitle" class="composerHomePrompt composerCardTitle">나만의 곡을 만들고 연주해 보세요.</h2>
         <span class="composerHomeNoteIcon" aria-hidden="true">♫</span>
       </div>
     </div>
