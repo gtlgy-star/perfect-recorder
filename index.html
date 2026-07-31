@@ -11794,14 +11794,108 @@ body.menu-title-active #screen-menu-title {
 
 .composer-edit-panel {
   display: grid;
-  align-content: center;
+  grid-template-rows: 3fr 1fr;
   gap: 12px;
+  align-content: stretch;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.composer-edit-stack {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 0;
+  padding: 14px;
+  border: 2px solid rgba(214, 198, 255, 0.7);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(232, 213, 255, 0.34), transparent 32%),
+    linear-gradient(180deg, rgba(252,248,255,0.98) 0%, rgba(243,248,255,0.96) 100%);
 }
 
 .composer-edit-btn {
-  min-height: 50px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   padding: 9px 12px;
+  border-width: 1px;
+  border-radius: 14px;
   font-size: 16px;
+}
+
+.composer-edit-stack .composer-edit-btn {
+  border-color: rgba(147, 197, 253, 0.62);
+}
+
+.composer-play-song-btn {
+  border-width: 2px;
+  border-color: rgba(37, 99, 235, 0.72);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #60A5FA 0%, #2563EB 100%);
+  color: #FFFFFF;
+  font-size: 17px;
+  box-shadow:
+    0 14px 24px rgba(37, 99, 235, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.composer-play-song-btn:not(:disabled):hover {
+  border-color: rgba(29, 78, 216, 0.92);
+  background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 100%);
+}
+
+.composer-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10060;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.32);
+}
+
+.composer-confirm-dialog {
+  width: min(360px, 100%);
+  border: 1px solid rgba(148, 163, 184, 0.42);
+  border-radius: 18px;
+  background: #FFFFFF;
+  color: #0F172A;
+  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.22);
+  padding: 22px;
+}
+
+.composer-confirm-message {
+  margin: 0 0 22px;
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.composer-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.composer-confirm-actions button {
+  min-width: 72px;
+  min-height: 42px;
+  border: 1px solid rgba(148, 163, 184, 0.42);
+  border-radius: 12px;
+  background: #F8FAFC;
+  color: #0F172A;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.composer-confirm-actions .primary {
+  border-color: transparent;
+  background: #2563EB;
+  color: #FFFFFF;
 }
 
 @media (max-width: 900px) {
@@ -17606,9 +17700,12 @@ body.theme-light .readyCardHint {
       </div>
 
       <div class="composer-edit-panel" aria-label="편집 도구">
-        <button id="composerUndoBtn" class="composer-edit-btn" type="button" disabled>↶ 실행 취소</button>
-        <button id="composerDeleteOneBtn" class="composer-edit-btn" type="button" disabled>하나 지우기</button>
-        <button id="composerClearMeasureBtn" class="composer-edit-btn" type="button" disabled>마디 비우기</button>
+        <div class="composer-edit-stack" aria-label="수정 도구">
+          <button id="composerUndoBtn" class="composer-edit-btn" type="button" disabled>↶ 실행 취소</button>
+          <button id="composerDeleteOneBtn" class="composer-edit-btn" type="button" disabled>하나 지우기</button>
+          <button id="composerClearMeasureBtn" class="composer-edit-btn" type="button" disabled>마디 비우기</button>
+        </div>
+        <button id="composerPlaySongBtn" class="composer-edit-btn composer-play-song-btn" type="button" disabled>▶ 내 곡 연주하기</button>
       </div>
     </div>
 
@@ -32612,6 +32709,70 @@ function startBasicPractice() {
       if (deleteBtn) deleteBtn.disabled = !hasSelectedNotes;
       const clearBtn = document.getElementById("composerClearMeasureBtn");
       if (clearBtn) clearBtn.disabled = !hasSelectedNotes;
+      const playSongBtn = document.getElementById("composerPlaySongBtn");
+      const hasAnyNotes = enabled && composerState.measures.some((measure) =>
+        (measure.notes || []).some((item) => item.type === "note")
+      );
+      if (playSongBtn) playSongBtn.disabled = !hasAnyNotes;
+    }
+
+    function startComposerSongPractice() {
+      if (!isComposerSetupComplete()) {
+        setComposerStatus("composerEditorStatus", "박자, 곡의 길이, 곡의 빠르기를 먼저 선택해 주세요.");
+        return;
+      }
+      const hasAnyNotes = composerState.measures.some((measure) =>
+        (measure.notes || []).some((item) => item.type === "note")
+      );
+      if (!hasAnyNotes) {
+        setComposerStatus("composerEditorStatus", "연주할 음표를 먼저 입력해 주세요.");
+        return;
+      }
+      setComposerStatus("composerEditorStatus", "내 곡 연주 측정은 다음 단계에서 연결할게요.");
+    }
+
+    function composerEscapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[ch]));
+    }
+
+    function showComposerConfirm(message) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "composer-confirm-overlay";
+        overlay.innerHTML = `
+          <div class="composer-confirm-dialog" role="dialog" aria-modal="true" aria-label="확인">
+            <p class="composer-confirm-message">${composerEscapeHtml(message)}</p>
+            <div class="composer-confirm-actions">
+              <button type="button" data-composer-confirm="cancel">취소</button>
+              <button class="primary" type="button" data-composer-confirm="ok">확인</button>
+            </div>
+          </div>
+        `;
+        const finish = (value) => {
+          document.removeEventListener("keydown", handleKeydown);
+          overlay.remove();
+          resolve(value);
+        };
+        const handleKeydown = (event) => {
+          if (event.key === "Escape") finish(false);
+          if (event.key === "Enter") finish(true);
+        };
+        overlay.addEventListener("click", (event) => {
+          if (event.target === overlay) finish(false);
+          const action = event.target?.dataset?.composerConfirm;
+          if (action === "cancel") finish(false);
+          if (action === "ok") finish(true);
+        });
+        document.addEventListener("keydown", handleKeydown);
+        document.body.appendChild(overlay);
+        overlay.querySelector("[data-composer-confirm='ok']")?.focus();
+      });
     }
 
     function undoComposerEdit() {
@@ -32632,10 +32793,10 @@ function startBasicPractice() {
       refreshComposerAfterInput(measure.number + "마디에서 마지막 입력을 지웠어요.");
     }
 
-    function clearSelectedComposerMeasure() {
+    async function clearSelectedComposerMeasure() {
       const measure = getSelectedComposerMeasure();
       if (!isComposerSetupComplete() || !measure || measure.notes.length === 0) return;
-      const shouldClear = window.confirm ? window.confirm(measure.number + "마디를 비울까요?") : true;
+      const shouldClear = await showComposerConfirm(measure.number + "마디를 비울까요?");
       if (!shouldClear) return;
       pushComposerUndoSnapshot();
       measure.notes = [];
@@ -32749,7 +32910,8 @@ function startBasicPractice() {
         ["composerRestBtn", addComposerRest],
         ["composerUndoBtn", undoComposerEdit],
         ["composerDeleteOneBtn", deleteLastComposerEntry],
-        ["composerClearMeasureBtn", clearSelectedComposerMeasure]
+        ["composerClearMeasureBtn", clearSelectedComposerMeasure],
+        ["composerPlaySongBtn", startComposerSongPractice]
       ].forEach(([id, handler]) => {
         const btn = document.getElementById(id);
         if (!btn || btn.dataset.composerBound === "true") return;
