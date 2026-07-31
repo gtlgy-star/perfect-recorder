@@ -10877,6 +10877,846 @@ body.menu-title-active #screen-menu-title {
   }
 }
 
+#composerEditorScreen {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 16px;
+  color: #071A4D;
+}
+
+#composerEditorScreen * {
+  box-sizing: border-box;
+}
+
+.composer-editor-panel {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+  border-radius: 24px;
+  padding: clamp(16px, 2vw, 24px);
+  background:
+    radial-gradient(circle at 8% 16%, rgba(196, 181, 253, 0.22), transparent 22%),
+    radial-gradient(circle at 92% 12%, rgba(186, 230, 253, 0.28), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,252,255,0.96) 100%);
+  border: 2px solid rgba(191, 219, 254, 0.82);
+  box-shadow:
+    0 18px 38px rgba(29, 78, 216, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.composer-editor-chip,
+.composer-tool-btn,
+.composer-preview-btn,
+.composer-stop-btn,
+.composer-edit-btn {
+  min-width: 0;
+  border-radius: 15px;
+  border: 2px solid rgba(186, 210, 245, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #eef7ff 100%);
+  color: #071A4D;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.82), 0 7px 14px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+}
+
+.composer-tool-btn.is-selected {
+  border-color: #2563EB;
+  background: linear-gradient(180deg, #eaf3ff 0%, #cfe4ff 100%);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.16),
+    inset 0 2px 0 rgba(255,255,255,0.86);
+}
+
+.composer-editor-status {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: #31507C;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.composer-editor-topbar {
+  display: grid;
+  grid-template-columns: auto minmax(260px, 1fr) repeat(3, minmax(142px, auto));
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.composer-editor-menu-btn,
+.composer-save-btn {
+  min-height: 46px;
+  padding: 9px 14px;
+  border-radius: 15px;
+  border: 2px solid rgba(186, 210, 245, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #eef7ff 100%);
+  color: #071A4D;
+  font-weight: 920;
+  cursor: pointer;
+}
+
+.composer-save-btn {
+  background: linear-gradient(180deg, #fff8d7 0%, #f8d260 48%, #d59c17 100%);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.composer-title-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 9px 14px;
+  border-radius: 15px;
+  border: 2px solid rgba(186, 210, 245, 0.9);
+  color: #071A4D;
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 900;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(238,244,248,0.94) 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(15, 23, 42, 0.11),
+    0 8px 16px rgba(96, 165, 250, 0.12);
+}
+
+.composer-dropdown {
+  position: relative;
+  min-width: 0;
+}
+
+.composer-editor-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 14px;
+  font-size: 15px;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(244,249,255,0.92) 100%);
+  border-color: rgba(196, 218, 247, 0.76);
+  color: rgba(7, 26, 77, 0.78);
+  cursor: pointer;
+}
+
+.composer-editor-chip.is-selected {
+  border-color: #2563EB;
+  background: linear-gradient(180deg, #dbeafe 0%, #93c5fd 100%);
+  color: #071A4D;
+}
+
+#composerTimeDropdownBtn {
+  border-color: rgba(196, 181, 253, 0.68);
+  background: linear-gradient(180deg, #FCFAFF 0%, #F1EBFF 100%);
+  color: #4C1D95;
+}
+
+#composerTimeDropdownBtn.is-selected {
+  border-color: #8B5CF6;
+  background: linear-gradient(180deg, #EDE9FE 0%, #C4B5FD 100%);
+  color: #2E1065;
+}
+
+#composerLengthDropdownBtn {
+  border-color: rgba(167, 243, 208, 0.76);
+  background: linear-gradient(180deg, #FBFFFD 0%, #EAFBF3 100%);
+  color: #047857;
+}
+
+#composerLengthDropdownBtn.is-selected {
+  border-color: #34D399;
+  background: linear-gradient(180deg, #D1FAE5 0%, #86EFAC 100%);
+  color: #064E3B;
+}
+
+#composerTempoDropdownBtn {
+  border-color: rgba(186, 230, 253, 0.78);
+  background: linear-gradient(180deg, #FBFDFF 0%, #EAF6FF 100%);
+  color: #1D4ED8;
+}
+
+#composerTempoDropdownBtn.is-selected {
+  border-color: #60A5FA;
+  background: linear-gradient(180deg, #DBEAFE 0%, #93C5FD 100%);
+  color: #0B2F6F;
+}
+
+.composer-dropdown-menu {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: calc(100% + 6px);
+  display: grid;
+  gap: 5px;
+  width: max(100%, 180px);
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(186, 210, 245, 0.95);
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 16px 26px rgba(15, 23, 42, 0.18);
+}
+
+.composer-dropdown-menu.hidden {
+  display: none;
+}
+
+.composer-dropdown-option {
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #071A4D;
+  font-size: 15px;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+}
+
+.composer-dropdown-option.is-selected {
+  background: linear-gradient(180deg, #eaf3ff 0%, #cfe4ff 100%);
+  color: #123A8C;
+}
+
+.composer-preview-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(116px, 136px);
+  justify-content: end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.composer-activation-message {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(239, 246, 255, 0.92);
+  color: #1D4ED8;
+  font-size: 15px;
+  font-weight: 900;
+  text-align: center;
+  border: 1px solid rgba(147, 197, 253, 0.7);
+}
+
+.composer-activation-message.hidden {
+  display: none;
+}
+
+.composer-disabled-zone {
+  transition: opacity 0.16s ease, filter 0.16s ease;
+}
+
+.composer-disabled-zone.is-disabled {
+  opacity: 0.44;
+  filter: grayscale(0.2);
+}
+
+.composer-preview-wrap {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.composer-preview-btn,
+.composer-stop-btn {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.composer-preview-btn {
+  border-color: #2563EB;
+  background: linear-gradient(180deg, #ffffff 0%, #eaf3ff 100%);
+  color: #071A4D;
+}
+
+.composer-stop-btn {
+  border-color: rgba(203, 213, 225, 0.95);
+  background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+  color: #475569;
+}
+
+.composer-score-area {
+  padding: clamp(10px, 1.3vw, 16px);
+  border-radius: 18px;
+  border: 2px solid rgba(221, 205, 181, 0.72);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(219, 234, 254, 0.35), transparent 34%),
+    linear-gradient(180deg, #fffefa 0%, #fffaf0 100%);
+}
+
+.composer-current-measure-label {
+  margin: 0 0 10px;
+  color: #2563EB;
+  text-align: center;
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-weight: 950;
+}
+
+.composer-measure-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.composer-system-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid rgba(214, 214, 214, 0.82);
+  border-radius: 10px;
+  overflow: visible;
+  background: linear-gradient(180deg, #fffefe 0%, #fffefd 100%);
+  box-shadow: none;
+}
+
+.composer-measure-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 126px;
+  padding: 12px 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  filter: none;
+  transform: none;
+  cursor: pointer;
+  overflow: visible;
+  text-align: left;
+}
+
+.composer-measure-card:hover,
+.composer-measure-card:active {
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  transform: none;
+}
+
+.composer-measure-card:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.72);
+  outline-offset: -3px;
+}
+
+.composer-measure-card.is-first-measure {
+  background: transparent;
+}
+
+.composer-measure-card.is-selected {
+  outline: 3px solid #2563EB;
+  outline-offset: -3px;
+  background: rgba(219, 234, 254, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  z-index: 2;
+}
+
+.composer-measure-card.is-selected::after {
+  content: attr(data-selected-label);
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  transform: translate(-50%, -100%);
+  min-width: max-content;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #2563EB;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.22);
+}
+
+.composer-measure-card.is-selected::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #2563EB;
+  z-index: 3;
+}
+
+.composer-measure-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: rgba(186, 230, 253, 0.42);
+  pointer-events: none;
+}
+
+.composer-measure-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  min-width: 0;
+}
+
+.composer-measure-number {
+  color: #111827;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.composer-staff {
+  position: relative;
+  display: grid;
+  align-content: center;
+  inline-size: 100%;
+  width: calc(100% + 20px);
+  min-width: 0;
+  height: 64px;
+  margin: 12px -10px 0;
+  padding: 0;
+}
+
+.composer-staff::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 10px;
+  width: 1px;
+  height: 45px;
+  background: rgba(31, 41, 55, 0.72);
+}
+
+.composer-staff.has-clef {
+  border-left: 0;
+}
+
+.composer-staff.is-final-staff {
+  border-right: 0;
+}
+
+.composer-staff.is-final-staff::after {
+  width: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.86) 0 2px,
+    transparent 2px 3px,
+    rgba(15, 23, 42, 0.86) 3px 5px
+  );
+}
+
+.composer-staff-line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 5px 0;
+  background: rgba(31, 41, 55, 0.62);
+}
+
+.composer-staff.has-clef .composer-staff-line {
+  margin-left: 0;
+  width: 100%;
+}
+
+.composer-staff.has-time-signature .composer-staff-line {
+  margin-left: 0;
+  width: 100%;
+}
+
+.composer-clef {
+  position: absolute;
+  z-index: 1;
+  left: 22px;
+  top: 10px;
+  color: #0F172A;
+  font-size: 48px;
+  line-height: 0.9;
+  font-family: "Times New Roman", serif;
+  font-weight: 400;
+  transform: scaleY(1.3);
+  transform-origin: center center;
+}
+
+.composer-time-signature {
+  position: absolute;
+  z-index: 1;
+  left: 64px;
+  top: 10px;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+  gap: 0;
+  height: 45px;
+  color: #0F172A;
+  font-size: 23px;
+  line-height: 1;
+  font-weight: 950;
+  font-family: "Times New Roman", serif;
+}
+
+.composer-time-signature span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.composer-tool-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.composer-tool-panel,
+.composer-edit-panel {
+  border-radius: 18px;
+  border: 2px solid rgba(214, 198, 255, 0.7);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(232, 213, 255, 0.34), transparent 32%),
+    linear-gradient(180deg, rgba(252,248,255,0.98) 0%, rgba(243,248,255,0.96) 100%);
+  padding: 14px;
+}
+
+.composer-tool-row {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.composer-tool-row.is-note-row {
+  grid-template-columns: 110px minmax(0, 1fr) 128px 128px;
+}
+
+.composer-tool-row + .composer-tool-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(191, 219, 254, 0.7);
+}
+
+.composer-tool-label {
+  color: #27106B;
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.composer-note-length-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 8px;
+}
+
+.composer-pitch-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.composer-high-pitch-btn {
+  grid-row: 2;
+  padding-inline: 6px;
+  font-size: 14px;
+}
+
+.composer-high-pitch-btn:nth-of-type(8) {
+  grid-column: 1;
+}
+
+.composer-high-pitch-btn:nth-of-type(9) {
+  grid-column: 2;
+}
+
+.composer-high-pitch-btn:nth-of-type(10) {
+  grid-column: 3;
+}
+
+.composer-high-pitch-btn:nth-of-type(11) {
+  grid-column: 4;
+}
+
+.composer-high-pitch-btn:nth-of-type(12) {
+  grid-column: 5;
+}
+
+.composer-tool-btn {
+  min-height: 46px;
+  padding: 8px 10px;
+  font-size: 15px;
+}
+
+.composer-note-length-grid .composer-tool-btn {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-height: 86px;
+  padding: 10px 6px;
+  line-height: 1.05;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(1) {
+  background: linear-gradient(180deg, #fff1f1 0%, #ffd3d3 100%);
+  border-color: #ff8a8a;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(2) {
+  background: linear-gradient(180deg, #fff8e8 0%, #ffd99a 100%);
+  border-color: #f59e0b;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(3) {
+  background: linear-gradient(180deg, #fffde8 0%, #fff09a 100%);
+  border-color: #eab308;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(4) {
+  background: linear-gradient(180deg, #f1fff0 0%, #bdf0b9 100%);
+  border-color: #4caf50;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(5) {
+  background: linear-gradient(180deg, #e9fff9 0%, #8eeecf 100%);
+  border-color: #10b981;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(6) {
+  background: linear-gradient(180deg, #eef2ff 0%, #b7c6ff 100%);
+  border-color: #4f46e5;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(7) {
+  background: linear-gradient(180deg, #f5f0ff 0%, #d5b8ff 100%);
+  border-color: #8b5cf6;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(8) {
+  background: linear-gradient(180deg, #ffd4d4 0%, #ff8f8f 100%);
+  border-color: #ef4444;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(9) {
+  background: linear-gradient(180deg, #ffe2b2 0%, #ffba63 100%);
+  border-color: #f97316;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(10) {
+  background: linear-gradient(180deg, #fff0a8 0%, #facc15 100%);
+  border-color: #ca8a04;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(11) {
+  background: linear-gradient(180deg, #c9f6c5 0%, #74d66f 100%);
+  border-color: #22c55e;
+}
+
+.composer-pitch-grid .composer-tool-btn:nth-of-type(12) {
+  background: linear-gradient(180deg, #b8f6df 0%, #34d399 100%);
+  border-color: #059669;
+}
+
+.composer-pitch-grid .composer-tool-btn.is-selected {
+  color: #071A4D;
+  border-width: 4px;
+  filter: saturate(1.2) brightness(0.94);
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.95),
+    0 0 0 6px rgba(7, 26, 77, 0.34),
+    inset 0 2px 0 rgba(255,255,255,0.46),
+    inset 0 -6px 12px rgba(15, 23, 42, 0.18);
+}
+
+.composer-note-symbol {
+  display: block;
+  font-size: 30px;
+  line-height: 1;
+  font-family: "Segoe UI Symbol", "Noto Music", "Noto Sans Symbols 2", serif;
+}
+
+.composer-note-label {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.05;
+}
+
+.composer-dot-symbol {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 20px;
+  line-height: 1;
+  font-family: "Segoe UI Symbol", "Noto Music", "Noto Sans Symbols 2", serif;
+}
+
+.composer-dot-rest-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-self: stretch;
+  align-items: end;
+  min-width: 0;
+}
+
+.composer-rest-btn {
+  min-height: 86px;
+  align-self: stretch;
+}
+
+.composer-rest-symbol {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 32px;
+  line-height: 1;
+  font-family: "Segoe UI Symbol", "Noto Music", "Noto Sans Symbols 2", serif;
+}
+
+.composer-tool-btn.is-disabled,
+.composer-edit-btn:disabled,
+.composer-stop-btn:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+
+.composer-edit-panel {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+}
+
+.composer-edit-btn {
+  min-height: 50px;
+  padding: 9px 12px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .composer-editor-topbar {
+    grid-template-columns: auto minmax(220px, 1fr) repeat(3, minmax(120px, auto));
+  }
+
+  .composer-editor-chip,
+  .composer-save-btn {
+    min-width: 0;
+  }
+
+  .composer-tool-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .composer-tool-row.is-note-row {
+    grid-template-columns: 96px minmax(0, 1fr) 128px 118px;
+  }
+
+  .composer-pitch-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .composer-editor-topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+  }
+
+  #composerTitleInput {
+    min-width: 0;
+  }
+
+  #composerTimeDropdown,
+  #composerLengthDropdown,
+  #composerTempoDropdown {
+    grid-row: 2;
+  }
+
+  #composerTimeDropdown {
+    grid-column: 1;
+  }
+
+  #composerLengthDropdown {
+    grid-column: 2;
+  }
+
+  #composerTempoDropdown {
+    grid-column: 3;
+  }
+
+}
+
+@container (max-width: 820px) {
+  .composer-editor-topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+  }
+
+  #composerTimeDropdown,
+  #composerLengthDropdown,
+  #composerTempoDropdown {
+    grid-row: 2;
+  }
+
+  #composerTimeDropdown {
+    grid-column: 1;
+  }
+
+  #composerLengthDropdown {
+    grid-column: 2;
+  }
+
+  #composerTempoDropdown {
+    grid-column: 3;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .composer-editor-panel {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .composer-editor-topbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .composer-title-input {
+    grid-column: 1 / -1;
+  }
+
+  .composer-preview-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+
+  .composer-note-length-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .composer-tool-row {
+    grid-template-columns: 1fr;
+  }
+
+  .composer-tool-row.is-note-row {
+    grid-template-columns: 1fr;
+  }
+
+  .composer-high-pitch-btn {
+    grid-row: auto;
+    grid-column: auto;
+  }
+
+  #composerTimeDropdown,
+  #composerLengthDropdown,
+  #composerTempoDropdown {
+    grid-row: auto;
+    grid-column: auto;
+  }
+}
+
 body.theme-light .menuTitle {
   color: #1f5f99;
   background: linear-gradient(
@@ -16470,6 +17310,103 @@ body.theme-light .readyCardHint {
   </div>
 </section>
 
+<section id="composerEditorScreen" class="screen hidden" aria-label="곡 만들기">
+  <div class="composer-editor-panel">
+    <div class="composer-editor-topbar">
+      <button id="composerEditorMenuBtn" class="composer-editor-menu-btn composer-save-btn" type="button">▣ 곡 저장하기</button>
+      <input id="composerTitleInput" class="composer-title-input" type="text" value="나의 첫 멜로디" aria-label="곡 제목">
+      <div id="composerTimeDropdown" class="composer-dropdown">
+        <button id="composerTimeDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="timeSignature" aria-expanded="false">♩ 박자 선택 ▼</button>
+        <div id="composerTimeDropdownMenu" class="composer-dropdown-menu hidden">
+          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="2/4">2/4박자</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="3/4">3/4박자</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="4/4">4/4박자</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="6/8">6/8박자</button>
+        </div>
+      </div>
+      <div id="composerLengthDropdown" class="composer-dropdown">
+        <button id="composerLengthDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="measureCount" aria-expanded="false">▤ 곡의 길이 선택 ▼</button>
+        <div id="composerLengthDropdownMenu" class="composer-dropdown-menu hidden">
+          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="8">8마디</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="12">12마디</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="16">16마디</button>
+        </div>
+      </div>
+      <div id="composerTempoDropdown" class="composer-dropdown">
+        <button id="composerTempoDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="tempoKey" aria-expanded="false">▶ 곡의 빠르기 선택 ▼</button>
+        <div id="composerTempoDropdownMenu" class="composer-dropdown-menu hidden">
+          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="slow">느리게</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleSlow">조금 느리게</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="normal">보통 빠르기로</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleFast">조금 빠르게</button>
+          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="fast">빠르게</button>
+        </div>
+      </div>
+    </div>
+
+    <p id="composerActivationMessage" class="composer-activation-message">박자, 곡의 길이, 곡의 빠르기를 모두 선택해 주세요.</p>
+
+    <div id="composerPreviewZone" class="composer-preview-row composer-disabled-zone">
+      <div class="composer-preview-wrap">
+        <button id="composerPreviewBtn" class="composer-preview-btn" type="button" data-composer-preview="measure">♪ 선택마디 들어보기</button>
+        <button class="composer-preview-btn" type="button" data-composer-preview="all">♫ 전체 들어보기</button>
+      </div>
+      <button id="composerStopBtn" class="composer-stop-btn" type="button" disabled>■ 멈추기</button>
+    </div>
+
+    <div id="composerScoreArea" class="composer-score-area composer-disabled-zone">
+      <p id="composerCurrentMeasureLabel" class="composer-current-measure-label">1마디를 작곡하고 있어요.</p>
+      <div id="composerMeasureGrid" class="composer-measure-grid" aria-label="작곡 마디 목록"></div>
+    </div>
+
+    <div id="composerToolZone" class="composer-tool-layout composer-disabled-zone">
+      <div class="composer-tool-panel">
+        <div class="composer-tool-row is-note-row">
+          <div class="composer-tool-label">음표 길이</div>
+          <div class="composer-note-length-grid" aria-label="음표 길이 선택">
+            <button class="composer-tool-btn" type="button" data-composer-note-length="whole"><span class="composer-note-symbol">𝅝</span><span class="composer-note-label">온음표</span></button>
+            <button class="composer-tool-btn" type="button" data-composer-note-length="half"><span class="composer-note-symbol">𝅗𝅥</span><span class="composer-note-label">2분음표</span></button>
+            <button class="composer-tool-btn" type="button" data-composer-note-length="quarter"><span class="composer-note-symbol">𝅘𝅥</span><span class="composer-note-label">4분음표</span></button>
+            <button class="composer-tool-btn" type="button" data-composer-note-length="eighth"><span class="composer-note-symbol">𝅘𝅥𝅮</span><span class="composer-note-label">8분음표</span></button>
+            <button class="composer-tool-btn" type="button" data-composer-note-length="sixteenth"><span class="composer-note-symbol">𝅘𝅥𝅯</span><span class="composer-note-label">16분음표</span></button>
+          </div>
+          <div class="composer-dot-rest-row">
+            <button id="composerDotBtn" class="composer-tool-btn" type="button"><span class="composer-dot-symbol">𝅘𝅥.</span>점 음표</button>
+          </div>
+          <button id="composerRestBtn" class="composer-tool-btn composer-rest-btn" type="button"><span class="composer-rest-symbol">𝄽</span>쉼표</button>
+        </div>
+
+        <div class="composer-tool-row">
+          <div class="composer-tool-label">계이름</div>
+          <div class="composer-pitch-grid" aria-label="계이름 선택">
+            <button class="composer-tool-btn" type="button" data-composer-pitch="도">도</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="레">레</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="미">미</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="파">파</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="솔">솔</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="라">라</button>
+            <button class="composer-tool-btn" type="button" data-composer-pitch="시">시</button>
+            <button class="composer-tool-btn composer-high-pitch-btn" type="button" data-composer-pitch="높은도" aria-label="높은도">높은도</button>
+            <button class="composer-tool-btn composer-high-pitch-btn" type="button" data-composer-pitch="높은레" aria-label="높은레">높은레</button>
+            <button class="composer-tool-btn composer-high-pitch-btn" type="button" data-composer-pitch="높은미" aria-label="높은미">높은미</button>
+            <button class="composer-tool-btn composer-high-pitch-btn" type="button" data-composer-pitch="높은파" aria-label="높은파">높은파</button>
+            <button class="composer-tool-btn composer-high-pitch-btn" type="button" data-composer-pitch="높은솔" aria-label="높은솔">높은솔</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer-edit-panel" aria-label="편집 도구">
+        <button id="composerUndoBtn" class="composer-edit-btn" type="button" disabled>↶ 실행 취소</button>
+        <button id="composerDeleteOneBtn" class="composer-edit-btn" type="button" disabled>하나 지우기</button>
+        <button id="composerClearMeasureBtn" class="composer-edit-btn" type="button" disabled>마디 비우기</button>
+      </div>
+    </div>
+
+    <p id="composerEditorStatus" class="composer-editor-status" aria-live="polite"></p>
+  </div>
+
+</section>
+
 <section id="screen-challenge" class="challengeScreen" style="display:none; padding:20px;">
   <div class="challenge-top">
     <div class="challenge-badge">SPECIAL MISSION</div>
@@ -18061,6 +18998,7 @@ const SCREEN_TITLES = {
   "screen-textbook": "교과서 수록곡",
   "screen-bonus-map": "성장 보너스 연주곡",
   composerHomeScreen: "나도 작곡가!",
+  composerEditorScreen: "나도 작곡가!",
   "screen-challenge": "도전! 퍼펙트 리코더",
   "screen-challenge-play": "도전! 퍼펙트 리코더"
 };
@@ -20771,6 +21709,7 @@ function renderSongButtons() {
       const tonguingPracticeScreen = document.getElementById("screen-tonguing-practice");
       const bonusMapScreen = document.getElementById("screen-bonus-map");
       const composerHomeScreen = document.getElementById("composerHomeScreen");
+      const composerEditorScreen = document.getElementById("composerEditorScreen");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
       const stepIds = [
@@ -20787,6 +21726,7 @@ function renderSongButtons() {
       if (tonguingPracticeScreen) tonguingPracticeScreen.classList.add("hidden");
       if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
       if (composerHomeScreen) composerHomeScreen.classList.add("hidden");
+      if (composerEditorScreen) composerEditorScreen.classList.add("hidden");
       if (challengeScreen) challengeScreen.style.display = "none";
       if (challengePlayScreen) challengePlayScreen.style.display = "none";
 
@@ -20809,6 +21749,8 @@ function renderSongButtons() {
         if (bonusMapScreen) bonusMapScreen.classList.remove("hidden");
       } else if (targetId === "composerHomeScreen") {
         if (composerHomeScreen) composerHomeScreen.classList.remove("hidden");
+      } else if (targetId === "composerEditorScreen") {
+        if (composerEditorScreen) composerEditorScreen.classList.remove("hidden");
       } else if (targetId === "screen-song" || targetId === "screen-textbook") {
         const step2 = document.getElementById("step2Section");
         if (step2) step2.classList.remove("hidden");
@@ -20889,6 +21831,13 @@ function renderSongButtons() {
       }
 
       if (screenId === "composerHomeScreen") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
+
+      if (screenId === "composerEditorScreen") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
         if (!skipHistory) pushAppHistory(screenId);
@@ -22097,6 +23046,8 @@ const bonusMapScreen = document.getElementById("screen-bonus-map");
 if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
 const composerHomeScreen = document.getElementById("composerHomeScreen");
 if (composerHomeScreen) composerHomeScreen.classList.add("hidden");
+const composerEditorScreen = document.getElementById("composerEditorScreen");
+if (composerEditorScreen) composerEditorScreen.classList.add("hidden");
 restorePracticeFromChallengePlay();
 setChallengePlayMode(false);
 
@@ -30512,13 +31463,165 @@ function startBasicPractice() {
       btn.dataset.composerBound = "true";
     }
 
+    const COMPOSER_TEMPO_OPTIONS = {
+      slow: { label: "느리게", bpm: 60 },
+      littleSlow: { label: "조금 느리게", bpm: 72 },
+      normal: { label: "보통 빠르기로", bpm: 84 },
+      littleFast: { label: "조금 빠르게", bpm: 96 },
+      fast: { label: "빠르게", bpm: 112 }
+    };
+
+    const COMPOSER_NOTE_LENGTH_LABELS = {
+      whole: "온음표",
+      half: "2분음표",
+      quarter: "4분음표",
+      eighth: "8분음표",
+      sixteenth: "16분음표"
+    };
+
+    const COMPOSER_NOTE_SYMBOLS = {
+      whole: "𝅝",
+      half: "𝅗𝅥",
+      quarter: "𝅘𝅥",
+      eighth: "𝅘𝅥𝅮",
+      sixteenth: "𝅘𝅥𝅯"
+    };
+
+    const COMPOSER_REST_SYMBOLS = {
+      whole: { symbol: "𝄻", label: "온쉼표" },
+      half: { symbol: "𝄼", label: "2분쉼표" },
+      quarter: { symbol: "𝄽", label: "4분쉼표" },
+      eighth: { symbol: "𝄾", label: "8분쉼표" },
+      sixteenth: { symbol: "𝄿", label: "16분쉼표" }
+    };
+
+    const COMPOSER_DRAFT_KEY_PREFIX = "perfectRecorderComposerDraft:";
+
+    let composerState = createComposerState();
+
+    function createComposerState(settings = {}) {
+      const measureCount = Number(settings.measureCount) || null;
+      const tempoKey = settings.tempoKey || "";
+      const isComplete = !!settings.timeSignature && !!measureCount && !!tempoKey;
+      return {
+        title: settings.title ?? "나의 첫 멜로디",
+        timeSignature: settings.timeSignature || "",
+        measureCount,
+        tempoKey,
+        bpm: tempoKey ? COMPOSER_TEMPO_OPTIONS[tempoKey]?.bpm || null : null,
+        selectedMeasure: isComplete ? Number(settings.selectedMeasure) || 1 : null,
+        selectedNoteLength: "quarter",
+        dotted: !!settings.dotted,
+        selectedPitch: settings.selectedPitch || "솔",
+        measures: isComplete ? createEmptyComposerMeasures(measureCount) : []
+      };
+    }
+
+    function createEmptyComposerMeasures(measureCount) {
+      return Array.from({ length: Number(measureCount) || 0 }, (_, index) => ({
+        number: index + 1,
+        notes: [],
+        fill: 0
+      }));
+    }
+
+    function normalizeComposerDraft(rawDraft) {
+      if (!rawDraft || typeof rawDraft !== "object") return null;
+      const tempoKey = COMPOSER_TEMPO_OPTIONS[rawDraft.tempoKey] ? rawDraft.tempoKey : "";
+      const measureCount = [8, 12, 16].includes(Number(rawDraft.measureCount)) ? Number(rawDraft.measureCount) : null;
+      const timeSignature = ["2/4", "3/4", "4/4", "6/8"].includes(rawDraft.timeSignature) ? rawDraft.timeSignature : "";
+      const state = createComposerState({
+        title: typeof rawDraft.title === "string" ? rawDraft.title : "나의 첫 멜로디",
+        timeSignature,
+        measureCount,
+        tempoKey,
+        dotted: !!rawDraft.dotted,
+        selectedPitch: rawDraft.selectedPitch || "솔",
+        selectedMeasure: rawDraft.selectedMeasure || 1
+      });
+      state.selectedNoteLength = COMPOSER_NOTE_LENGTH_LABELS[rawDraft.selectedNoteLength]
+        ? rawDraft.selectedNoteLength
+        : "quarter";
+      if (state.selectedNoteLength === "sixteenth") state.dotted = false;
+      if (isComposerSetupComplete(state)) {
+        const savedMeasures = Array.isArray(rawDraft.measures) ? rawDraft.measures : [];
+        state.measures = createEmptyComposerMeasures(state.measureCount).map((measure, index) => ({
+          ...measure,
+          notes: Array.isArray(savedMeasures[index]?.notes) ? savedMeasures[index].notes : [],
+          fill: 0
+        }));
+        state.selectedMeasure = Math.min(state.measureCount, Math.max(1, Number(rawDraft.selectedMeasure) || 1));
+      }
+      return state;
+    }
+
+    function getComposerTempoLabel(key = composerState.tempoKey) {
+      return COMPOSER_TEMPO_OPTIONS[key]?.label || "";
+    }
+
+    function setComposerStatus(id, message) {
+      setStatus(id, message, "");
+    }
+
+    function isComposerSetupComplete(state = composerState) {
+      return !!state.timeSignature && !!state.measureCount && !!state.tempoKey;
+    }
+
+    function getComposerDraftStorageKey() {
+      const userId = String(app?.user?.userId || getCurrentSongStateUserId()).trim() || "guest";
+      return COMPOSER_DRAFT_KEY_PREFIX + encodeURIComponent(userId);
+    }
+
+    function saveComposerDraft() {
+      try {
+        const title = String(composerState.title || "").trim() || "제목 없는 곡";
+        const draft = {
+          ...composerState,
+          title,
+          savedAt: new Date().toISOString()
+        };
+        localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(draft));
+        composerState.title = title;
+        const titleInput = document.getElementById("composerTitleInput");
+        if (titleInput) titleInput.value = title;
+        setComposerStatus("composerEditorStatus", "작성 중인 곡을 임시 저장했어요.");
+      } catch (error) {
+        console.warn("[composer] draft save failed", error);
+        setComposerStatus("composerEditorStatus", "임시 저장을 하지 못했어요.");
+      }
+    }
+
+    function loadComposerDraft() {
+      try {
+        const raw = localStorage.getItem(getComposerDraftStorageKey());
+        if (!raw) return null;
+        return normalizeComposerDraft(JSON.parse(raw));
+      } catch (error) {
+        console.warn("[composer] draft load failed", error);
+        return null;
+      }
+    }
+
+    function openComposerEditorFromHome() {
+      const draft = loadComposerDraft();
+      composerState = draft || createComposerState();
+      renderComposerEditor();
+      setComposerStatus("composerEditorStatus", draft ? "작성 중인 곡을 불러왔어요." : "");
+      showScreen("composerEditorScreen");
+    }
+
     function handleComposerHomeAction(message) {
       console.log(message);
     }
 
     function bindComposerHomeButtons() {
+      const createBtn = document.getElementById("composerCreateNewBtn");
+      if (createBtn && createBtn.dataset.composerBound !== "true") {
+        createBtn.addEventListener("click", openComposerEditorFromHome);
+        createBtn.dataset.composerBound = "true";
+      }
+
       [
-        ["composerCreateNewBtn", "새 곡 만들기는 다음 단계에서 연결합니다."],
         ["composerMySongsBtn", "내 작곡 보관함은 저장 기능 제작 후 연결합니다."],
         ["composerClassSongsBtn", "우리 반 작곡방은 공유 기능 제작 후 연결합니다."],
         ["composerCommunitySongsBtn", "모두의 작곡방은 전체 공유 기능 제작 후 연결합니다."]
@@ -30528,6 +31631,362 @@ function startBasicPractice() {
         btn.addEventListener("click", () => handleComposerHomeAction(message));
         btn.dataset.composerBound = "true";
       });
+    }
+
+    function renderComposerEditor() {
+      const titleInput = document.getElementById("composerTitleInput");
+      if (titleInput) titleInput.value = composerState.title;
+
+      updateComposerDropdownLabels();
+      renderComposerMeasureGrid();
+      updateComposerToolSelection();
+      updateComposerEditButtons();
+      updateComposerActiveState();
+    }
+
+    function updateComposerDropdownLabels() {
+      const timeBtn = document.getElementById("composerTimeDropdownBtn");
+      if (timeBtn) {
+        timeBtn.textContent = composerState.timeSignature ? "♩ " + composerState.timeSignature + "박자 ▼" : "♩ 박자 선택 ▼";
+        timeBtn.classList.toggle("is-selected", !!composerState.timeSignature);
+      }
+
+      const lengthBtn = document.getElementById("composerLengthDropdownBtn");
+      if (lengthBtn) {
+        lengthBtn.textContent = composerState.measureCount ? "▤ 곡의 길이 " + composerState.measureCount + "마디 ▼" : "▤ 곡의 길이 선택 ▼";
+        lengthBtn.classList.toggle("is-selected", !!composerState.measureCount);
+      }
+
+      const tempoBtn = document.getElementById("composerTempoDropdownBtn");
+      if (tempoBtn) {
+        const label = getComposerTempoLabel(composerState.tempoKey);
+        tempoBtn.textContent = label ? "▶ " + label + " ▼" : "▶ 곡의 빠르기 선택 ▼";
+        tempoBtn.classList.toggle("is-selected", !!label);
+      }
+
+      document.querySelectorAll("[data-composer-setting]").forEach((btn) => {
+        const group = btn.dataset.composerSetting;
+        const value = group === "measureCount" ? String(composerState.measureCount || "") : String(composerState[group] || "");
+        const selected = String(btn.dataset.value || "") === value;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+    }
+
+    function renderComposerMeasureGrid() {
+      const grid = document.getElementById("composerMeasureGrid");
+      if (!grid) return;
+
+      grid.innerHTML = "";
+      if (!isComposerSetupComplete()) {
+        updateComposerMeasureSelection();
+        return;
+      }
+
+      if (composerState.measures.length !== composerState.measureCount) {
+        composerState.measures = createEmptyComposerMeasures(composerState.measureCount);
+      }
+
+      let currentSystemRow = null;
+      composerState.measures.forEach((measure, index) => {
+        if (index % 4 === 0) {
+          currentSystemRow = document.createElement("div");
+          currentSystemRow.className = "composer-system-row";
+          currentSystemRow.setAttribute("role", "group");
+          currentSystemRow.setAttribute("aria-label", Math.floor(index / 4) + 1 + "단");
+          grid.appendChild(currentSystemRow);
+        }
+
+        const btn = document.createElement("button");
+        const isFirstMeasure = measure.number === 1;
+        const isSystemFirstMeasure = index % 4 === 0;
+        const isFinalMeasure = measure.number === composerState.measureCount;
+        btn.type = "button";
+        btn.className = "composer-measure-card" + (isFirstMeasure ? " is-first-measure" : "");
+        btn.dataset.measureNumber = String(measure.number);
+        btn.dataset.selectedLabel = measure.number + "마디를 작곡하고 있어요";
+        btn.setAttribute("aria-label", measure.number + "마디 선택");
+        const [timeTop, timeBottom] = String(composerState.timeSignature || "4/4").split("/");
+        btn.innerHTML = `
+          <span class="composer-measure-fill" style="width:${Number(measure.fill) || 0}%"></span>
+          <span class="composer-measure-content">
+            <span class="composer-measure-number">${measure.number}</span>
+            <span class="composer-staff${isSystemFirstMeasure ? " has-clef" : ""}${isFirstMeasure ? " has-time-signature" : ""}${isFinalMeasure ? " is-final-staff" : ""}" aria-hidden="true">
+              ${isSystemFirstMeasure ? `<span class="composer-clef">𝄞</span>` : ""}
+              ${isFirstMeasure ? `<span class="composer-time-signature"><span>${timeTop || "4"}</span><span>${timeBottom || "4"}</span></span>` : ""}
+              <span class="composer-staff-line"></span>
+              <span class="composer-staff-line"></span>
+              <span class="composer-staff-line"></span>
+              <span class="composer-staff-line"></span>
+              <span class="composer-staff-line"></span>
+            </span>
+          </span>
+        `;
+        btn.addEventListener("click", () => selectComposerMeasure(measure.number));
+        currentSystemRow.appendChild(btn);
+      });
+
+      updateComposerMeasureSelection();
+    }
+
+    function selectComposerMeasure(measureNumber) {
+      if (!isComposerSetupComplete()) return;
+      composerState.selectedMeasure = Math.min(
+        composerState.measureCount,
+        Math.max(1, Number(measureNumber) || 1)
+      );
+      updateComposerMeasureSelection();
+    }
+
+    function updateComposerMeasureSelection() {
+      const label = document.getElementById("composerCurrentMeasureLabel");
+      if (label) {
+        label.textContent = isComposerSetupComplete()
+          ? composerState.selectedMeasure + "마디를 작곡하고 있어요."
+          : "설정을 모두 선택하면 마디가 나타나요.";
+      }
+
+      document.querySelectorAll(".composer-measure-card").forEach((btn) => {
+        const selected = Number(btn.dataset.measureNumber) === composerState.selectedMeasure;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+    }
+
+    function updateComposerToolSelection() {
+      const setupReady = isComposerSetupComplete();
+      document.querySelectorAll("[data-composer-note-length]").forEach((btn) => {
+        const selected = btn.dataset.composerNoteLength === composerState.selectedNoteLength;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+
+      const dotBtn = document.getElementById("composerDotBtn");
+      if (dotBtn) {
+        const disabled =
+          !setupReady ||
+          composerState.selectedNoteLength === "whole" ||
+          composerState.selectedNoteLength === "sixteenth";
+        const noteSymbol = COMPOSER_NOTE_SYMBOLS[composerState.selectedNoteLength] || COMPOSER_NOTE_SYMBOLS.quarter;
+        const noteLabel = COMPOSER_NOTE_LENGTH_LABELS[composerState.selectedNoteLength] || COMPOSER_NOTE_LENGTH_LABELS.quarter;
+        const dotSymbol = dotBtn.querySelector(".composer-dot-symbol");
+        if (dotSymbol) dotSymbol.textContent = noteSymbol + ".";
+        dotBtn.disabled = disabled;
+        dotBtn.classList.toggle("is-disabled", disabled);
+        dotBtn.classList.toggle("is-selected", !disabled && composerState.dotted);
+        dotBtn.setAttribute("aria-pressed", !disabled && composerState.dotted ? "true" : "false");
+        dotBtn.setAttribute("aria-label", noteLabel + " 점 음표 선택");
+        dotBtn.title = noteLabel + " 점 음표";
+      }
+
+      const restBtn = document.getElementById("composerRestBtn");
+      if (restBtn) {
+        const rest = COMPOSER_REST_SYMBOLS[composerState.selectedNoteLength] || COMPOSER_REST_SYMBOLS.quarter;
+        const symbol = restBtn.querySelector(".composer-rest-symbol");
+        if (symbol) symbol.textContent = rest.symbol;
+        restBtn.setAttribute("aria-label", rest.label + " 선택");
+        restBtn.title = rest.label;
+      }
+
+      document.querySelectorAll("[data-composer-pitch]").forEach((btn) => {
+        const selected = btn.dataset.composerPitch === composerState.selectedPitch;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+    }
+
+    function setComposerNoteLength(lengthKey) {
+      if (!isComposerSetupComplete()) return;
+      composerState.selectedNoteLength = lengthKey;
+      if (lengthKey === "whole" || lengthKey === "sixteenth") composerState.dotted = false;
+      updateComposerToolSelection();
+      setComposerStatus("composerEditorStatus", (COMPOSER_NOTE_LENGTH_LABELS[lengthKey] || "음표 길이") + "를 선택했어요.");
+    }
+
+    function toggleComposerDot() {
+      if (!isComposerSetupComplete()) return;
+      if (composerState.selectedNoteLength === "sixteenth") return;
+      composerState.dotted = !composerState.dotted;
+      updateComposerToolSelection();
+    }
+
+    function setComposerPitch(pitch) {
+      if (!isComposerSetupComplete()) return;
+      composerState.selectedPitch = pitch;
+      updateComposerToolSelection();
+    }
+
+    function updateComposerEditButtons() {
+      const enabled = isComposerSetupComplete();
+      const hasNotes = enabled && composerState.measures.some((measure) => measure.notes.length > 0);
+      ["composerUndoBtn", "composerDeleteOneBtn", "composerClearMeasureBtn"].forEach((id) => {
+        const btn = document.getElementById(id);
+        if (btn) btn.disabled = !hasNotes;
+      });
+    }
+
+    function updateComposerActiveState() {
+      const enabled = isComposerSetupComplete();
+      const message = document.getElementById("composerActivationMessage");
+      if (message) message.classList.toggle("hidden", enabled);
+
+      ["composerPreviewZone", "composerScoreArea", "composerToolZone"].forEach((id) => {
+        const zone = document.getElementById(id);
+        if (!zone) return;
+        zone.classList.toggle("is-disabled", !enabled);
+        zone.setAttribute("aria-disabled", enabled ? "false" : "true");
+        if ("inert" in zone) zone.inert = !enabled;
+      });
+
+      ["composerPreviewBtn", "composerRestBtn"].forEach((id) => {
+        const btn = document.getElementById(id);
+        if (btn) btn.disabled = !enabled;
+      });
+      document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
+        btn.disabled = !enabled;
+      });
+      document.querySelectorAll("[data-composer-note-length], [data-composer-pitch]").forEach((btn) => {
+        btn.disabled = !enabled;
+      });
+      updateComposerToolSelection();
+      updateComposerEditButtons();
+    }
+
+    function setComposerSetting(group, value) {
+      const title = composerState.title;
+      const wasComplete = isComposerSetupComplete();
+      const previousMeasureCount = composerState.measureCount;
+      if (group === "timeSignature") {
+        composerState.timeSignature = value;
+      } else if (group === "measureCount") {
+        composerState.measureCount = Number(value) || null;
+      } else if (group === "tempoKey") {
+        composerState.tempoKey = value;
+        composerState.bpm = COMPOSER_TEMPO_OPTIONS[value]?.bpm || null;
+      }
+      composerState.title = title;
+      if (isComposerSetupComplete()) {
+        const shouldRebuildMeasures =
+          !wasComplete ||
+          group === "measureCount" ||
+          group === "timeSignature" ||
+          composerState.measures.length !== composerState.measureCount ||
+          previousMeasureCount !== composerState.measureCount;
+        if (shouldRebuildMeasures) {
+          composerState.selectedMeasure = 1;
+          composerState.measures = createEmptyComposerMeasures(composerState.measureCount);
+        } else if (!composerState.selectedMeasure) {
+          composerState.selectedMeasure = 1;
+        }
+      } else {
+        composerState.selectedMeasure = null;
+        composerState.measures = [];
+      }
+      closeComposerDropdowns();
+      renderComposerEditor();
+    }
+
+    function getComposerDropdownMenu(group) {
+      const idMap = {
+        timeSignature: "composerTimeDropdownMenu",
+        measureCount: "composerLengthDropdownMenu",
+        tempoKey: "composerTempoDropdownMenu"
+      };
+      return document.getElementById(idMap[group]);
+    }
+
+    function closeComposerDropdowns(exceptGroup = "") {
+      document.querySelectorAll("[data-composer-dropdown]").forEach((btn) => {
+        const group = btn.dataset.composerDropdown;
+        const menu = getComposerDropdownMenu(group);
+        const open = group && group === exceptGroup;
+        if (menu) menu.classList.toggle("hidden", !open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    }
+
+    function toggleComposerDropdown(group) {
+      const menu = getComposerDropdownMenu(group);
+      if (!menu) return;
+      const willOpen = menu.classList.contains("hidden");
+      closeComposerDropdowns(willOpen ? group : "");
+    }
+
+    function bindComposerEditorScreen() {
+      const titleInput = document.getElementById("composerTitleInput");
+      if (titleInput && titleInput.dataset.composerBound !== "true") {
+        titleInput.addEventListener("input", () => {
+          composerState.title = titleInput.value;
+        });
+        titleInput.dataset.composerBound = "true";
+      }
+
+      [
+        ["composerEditorMenuBtn", saveComposerDraft],
+        ["composerRestBtn", () => setComposerStatus("composerEditorStatus", "쉼표 입력은 다음 단계에서 연결합니다.")]
+      ].forEach(([id, handler]) => {
+        const btn = document.getElementById(id);
+        if (!btn || btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", handler);
+        btn.dataset.composerBound = "true";
+      });
+
+      document.querySelectorAll("[data-composer-dropdown]").forEach((btn) => {
+        if (btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleComposerDropdown(btn.dataset.composerDropdown);
+        });
+        btn.dataset.composerBound = "true";
+      });
+
+      document.querySelectorAll("[data-composer-setting]").forEach((btn) => {
+        if (btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          setComposerSetting(btn.dataset.composerSetting, btn.dataset.value);
+        });
+        btn.dataset.composerBound = "true";
+      });
+
+      if (!document.body.dataset.composerDropdownBound) {
+        document.addEventListener("click", () => closeComposerDropdowns());
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeComposerDropdowns();
+        });
+        document.body.dataset.composerDropdownBound = "true";
+      }
+
+      document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
+        if (btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", () => {
+          const message = btn.dataset.composerPreview === "measure"
+            ? "마디 듣기는 음표 입력 기능 제작 후 연결합니다."
+            : "전체 듣기는 음표 입력 기능 제작 후 연결합니다.";
+          setComposerStatus("composerEditorStatus", message);
+        });
+        btn.dataset.composerBound = "true";
+      });
+
+      document.querySelectorAll("[data-composer-note-length]").forEach((btn) => {
+        if (btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", () => setComposerNoteLength(btn.dataset.composerNoteLength));
+        btn.dataset.composerBound = "true";
+      });
+
+      const dotBtn = document.getElementById("composerDotBtn");
+      if (dotBtn && dotBtn.dataset.composerBound !== "true") {
+        dotBtn.addEventListener("click", toggleComposerDot);
+        dotBtn.dataset.composerBound = "true";
+      }
+
+      document.querySelectorAll("[data-composer-pitch]").forEach((btn) => {
+        if (btn.dataset.composerBound === "true") return;
+        btn.addEventListener("click", () => setComposerPitch(btn.dataset.composerPitch));
+        btn.dataset.composerBound = "true";
+      });
+
+      renderComposerEditor();
     }
 
     function applyMobileLandscapeAutoScale() {
@@ -30595,6 +32054,7 @@ function startBasicPractice() {
       bindChallengeButtons();
       bindComposerMenuButton();
       bindComposerHomeButtons();
+      bindComposerEditorScreen();
       setupFingeringPracticeControls();
       bindFingeringStartButton();
       enhancePracticeLayout();
