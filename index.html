@@ -11898,6 +11898,24 @@ body.menu-title-active #screen-menu-title {
   color: #FFFFFF;
 }
 
+body.composer-practice-popup .screen-nav-row {
+  display: none !important;
+}
+
+body.composer-practice-popup .wrap {
+  padding-top: 14px;
+}
+
+body.composer-practice-popup .wrap > .topBar,
+body.composer-practice-popup .wrap > .heroCard {
+  display: none !important;
+}
+
+body.composer-practice-popup #step34Section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 @media (max-width: 900px) {
   .composer-editor-topbar {
     grid-template-columns: auto minmax(220px, 1fr) repeat(3, minmax(120px, auto));
@@ -31931,6 +31949,7 @@ function startBasicPractice() {
     };
 
     const COMPOSER_DRAFT_KEY_PREFIX = "perfectRecorderComposerDraft:";
+    const COMPOSER_PRACTICE_KEY_PREFIX = "perfectRecorderComposerPractice:";
 
     let composerState = createComposerState();
     let composerEntryIdCounter = 0;
@@ -32180,6 +32199,50 @@ function startBasicPractice() {
       return {
         events,
         totalMs: cursorMs
+      };
+    }
+
+    function formatComposerNotationBeat(units) {
+      const beat = Math.max(0.25, (Number(units) || 0) / 4);
+      if (Math.abs(beat - 4) < 0.001) return "0";
+      return Number.isInteger(beat) ? String(beat) : String(Math.round(beat * 1000) / 1000);
+    }
+
+    function buildComposerPracticeNotation() {
+      if (!isComposerSetupComplete()) return "";
+      const tokens = [];
+      const capacity = getComposerMeasureCapacityUnits();
+      (composerState.measures || []).forEach((measure, index) => {
+        if (index > 0) tokens.push("|");
+        let usedUnits = 0;
+        (measure.notes || []).forEach((item) => {
+          const units = Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
+          const beatText = formatComposerNotationBeat(units);
+          if (item.type === "rest") {
+            tokens.push("R/" + beatText);
+          } else {
+            const noteName = COMPOSER_PITCH_NOTE_NAMES[item.pitch] || "";
+            if (noteName) tokens.push(noteName + "/" + beatText);
+          }
+          usedUnits += units;
+        });
+        const restUnits = Math.max(0, capacity - usedUnits);
+        if (restUnits > 0) tokens.push("R/" + formatComposerNotationBeat(restUnits));
+      });
+      return tokens.join(" ");
+    }
+
+    function buildComposerPracticeSong() {
+      const title = String(composerState.title || "").trim() || "내가 만든 곡";
+      return {
+        songId: "COMPOSER_PRACTICE_" + Date.now(),
+        source: "composer",
+        category: "composer",
+        title,
+        bpm: Number(composerState.bpm) || 90,
+        timeSignature: composerState.timeSignature || "4/4",
+        keySignature: "C",
+        notation: buildComposerPracticeNotation()
       };
     }
 
@@ -32728,7 +32791,41 @@ function startBasicPractice() {
         setComposerStatus("composerEditorStatus", "연주할 음표를 먼저 입력해 주세요.");
         return;
       }
-      setComposerStatus("composerEditorStatus", "내 곡 연주 측정은 다음 단계에서 연결할게요.");
+      const song = buildComposerPracticeSong();
+      if (!song?.notation) {
+        setComposerStatus("composerEditorStatus", "연주할 악보를 만들지 못했어요.");
+        return;
+      }
+      const practiceId = String(Date.now()) + "-" + Math.random().toString(36).slice(2, 9);
+      try {
+        localStorage.setItem(COMPOSER_PRACTICE_KEY_PREFIX + practiceId, JSON.stringify(song));
+      } catch (error) {
+        console.warn("[composer] practice handoff failed", error);
+        setComposerStatus("composerEditorStatus", "새 창으로 넘길 임시 악보를 저장하지 못했어요.");
+        return;
+      }
+      const url = new URL(window.location.href);
+      url.searchParams.set("composerPractice", practiceId);
+      url.searchParams.set("composerPracticePopup", "1");
+      url.hash = "";
+      const popupFeatures = [
+        "popup=yes",
+        "width=980",
+        "height=760",
+        "left=80",
+        "top=40",
+        "menubar=no",
+        "toolbar=no",
+        "location=no",
+        "status=no",
+        "scrollbars=yes",
+        "resizable=yes"
+      ].join(",");
+      const popup = window.open(url.toString(), "composer-practice-popup", popupFeatures);
+      setComposerStatus(
+        "composerEditorStatus",
+        popup ? "새 창에서 내 곡 연주 측정을 열었어요." : "팝업이 차단되었습니다. 브라우저의 팝업 허용을 확인해 주세요."
+      );
     }
 
     function composerEscapeHtml(value) {
@@ -33031,6 +33128,44 @@ function startBasicPractice() {
       });
     }
 
+    function tryOpenComposerPracticeFromUrl() {
+      const params = new URLSearchParams(window.location.search || "");
+      const practiceId = params.get("composerPractice");
+      if (!practiceId) return false;
+      if (params.get("composerPracticePopup") === "1") {
+        document.body.classList.add("composer-practice-popup");
+      }
+
+      const storageKey = COMPOSER_PRACTICE_KEY_PREFIX + practiceId;
+      let song = null;
+      try {
+        song = JSON.parse(localStorage.getItem(storageKey) || "null");
+        localStorage.removeItem(storageKey);
+      } catch (error) {
+        console.warn("[composer] practice load failed", error);
+      }
+
+      if (!song || !String(song.notation || "").trim()) {
+        showStep("step1Section");
+        setStatus("loginStatus", "내 곡 연주 악보를 불러오지 못했어요.", "bad");
+        return true;
+      }
+
+      app.currentSong = song;
+      app.songs = [song];
+      currentActivityTitle = "내 곡 연주";
+      window.isChallengePlayMode = false;
+      setChallengePlayMode(false);
+      setPracticeScreenMode("song");
+      resetSpeedStepper();
+      showStep("step34Section", { skipHistory: true });
+      showSelectedSong();
+      resetPractice();
+      setStatus("practiceStatus", "내가 만든 곡을 연주해 보세요.", "ok");
+      history.replaceState({ screen: "step34Section" }, "", "#composer-practice");
+      return true;
+    }
+
     window.addEventListener("resize", applyMobileLandscapeAutoScale);
     window.addEventListener("orientationchange", () => {
       setTimeout(applyMobileLandscapeAutoScale, 120);
@@ -33050,7 +33185,9 @@ function startBasicPractice() {
       setupUnifiedNavigation();
       setupResultOverlayInteractions();
       drawPracticeBase("4/4");
-      showStep("step1Section");
+      if (!tryOpenComposerPracticeFromUrl()) {
+        showStep("step1Section");
+      }
     });
   </script>
 
