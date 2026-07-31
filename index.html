@@ -11251,6 +11251,19 @@ body.menu-title-active #screen-menu-title {
   width: 0%;
   background: rgba(186, 230, 253, 0.42);
   pointer-events: none;
+  z-index: 0;
+}
+
+.composer-measure-card.is-selected .composer-measure-fill {
+  background: rgba(125, 211, 252, 0.34);
+}
+
+.composer-measure-card.is-complete .composer-measure-fill {
+  background: rgba(187, 247, 208, 0.64);
+}
+
+.composer-measure-card.is-complete {
+  background: rgba(240, 253, 244, 0.92);
 }
 
 .composer-measure-content {
@@ -11278,6 +11291,7 @@ body.menu-title-active #screen-menu-title {
   height: 64px;
   margin: 12px -10px 0;
   padding: 0;
+  overflow: visible;
 }
 
 .composer-staff::after {
@@ -11362,6 +11376,148 @@ body.menu-title-active #screen-menu-title {
   align-items: center;
   justify-content: center;
   min-height: 0;
+}
+
+.composer-note-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.composer-score-item {
+  position: absolute;
+  width: 18px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.composer-score-note {
+  color: #050816;
+}
+
+.composer-note-head {
+  position: absolute;
+  z-index: 1;
+  left: 3.7px;
+  top: 20px;
+  width: 11.7px;
+  height: 9.1px;
+  border: 1.6px solid currentColor;
+  border-radius: 50%;
+  background: currentColor;
+  transform: rotate(-20deg);
+}
+
+.composer-duration-whole .composer-note-head,
+.composer-duration-half .composer-note-head {
+  background: #FFFFFF;
+}
+
+.composer-duration-whole .composer-note-head {
+  width: 14.3px;
+}
+
+.composer-note-stem {
+  position: absolute;
+  z-index: 2;
+  left: 13.7px;
+  top: -4px;
+  width: 1.4px;
+  height: 34px;
+  background: currentColor;
+}
+
+.composer-score-note.is-stem-down .composer-note-stem {
+  left: 5px;
+  top: 22px;
+}
+
+.composer-note-flag {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  width: 10px;
+  height: 23px;
+  color: currentColor;
+  overflow: visible;
+}
+
+.composer-note-flag path {
+  fill: currentColor;
+}
+
+.composer-note-flag-one {
+  top: -2px;
+}
+
+.composer-note-flag-two {
+  top: 6px;
+}
+
+.composer-score-note.is-stem-down .composer-note-flag {
+  left: 2px;
+}
+
+.composer-score-note.is-stem-down .composer-note-flag-one {
+  top: 22px;
+}
+
+.composer-score-note.is-stem-down .composer-note-flag-two {
+  top: 13px;
+}
+
+.composer-score-dot {
+  position: absolute;
+  z-index: 5;
+  left: 17px;
+  top: 23px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.composer-ledger-line {
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+}
+
+.composer-score-rest {
+  display: grid;
+  place-items: center;
+  color: #050816;
+  font-family: "Segoe UI Symbol", "Noto Music", "Noto Sans Symbols 2", serif;
+}
+
+.composer-rest-glyph {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.composer-duration-eighth .composer-rest-glyph,
+.composer-duration-sixteenth .composer-rest-glyph {
+  font-size: 31px;
+}
+
+.composer-input-cursor {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+  width: 2px;
+  height: 45px;
+  background: #2563EB;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-1px);
+}
+
+.composer-measure-card.is-selected:not(.is-complete) .composer-input-cursor {
+  opacity: 1;
 }
 
 .composer-tool-layout {
@@ -11530,6 +11686,17 @@ body.menu-title-active #screen-menu-title {
     inset 0 -6px 12px rgba(15, 23, 42, 0.18);
 }
 
+.composer-pitch-grid .composer-tool-btn.is-pressed {
+  border-width: 4px;
+  filter: saturate(1.35) brightness(0.92);
+  transform: translateY(1px) scale(0.98);
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.95),
+    0 0 0 6px rgba(7, 26, 77, 0.24),
+    inset 0 2px 0 rgba(255,255,255,0.42),
+    inset 0 -6px 12px rgba(15, 23, 42, 0.16);
+}
+
 .composer-note-symbol {
   display: block;
   font-size: 30px;
@@ -11577,6 +11744,12 @@ body.menu-title-active #screen-menu-title {
 .composer-tool-btn.is-disabled,
 .composer-edit-btn:disabled,
 .composer-stop-btn:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+
+.composer-tool-btn[aria-disabled="true"] {
   opacity: 0.48;
   cursor: not-allowed;
   filter: grayscale(0.35);
@@ -31495,9 +31668,53 @@ function startBasicPractice() {
       sixteenth: { symbol: "𝄿", label: "16분쉼표" }
     };
 
+    const COMPOSER_NOTE_LENGTH_ORDER = ["whole", "half", "quarter", "eighth", "sixteenth"];
+    const COMPOSER_NOTE_UNITS = {
+      whole: 16,
+      half: 8,
+      quarter: 4,
+      eighth: 2,
+      sixteenth: 1
+    };
+    const COMPOSER_MEASURE_CAPACITY_UNITS = {
+      "2/4": 8,
+      "3/4": 12,
+      "4/4": 16,
+      "6/8": 12
+    };
+    const COMPOSER_PITCH_STEPS = {
+      "도": -2,
+      "레": -1,
+      "미": 0,
+      "파": 1,
+      "솔": 2,
+      "라": 3,
+      "시": 4,
+      "높은도": 5,
+      "높은레": 6,
+      "높은미": 7,
+      "높은파": 8,
+      "높은솔": 9
+    };
+    const COMPOSER_PITCH_NOTE_NAMES = {
+      "도": "C5",
+      "레": "D5",
+      "미": "E5",
+      "파": "F5",
+      "솔": "G5",
+      "라": "A5",
+      "시": "B5",
+      "높은도": "C6",
+      "높은레": "D6",
+      "높은미": "E6",
+      "높은파": "F6",
+      "높은솔": "G6"
+    };
+
     const COMPOSER_DRAFT_KEY_PREFIX = "perfectRecorderComposerDraft:";
 
     let composerState = createComposerState();
+    let composerEntryIdCounter = 0;
 
     function createComposerState(settings = {}) {
       const measureCount = Number(settings.measureCount) || null;
@@ -31511,9 +31728,10 @@ function startBasicPractice() {
         bpm: tempoKey ? COMPOSER_TEMPO_OPTIONS[tempoKey]?.bpm || null : null,
         selectedMeasure: isComplete ? Number(settings.selectedMeasure) || 1 : null,
         selectedNoteLength: "quarter",
-        dotted: !!settings.dotted,
-        selectedPitch: settings.selectedPitch || "솔",
-        measures: isComplete ? createEmptyComposerMeasures(measureCount) : []
+        dotArmed: !!settings.dotArmed,
+        selectedPitch: "",
+        measures: isComplete ? createEmptyComposerMeasures(measureCount) : [],
+        undoStack: []
       };
     }
 
@@ -31523,6 +31741,109 @@ function startBasicPractice() {
         notes: [],
         fill: 0
       }));
+    }
+
+    function getComposerMeasureCapacityUnits(timeSignature = composerState.timeSignature) {
+      return COMPOSER_MEASURE_CAPACITY_UNITS[timeSignature] || 16;
+    }
+
+    function getComposerNoteBaseUnits(lengthKey = composerState.selectedNoteLength) {
+      return COMPOSER_NOTE_UNITS[lengthKey] || COMPOSER_NOTE_UNITS.quarter;
+    }
+
+    function getComposerNoteUnits(lengthKey = composerState.selectedNoteLength, dotted = false) {
+      const baseUnits = getComposerNoteBaseUnits(lengthKey);
+      return dotted ? baseUnits * 1.5 : baseUnits;
+    }
+
+    function normalizeComposerEntry(entry) {
+      if (!entry || typeof entry !== "object") return null;
+      const duration = COMPOSER_NOTE_UNITS[entry.duration] ? entry.duration : "";
+      const type = entry.type === "rest" ? "rest" : entry.type === "note" ? "note" : "";
+      if (!duration || !type) return null;
+      const dotted = type === "note" && duration !== "whole" && duration !== "sixteenth" && !!entry.dotted;
+      const pitch = type === "note" && COMPOSER_PITCH_STEPS[entry.pitch] !== undefined ? entry.pitch : null;
+      if (type === "note" && !pitch) return null;
+      composerEntryIdCounter += 1;
+      return {
+        id: entry.id || "composer-entry-" + composerEntryIdCounter,
+        type,
+        pitch,
+        duration,
+        dotted,
+        units: getComposerNoteUnits(duration, dotted)
+      };
+    }
+
+    function normalizeComposerMeasure(measure, index) {
+      const notes = Array.isArray(measure?.notes)
+        ? measure.notes.map(normalizeComposerEntry).filter(Boolean)
+        : [];
+      return {
+        number: index + 1,
+        notes,
+        fill: 0
+      };
+    }
+
+    function getComposerMeasureUsedUnits(measure) {
+      if (!measure || !Array.isArray(measure.notes)) return 0;
+      return measure.notes.reduce((sum, item) => sum + (Number(item.units) || 0), 0);
+    }
+
+    function getComposerMeasureRemainingUnits(measure) {
+      return Math.max(0, getComposerMeasureCapacityUnits() - getComposerMeasureUsedUnits(measure));
+    }
+
+    function isComposerMeasureComplete(measure) {
+      return getComposerMeasureUsedUnits(measure) >= getComposerMeasureCapacityUnits();
+    }
+
+    function canComposerItemFit(measure, lengthKey = composerState.selectedNoteLength, dotted = false) {
+      return !!measure && getComposerNoteUnits(lengthKey, dotted) <= getComposerMeasureRemainingUnits(measure);
+    }
+
+    function getSelectedComposerMeasure() {
+      if (!isComposerSetupComplete()) return null;
+      return composerState.measures.find((measure) => measure.number === composerState.selectedMeasure) || null;
+    }
+
+    function getLongestComposerLengthThatFits(remainingUnits) {
+      return COMPOSER_NOTE_LENGTH_ORDER.find((lengthKey) => getComposerNoteBaseUnits(lengthKey) <= remainingUnits) || "";
+    }
+
+    function cloneComposerMeasures(measures = composerState.measures) {
+      return measures.map((measure) => ({
+        number: measure.number,
+        fill: Number(measure.fill) || 0,
+        notes: Array.isArray(measure.notes)
+          ? measure.notes.map((item) => ({ ...item }))
+          : []
+      }));
+    }
+
+    function pushComposerUndoSnapshot() {
+      composerState.undoStack = Array.isArray(composerState.undoStack) ? composerState.undoStack : [];
+      composerState.undoStack.push({
+        selectedMeasure: composerState.selectedMeasure,
+        measures: cloneComposerMeasures()
+      });
+      if (composerState.undoStack.length > 50) composerState.undoStack.shift();
+    }
+
+    function adjustComposerSelectedNoteLengthForRemaining(announce = false) {
+      const measure = getSelectedComposerMeasure();
+      if (!measure || isComposerMeasureComplete(measure)) return false;
+      const remaining = getComposerMeasureRemainingUnits(measure);
+      if (getComposerNoteBaseUnits(composerState.selectedNoteLength) <= remaining) return false;
+      const nextLength = getLongestComposerLengthThatFits(remaining);
+      if (!nextLength) return false;
+      composerState.selectedNoteLength = nextLength;
+      composerState.dotArmed = false;
+      if (announce) {
+        setComposerStatus("composerEditorStatus", "남은 박자에 맞춰 " + COMPOSER_NOTE_LENGTH_LABELS[nextLength] + "를 선택했어요.");
+      }
+      return true;
     }
 
     function normalizeComposerDraft(rawDraft) {
@@ -31535,21 +31856,16 @@ function startBasicPractice() {
         timeSignature,
         measureCount,
         tempoKey,
-        dotted: !!rawDraft.dotted,
-        selectedPitch: rawDraft.selectedPitch || "솔",
+        dotArmed: !!rawDraft.dotArmed,
         selectedMeasure: rawDraft.selectedMeasure || 1
       });
       state.selectedNoteLength = COMPOSER_NOTE_LENGTH_LABELS[rawDraft.selectedNoteLength]
         ? rawDraft.selectedNoteLength
         : "quarter";
-      if (state.selectedNoteLength === "sixteenth") state.dotted = false;
+      if (state.selectedNoteLength === "whole" || state.selectedNoteLength === "sixteenth") state.dotArmed = false;
       if (isComposerSetupComplete(state)) {
         const savedMeasures = Array.isArray(rawDraft.measures) ? rawDraft.measures : [];
-        state.measures = createEmptyComposerMeasures(state.measureCount).map((measure, index) => ({
-          ...measure,
-          notes: Array.isArray(savedMeasures[index]?.notes) ? savedMeasures[index].notes : [],
-          fill: 0
-        }));
+        state.measures = createEmptyComposerMeasures(state.measureCount).map((measure, index) => normalizeComposerMeasure(savedMeasures[index] || measure, index));
         state.selectedMeasure = Math.min(state.measureCount, Math.max(1, Number(rawDraft.selectedMeasure) || 1));
       }
       return state;
@@ -31578,6 +31894,7 @@ function startBasicPractice() {
         const draft = {
           ...composerState,
           title,
+          undoStack: [],
           savedAt: new Date().toISOString()
         };
         localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(draft));
@@ -31673,6 +31990,89 @@ function startBasicPractice() {
       });
     }
 
+    function getComposerPitchY(pitch) {
+      const step = COMPOSER_PITCH_STEPS[pitch] ?? 2;
+      return 51 - step * 5.5;
+    }
+
+    function getComposerContentBounds(isFirstMeasure) {
+      return isFirstMeasure
+        ? { left: 30, right: 97 }
+        : { left: 6, right: 96 };
+    }
+
+    function getComposerItemLeftPercent(startUnits, isFirstMeasure) {
+      const bounds = getComposerContentBounds(isFirstMeasure);
+      const capacity = getComposerMeasureCapacityUnits();
+      const centerRatio = (startUnits + 0.5) / capacity;
+      return bounds.left + (bounds.right - bounds.left) * centerRatio;
+    }
+
+    function getComposerCursorLeftPercent(measure, isFirstMeasure) {
+      const bounds = getComposerContentBounds(isFirstMeasure);
+      const ratio = getComposerMeasureUsedUnits(measure) / getComposerMeasureCapacityUnits();
+      return bounds.left + (bounds.right - bounds.left) * ratio;
+    }
+
+    function renderComposerLedgerLines(y) {
+      const ledgerLines = [];
+      if (y > 54) ledgerLines.push(65);
+      if (y < 10) ledgerLines.push(10);
+      return ledgerLines
+        .map((ledgerY) => `<span class="composer-ledger-line" style="top:${22 + (ledgerY - y)}px"></span>`)
+        .join("");
+    }
+
+    function shouldComposerStemDown(pitch) {
+      const noteName = COMPOSER_PITCH_NOTE_NAMES[pitch] || "";
+      if (typeof shouldStemDown === "function") return shouldStemDown(noteName);
+      return (COMPOSER_PITCH_STEPS[pitch] ?? 0) >= 4;
+    }
+
+    function renderComposerNoteItem(item, leftPercent) {
+      const y = getComposerPitchY(item.pitch);
+      const durationClass = "composer-duration-" + item.duration;
+      const dotted = item.dotted ? `<span class="composer-score-dot"></span>` : "";
+      const stemDown = shouldComposerStemDown(item.pitch);
+      const stemClass = stemDown ? " is-stem-down" : "";
+      const upFlagPath = "M1 1 C8 2 13 9 10 22 C10 13 6 5 2 1 Z";
+      const downFlagPath = "M1 27 C8 26 13 19 10 6 C10 15 6 23 2 27 Z";
+      const flagPath = stemDown ? downFlagPath : upFlagPath;
+      const flagSvg = `<svg class="composer-note-flag composer-note-flag-one" viewBox="0 0 14 28" aria-hidden="true"><path d="${flagPath}"></path></svg>`;
+      const secondFlagSvg = `<svg class="composer-note-flag composer-note-flag-two" viewBox="0 0 14 28" aria-hidden="true"><path d="${flagPath}"></path></svg>`;
+      return `
+        <span class="composer-score-item composer-score-note ${durationClass}${stemClass}" style="left:${leftPercent}%; top:${y}px">
+          ${renderComposerLedgerLines(y)}
+          <span class="composer-note-head"></span>
+          ${item.duration === "whole" ? "" : `<span class="composer-note-stem"></span>`}
+          ${item.duration === "eighth" || item.duration === "sixteenth" ? flagSvg : ""}
+          ${item.duration === "sixteenth" ? secondFlagSvg : ""}
+          ${dotted}
+        </span>
+      `;
+    }
+
+    function renderComposerRestItem(item, leftPercent) {
+      const rest = COMPOSER_REST_SYMBOLS[item.duration] || COMPOSER_REST_SYMBOLS.quarter;
+      return `
+        <span class="composer-score-item composer-score-rest composer-duration-${item.duration}" style="left:${leftPercent}%; top:32px">
+          <span class="composer-rest-glyph">${rest.symbol}</span>
+        </span>
+      `;
+    }
+
+    function renderComposerMeasureItems(measure, isFirstMeasure) {
+      let usedUnits = 0;
+      return (measure.notes || []).map((item) => {
+        const units = Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
+        const left = getComposerItemLeftPercent(usedUnits, isFirstMeasure);
+        usedUnits += units;
+        return item.type === "rest"
+          ? renderComposerRestItem(item, left)
+          : renderComposerNoteItem(item, left);
+      }).join("");
+    }
+
     function renderComposerMeasureGrid() {
       const grid = document.getElementById("composerMeasureGrid");
       if (!grid) return;
@@ -31699,26 +32099,32 @@ function startBasicPractice() {
 
         const btn = document.createElement("button");
         const isFirstMeasure = measure.number === 1;
-        const isSystemFirstMeasure = index % 4 === 0;
         const isFinalMeasure = measure.number === composerState.measureCount;
+        const capacity = getComposerMeasureCapacityUnits();
+        const usedUnits = Math.min(capacity, getComposerMeasureUsedUnits(measure));
+        const fillPercent = capacity ? Math.round((usedUnits / capacity) * 1000) / 10 : 0;
+        measure.fill = fillPercent;
+        const isComplete = usedUnits >= capacity;
         btn.type = "button";
-        btn.className = "composer-measure-card" + (isFirstMeasure ? " is-first-measure" : "");
+        btn.className = "composer-measure-card" + (isFirstMeasure ? " is-first-measure" : "") + (isComplete ? " is-complete" : "");
         btn.dataset.measureNumber = String(measure.number);
         btn.dataset.selectedLabel = measure.number + "마디를 작곡하고 있어요";
         btn.setAttribute("aria-label", measure.number + "마디 선택");
         const [timeTop, timeBottom] = String(composerState.timeSignature || "4/4").split("/");
         btn.innerHTML = `
-          <span class="composer-measure-fill" style="width:${Number(measure.fill) || 0}%"></span>
+          <span class="composer-measure-fill" style="width:${fillPercent}%"></span>
           <span class="composer-measure-content">
             <span class="composer-measure-number">${measure.number}</span>
-            <span class="composer-staff${isSystemFirstMeasure ? " has-clef" : ""}${isFirstMeasure ? " has-time-signature" : ""}${isFinalMeasure ? " is-final-staff" : ""}" aria-hidden="true">
-              ${isSystemFirstMeasure ? `<span class="composer-clef">𝄞</span>` : ""}
+            <span class="composer-staff${isFirstMeasure ? " has-clef has-time-signature" : ""}${isFinalMeasure ? " is-final-staff" : ""}" aria-hidden="true">
+              ${isFirstMeasure ? `<span class="composer-clef">𝄞</span>` : ""}
               ${isFirstMeasure ? `<span class="composer-time-signature"><span>${timeTop || "4"}</span><span>${timeBottom || "4"}</span></span>` : ""}
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
+              <span class="composer-note-layer">${renderComposerMeasureItems(measure, isFirstMeasure)}</span>
+              <span class="composer-input-cursor" style="left:${getComposerCursorLeftPercent(measure, isFirstMeasure)}%"></span>
             </span>
           </span>
         `;
@@ -31735,7 +32141,10 @@ function startBasicPractice() {
         composerState.measureCount,
         Math.max(1, Number(measureNumber) || 1)
       );
+      adjustComposerSelectedNoteLengthForRemaining(false);
       updateComposerMeasureSelection();
+      updateComposerToolSelection();
+      updateComposerEditButtons();
     }
 
     function updateComposerMeasureSelection() {
@@ -31755,26 +32164,38 @@ function startBasicPractice() {
 
     function updateComposerToolSelection() {
       const setupReady = isComposerSetupComplete();
+      const measure = getSelectedComposerMeasure();
+      const measureComplete = !!measure && isComposerMeasureComplete(measure);
       document.querySelectorAll("[data-composer-note-length]").forEach((btn) => {
-        const selected = btn.dataset.composerNoteLength === composerState.selectedNoteLength;
+        const lengthKey = btn.dataset.composerNoteLength;
+        const disabled = !setupReady || !measure || measureComplete || getComposerNoteBaseUnits(lengthKey) > getComposerMeasureRemainingUnits(measure);
+        const selected = lengthKey === composerState.selectedNoteLength;
+        btn.disabled = disabled;
         btn.classList.toggle("is-selected", selected);
+        btn.classList.toggle("is-disabled", disabled);
         btn.setAttribute("aria-pressed", selected ? "true" : "false");
+        btn.setAttribute("aria-disabled", disabled ? "true" : "false");
       });
 
       const dotBtn = document.getElementById("composerDotBtn");
       if (dotBtn) {
         const disabled =
           !setupReady ||
+          !measure ||
+          measureComplete ||
           composerState.selectedNoteLength === "whole" ||
-          composerState.selectedNoteLength === "sixteenth";
+          composerState.selectedNoteLength === "sixteenth" ||
+          !canComposerItemFit(measure, composerState.selectedNoteLength, true);
+        if (disabled) composerState.dotArmed = false;
         const noteSymbol = COMPOSER_NOTE_SYMBOLS[composerState.selectedNoteLength] || COMPOSER_NOTE_SYMBOLS.quarter;
         const noteLabel = COMPOSER_NOTE_LENGTH_LABELS[composerState.selectedNoteLength] || COMPOSER_NOTE_LENGTH_LABELS.quarter;
         const dotSymbol = dotBtn.querySelector(".composer-dot-symbol");
         if (dotSymbol) dotSymbol.textContent = noteSymbol + ".";
         dotBtn.disabled = disabled;
         dotBtn.classList.toggle("is-disabled", disabled);
-        dotBtn.classList.toggle("is-selected", !disabled && composerState.dotted);
-        dotBtn.setAttribute("aria-pressed", !disabled && composerState.dotted ? "true" : "false");
+        dotBtn.classList.toggle("is-selected", !disabled && composerState.dotArmed);
+        dotBtn.setAttribute("aria-pressed", !disabled && composerState.dotArmed ? "true" : "false");
+        dotBtn.setAttribute("aria-disabled", disabled ? "true" : "false");
         dotBtn.setAttribute("aria-label", noteLabel + " 점 음표 선택");
         dotBtn.title = noteLabel + " 점 음표";
       }
@@ -31782,47 +32203,172 @@ function startBasicPractice() {
       const restBtn = document.getElementById("composerRestBtn");
       if (restBtn) {
         const rest = COMPOSER_REST_SYMBOLS[composerState.selectedNoteLength] || COMPOSER_REST_SYMBOLS.quarter;
+        const disabled = !setupReady || !measure || measureComplete || !canComposerItemFit(measure, composerState.selectedNoteLength, false);
         const symbol = restBtn.querySelector(".composer-rest-symbol");
         if (symbol) symbol.textContent = rest.symbol;
+        restBtn.disabled = disabled;
+        restBtn.classList.toggle("is-disabled", disabled);
+        restBtn.setAttribute("aria-disabled", disabled ? "true" : "false");
         restBtn.setAttribute("aria-label", rest.label + " 선택");
         restBtn.title = rest.label;
       }
 
       document.querySelectorAll("[data-composer-pitch]").forEach((btn) => {
-        const selected = btn.dataset.composerPitch === composerState.selectedPitch;
-        btn.classList.toggle("is-selected", selected);
-        btn.setAttribute("aria-pressed", selected ? "true" : "false");
+        const disabled = !setupReady || !measure || measureComplete || !canComposerItemFit(measure, composerState.selectedNoteLength, composerState.dotArmed);
+        btn.disabled = disabled;
+        btn.classList.toggle("is-disabled", disabled);
+        btn.classList.remove("is-selected");
+        btn.setAttribute("aria-pressed", "false");
+        btn.setAttribute("aria-disabled", disabled ? "true" : "false");
       });
     }
 
     function setComposerNoteLength(lengthKey) {
       if (!isComposerSetupComplete()) return;
+      const measure = getSelectedComposerMeasure();
+      if (!measure || getComposerNoteBaseUnits(lengthKey) > getComposerMeasureRemainingUnits(measure)) {
+        setComposerStatus("composerEditorStatus", "이 마디에 남은 박자보다 긴 음표예요.");
+        return;
+      }
       composerState.selectedNoteLength = lengthKey;
-      if (lengthKey === "whole" || lengthKey === "sixteenth") composerState.dotted = false;
+      composerState.dotArmed = false;
       updateComposerToolSelection();
       setComposerStatus("composerEditorStatus", (COMPOSER_NOTE_LENGTH_LABELS[lengthKey] || "음표 길이") + "를 선택했어요.");
     }
 
     function toggleComposerDot() {
       if (!isComposerSetupComplete()) return;
-      if (composerState.selectedNoteLength === "sixteenth") return;
-      composerState.dotted = !composerState.dotted;
+      const measure = getSelectedComposerMeasure();
+      if (!measure || isComposerMeasureComplete(measure)) return;
+      if (composerState.selectedNoteLength === "whole" || composerState.selectedNoteLength === "sixteenth") return;
+      if (!canComposerItemFit(measure, composerState.selectedNoteLength, true)) {
+        setComposerStatus("composerEditorStatus", "이 마디에 남은 박자보다 긴 음표예요.");
+        return;
+      }
+      composerState.dotArmed = !composerState.dotArmed;
       updateComposerToolSelection();
     }
 
-    function setComposerPitch(pitch) {
-      if (!isComposerSetupComplete()) return;
-      composerState.selectedPitch = pitch;
+    function createComposerEntry(type, pitch = null) {
+      composerEntryIdCounter += 1;
+      const duration = composerState.selectedNoteLength;
+      const dotted = type === "note" && !!composerState.dotArmed;
+      return {
+        id: "composer-entry-" + Date.now() + "-" + composerEntryIdCounter,
+        type,
+        pitch: type === "note" ? pitch : null,
+        duration,
+        dotted,
+        units: getComposerNoteUnits(duration, dotted)
+      };
+    }
+
+    function getNextIncompleteComposerMeasureNumber() {
+      const nextMeasure = composerState.measures.find((measure) => !isComposerMeasureComplete(measure));
+      return nextMeasure ? nextMeasure.number : null;
+    }
+
+    function refreshComposerAfterInput(message = "", announceLengthAdjust = false) {
+      const adjustedLength = adjustComposerSelectedNoteLengthForRemaining(announceLengthAdjust);
+      renderComposerMeasureGrid();
       updateComposerToolSelection();
+      updateComposerEditButtons();
+      if (message && !adjustedLength) setComposerStatus("composerEditorStatus", message);
+    }
+
+    function completeComposerEntryInput(measure, fallbackMessage) {
+      const usedUnits = getComposerMeasureUsedUnits(measure);
+      const capacity = getComposerMeasureCapacityUnits();
+      if (usedUnits === capacity) {
+        const completedNumber = measure.number;
+        const nextMeasureNumber = getNextIncompleteComposerMeasureNumber();
+        if (nextMeasureNumber) {
+          composerState.selectedMeasure = nextMeasureNumber;
+          refreshComposerAfterInput(completedNumber + "마디를 완성했어요!");
+        } else {
+          refreshComposerAfterInput("곡을 모두 완성했어요!");
+        }
+        return;
+      }
+      refreshComposerAfterInput(fallbackMessage, true);
+    }
+
+    function addComposerNote(pitch, sourceButton = null) {
+      if (!isComposerSetupComplete()) return;
+      const measure = getSelectedComposerMeasure();
+      if (!measure || isComposerMeasureComplete(measure)) return;
+      if (!canComposerItemFit(measure, composerState.selectedNoteLength, composerState.dotArmed)) {
+        setComposerStatus("composerEditorStatus", "이 마디에 남은 박자보다 긴 음표예요.");
+        return;
+      }
+      pushComposerUndoSnapshot();
+      measure.notes.push(createComposerEntry("note", pitch));
+      composerState.dotArmed = false;
+      if (sourceButton) {
+        sourceButton.classList.add("is-pressed");
+        setTimeout(() => sourceButton.classList.remove("is-pressed"), 160);
+      }
+      completeComposerEntryInput(measure, measure.number + "마디에 음표를 넣었어요.");
+    }
+
+    function addComposerRest() {
+      if (!isComposerSetupComplete()) return;
+      const measure = getSelectedComposerMeasure();
+      if (!measure || isComposerMeasureComplete(measure)) return;
+      if (!canComposerItemFit(measure, composerState.selectedNoteLength, false)) {
+        setComposerStatus("composerEditorStatus", "이 마디에 남은 박자보다 긴 음표예요.");
+        return;
+      }
+      pushComposerUndoSnapshot();
+      measure.notes.push(createComposerEntry("rest"));
+      composerState.dotArmed = false;
+      completeComposerEntryInput(measure, measure.number + "마디에 쉼표를 넣었어요.");
+    }
+
+    function setComposerPitch(pitch, sourceButton = null) {
+      if (!COMPOSER_PITCH_STEPS.hasOwnProperty(pitch)) return;
+      addComposerNote(pitch, sourceButton);
     }
 
     function updateComposerEditButtons() {
       const enabled = isComposerSetupComplete();
-      const hasNotes = enabled && composerState.measures.some((measure) => measure.notes.length > 0);
-      ["composerUndoBtn", "composerDeleteOneBtn", "composerClearMeasureBtn"].forEach((id) => {
-        const btn = document.getElementById(id);
-        if (btn) btn.disabled = !hasNotes;
-      });
+      const selectedMeasure = getSelectedComposerMeasure();
+      const hasSelectedNotes = enabled && selectedMeasure && selectedMeasure.notes.length > 0;
+      const undoBtn = document.getElementById("composerUndoBtn");
+      if (undoBtn) undoBtn.disabled = !enabled || !Array.isArray(composerState.undoStack) || composerState.undoStack.length === 0;
+      const deleteBtn = document.getElementById("composerDeleteOneBtn");
+      if (deleteBtn) deleteBtn.disabled = !hasSelectedNotes;
+      const clearBtn = document.getElementById("composerClearMeasureBtn");
+      if (clearBtn) clearBtn.disabled = !hasSelectedNotes;
+    }
+
+    function undoComposerEdit() {
+      if (!isComposerSetupComplete() || !Array.isArray(composerState.undoStack) || composerState.undoStack.length === 0) return;
+      const snapshot = composerState.undoStack.pop();
+      composerState.measures = cloneComposerMeasures(snapshot.measures || []);
+      composerState.selectedMeasure = Math.min(composerState.measureCount, Math.max(1, Number(snapshot.selectedMeasure) || 1));
+      composerState.dotArmed = false;
+      refreshComposerAfterInput("실행을 취소했어요.");
+    }
+
+    function deleteLastComposerEntry() {
+      const measure = getSelectedComposerMeasure();
+      if (!isComposerSetupComplete() || !measure || measure.notes.length === 0) return;
+      pushComposerUndoSnapshot();
+      measure.notes.pop();
+      composerState.dotArmed = false;
+      refreshComposerAfterInput(measure.number + "마디에서 마지막 입력을 지웠어요.");
+    }
+
+    function clearSelectedComposerMeasure() {
+      const measure = getSelectedComposerMeasure();
+      if (!isComposerSetupComplete() || !measure || measure.notes.length === 0) return;
+      const shouldClear = window.confirm ? window.confirm(measure.number + "마디를 비울까요?") : true;
+      if (!shouldClear) return;
+      pushComposerUndoSnapshot();
+      measure.notes = [];
+      composerState.dotArmed = false;
+      refreshComposerAfterInput(measure.number + "마디를 비웠어요.");
     }
 
     function updateComposerActiveState() {
@@ -31875,12 +32421,16 @@ function startBasicPractice() {
         if (shouldRebuildMeasures) {
           composerState.selectedMeasure = 1;
           composerState.measures = createEmptyComposerMeasures(composerState.measureCount);
+          composerState.undoStack = [];
+          composerState.dotArmed = false;
         } else if (!composerState.selectedMeasure) {
           composerState.selectedMeasure = 1;
         }
       } else {
         composerState.selectedMeasure = null;
         composerState.measures = [];
+        composerState.undoStack = [];
+        composerState.dotArmed = false;
       }
       closeComposerDropdowns();
       renderComposerEditor();
@@ -31923,7 +32473,10 @@ function startBasicPractice() {
 
       [
         ["composerEditorMenuBtn", saveComposerDraft],
-        ["composerRestBtn", () => setComposerStatus("composerEditorStatus", "쉼표 입력은 다음 단계에서 연결합니다.")]
+        ["composerRestBtn", addComposerRest],
+        ["composerUndoBtn", undoComposerEdit],
+        ["composerDeleteOneBtn", deleteLastComposerEntry],
+        ["composerClearMeasureBtn", clearSelectedComposerMeasure]
       ].forEach(([id, handler]) => {
         const btn = document.getElementById(id);
         if (!btn || btn.dataset.composerBound === "true") return;
@@ -31982,7 +32535,7 @@ function startBasicPractice() {
 
       document.querySelectorAll("[data-composer-pitch]").forEach((btn) => {
         if (btn.dataset.composerBound === "true") return;
-        btn.addEventListener("click", () => setComposerPitch(btn.dataset.composerPitch));
+        btn.addEventListener("click", () => setComposerPitch(btn.dataset.composerPitch, btn));
         btn.dataset.composerBound = "true";
       });
 
