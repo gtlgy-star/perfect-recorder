@@ -11344,10 +11344,10 @@ body.menu-title-active #screen-menu-title {
 .composer-clef {
   position: absolute;
   z-index: 1;
-  left: 22px;
-  top: 10px;
+  left: 3px;
+  top: 11px;
   color: #0F172A;
-  font-size: 48px;
+  font-size: 42px;
   line-height: 0.9;
   font-family: "Times New Roman", serif;
   font-weight: 400;
@@ -11358,7 +11358,7 @@ body.menu-title-active #screen-menu-title {
 .composer-time-signature {
   position: absolute;
   z-index: 1;
-  left: 64px;
+  left: 31px;
   top: 10px;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
@@ -11366,7 +11366,7 @@ body.menu-title-active #screen-menu-title {
   gap: 0;
   height: 45px;
   color: #0F172A;
-  font-size: 23px;
+  font-size: 20px;
   line-height: 1;
   font-weight: 950;
   font-family: "Times New Roman", serif;
@@ -11402,7 +11402,7 @@ body.menu-title-active #screen-menu-title {
   position: absolute;
   z-index: 1;
   left: 3.7px;
-  top: 20px;
+  top: 21.5px;
   width: 11.7px;
   height: 9.1px;
   border: 1.6px solid currentColor;
@@ -11423,26 +11423,28 @@ body.menu-title-active #screen-menu-title {
 .composer-note-stem {
   position: absolute;
   z-index: 2;
-  left: 13.7px;
-  top: -4px;
+  left: 13.2px;
+  top: -6px;
   width: 1.4px;
   height: 34px;
   background: currentColor;
 }
 
 .composer-score-note.is-stem-down .composer-note-stem {
-  left: 5px;
-  top: 22px;
+  left: 4px;
+  top: 24px;
 }
 
 .composer-note-flag {
   position: absolute;
   z-index: 2;
-  left: 12px;
+  left: 12.5px;
   width: 10px;
   height: 23px;
   color: currentColor;
   overflow: visible;
+  transform: scaleY(1.3) rotate(-5deg);
+  transform-origin: top center;
 }
 
 .composer-note-flag path {
@@ -11450,23 +11452,25 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-note-flag-one {
-  top: -2px;
+  top: -8px;
 }
 
 .composer-note-flag-two {
-  top: 6px;
+  top: 0;
 }
 
 .composer-score-note.is-stem-down .composer-note-flag {
-  left: 2px;
+  left: 4px;
+  transform: scaleY(1.3) rotate(5deg);
+  transform-origin: bottom center;
 }
 
 .composer-score-note.is-stem-down .composer-note-flag-one {
-  top: 22px;
+  top: 37px;
 }
 
 .composer-score-note.is-stem-down .composer-note-flag-two {
-  top: 13px;
+  top: 28px;
 }
 
 .composer-score-dot {
@@ -11507,18 +11511,50 @@ body.menu-title-active #screen-menu-title {
 
 .composer-input-cursor {
   position: absolute;
-  top: 10px;
+  top: 7px;
   z-index: 3;
-  width: 2px;
-  height: 45px;
-  background: #2563EB;
+  width: 24px;
+  min-width: 12px;
+  height: 51px;
+  border: 2px dashed rgba(37, 99, 235, 0.78);
+  border-radius: 7px;
+  background: rgba(219, 234, 254, 0.32);
   opacity: 0;
   pointer-events: none;
   transform: translateX(-1px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.composer-input-cursor::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 2px;
+  height: calc(100% - 12px);
+  border-radius: 999px;
+  background: #2563EB;
+  transform: translateX(-50%);
 }
 
 .composer-measure-card.is-selected:not(.is-complete) .composer-input-cursor {
   opacity: 1;
+  animation: composerCursorBlink 1.05s steps(2, start) infinite;
+}
+
+@keyframes composerCursorBlink {
+  0%, 58% {
+    opacity: 1;
+  }
+  59%, 100% {
+    opacity: 0.22;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer-measure-card.is-selected:not(.is-complete) .composer-input-cursor {
+    animation: none;
+  }
 }
 
 .composer-tool-layout {
@@ -31755,6 +31791,13 @@ function startBasicPractice() {
       eighth: 2,
       sixteenth: 1
     };
+    const COMPOSER_VISUAL_NOTE_UNITS = {
+      whole: 11.2,
+      half: 5.6,
+      quarter: 3,
+      eighth: 1.7,
+      sixteenth: 1
+    };
     const COMPOSER_MEASURE_CAPACITY_UNITS = {
       "2/4": 8,
       "3/4": 12,
@@ -31832,6 +31875,11 @@ function startBasicPractice() {
 
     function getComposerNoteUnits(lengthKey = composerState.selectedNoteLength, dotted = false) {
       const baseUnits = getComposerNoteBaseUnits(lengthKey);
+      return dotted ? baseUnits * 1.5 : baseUnits;
+    }
+
+    function getComposerVisualNoteUnits(lengthKey = composerState.selectedNoteLength, dotted = false) {
+      const baseUnits = COMPOSER_VISUAL_NOTE_UNITS[lengthKey] || COMPOSER_VISUAL_NOTE_UNITS.quarter;
       return dotted ? baseUnits * 1.5 : baseUnits;
     }
 
@@ -32074,23 +32122,53 @@ function startBasicPractice() {
       return 51 - step * 5.5;
     }
 
-    function getComposerContentBounds(isFirstMeasure) {
-      return isFirstMeasure
-        ? { left: 30, right: 97 }
+    function getComposerContentBounds(hasClef, hasTimeSignature) {
+      return hasTimeSignature
+        ? { left: 19, right: 98 }
+        : hasClef
+        ? { left: 15, right: 98 }
         : { left: 6, right: 96 };
     }
 
-    function getComposerItemLeftPercent(startUnits, isFirstMeasure) {
-      const bounds = getComposerContentBounds(isFirstMeasure);
+    function getComposerVisualMeasureUnits(measure) {
       const capacity = getComposerMeasureCapacityUnits();
-      const centerRatio = (startUnits + 0.5) / capacity;
+      let actualUsedUnits = 0;
+      let visualUsedUnits = 0;
+      (measure?.notes || []).forEach((item) => {
+        actualUsedUnits += Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
+        visualUsedUnits += getComposerVisualNoteUnits(item.duration, item.dotted);
+      });
+      const remainingUnits = Math.max(0, capacity - actualUsedUnits);
+      return Math.max(capacity, visualUsedUnits + remainingUnits);
+    }
+
+    function getComposerMeasureVisualUsedUnits(measure) {
+      return (measure?.notes || []).reduce((sum, item) => {
+        return sum + getComposerVisualNoteUnits(item.duration, item.dotted);
+      }, 0);
+    }
+
+    function getComposerItemLeftPercent(startUnits, visualCapacity, hasClef, hasTimeSignature) {
+      const bounds = getComposerContentBounds(hasClef, hasTimeSignature);
+      const centerRatio = (startUnits + 0.5) / Math.max(1, Number(visualCapacity) || getComposerMeasureCapacityUnits());
       return bounds.left + (bounds.right - bounds.left) * centerRatio;
     }
 
-    function getComposerCursorLeftPercent(measure, isFirstMeasure) {
-      const bounds = getComposerContentBounds(isFirstMeasure);
-      const ratio = getComposerMeasureUsedUnits(measure) / getComposerMeasureCapacityUnits();
+    function getComposerCursorLeftPercent(measure, hasClef, hasTimeSignature) {
+      const bounds = getComposerContentBounds(hasClef, hasTimeSignature);
+      const ratio = getComposerMeasureVisualUsedUnits(measure) / getComposerVisualMeasureUnits(measure);
       return bounds.left + (bounds.right - bounds.left) * ratio;
+    }
+
+    function getComposerCursorWidthPercent(measure, hasClef, hasTimeSignature) {
+      const bounds = getComposerContentBounds(hasClef, hasTimeSignature);
+      const visualCapacity = getComposerVisualMeasureUnits(measure);
+      const remainingUnits = Math.max(0, visualCapacity - getComposerMeasureVisualUsedUnits(measure));
+      const inputUnits = Math.min(
+        remainingUnits || getComposerVisualNoteUnits(),
+        getComposerVisualNoteUnits(composerState.selectedNoteLength, composerState.dotArmed)
+      );
+      return Math.max(4, (bounds.right - bounds.left) * (inputUnits / Math.max(1, visualCapacity)));
     }
 
     function renderComposerLedgerLines(y) {
@@ -32140,11 +32218,12 @@ function startBasicPractice() {
       `;
     }
 
-    function renderComposerMeasureItems(measure, isFirstMeasure) {
+    function renderComposerMeasureItems(measure, hasClef, hasTimeSignature) {
       let usedUnits = 0;
+      const visualCapacity = getComposerVisualMeasureUnits(measure);
       return (measure.notes || []).map((item) => {
-        const units = Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
-        const left = getComposerItemLeftPercent(usedUnits, isFirstMeasure);
+        const units = getComposerVisualNoteUnits(item.duration, item.dotted);
+        const left = getComposerItemLeftPercent(usedUnits, visualCapacity, hasClef, hasTimeSignature);
         usedUnits += units;
         return item.type === "rest"
           ? renderComposerRestItem(item, left)
@@ -32178,7 +32257,10 @@ function startBasicPractice() {
 
         const btn = document.createElement("button");
         const isFirstMeasure = measure.number === 1;
+        const isSystemFirstMeasure = index % 4 === 0;
         const isFinalMeasure = measure.number === composerState.measureCount;
+        const hasClef = isFirstMeasure || isSystemFirstMeasure;
+        const hasTimeSignature = isFirstMeasure;
         const capacity = getComposerMeasureCapacityUnits();
         const usedUnits = Math.min(capacity, getComposerMeasureUsedUnits(measure));
         const fillPercent = capacity ? Math.round((usedUnits / capacity) * 1000) / 10 : 0;
@@ -32194,16 +32276,16 @@ function startBasicPractice() {
           <span class="composer-measure-fill" style="width:${fillPercent}%"></span>
           <span class="composer-measure-content">
             <span class="composer-measure-number">${measure.number}</span>
-            <span class="composer-staff${isFirstMeasure ? " has-clef has-time-signature" : ""}${isFinalMeasure ? " is-final-staff" : ""}" aria-hidden="true">
-              ${isFirstMeasure ? `<span class="composer-clef">𝄞</span>` : ""}
-              ${isFirstMeasure ? `<span class="composer-time-signature"><span>${timeTop || "4"}</span><span>${timeBottom || "4"}</span></span>` : ""}
+            <span class="composer-staff${hasClef ? " has-clef" : ""}${hasTimeSignature ? " has-time-signature" : ""}${isFinalMeasure ? " is-final-staff" : ""}" aria-hidden="true">
+              ${hasClef ? `<span class="composer-clef">𝄞</span>` : ""}
+              ${hasTimeSignature ? `<span class="composer-time-signature"><span>${timeTop || "4"}</span><span>${timeBottom || "4"}</span></span>` : ""}
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
               <span class="composer-staff-line"></span>
-              <span class="composer-note-layer">${renderComposerMeasureItems(measure, isFirstMeasure)}</span>
-              <span class="composer-input-cursor" style="left:${getComposerCursorLeftPercent(measure, isFirstMeasure)}%"></span>
+              <span class="composer-note-layer">${renderComposerMeasureItems(measure, hasClef, hasTimeSignature)}</span>
+              <span class="composer-input-cursor" style="left:${getComposerCursorLeftPercent(measure, hasClef, hasTimeSignature)}%; width:${getComposerCursorWidthPercent(measure, hasClef, hasTimeSignature)}%"></span>
             </span>
           </span>
         `;
