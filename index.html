@@ -5336,7 +5336,7 @@ button:disabled {
 
     .performanceComparisonControls {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
       align-items: center;
       width: 100%;
@@ -5360,6 +5360,12 @@ button:disabled {
       border-color: rgba(126, 34, 206, 0.44);
       background: linear-gradient(180deg, #E9D5FF 0%, #F3E8FF 100%);
       color: #581C87;
+    }
+
+    .performanceDetailActions #performanceCompareFullReferenceBtn {
+      border-color: rgba(21, 128, 61, 0.42);
+      background: linear-gradient(180deg, #BBF7D0 0%, #DCFCE7 100%);
+      color: #14532D;
     }
 
     .performanceComparisonNotice {
@@ -15557,8 +15563,9 @@ body.theme-light .readyCardHint {
             <div id="performanceComparisonPanel" class="performanceComparisonPanel hidden" aria-live="polite">
               <div id="performanceComparisonText" class="performanceComparisonText"></div>
               <div class="performanceComparisonControls">
-                <button id="performanceCompareStudentBtn" type="button">🎙 내 연주 듣기</button>
-                <button id="performanceCompareReferenceBtn" type="button">🎵 시범 연주 듣기</button>
+                <button id="performanceCompareStudentBtn" type="button">🎙 내연주 듣기</button>
+                <button id="performanceCompareReferenceBtn" type="button">🎵 시범연주 듣기</button>
+                <button id="performanceCompareFullReferenceBtn" type="button">🎼 전체 시범연주 듣기</button>
               </div>
               <div id="performanceComparisonNotice" class="performanceComparisonNotice"></div>
             </div>
@@ -18647,9 +18654,10 @@ function restorePracticeFromChallengePlay() {
       const text = document.getElementById("performanceComparisonText");
       const studentBtn = document.getElementById("performanceCompareStudentBtn");
       const referenceBtn = document.getElementById("performanceCompareReferenceBtn");
+      const fullReferenceBtn = document.getElementById("performanceCompareFullReferenceBtn");
       const notice = document.getElementById("performanceComparisonNotice");
       const detail = lastPerformanceDetail;
-      if (!panel || !text || !studentBtn || !referenceBtn || !notice) return;
+      if (!panel || !text || !studentBtn || !referenceBtn || !fullReferenceBtn || !notice) return;
       if (!detail || !performanceComparisonRange) {
         panel.classList.add("hidden");
         return;
@@ -18663,12 +18671,16 @@ function restorePracticeFromChallengePlay() {
       const hasRecording = isPerformanceRecordingForDetail(detail, detail.recording);
       studentBtn.disabled = !hasRecording;
       studentBtn.textContent = performanceComparisonPlaybackMode === "student"
-        ? "⏸ 내 연주 멈춤"
-        : "🎙 내 연주 듣기";
+        ? "⏸ 내연주 멈춤"
+        : "🎙 내연주 듣기";
       referenceBtn.disabled = !detail.timeline;
       referenceBtn.textContent = performanceComparisonPlaybackMode === "reference"
-        ? "⏸ 시범 연주 멈춤"
-        : "🎵 시범 연주 듣기";
+        ? "⏸ 시범연주 멈춤"
+        : "🎵 시범연주 듣기";
+      fullReferenceBtn.disabled = !detail.timeline;
+      fullReferenceBtn.textContent = performanceComparisonPlaybackMode === "reference-all"
+        ? "⏸ 전체 시범연주 멈춤"
+        : "🎼 전체 시범연주 듣기";
       notice.textContent = hasRecording ? "" : "이번 연주의 녹음이 없습니다";
       notice.classList.toggle("hidden", hasRecording);
     }
@@ -18731,15 +18743,15 @@ function restorePracticeFromChallengePlay() {
       return changed;
     }
 
-    function startPerformanceComparisonHighlightLoop(getScoreMs, sessionId) {
+    function startPerformanceComparisonHighlightLoop(getScoreMs, sessionId, playbackRange = performanceComparisonRange) {
       if (performanceComparisonPlaybackRaf) cancelAnimationFrame(performanceComparisonPlaybackRaf);
       const tick = () => {
-        if (sessionId !== performanceComparisonPlaybackSessionId || !performanceComparisonPlaybackMode || !performanceComparisonRange) {
+        if (sessionId !== performanceComparisonPlaybackSessionId || !performanceComparisonPlaybackMode || !playbackRange) {
           performanceComparisonPlaybackRaf = null;
           return;
         }
         const scoreMs = Number(getScoreMs());
-        if (!Number.isFinite(scoreMs) || scoreMs >= performanceComparisonRange.endScoreMs - 1) {
+        if (!Number.isFinite(scoreMs) || scoreMs >= playbackRange.endScoreMs - 1) {
           stopPerformanceComparisonPlayback({ keepSelection: true });
           return;
         }
@@ -18804,7 +18816,10 @@ function restorePracticeFromChallengePlay() {
     function schedulePerformanceComparisonReferenceNote(event, delayMs, durationMs, previousEvent, sessionId) {
       if (!event?.note || durationMs <= 0) return;
       const timerId = setTimeout(() => {
-        if (sessionId !== performanceComparisonPlaybackSessionId || performanceComparisonPlaybackMode !== "reference") return;
+        if (
+          sessionId !== performanceComparisonPlaybackSessionId ||
+          !String(performanceComparisonPlaybackMode || "").startsWith("reference")
+        ) return;
         const repeatedNote = Boolean(
           previousEvent?.note &&
           noteNameToMidi(previousEvent.note, previousEvent.effectiveAccidental) === noteNameToMidi(event.note, event.effectiveAccidental)
@@ -18822,11 +18837,10 @@ function restorePracticeFromChallengePlay() {
       performanceComparisonReferenceTimers.push(timerId);
     }
 
-    async function togglePerformanceComparisonReferencePlayback() {
+    async function playPerformanceComparisonReferenceRange(range, mode) {
       const detail = lastPerformanceDetail;
-      const range = performanceComparisonRange;
       if (!detail?.timeline || !range) return;
-      if (performanceComparisonPlaybackMode === "reference") {
+      if (performanceComparisonPlaybackMode === mode) {
         stopPerformanceComparisonPlayback({ keepSelection: true });
         return;
       }
@@ -18837,7 +18851,7 @@ function restorePracticeFromChallengePlay() {
       const events = buildSongPreviewPlaybackEvents(detail.timeline, detail).events || [];
       const leadMs = 60;
       const rangeDurationMs = Math.max(1, range.endScoreMs - range.startScoreMs);
-      performanceComparisonPlaybackMode = "reference";
+      performanceComparisonPlaybackMode = mode;
       performanceComparisonPlaybackSessionId += 1;
       const sessionId = performanceComparisonPlaybackSessionId;
       const rangeEndTimer = setTimeout(() => {
@@ -18861,7 +18875,29 @@ function restorePracticeFromChallengePlay() {
       startPerformanceComparisonHighlightLoop(() => {
         const elapsedMs = performance.now() - performanceComparisonReferenceStartedPerfMs;
         return range.startScoreMs + Math.max(0, elapsedMs);
-      }, sessionId);
+      }, sessionId, range);
+    }
+
+    async function togglePerformanceComparisonReferencePlayback() {
+      await playPerformanceComparisonReferenceRange(performanceComparisonRange, "reference");
+    }
+
+    async function togglePerformanceComparisonFullReferencePlayback() {
+      const detail = lastPerformanceDetail;
+      if (!detail?.timeline) return;
+      const events = buildSongPreviewPlaybackEvents(detail.timeline, detail).events || [];
+      const lastEventEndMs = events.reduce((max, event) => {
+        const eventEndMs = (Number(event.startMs) || 0) + Math.max(1, Number(event.durMs) || 0);
+        return Math.max(max, eventEndMs);
+      }, 0);
+      const endScoreMs = Math.max(1, Number(detail.timeline.totalMs) || 0, lastEventEndMs);
+      await playPerformanceComparisonReferenceRange({
+        startScoreMs: 0,
+        endScoreMs,
+        startMeasureNumber: 1,
+        endMeasureNumber: Math.max(1, (detail.measureTimings || []).length || getSongPreviewMeasureCount()),
+        selectedMeasureNumber: performanceComparisonSelectedMeasureNumber || 1
+      }, "reference-all");
     }
 
     async function seekPerformanceRecordingToScoreMs(scoreStartMs, options = {}) {
@@ -28585,6 +28621,7 @@ function startBasicPractice() {
       const replayBtn = document.getElementById("performanceReplayBtn");
       const compareStudentBtn = document.getElementById("performanceCompareStudentBtn");
       const compareReferenceBtn = document.getElementById("performanceCompareReferenceBtn");
+      const compareFullReferenceBtn = document.getElementById("performanceCompareFullReferenceBtn");
       const restartBtn = document.getElementById("performanceRestartBtn");
       const retryWrongBtn = document.getElementById("performanceRetryWrongBtn");
       const detailScore = document.getElementById("performanceDetailScore");
@@ -28651,6 +28688,11 @@ function startBasicPractice() {
       if (compareReferenceBtn && !compareReferenceBtn.dataset.detailBound) {
         compareReferenceBtn.addEventListener("click", togglePerformanceComparisonReferencePlayback);
         compareReferenceBtn.dataset.detailBound = "true";
+      }
+
+      if (compareFullReferenceBtn && !compareFullReferenceBtn.dataset.detailBound) {
+        compareFullReferenceBtn.addEventListener("click", togglePerformanceComparisonFullReferencePlayback);
+        compareFullReferenceBtn.dataset.detailBound = "true";
       }
 
       if (restartBtn && !restartBtn.dataset.detailBound) {
