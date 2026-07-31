@@ -10324,15 +10324,15 @@ body.menu-title-active #screen-menu-title {
 
 #screen-menu .menuButtonGrid .menuBonusBtn {
   background:
-    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.46), transparent 12%),
-    radial-gradient(circle at 82% 30%, rgba(200,255,230,0.34), transparent 18%),
-    linear-gradient(135deg, #9eea7d 0%, #55d8b4 52%, #20aeb8 100%);
-  border-color: rgba(210, 255, 235, 0.45);
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.36), transparent 12%),
+    radial-gradient(circle at 82% 30%, rgba(216,200,255,0.28), transparent 18%),
+    linear-gradient(135deg, #7a72e8 0%, #8b6de8 48%, #9b6de3 100%);
+  border-color: rgba(221, 214, 254, 0.42);
   box-shadow:
-    0 8px 20px rgba(74, 215, 175, 0.32),
-    0 0 18px rgba(109, 245, 207, 0.28),
-    inset 0 1px 0 rgba(255,255,255,0.44),
-    inset 0 -10px 22px rgba(7, 89, 88, 0.18);
+    0 8px 20px rgba(123, 97, 232, 0.3),
+    0 0 18px rgba(159, 122, 234, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.38),
+    inset 0 -10px 22px rgba(49, 28, 120, 0.16);
 }
 
 #screen-menu .menuBonusBtn .menuBtnSub {
@@ -10341,23 +10341,30 @@ body.menu-title-active #screen-menu-title {
   font-size: 18px;
   line-height: 1.25;
   font-weight: 800;
-  color: rgba(248, 255, 252, 0.86);
-  text-shadow: 0 1px 4px rgba(0, 56, 58, 0.38);
+  color: rgba(248, 246, 255, 0.86);
+  text-shadow: 0 1px 4px rgba(41, 23, 92, 0.38);
   white-space: normal;
 }
 
 #screen-menu .challengeWideButton {
   width: 100%;
   margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
-#screen-menu .challengeWideButton .btn-challenge {
+#screen-menu .challengeWideButton .btn-challenge,
+#screen-menu .challengeWideButton .composerMenuBtn {
   width: 100%;
   min-height: 88px;
   margin: 0;
-  padding: 20px 24px;
+  padding: clamp(12px, 2vw, 20px) clamp(10px, 2.2vw, 24px);
   border-radius: 24px;
-  font-size: 28px;
+  font-size: clamp(16px, 2.2vw, 28px);
+}
+
+#screen-menu .challengeWideButton .btn-challenge {
   background:
     radial-gradient(circle at 16% 24%, rgba(255,255,255,0.46), transparent 9%),
     radial-gradient(circle at 82% 26%, rgba(255,215,160,0.34), transparent 14%),
@@ -10372,6 +10379,43 @@ body.menu-title-active #screen-menu-title {
   transform: none;
 }
 
+#screen-menu .challengeWideButton .composerMenuBtn {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(7px, 1.3vw, 14px);
+  overflow: hidden;
+  border: 1.5px solid rgba(210, 255, 240, 0.72);
+  color: #ffffff;
+  font-weight: 900;
+  text-align: center;
+  background:
+    radial-gradient(circle at 16% 24%, rgba(255,255,255,0.44), transparent 10%),
+    radial-gradient(circle at 80% 28%, rgba(190,255,230,0.34), transparent 16%),
+    radial-gradient(circle at 36% 84%, rgba(80,220,255,0.34), transparent 24%),
+    linear-gradient(135deg, #19c37d 0%, #0f8fc5 52%, #4f46e5 100%);
+  box-shadow:
+    0 12px 28px rgba(38, 199, 145, 0.34),
+    0 0 26px rgba(80, 220, 255, 0.36),
+    0 0 42px rgba(79, 70, 229, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.48),
+    inset 0 -12px 24px rgba(5, 46, 68, 0.24);
+  text-shadow:
+    0 2px 4px rgba(0,0,0,0.36),
+    0 0 12px rgba(255,255,255,0.42);
+}
+
+#screen-menu .challengeWideButton .composerMenuBtn:hover {
+  transform: translateY(-4px) scale(1.018);
+  box-shadow:
+    0 16px 32px rgba(38, 199, 145, 0.42),
+    0 0 34px rgba(80, 220, 255, 0.48),
+    0 0 58px rgba(79, 70, 229, 0.32),
+    inset 0 1px 0 rgba(255,255,255,0.52),
+    inset 0 -12px 24px rgba(5, 46, 68, 0.24);
+}
+
 #screen-menu .challengeWideButton .btn-challenge:hover {
   transform: translateY(-4px) scale(1.018);
   box-shadow:
@@ -10384,6 +10428,48 @@ body.menu-title-active #screen-menu-title {
 
 #screen-menu .challengeWideButton .btn-challenge:active {
   transform: translateY(1px) scale(0.99);
+}
+
+#screen-menu .challengeWideButton .composerMenuBtn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+#screen-menu .challengeWideButton .btn-challenge .challenge-text {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.15;
+}
+
+#screen-menu .composer-icon {
+  flex: 0 0 auto;
+  font-size: clamp(24px, 3vw, 34px);
+  filter:
+    drop-shadow(0 0 8px rgba(255,255,255,0.72))
+    drop-shadow(0 0 14px rgba(120,255,220,0.58));
+}
+
+#screen-menu .composer-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  line-height: 1.15;
+}
+
+#screen-menu .composer-title,
+#screen-menu .composer-desc {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#screen-menu .composer-title {
+  font-size: clamp(16px, 2.1vw, 26px);
+}
+
+#screen-menu .composer-desc {
+  font-size: clamp(11px, 1.25vw, 16px);
+  color: rgba(244, 255, 251, 0.86);
 }
 
 body.theme-light .menuTitle {
@@ -11021,7 +11107,8 @@ body.theme-light #screen-menu .daily-mission-claimed {
     font-size: 17px;
   }
 
-  #screen-menu .challengeWideButton .btn-challenge {
+  #screen-menu .challengeWideButton .btn-challenge,
+  #screen-menu .challengeWideButton .composerMenuBtn {
     min-height: 70px;
     padding: 16px 18px;
     font-size: 24px;
@@ -12508,7 +12595,8 @@ body.theme-light .practiceStaffSlot {
     margin-top: 8px;
   }
 
-  #screen-menu .challengeWideButton .btn-challenge {
+  #screen-menu .challengeWideButton .btn-challenge,
+  #screen-menu .challengeWideButton .composerMenuBtn {
     min-height: 56px;
     padding: 11px 14px;
     font-size: 21px;
@@ -15127,6 +15215,13 @@ body.theme-light .readyCardHint {
         <button class="menuBtn menu-btn btn-challenge">
           <span class="challenge-icon">🏆</span>
           <span class="challenge-text">도전! 퍼펙트 리코더</span>
+        </button>
+        <button id="composerMenuBtn" class="menuBtn menu-btn composerMenuBtn" type="button" data-menu-action="composer">
+          <span class="composer-icon" aria-hidden="true">📝🎵</span>
+          <span class="composer-copy">
+            <span class="composer-title">나도 작곡가!</span>
+            <span class="composer-desc">나만의 곡을 만들고 연주해요</span>
+          </span>
         </button>
       </div>
     </section>
@@ -29925,6 +30020,17 @@ function startBasicPractice() {
       });
     }
 
+    function handleComposerMenuClick() {
+      console.log("나도 작곡가! 메뉴를 준비하고 있어요.");
+    }
+
+    function bindComposerMenuButton() {
+      const btn = document.getElementById("composerMenuBtn");
+      if (!btn || btn.dataset.composerBound === "true") return;
+      btn.addEventListener("click", handleComposerMenuClick);
+      btn.dataset.composerBound = "true";
+    }
+
     function applyMobileLandscapeAutoScale() {
       const isMobileLandscape =
         window.matchMedia("(max-width: 950px) and (orientation: landscape)").matches;
@@ -29988,6 +30094,7 @@ function startBasicPractice() {
       initTheme();
       setSelectedFingeringSystem(selectedFingeringSystem);
       bindChallengeButtons();
+      bindComposerMenuButton();
       setupFingeringPracticeControls();
       bindFingeringStartButton();
       enhancePracticeLayout();
