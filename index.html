@@ -10878,6 +10878,158 @@ body.menu-title-active #screen-menu-title {
   }
 }
 
+#composerLibraryScreen {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 16px;
+  color: #071A4D;
+}
+
+.composer-library-panel {
+  border-radius: 24px;
+  padding: clamp(16px, 2vw, 24px);
+  background:
+    radial-gradient(circle at 10% 18%, rgba(186, 230, 253, 0.32), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,252,255,0.96) 100%);
+  border: 2px solid rgba(191, 219, 254, 0.82);
+  box-shadow:
+    0 18px 38px rgba(29, 78, 216, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.composer-library-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.composer-library-title {
+  margin: 0;
+  color: #071A4D;
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 950;
+}
+
+.composer-library-subtitle {
+  margin: 4px 0 0;
+  color: #31507C;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.composer-library-back-btn,
+.composer-library-refresh-btn,
+.composer-library-action-btn {
+  min-height: 42px;
+  border-radius: 14px;
+  border: 2px solid rgba(147, 197, 253, 0.72);
+  background: linear-gradient(180deg, #ffffff 0%, #eaf3ff 100%);
+  color: #071A4D;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.composer-library-back-btn,
+.composer-library-refresh-btn {
+  padding: 8px 14px;
+}
+
+.composer-library-status {
+  min-height: 24px;
+  margin: 0 0 12px;
+  color: #31507C;
+  font-size: 14px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.composer-library-list {
+  display: grid;
+  gap: 10px;
+}
+
+.composer-library-empty {
+  padding: 24px 16px;
+  border: 2px dashed rgba(147, 197, 253, 0.65);
+  border-radius: 16px;
+  background: rgba(239, 246, 255, 0.72);
+  color: #31507C;
+  font-size: 16px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.composer-library-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(186, 210, 245, 0.86);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+.composer-library-song-title {
+  margin: 0;
+  color: #071A4D;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.composer-library-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.composer-library-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.composer-library-pill.is-incomplete {
+  background: #FFF7ED;
+  color: #C2410C;
+}
+
+.composer-library-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(74px, auto));
+  gap: 8px;
+}
+
+.composer-library-action-btn {
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.composer-library-action-btn.is-delete {
+  border-color: rgba(248, 113, 113, 0.62);
+  background: linear-gradient(180deg, #fffafa 0%, #fee2e2 100%);
+  color: #991B1B;
+}
+
+@media (max-width: 640px) {
+  .composer-library-header,
+  .composer-library-item {
+    grid-template-columns: 1fr;
+  }
+
+  .composer-library-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 #composerEditorScreen {
   width: 100%;
   max-width: 1180px;
@@ -17770,10 +17922,25 @@ body.theme-light .readyCardHint {
   </div>
 </section>
 
+<section id="composerLibraryScreen" class="screen hidden" aria-label="내 작곡 보관함">
+  <div class="composer-library-panel">
+    <div class="composer-library-header">
+      <button id="composerLibraryBackBtn" class="composer-library-back-btn" type="button">‹ 작곡 메뉴</button>
+      <div>
+        <h2 class="composer-library-title">내 작곡 보관함</h2>
+        <p class="composer-library-subtitle">내가 저장한 곡을 수정하거나 연주할 수 있어요.</p>
+      </div>
+      <button id="composerLibraryRefreshBtn" class="composer-library-refresh-btn" type="button">새로고침</button>
+    </div>
+    <div id="composerLibraryStatus" class="composer-library-status" aria-live="polite"></div>
+    <div id="composerLibraryList" class="composer-library-list" aria-label="저장한 작곡 목록"></div>
+  </div>
+</section>
+
 <section id="composerEditorScreen" class="screen hidden" aria-label="곡 만들기">
   <div class="composer-editor-panel">
     <div class="composer-editor-topbar">
-      <button id="composerEditorMenuBtn" class="composer-editor-menu-btn composer-save-btn" type="button">▣ 임시 저장하기</button>
+      <button id="composerEditorMenuBtn" class="composer-editor-menu-btn composer-save-btn" type="button">▣ 곡 저장하기</button>
       <input id="composerTitleInput" class="composer-title-input" type="text" value="나의 첫 멜로디" aria-label="곡 제목">
       <div id="composerTimeDropdown" class="composer-dropdown">
         <button id="composerTimeDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="timeSignature" aria-expanded="false">♩ 박자 선택 ▼</button>
@@ -19464,6 +19631,7 @@ const SCREEN_TITLES = {
   "screen-textbook": "교과서 수록곡",
   "screen-bonus-map": "성장 보너스 연주곡",
   composerHomeScreen: "나도 작곡가!",
+  composerLibraryScreen: "내 작곡 보관함",
   composerEditorScreen: "나도 작곡가!",
   "screen-challenge": "도전! 퍼펙트 리코더",
   "screen-challenge-play": "도전! 퍼펙트 리코더"
@@ -22196,6 +22364,7 @@ function renderSongButtons() {
       const tonguingPracticeScreen = document.getElementById("screen-tonguing-practice");
       const bonusMapScreen = document.getElementById("screen-bonus-map");
       const composerHomeScreen = document.getElementById("composerHomeScreen");
+      const composerLibraryScreen = document.getElementById("composerLibraryScreen");
       const composerEditorScreen = document.getElementById("composerEditorScreen");
       const challengeScreen = document.getElementById("screen-challenge");
       const challengePlayScreen = document.getElementById("screen-challenge-play");
@@ -22213,6 +22382,7 @@ function renderSongButtons() {
       if (tonguingPracticeScreen) tonguingPracticeScreen.classList.add("hidden");
       if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
       if (composerHomeScreen) composerHomeScreen.classList.add("hidden");
+      if (composerLibraryScreen) composerLibraryScreen.classList.add("hidden");
       if (composerEditorScreen) composerEditorScreen.classList.add("hidden");
       if (challengeScreen) challengeScreen.style.display = "none";
       if (challengePlayScreen) challengePlayScreen.style.display = "none";
@@ -22236,6 +22406,8 @@ function renderSongButtons() {
         if (bonusMapScreen) bonusMapScreen.classList.remove("hidden");
       } else if (targetId === "composerHomeScreen") {
         if (composerHomeScreen) composerHomeScreen.classList.remove("hidden");
+      } else if (targetId === "composerLibraryScreen") {
+        if (composerLibraryScreen) composerLibraryScreen.classList.remove("hidden");
       } else if (targetId === "composerEditorScreen") {
         if (composerEditorScreen) composerEditorScreen.classList.remove("hidden");
       } else if (targetId === "screen-song" || targetId === "screen-textbook") {
@@ -22318,6 +22490,13 @@ function renderSongButtons() {
       }
 
       if (screenId === "composerHomeScreen") {
+        currentActivityTitle = SCREEN_TITLES[screenId];
+        renderScreenOnly(screenId);
+        if (!skipHistory) pushAppHistory(screenId);
+        return;
+      }
+
+      if (screenId === "composerLibraryScreen") {
         currentActivityTitle = SCREEN_TITLES[screenId];
         renderScreenOnly(screenId);
         if (!skipHistory) pushAppHistory(screenId);
@@ -23533,6 +23712,8 @@ const bonusMapScreen = document.getElementById("screen-bonus-map");
 if (bonusMapScreen) bonusMapScreen.classList.add("hidden");
 const composerHomeScreen = document.getElementById("composerHomeScreen");
 if (composerHomeScreen) composerHomeScreen.classList.add("hidden");
+const composerLibraryScreen = document.getElementById("composerLibraryScreen");
+if (composerLibraryScreen) composerLibraryScreen.classList.add("hidden");
 const composerEditorScreen = document.getElementById("composerEditorScreen");
 if (composerEditorScreen) composerEditorScreen.classList.add("hidden");
 restorePracticeFromChallengePlay();
@@ -32087,9 +32268,11 @@ function startBasicPractice() {
     };
 
     const COMPOSER_DRAFT_KEY_PREFIX = "perfectRecorderComposerDraft:";
+    const COMPOSER_LIBRARY_CACHE_KEY_PREFIX = "perfectRecorderComposerLibrary:";
     const COMPOSER_PRACTICE_KEY_PREFIX = "perfectRecorderComposerPractice:";
 
     let composerState = createComposerState();
+    let composerLibraryItems = [];
     let composerEntryIdCounter = 0;
     let composerPreviewTimers = [];
     let composerPreviewPlaying = false;
@@ -32105,6 +32288,7 @@ function startBasicPractice() {
       const tempoKey = settings.tempoKey || "";
       const isComplete = !!settings.timeSignature && !!measureCount && !!tempoKey;
       return {
+        compositionId: settings.compositionId || null,
         title: settings.title ?? "나의 첫 멜로디",
         timeSignature: settings.timeSignature || "",
         measureCount,
@@ -32571,8 +32755,9 @@ function startBasicPractice() {
       return {
         ownerUserId: String(user.userId || "").trim(),
         ownerName: String(user.name || "").trim(),
+        schoolName: String(user.schoolName || user.school_name || "").trim(),
         grade: String(user.grade || "").trim(),
-        class: String(user.class || "").trim(),
+        class: String(user.class || user.className || "").trim(),
         number: String(user.number || "").trim()
       };
     }
@@ -32681,9 +32866,10 @@ function startBasicPractice() {
       return {
         data: {
           schemaVersion: 1,
-          compositionId: null,
+          compositionId: options.compositionId || state.compositionId || null,
           ownerUserId: userInfo.ownerUserId,
           ownerName: userInfo.ownerName,
+          schoolName: userInfo.schoolName,
           grade: userInfo.grade,
           class: userInfo.class,
           number: userInfo.number,
@@ -32708,6 +32894,7 @@ function startBasicPractice() {
       if (!rawData || Number(rawData.schemaVersion) !== 1) return null;
       const compositionData = rawData.compositionData || {};
       const state = createComposerState({
+        compositionId: rawData.compositionId || null,
         title: String(rawData.title || "").trim() || "나의 첫 멜로디",
         timeSignature: rawData.timeSignature,
         measureCount: rawData.measureCount,
@@ -32734,34 +32921,75 @@ function startBasicPractice() {
       }
     }
 
-    function saveComposerDraft() {
+    function getComposerLibraryCacheKey() {
+      const userId = String(app?.user?.userId || getCurrentSongStateUserId()).trim() || "guest";
+      return COMPOSER_LIBRARY_CACHE_KEY_PREFIX + encodeURIComponent(userId);
+    }
+
+    function saveComposerLibraryCache(items) {
+      try {
+        localStorage.setItem(getComposerLibraryCacheKey(), JSON.stringify(items || []));
+      } catch (_) {}
+    }
+
+    function loadComposerLibraryCache() {
+      try {
+        const raw = localStorage.getItem(getComposerLibraryCacheKey());
+        return raw ? JSON.parse(raw) || [] : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function getComposerApiUserPayload() {
+      const userInfo = getComposerCurrentUserInfo();
+      return {
+        userId: userInfo.ownerUserId,
+        ownerUserId: userInfo.ownerUserId,
+        ownerName: userInfo.ownerName,
+        grade: userInfo.grade,
+        class: userInfo.class,
+        number: userInfo.number,
+        user: app?.user || null
+      };
+    }
+
+    async function saveComposerDraft() {
       try {
         const titleInput = document.getElementById("composerTitleInput");
         if (titleInput) composerState.title = titleInput.value;
         const { data, validation } = createComposerStandardSaveData(composerState, {
-          createdAt: getExistingComposerDraftCreatedAt()
+          createdAt: getExistingComposerDraftCreatedAt(),
+          compositionId: composerState.compositionId || null
         });
         if (!validation.canSave) {
-          setComposerStatus("composerEditorStatus", validation.errors[0] || "임시 저장할 수 없는 곡입니다.");
+          setComposerStatus("composerEditorStatus", validation.errors[0] || "저장할 수 없는 곡입니다.");
           return;
         }
         localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(data));
-        composerState = composerStandardDataToState(data) || composerState;
+        setComposerStatus("composerEditorStatus", "보관함에 저장하고 있어요.");
+        const result = await app.api("saveComposerComposition", {
+          ...getComposerApiUserPayload(),
+          composition: data
+        });
+        const savedData = result?.composition || data;
+        composerState = composerStandardDataToState(savedData) || composerStandardDataToState(data) || composerState;
         if (titleInput) {
           titleInput.value = composerState.title;
           updateComposerTitleInputState();
         }
+        localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(savedData));
         renderComposerEditor();
         const incompleteMessage = validation.isComplete
           ? ""
           : " 미완성 마디: " + validation.incompleteMeasureNumbers.join(", ") + "마디";
         setComposerStatus(
           "composerEditorStatus",
-          "작곡 데이터가 임시 저장되었어요. 보관함 저장은 다음 단계에서 연결됩니다." + incompleteMessage
+          "내 작곡 보관함에 저장했어요." + incompleteMessage
         );
       } catch (error) {
-        console.warn("[composer] draft save failed", error);
-        setComposerStatus("composerEditorStatus", "임시 저장을 하지 못했어요.");
+        console.warn("[composer] library save failed", error);
+        setComposerStatus("composerEditorStatus", "보관함 저장에 실패했어요. 작성 중인 초안은 이 기기에 남아 있어요.");
       }
     }
 
@@ -32778,6 +33006,148 @@ function startBasicPractice() {
         console.warn("[composer] draft load failed", error);
         return null;
       }
+    }
+
+    function formatComposerLibraryDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
+    }
+
+    function renderComposerLibraryList(items = composerLibraryItems) {
+      const list = document.getElementById("composerLibraryList");
+      if (!list) return;
+      const safeItems = Array.isArray(items) ? items : [];
+      if (!safeItems.length) {
+        list.innerHTML = `<div class="composer-library-empty">아직 저장한 곡이 없어요. 곡 만들기에서 첫 곡을 저장해 보세요.</div>`;
+        return;
+      }
+      list.innerHTML = safeItems.map((item) => {
+        const completeText = item.isComplete ? "완성" : "미완성";
+        const completeClass = item.isComplete ? "" : " is-incomplete";
+        const updatedAt = formatComposerLibraryDate(item.updatedAt);
+        return `
+          <article class="composer-library-item" data-composer-id="${composerEscapeHtml(item.compositionId)}">
+            <div>
+              <h3 class="composer-library-song-title">${composerEscapeHtml(item.title || "제목 없는 곡")}</h3>
+              <div class="composer-library-meta">
+                <span class="composer-library-pill${completeClass}">${completeText}</span>
+                <span class="composer-library-pill">${composerEscapeHtml(item.timeSignature || "-")}</span>
+                <span class="composer-library-pill">${Number(item.measureCount) || 0}마디</span>
+                <span class="composer-library-pill">BPM ${Number(item.bpm) || "-"}</span>
+                ${updatedAt ? `<span class="composer-library-pill">${composerEscapeHtml(updatedAt)}</span>` : ""}
+              </div>
+            </div>
+            <div class="composer-library-actions">
+              <button class="composer-library-action-btn" type="button" data-composer-library-action="edit">수정하기</button>
+              <button class="composer-library-action-btn" type="button" data-composer-library-action="play">연주하기</button>
+              <button class="composer-library-action-btn is-delete" type="button" data-composer-library-action="delete">삭제</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadComposerLibraryList(options = {}) {
+      const status = document.getElementById("composerLibraryStatus");
+      if (status) status.textContent = "보관함을 불러오고 있어요.";
+      try {
+        const result = await app.api("listComposerCompositions", getComposerApiUserPayload());
+        composerLibraryItems = Array.isArray(result?.list) ? result.list : [];
+        saveComposerLibraryCache(composerLibraryItems);
+        renderComposerLibraryList(composerLibraryItems);
+        if (status) status.textContent = composerLibraryItems.length + "/5곡을 저장했어요.";
+      } catch (error) {
+        console.warn("[composer] library list failed", error);
+        composerLibraryItems = loadComposerLibraryCache();
+        renderComposerLibraryList(composerLibraryItems);
+        if (status) status.textContent = composerLibraryItems.length
+          ? "서버 연결이 어려워 저장된 목록 캐시를 보여주고 있어요."
+          : "보관함을 불러오지 못했어요.";
+      }
+    }
+
+    function openComposerLibrary() {
+      showScreen("composerLibraryScreen");
+      renderComposerLibraryList(loadComposerLibraryCache());
+      loadComposerLibraryList();
+    }
+
+    async function getComposerLibraryComposition(compositionId) {
+      const result = await app.api("getComposerComposition", {
+        ...getComposerApiUserPayload(),
+        compositionId
+      });
+      return result?.composition || null;
+    }
+
+    async function editComposerLibraryComposition(compositionId) {
+      const status = document.getElementById("composerLibraryStatus");
+      if (status) status.textContent = "곡을 불러오고 있어요.";
+      try {
+        const composition = await getComposerLibraryComposition(compositionId);
+        const nextState = composerStandardDataToState(composition);
+        if (!nextState) throw new Error("composition restore failed");
+        composerState = nextState;
+        localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(composition));
+        renderComposerEditor();
+        setComposerStatus("composerEditorStatus", "보관함에서 곡을 불러왔어요. 수정한 뒤 곡 저장하기를 누르면 덮어써요.");
+        showScreen("composerEditorScreen");
+      } catch (error) {
+        console.warn("[composer] library edit failed", error);
+        if (status) status.textContent = "곡을 불러오지 못했어요.";
+      }
+    }
+
+    async function playComposerLibraryComposition(compositionId) {
+      const status = document.getElementById("composerLibraryStatus");
+      if (status) status.textContent = "연주할 곡을 준비하고 있어요.";
+      try {
+        const composition = await getComposerLibraryComposition(compositionId);
+        const nextState = composerStandardDataToState(composition);
+        if (!nextState) throw new Error("composition restore failed");
+        composerState = nextState;
+        await startComposerSongPractice();
+        if (status) status.textContent = "";
+      } catch (error) {
+        console.warn("[composer] library play failed", error);
+        if (status) status.textContent = "곡을 연주 화면으로 보내지 못했어요.";
+      }
+    }
+
+    async function deleteComposerLibraryComposition(compositionId) {
+      const ok = await showComposerConfirm("이 곡을 내 작곡 보관함에서 삭제할까요?");
+      if (!ok) return;
+      const status = document.getElementById("composerLibraryStatus");
+      if (status) status.textContent = "곡을 삭제하고 있어요.";
+      try {
+        await app.api("deleteComposerComposition", {
+          ...getComposerApiUserPayload(),
+          compositionId
+        });
+        if (String(composerState.compositionId || "") === String(compositionId)) {
+          localStorage.removeItem(getComposerDraftStorageKey());
+          composerState = createComposerState();
+        }
+        await loadComposerLibraryList();
+        if (status) status.textContent = "곡을 삭제했어요.";
+      } catch (error) {
+        console.warn("[composer] library delete failed", error);
+        if (status) status.textContent = "곡을 삭제하지 못했어요.";
+      }
+    }
+
+    function handleComposerLibraryClick(event) {
+      const actionBtn = event.target?.closest?.("[data-composer-library-action]");
+      if (!actionBtn) return;
+      const item = actionBtn.closest("[data-composer-id]");
+      const compositionId = item?.dataset?.composerId || "";
+      if (!compositionId) return;
+      const action = actionBtn.dataset.composerLibraryAction;
+      if (action === "edit") editComposerLibraryComposition(compositionId);
+      if (action === "play") playComposerLibraryComposition(compositionId);
+      if (action === "delete") deleteComposerLibraryComposition(compositionId);
     }
 
     function openComposerEditorFromHome() {
@@ -32799,8 +33169,13 @@ function startBasicPractice() {
         createBtn.dataset.composerBound = "true";
       }
 
+      const mySongsBtn = document.getElementById("composerMySongsBtn");
+      if (mySongsBtn && mySongsBtn.dataset.composerBound !== "true") {
+        mySongsBtn.addEventListener("click", openComposerLibrary);
+        mySongsBtn.dataset.composerBound = "true";
+      }
+
       [
-        ["composerMySongsBtn", "내 작곡 보관함은 저장 기능 제작 후 연결합니다."],
         ["composerClassSongsBtn", "우리 반 작곡방은 공유 기능 제작 후 연결합니다."],
         ["composerCommunitySongsBtn", "모두의 작곡방은 전체 공유 기능 제작 후 연결합니다."]
       ].forEach(([id, message]) => {
@@ -32809,6 +33184,24 @@ function startBasicPractice() {
         btn.addEventListener("click", () => handleComposerHomeAction(message));
         btn.dataset.composerBound = "true";
       });
+
+      const libraryBackBtn = document.getElementById("composerLibraryBackBtn");
+      if (libraryBackBtn && libraryBackBtn.dataset.composerBound !== "true") {
+        libraryBackBtn.addEventListener("click", () => showScreen("composerHomeScreen"));
+        libraryBackBtn.dataset.composerBound = "true";
+      }
+
+      const libraryRefreshBtn = document.getElementById("composerLibraryRefreshBtn");
+      if (libraryRefreshBtn && libraryRefreshBtn.dataset.composerBound !== "true") {
+        libraryRefreshBtn.addEventListener("click", () => loadComposerLibraryList({ force: true }));
+        libraryRefreshBtn.dataset.composerBound = "true";
+      }
+
+      const libraryList = document.getElementById("composerLibraryList");
+      if (libraryList && libraryList.dataset.composerBound !== "true") {
+        libraryList.addEventListener("click", handleComposerLibraryClick);
+        libraryList.dataset.composerBound = "true";
+      }
     }
 
     function updateComposerTitleInputState() {
