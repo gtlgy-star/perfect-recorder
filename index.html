@@ -10948,8 +10948,9 @@ body.menu-title-active #screen-menu-title {
 
 .composer-editor-menu-btn,
 .composer-save-btn {
-  min-height: 46px;
-  padding: 9px 14px;
+  height: 100%;
+  min-height: 58px;
+  padding: 9px 16px;
   border-radius: 15px;
   border: 2px solid rgba(186, 210, 245, 0.9);
   background: linear-gradient(180deg, #ffffff 0%, #eef7ff 100%);
@@ -10959,24 +10960,41 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-save-btn {
-  background: linear-gradient(180deg, #fff8d7 0%, #f8d260 48%, #d59c17 100%);
-  border-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(217, 119, 6, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, rgba(255, 255, 255, 0.12) 36%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(180deg, #FFE9A6 0%, #F5C84B 54%, #D99918 100%);
+  color: #3F2A00;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -8px 16px rgba(120, 72, 0, 0.12),
+    0 9px 18px rgba(180, 83, 9, 0.18);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.42);
 }
 
 .composer-title-input {
   width: 100%;
-  min-height: 46px;
-  padding: 9px 14px;
+  min-height: 58px;
+  padding: 9px 14px 9px 44px;
   border-radius: 15px;
   border: 2px solid rgba(186, 210, 245, 0.9);
   color: #071A4D;
   font-size: clamp(18px, 2vw, 26px);
   font-weight: 900;
   background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h9'/%3E%3Cpath d='M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z'/%3E%3C/svg%3E") 14px 50% / 22px 22px no-repeat,
     linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(238,244,248,0.94) 100%);
   box-shadow:
     inset 0 2px 5px rgba(15, 23, 42, 0.11),
     0 8px 16px rgba(96, 165, 250, 0.12);
+}
+
+.composer-title-input.is-default-title {
+  color: #94A3B8;
+}
+
+.composer-title-input:not(.is-default-title) {
+  color: #0F172A;
 }
 
 .composer-dropdown {
@@ -11135,9 +11153,17 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-stop-btn {
-  border-color: rgba(203, 213, 225, 0.95);
-  background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
-  color: #475569;
+  border-color: #FACC15;
+  background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
+  color: #5C4200;
+  box-shadow: 0 8px 16px rgba(250, 204, 21, 0.18);
+}
+
+.composer-stop-btn:disabled {
+  border-color: #FDE68A;
+  background: linear-gradient(180deg, #FFFEF2 0%, #FFF7CC 100%);
+  color: #8A6A00;
+  box-shadow: none;
 }
 
 .composer-score-area {
@@ -11265,6 +11291,20 @@ body.menu-title-active #screen-menu-title {
 
 .composer-measure-card.is-complete {
   background: rgba(240, 253, 244, 0.92);
+}
+
+.composer-measure-card.is-preview-past {
+  background: rgba(156, 163, 175, 0.42);
+}
+
+.composer-measure-card.is-preview-current {
+  outline: 3px solid #38BDF8;
+  outline-offset: -3px;
+  background: rgba(186, 230, 253, 0.5);
+}
+
+.composer-measure-card.is-preview-current .composer-measure-fill {
+  background: rgba(125, 211, 252, 0.38);
 }
 
 .composer-measure-content {
@@ -11396,6 +11436,16 @@ body.menu-title-active #screen-menu-title {
 
 .composer-score-note {
   color: #050816;
+}
+
+.composer-score-note.is-preview-past,
+.composer-note-name.is-preview-past {
+  color: #60A5FA;
+}
+
+.composer-score-note.is-preview-current,
+.composer-note-name.is-preview-current {
+  color: #2563EB;
 }
 
 .composer-note-head {
@@ -11802,6 +11852,11 @@ body.menu-title-active #screen-menu-title {
   opacity: 0.48;
   cursor: not-allowed;
   filter: grayscale(0.35);
+}
+
+.composer-stop-btn:disabled {
+  opacity: 0.82;
+  filter: none;
 }
 
 .composer-tool-btn[aria-disabled="true"] {
@@ -32038,6 +32093,12 @@ function startBasicPractice() {
     let composerEntryIdCounter = 0;
     let composerPreviewTimers = [];
     let composerPreviewPlaying = false;
+    let composerPreviewPaused = false;
+    let composerPreviewMode = "";
+    let composerPreviewEvents = [];
+    let composerPreviewTotalMs = 0;
+    let composerPreviewStartedAt = 0;
+    let composerPreviewPausedAtMs = 0;
 
     function createComposerState(settings = {}) {
       const measureCount = Number(settings.measureCount) || null;
@@ -32207,13 +32268,80 @@ function startBasicPractice() {
       setStatus(id, message, "");
     }
 
-    function stopComposerPreviewPlayback(message = "") {
+    function clearComposerPreviewTimers() {
       composerPreviewTimers.forEach((timerId) => clearTimeout(timerId));
       composerPreviewTimers = [];
+    }
+
+    function stopComposerPreviewPlayback(message = "") {
+      clearComposerPreviewTimers();
       stopShortSongPreviewNodes();
       composerPreviewPlaying = false;
+      composerPreviewPaused = false;
+      composerPreviewMode = "";
+      composerPreviewEvents = [];
+      composerPreviewTotalMs = 0;
+      composerPreviewStartedAt = 0;
+      composerPreviewPausedAtMs = 0;
+      clearComposerPreviewHighlights();
       updateComposerPreviewButtons();
       if (message) setComposerStatus("composerEditorStatus", message);
+    }
+
+    function pauseComposerPreviewPlayback() {
+      if (!composerPreviewPlaying || composerPreviewPaused) return;
+      composerPreviewPausedAtMs = Math.max(0, performance.now() - composerPreviewStartedAt);
+      clearComposerPreviewTimers();
+      stopShortSongPreviewNodes();
+      composerPreviewPaused = true;
+      updateComposerPreviewButtons();
+      setComposerStatus("composerEditorStatus", "들어보기를 잠시 멈췄어요.");
+    }
+
+    function resumeComposerPreviewPlayback() {
+      if (!composerPreviewPlaying || !composerPreviewPaused) return;
+      composerPreviewPaused = false;
+      composerPreviewStartedAt = performance.now() - composerPreviewPausedAtMs;
+      scheduleComposerPreviewEvents(composerPreviewPausedAtMs);
+      updateComposerPreviewButtons();
+      setComposerStatus("composerEditorStatus", composerPreviewMode === "measure" ? "선택한 마디를 이어서 들려주고 있어요." : "전체 곡을 이어서 들려주고 있어요.");
+    }
+
+    function clearComposerPreviewHighlights() {
+      document.querySelectorAll(".composer-measure-card.is-preview-past, .composer-measure-card.is-preview-current").forEach((el) => {
+        el.classList.remove("is-preview-past", "is-preview-current");
+      });
+      document.querySelectorAll(".composer-score-note.is-preview-past, .composer-score-note.is-preview-current, .composer-note-name.is-preview-past, .composer-note-name.is-preview-current").forEach((el) => {
+        el.classList.remove("is-preview-past", "is-preview-current");
+      });
+    }
+
+    function updateComposerPreviewHighlight(events, activeEvent, positionMs = activeEvent?.startMs) {
+      const activeStartMs = Number(positionMs) || Number(activeEvent?.startMs) || 0;
+      const activeMeasureNumber = Number(activeEvent?.measureNumber) || null;
+      const activeEntryId = String(activeEvent?.entryId || "");
+      const scopedMeasureNumbers = new Set(events.map((event) => Number(event.measureNumber)).filter(Number.isFinite));
+
+      document.querySelectorAll(".composer-measure-card").forEach((card) => {
+        const measureNumber = Number(card.dataset.measureNumber);
+        const inScope = scopedMeasureNumbers.has(measureNumber);
+        const isCurrent = inScope && measureNumber === activeMeasureNumber;
+        const isPast = inScope && !isCurrent && events.some((event) =>
+          Number(event.measureNumber) === measureNumber &&
+          Number(event.endMs) <= activeStartMs + 1
+        );
+        card.classList.toggle("is-preview-current", isCurrent);
+        card.classList.toggle("is-preview-past", isPast);
+      });
+
+      document.querySelectorAll(".composer-score-note, .composer-note-name").forEach((el) => {
+        const entryId = String(el.dataset.composerEntryId || "");
+        const event = events.find((item) => String(item.entryId || "") === entryId);
+        const isCurrent = !!entryId && entryId === activeEntryId && activeEvent?.type === "note";
+        const isPast = !!event && event.type === "note" && Number(event.endMs) <= activeStartMs + 1 && !isCurrent;
+        el.classList.toggle("is-preview-current", isCurrent);
+        el.classList.toggle("is-preview-past", isPast);
+      });
     }
 
     function updateComposerPreviewButtons() {
@@ -32221,11 +32349,19 @@ function startBasicPractice() {
       document.querySelectorAll("[data-composer-preview]").forEach((btn) => {
         const mode = btn.dataset.composerPreview;
         if (composerPreviewPlaying) {
-          btn.textContent = mode === "measure" ? "■ 선택마디 멈추기" : "■ 전체 멈추기";
+          const isActiveMode = mode === composerPreviewMode;
+          if (isActiveMode) {
+            btn.textContent = composerPreviewPaused
+              ? "▶ 이어서 재생"
+              : "Ⅱ 일시정지";
+          } else {
+            btn.textContent = mode === "measure" ? "♪ 선택마디 들어보기" : "♫ 전체 들어보기";
+          }
+          btn.disabled = !isActiveMode;
         } else {
           btn.textContent = mode === "measure" ? "♪ 선택마디 들어보기" : "♫ 전체 들어보기";
+          btn.disabled = !enabled;
         }
-        btn.disabled = !enabled;
       });
       const stopBtn = document.getElementById("composerStopBtn");
       if (stopBtn) stopBtn.disabled = !composerPreviewPlaying;
@@ -32260,29 +32396,92 @@ function startBasicPractice() {
       const events = [];
       let cursorMs = 0;
       measures.forEach((measure) => {
+        const measureStartMs = cursorMs;
         let usedUnits = 0;
         (measure.notes || []).forEach((item) => {
           const units = Number(item.units) || getComposerNoteUnits(item.duration, item.dotted);
           const durMs = Math.max(40, units * unitMs);
-          if (item.type === "note") {
-            events.push({
-              note: COMPOSER_PITCH_NOTE_NAMES[item.pitch] || "",
-              startMs: cursorMs,
-              durMs,
-              effectiveAccidental: null,
-              raw: item.pitch || ""
-            });
-          }
+          events.push({
+            type: item.type,
+            entryId: item.id || "",
+            measureNumber: measure.number,
+            note: item.type === "note" ? COMPOSER_PITCH_NOTE_NAMES[item.pitch] || "" : "",
+            startMs: cursorMs,
+            endMs: cursorMs + durMs,
+            durMs,
+            effectiveAccidental: null,
+            raw: item.pitch || ""
+          });
           cursorMs += durMs;
           usedUnits += units;
         });
         const restUnits = Math.max(0, capacity - usedUnits);
-        cursorMs += restUnits * unitMs;
+        if (restUnits > 0) {
+          const durMs = Math.max(40, restUnits * unitMs);
+          events.push({
+            type: "rest",
+            entryId: "",
+            measureNumber: measure.number,
+            note: "",
+            startMs: cursorMs,
+            endMs: cursorMs + durMs,
+            durMs,
+            effectiveAccidental: null,
+            raw: ""
+          });
+          cursorMs += durMs;
+        }
+        if (cursorMs === measureStartMs) {
+          const durMs = Math.max(40, capacity * unitMs);
+          events.push({
+            type: "rest",
+            entryId: "",
+            measureNumber: measure.number,
+            note: "",
+            startMs: cursorMs,
+            endMs: cursorMs + durMs,
+            durMs,
+            effectiveAccidental: null,
+            raw: ""
+          });
+          cursorMs += durMs;
+        }
       });
       return {
         events,
         totalMs: cursorMs
       };
+    }
+
+    function scheduleComposerPreviewEvents(offsetMs = 0) {
+      clearComposerPreviewTimers();
+      const events = Array.isArray(composerPreviewEvents) ? composerPreviewEvents : [];
+      const startOffsetMs = Math.max(0, Number(offsetMs) || 0);
+
+      events.forEach((event, index) => {
+        if (Number(event.endMs) <= startOffsetMs + 1) return;
+        const eventStartMs = Number(event.startMs) || 0;
+        const delayMs = Math.max(0, eventStartMs - startOffsetMs);
+        const playedMs = Math.max(0, startOffsetMs - eventStartMs);
+        const remainingMs = Math.max(40, Number(event.durMs) - playedMs);
+        const timerId = setTimeout(() => {
+          if (!composerPreviewPlaying || composerPreviewPaused) return;
+          updateComposerPreviewHighlight(events, event, Math.max(startOffsetMs, eventStartMs));
+          if (event.type === "note" && event.note) {
+            const previous = events.slice(0, index).reverse().find((item) => item.type === "note" && item.note);
+            playShortSongPreviewNote(event, remainingMs, 0, {
+              repeatedNote: Boolean(previous?.note && previous.note === event.note)
+            });
+          }
+        }, Math.round(delayMs));
+        composerPreviewTimers.push(timerId);
+      });
+
+      const stopTimer = setTimeout(() => {
+        if (!composerPreviewPlaying || composerPreviewPaused) return;
+        stopComposerPreviewPlayback("들어보기가 끝났어요.");
+      }, Math.max(80, Math.ceil(composerPreviewTotalMs - startOffsetMs + 120)));
+      composerPreviewTimers.push(stopTimer);
     }
 
     function formatComposerNotationBeat(units) {
@@ -32331,7 +32530,11 @@ function startBasicPractice() {
 
     async function playComposerPreview(mode = "measure") {
       if (composerPreviewPlaying) {
-        stopComposerPreviewPlayback("재생을 멈췄어요.");
+        if (composerPreviewPaused) {
+          resumeComposerPreviewPlayback();
+        } else if (mode === composerPreviewMode) {
+          pauseComposerPreviewPlayback();
+        }
         return;
       }
       if (!isComposerSetupComplete()) {
@@ -32339,29 +32542,23 @@ function startBasicPractice() {
         return;
       }
       const { events, totalMs } = buildComposerPreviewEvents(mode);
-      if (!events.length) {
+      const noteEvents = events.filter((event) => event.type === "note" && event.note);
+      if (!noteEvents.length) {
         setComposerStatus("composerEditorStatus", mode === "measure" ? "선택한 마디에 들을 음표가 없어요." : "들을 음표가 없어요.");
         return;
       }
       await getShortSongPreviewAudioContext();
       stopComposerPreviewPlayback();
       composerPreviewPlaying = true;
+      composerPreviewPaused = false;
+      composerPreviewMode = mode;
+      composerPreviewEvents = events;
+      composerPreviewTotalMs = totalMs;
+      composerPreviewStartedAt = performance.now();
+      composerPreviewPausedAtMs = 0;
       updateComposerPreviewButtons();
       setComposerStatus("composerEditorStatus", mode === "measure" ? "선택한 마디를 들려주고 있어요." : "전체 곡을 들려주고 있어요.");
-      events.forEach((event, index) => {
-        const timerId = setTimeout(() => {
-          if (!composerPreviewPlaying) return;
-          const previous = events[index - 1];
-          playShortSongPreviewNote(event, event.durMs, 0, {
-            repeatedNote: Boolean(previous?.note && previous.note === event.note)
-          });
-        }, Math.max(0, Math.round(event.startMs)));
-        composerPreviewTimers.push(timerId);
-      });
-      const stopTimer = setTimeout(() => {
-        stopComposerPreviewPlayback("들어보기가 끝났어요.");
-      }, Math.max(80, Math.ceil(totalMs + 120)));
-      composerPreviewTimers.push(stopTimer);
+      scheduleComposerPreviewEvents(0);
     }
 
     function getComposerDraftStorageKey() {
@@ -32381,7 +32578,10 @@ function startBasicPractice() {
         localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(draft));
         composerState.title = title;
         const titleInput = document.getElementById("composerTitleInput");
-        if (titleInput) titleInput.value = title;
+        if (titleInput) {
+          titleInput.value = title;
+          updateComposerTitleInputState();
+        }
         setComposerStatus("composerEditorStatus", "작성 중인 곡을 임시 저장했어요.");
       } catch (error) {
         console.warn("[composer] draft save failed", error);
@@ -32431,9 +32631,19 @@ function startBasicPractice() {
       });
     }
 
+    function updateComposerTitleInputState() {
+      const titleInput = document.getElementById("composerTitleInput");
+      if (!titleInput) return;
+      const isDefaultTitle = String(titleInput.value || "").trim() === "나의 첫 멜로디";
+      titleInput.classList.toggle("is-default-title", isDefaultTitle);
+    }
+
     function renderComposerEditor() {
       const titleInput = document.getElementById("composerTitleInput");
-      if (titleInput) titleInput.value = composerState.title;
+      if (titleInput) {
+        titleInput.value = composerState.title;
+        updateComposerTitleInputState();
+      }
 
       updateComposerDropdownLabels();
       renderComposerMeasureGrid();
@@ -32545,6 +32755,7 @@ function startBasicPractice() {
       const durationClass = "composer-duration-" + item.duration;
       const dotted = item.dotted ? `<span class="composer-score-dot"></span>` : "";
       const noteNameLabel = composerEscapeHtml(item.pitch || "");
+      const entryId = composerEscapeHtml(item.id || "");
       const stemDown = shouldComposerStemDown(item.pitch);
       const stemClass = stemDown ? " is-stem-down" : "";
       const upFlagPath = "M1 1 C8 2 13 9 10 22 C10 13 6 5 2 1 Z";
@@ -32553,7 +32764,7 @@ function startBasicPractice() {
       const flagSvg = `<svg class="composer-note-flag composer-note-flag-one" viewBox="0 0 14 28" aria-hidden="true"><path d="${flagPath}"></path></svg>`;
       const secondFlagSvg = `<svg class="composer-note-flag composer-note-flag-two" viewBox="0 0 14 28" aria-hidden="true"><path d="${flagPath}"></path></svg>`;
       return `
-        <span class="composer-score-item composer-score-note ${durationClass}${stemClass}" style="left:${leftPercent}%; top:${y}px">
+        <span class="composer-score-item composer-score-note ${durationClass}${stemClass}" data-composer-entry-id="${entryId}" style="left:${leftPercent}%; top:${y}px">
           ${renderComposerLedgerLines(y)}
           <span class="composer-note-head"></span>
           ${item.duration === "whole" ? "" : `<span class="composer-note-stem"></span>`}
@@ -32561,7 +32772,7 @@ function startBasicPractice() {
           ${item.duration === "sixteenth" ? secondFlagSvg : ""}
           ${dotted}
         </span>
-        <span class="composer-note-name" style="left:${leftPercent}%">${noteNameLabel}</span>
+        <span class="composer-note-name" data-composer-entry-id="${entryId}" style="left:${leftPercent}%">${noteNameLabel}</span>
       `;
     }
 
@@ -33083,6 +33294,7 @@ function startBasicPractice() {
       if (titleInput && titleInput.dataset.composerBound !== "true") {
         titleInput.addEventListener("input", () => {
           composerState.title = titleInput.value;
+          updateComposerTitleInputState();
         });
         titleInput.dataset.composerBound = "true";
       }
