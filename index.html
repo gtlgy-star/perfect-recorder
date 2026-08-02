@@ -24838,6 +24838,12 @@ function logout() {
   resetActivityGrowthRequestState();
   resetDailyMissionLocalState();
   dailyMissionStateUserId = "";
+  if (typeof clearComposerDraft === "function") {
+    clearComposerDraft();
+  }
+  if (typeof createComposerState === "function") {
+    composerState = createComposerState();
+  }
   app.user = null;
   clearLegacySongStorageState();
   resetSongMenuState("short");
@@ -34180,6 +34186,12 @@ function startBasicPractice() {
       }
     }
 
+    function clearComposerDraft() {
+      try {
+        localStorage.removeItem(getComposerDraftStorageKey());
+      } catch (_) {}
+    }
+
     function formatComposerLibraryDate(value) {
       if (!value) return "";
       const date = new Date(value);
@@ -34807,10 +34819,10 @@ function startBasicPractice() {
     }
 
     function openComposerEditorFromHome() {
-      const draft = loadComposerDraft();
-      composerState = draft || createComposerState();
+      clearComposerDraft();
+      composerState = createComposerState();
       renderComposerEditor();
-      setComposerStatus("composerEditorStatus", draft ? "작성 중인 곡을 불러왔어요." : "");
+      setComposerStatus("composerEditorStatus", "");
       showScreen("composerEditorScreen");
     }
 
