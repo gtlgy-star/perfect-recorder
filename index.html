@@ -10879,7 +10879,9 @@ body.menu-title-active #screen-menu-title {
 }
 
 #composerLibraryScreen,
-#composerClassRoomScreen {
+#composerClassRoomScreen,
+#composerCommunityScreen,
+#composerPublicScreen {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto 16px;
@@ -10896,6 +10898,28 @@ body.menu-title-active #screen-menu-title {
   box-shadow:
     0 18px 38px rgba(29, 78, 216, 0.16),
     inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+#composerLibraryScreen .composer-library-panel {
+  background:
+    radial-gradient(circle at 10% 18%, rgba(220, 252, 231, 0.56), transparent 26%),
+    linear-gradient(180deg, rgba(247, 254, 231, 0.98) 0%, rgba(236, 253, 245, 0.96) 100%);
+  border-color: rgba(187, 247, 208, 0.92);
+}
+
+#composerClassRoomScreen .composer-library-panel {
+  background:
+    radial-gradient(circle at 10% 18%, rgba(219, 234, 254, 0.62), transparent 26%),
+    linear-gradient(180deg, rgba(247, 251, 255, 0.98) 0%, rgba(217, 231, 255, 0.96) 100%);
+  border-color: rgba(191, 219, 254, 0.94);
+}
+
+#composerCommunityScreen .composer-library-panel,
+#composerPublicScreen .composer-library-panel {
+  background:
+    radial-gradient(circle at 10% 18%, rgba(186, 230, 253, 0.62), transparent 26%),
+    linear-gradient(180deg, rgba(240, 251, 255, 0.98) 0%, rgba(201, 236, 255, 0.96) 100%);
+  border-color: rgba(186, 230, 253, 0.94);
 }
 
 .composer-library-header {
@@ -10947,6 +10971,31 @@ body.menu-title-active #screen-menu-title {
   text-align: center;
 }
 
+.composer-class-sort {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: -4px 0 10px;
+}
+
+.composer-class-sort button {
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(147, 197, 253, 0.62);
+  background: linear-gradient(180deg, #FFFFFF 0%, #EFF6FF 100%);
+  color: #1D4ED8;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.composer-class-sort button.is-selected {
+  border-color: rgba(37, 99, 235, 0.8);
+  background: linear-gradient(180deg, #DBEAFE 0%, #93C5FD 100%);
+  color: #071A4D;
+}
+
 .composer-library-list {
   display: grid;
   gap: 10px;
@@ -10965,7 +11014,7 @@ body.menu-title-active #screen-menu-title {
 
 .composer-library-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, auto);
   gap: 12px;
   align-items: center;
   padding: 14px;
@@ -10973,6 +11022,117 @@ body.menu-title-active #screen-menu-title {
   border: 1px solid rgba(186, 210, 245, 0.86);
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+#composerLibraryScreen .composer-library-item {
+  grid-template-columns: 48px minmax(0, 1fr) minmax(360px, auto);
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+#composerLibraryScreen .composer-library-item.is-empty,
+#composerLibraryScreen .composer-library-item.is-locked {
+  grid-template-columns: 48px minmax(0, 1fr);
+}
+
+.composer-library-item.is-empty {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.composer-library-item.is-locked {
+  border-color: rgba(148, 163, 184, 0.58);
+  background:
+    repeating-linear-gradient(135deg, rgba(226, 232, 240, 0.42) 0 10px, rgba(241, 245, 249, 0.42) 10px 20px),
+    rgba(255, 255, 255, 0.66);
+  color: #64748B;
+}
+
+.composer-library-slot-number {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  min-height: 56px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.95), transparent 34%),
+    linear-gradient(180deg, #DCFCE7 0%, #BBF7D0 100%);
+  color: #14532D;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.86),
+    0 8px 14px rgba(22, 101, 52, 0.12);
+}
+
+#composerLibraryScreen .composer-library-item:not(.is-empty):not(.is-locked) .composer-library-slot-number {
+  background:
+    radial-gradient(circle at 32% 20%, rgba(255, 255, 255, 0.95), transparent 32%),
+    linear-gradient(180deg, #86EFAC 0%, #22C55E 100%);
+  color: #064E3B;
+  font-size: 32px;
+  font-weight: 1000;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.74),
+    0 10px 18px rgba(22, 163, 74, 0.24);
+}
+
+.composer-library-item.is-locked .composer-library-slot-number {
+  background: linear-gradient(180deg, #F1F5F9 0%, #CBD5E1 100%);
+  color: #64748B;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.78);
+}
+
+.composer-library-info-box {
+  min-width: 0;
+  min-height: 56px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(191, 219, 254, 0.78);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+#composerLibraryScreen .composer-library-item:not(.is-empty):not(.is-locked) .composer-library-info-box {
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.94) 0%, rgba(219, 234, 254, 0.84) 100%);
+  border-color: rgba(147, 197, 253, 0.86);
+}
+
+.composer-library-item.is-empty .composer-library-info-box,
+.composer-library-item.is-locked .composer-library-info-box {
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.composer-library-slot-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 4px 9px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: #DCFCE7;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.composer-library-item.is-locked .composer-library-slot-label {
+  background: #E2E8F0;
+  color: #475569;
+}
+
+.composer-library-slot-message {
+  margin: 7px 0 0;
+  color: #31507C;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.composer-library-item.is-locked .composer-library-slot-message {
+  color: #64748B;
 }
 
 .composer-library-song-title {
@@ -11005,13 +11165,41 @@ body.menu-title-active #screen-menu-title {
 
 .composer-library-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(74px, auto));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(86px, auto);
+  justify-content: end;
   gap: 8px;
 }
 
 .composer-library-action-btn {
+  min-height: 42px;
   padding: 8px 12px;
+  border-width: 2px;
   white-space: nowrap;
+}
+
+.composer-library-action-btn.is-edit {
+  border-color: rgba(139, 92, 246, 0.62);
+  background: linear-gradient(180deg, #FAF5FF 0%, #DDD6FE 100%);
+  color: #3B0764;
+}
+
+.composer-library-action-btn.is-play {
+  border-color: rgba(37, 99, 235, 0.68);
+  background: linear-gradient(180deg, #EFF6FF 0%, #BFDBFE 100%);
+  color: #0B2F6F;
+}
+
+.composer-library-action-btn.is-share {
+  border-color: rgba(16, 185, 129, 0.68);
+  background: linear-gradient(180deg, #ECFDF5 0%, #A7F3D0 100%);
+  color: #064E3B;
+}
+
+.composer-library-action-btn.is-unshare {
+  border-color: rgba(245, 158, 11, 0.68);
+  background: linear-gradient(180deg, #FFFBEB 0%, #FDE68A 100%);
+  color: #78350F;
 }
 
 .composer-library-action-btn.is-delete {
@@ -11020,14 +11208,82 @@ body.menu-title-active #screen-menu-title {
   color: #991B1B;
 }
 
+.composer-library-action-btn.is-like {
+  position: relative;
+  overflow: visible;
+  border-color: rgba(59, 130, 246, 0.48);
+  background: linear-gradient(180deg, #FFFFFF 0%, #DBEAFE 100%);
+  color: #0B2F6F;
+}
+
+.composer-library-action-btn.is-like[aria-pressed="true"] {
+  border-color: rgba(37, 99, 235, 0.88);
+  background: linear-gradient(180deg, #93C5FD 0%, #2563EB 100%);
+  color: #FFFFFF;
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.24),
+    inset 0 2px 0 rgba(255,255,255,0.42);
+}
+
+.composer-library-action-btn.is-like.is-popping .composer-like-icon {
+  animation: composerLikePop 0.28s ease-out;
+}
+
+.composer-library-action-btn.is-like.is-popping::after {
+  content: "👏";
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  opacity: 0;
+  pointer-events: none;
+  animation: composerLikeFloat 0.48s ease-out;
+}
+
+@keyframes composerLikePop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.26); }
+  100% { transform: scale(1); }
+}
+
+@keyframes composerLikeFloat {
+  0% { opacity: 0; transform: translate(-50%, 4px) scale(0.8); }
+  35% { opacity: 1; transform: translate(-50%, -6px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -24px) scale(0.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .composer-library-action-btn.is-like.is-popping .composer-like-icon,
+  .composer-library-action-btn.is-like.is-popping::after {
+    animation: none;
+  }
+}
+
 @media (max-width: 640px) {
   .composer-library-header,
   .composer-library-item {
     grid-template-columns: 1fr;
   }
 
+  #composerLibraryScreen .composer-library-item {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  #composerLibraryScreen .composer-library-actions {
+    grid-column: 1 / -1;
+  }
+
+  .composer-library-slot-number {
+    width: 38px;
+    min-height: 52px;
+    font-size: 27px;
+  }
+
   .composer-library-actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
   }
 }
 
@@ -11083,25 +11339,39 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-editor-status {
-  min-height: 24px;
-  margin: 12px 0 0;
-  color: #31507C;
+  min-height: 18px;
+  margin: 6px 0 0;
+  color: #17417C;
   font-size: 14px;
-  font-weight: 800;
-  text-align: center;
+  font-weight: 900;
+  text-align: left;
+  padding-left: 6px;
+  line-height: 1.2;
 }
 
 .composer-editor-topbar {
   display: grid;
-  grid-template-columns: auto minmax(260px, 1fr) repeat(3, minmax(142px, auto));
-  gap: 10px;
-  align-items: center;
+  grid-template-columns: auto minmax(260px, 1fr) minmax(500px, auto);
+  column-gap: 10px;
+  align-items: start;
   margin-bottom: 14px;
+}
+
+.composer-title-stack {
+  min-width: 0;
+}
+
+.composer-top-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(142px, auto));
+  column-gap: 8px;
+  row-gap: 6px;
+  align-items: start;
 }
 
 .composer-editor-menu-btn,
 .composer-save-btn {
-  height: 100%;
+  height: 58px;
   min-height: 58px;
   padding: 9px 16px;
   border-radius: 15px;
@@ -11259,14 +11529,15 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-activation-message {
-  margin: 0 0 10px;
+  width: 100%;
+  margin: 6px 0 0;
   padding: 10px 12px;
   border-radius: 14px;
   background: rgba(239, 246, 255, 0.92);
   color: #1D4ED8;
   font-size: 15px;
   font-weight: 900;
-  text-align: center;
+  text-align: left;
   border: 1px solid rgba(147, 197, 253, 0.7);
 }
 
@@ -11320,12 +11591,32 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-score-area {
+  position: relative;
   padding: clamp(10px, 1.3vw, 16px);
+  padding-top: clamp(18px, 2vw, 26px);
   border-radius: 18px;
-  border: 2px solid rgba(221, 205, 181, 0.72);
+  border: 2px solid rgba(221, 205, 181, 0.88);
   background:
     radial-gradient(circle at 50% 0%, rgba(219, 234, 254, 0.35), transparent 34%),
     linear-gradient(180deg, #fffefa 0%, #fffaf0 100%);
+}
+
+.composer-score-preview-tab {
+  position: absolute;
+  top: -50px;
+  right: -2px;
+  z-index: 3;
+  grid-template-columns: minmax(260px, 340px) minmax(110px, 130px);
+  margin: 0;
+  padding: 6px 6px 8px;
+  border: 2px solid rgba(221, 205, 181, 0.88);
+  border-bottom-color: rgba(221, 205, 181, 0.88);
+  border-radius: 16px 16px 0 12px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,250,240,0.98) 100%);
+  box-shadow:
+    0 -4px 14px rgba(120, 72, 0, 0.07),
+    inset 0 2px 0 rgba(255,255,255,0.88);
 }
 
 .composer-current-measure-label {
@@ -11780,7 +12071,7 @@ body.menu-title-active #screen-menu-title {
 
 .composer-tool-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 210px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 14px;
   margin-top: 16px;
 }
@@ -11797,13 +12088,13 @@ body.menu-title-active #screen-menu-title {
 
 .composer-tool-row {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 92px repeat(5, minmax(0, 1fr)) repeat(2, minmax(92px, 1.18fr));
+  gap: 8px;
   align-items: center;
 }
 
 .composer-tool-row.is-note-row {
-  grid-template-columns: 110px minmax(0, 1fr) 128px 128px;
+  grid-template-columns: 92px repeat(5, minmax(0, 1fr)) repeat(2, minmax(92px, 1.18fr));
 }
 
 .composer-tool-row + .composer-tool-row {
@@ -11814,12 +12105,13 @@ body.menu-title-active #screen-menu-title {
 
 .composer-tool-label {
   color: #27106B;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 950;
 }
 
 .composer-note-length-grid {
   display: grid;
+  grid-column: 2 / span 5;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: stretch;
   gap: 8px;
@@ -11828,6 +12120,7 @@ body.menu-title-active #screen-menu-title {
 .composer-pitch-grid {
   position: relative;
   display: grid;
+  grid-column: 2 / -1;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 8px;
 }
@@ -11860,17 +12153,23 @@ body.menu-title-active #screen-menu-title {
 
 .composer-tool-btn {
   min-height: 46px;
-  padding: 8px 10px;
+  padding: 8px 8px;
   font-size: 15px;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .composer-note-length-grid .composer-tool-btn {
   display: grid;
   align-content: center;
   justify-items: center;
-  min-height: 86px;
-  padding: 10px 6px;
+  min-height: 74px;
+  padding: 8px 6px;
   line-height: 1.05;
+}
+
+.composer-pitch-grid .composer-tool-btn {
+  min-height: 52px;
 }
 
 .composer-pitch-grid .composer-tool-btn:nth-of-type(1) {
@@ -11979,16 +12278,25 @@ body.menu-title-active #screen-menu-title {
 }
 
 .composer-dot-rest-row {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  grid-column: 7;
+  grid-row: 1;
   align-self: stretch;
-  align-items: end;
+  align-items: flex-end;
   min-width: 0;
 }
 
 .composer-rest-btn {
-  min-height: 86px;
+  grid-column: 8;
+  grid-row: 1;
+  min-height: 74px;
   align-self: stretch;
+}
+
+#composerDotBtn {
+  width: 100%;
+  min-height: 37px;
+  height: 37px;
 }
 
 .composer-rest-symbol {
@@ -12020,8 +12328,8 @@ body.menu-title-active #screen-menu-title {
 
 .composer-edit-panel {
   display: grid;
-  grid-template-rows: 3fr 1fr;
-  gap: 12px;
+  grid-template-rows: minmax(0, 1fr) 54px 54px;
+  gap: 10px;
   align-content: stretch;
   min-height: 0;
   padding: 0;
@@ -12032,10 +12340,11 @@ body.menu-title-active #screen-menu-title {
 
 .composer-edit-stack {
   display: grid;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(42px, 1fr));
+  gap: 8px;
   min-height: 0;
-  padding: 14px;
+  padding: 12px;
   border: 2px solid rgba(214, 198, 255, 0.7);
   border-radius: 18px;
   background:
@@ -12047,14 +12356,20 @@ body.menu-title-active #screen-menu-title {
   width: 100%;
   height: 100%;
   min-height: 0;
-  padding: 9px 12px;
+  padding: 9px 10px;
   border-width: 1px;
   border-radius: 14px;
-  font-size: 16px;
+  font-size: 15px;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .composer-edit-stack .composer-edit-btn {
   border-color: rgba(147, 197, 253, 0.62);
+}
+
+#composerUndoBtn {
+  grid-column: 1 / -1;
 }
 
 .composer-play-song-btn {
@@ -12072,6 +12387,23 @@ body.menu-title-active #screen-menu-title {
 .composer-play-song-btn:not(:disabled):hover {
   border-color: rgba(29, 78, 216, 0.92);
   background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 100%);
+}
+
+.composer-library-open-btn {
+  border-width: 2px;
+  border-color: rgba(34, 197, 94, 0.58);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #F0FDF4 0%, #BBF7D0 100%);
+  color: #14532D;
+  font-size: 16px;
+  box-shadow:
+    0 12px 22px rgba(34, 197, 94, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.composer-library-open-btn:not(:disabled):hover {
+  border-color: rgba(22, 163, 74, 0.78);
+  background: linear-gradient(180deg, #DCFCE7 0%, #86EFAC 100%);
 }
 
 .composer-confirm-overlay {
@@ -12244,7 +12576,12 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
 
 @media (max-width: 900px) {
   .composer-editor-topbar {
-    grid-template-columns: auto minmax(220px, 1fr) repeat(3, minmax(120px, auto));
+    grid-template-columns: auto minmax(220px, 1fr);
+  }
+
+  .composer-top-controls {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
   }
 
   .composer-editor-chip,
@@ -12257,7 +12594,7 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
   }
 
   .composer-tool-row.is-note-row {
-    grid-template-columns: 96px minmax(0, 1fr) 128px 118px;
+    grid-template-columns: 88px repeat(5, minmax(0, 1fr)) repeat(2, minmax(88px, 1.18fr));
   }
 
   .composer-pitch-grid {
@@ -12271,26 +12608,14 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
     align-items: stretch;
   }
 
+  .composer-title-stack,
   #composerTitleInput {
     min-width: 0;
   }
 
-  #composerTimeDropdown,
-  #composerLengthDropdown,
-  #composerTempoDropdown {
-    grid-row: 2;
-  }
-
-  #composerTimeDropdown {
-    grid-column: 1;
-  }
-
-  #composerLengthDropdown {
-    grid-column: 2;
-  }
-
-  #composerTempoDropdown {
-    grid-column: 3;
+  .composer-top-controls {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
 }
@@ -12301,22 +12626,9 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
     align-items: stretch;
   }
 
-  #composerTimeDropdown,
-  #composerLengthDropdown,
-  #composerTempoDropdown {
-    grid-row: 2;
-  }
-
-  #composerTimeDropdown {
-    grid-column: 1;
-  }
-
-  #composerLengthDropdown {
-    grid-column: 2;
-  }
-
-  #composerTempoDropdown {
-    grid-column: 3;
+  .composer-top-controls {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
 }
@@ -12331,8 +12643,12 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
     grid-template-columns: 1fr 1fr;
   }
 
-  .composer-title-input {
+  .composer-title-stack {
     grid-column: 1 / -1;
+  }
+
+  .composer-top-controls {
+    grid-template-columns: 1fr;
   }
 
   .composer-preview-row {
@@ -12340,7 +12656,20 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
     justify-content: stretch;
   }
 
+  .composer-score-area {
+    padding-top: 14px;
+  }
+
+  .composer-score-preview-tab {
+    position: relative;
+    top: auto;
+    right: auto;
+    grid-template-columns: 1fr;
+    margin-bottom: 10px;
+  }
+
   .composer-note-length-grid {
+    grid-column: 1;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -12350,6 +12679,22 @@ body.composer-practice-popup #step34Section .practiceStatusStack .status {
 
   .composer-tool-row.is-note-row {
     grid-template-columns: 1fr;
+  }
+
+  .composer-dot-rest-row {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .composer-rest-btn,
+  #composerDotBtn {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  #composerDotBtn {
+    min-height: 46px;
+    height: auto;
   }
 
   .composer-high-pitch-btn {
@@ -17927,7 +18272,7 @@ body.theme-light .readyCardHint {
           <img class="composerCardImage" src="images/composer/composer-my-songs.webp" alt="">
         </span>
         <span class="composerCardCopy">
-          <span class="composerCardTitle">내 작곡 보관함</span>
+          <span class="composerCardTitle">내 창작곡 보관함</span>
           <span class="composerCardDesc">내가 만든 곡을 다시 연주해봐요.</span>
         </span>
         <span class="composerArrow" aria-hidden="true">›</span>
@@ -17938,8 +18283,8 @@ body.theme-light .readyCardHint {
           <img class="composerCardImage" src="images/composer/composer-class-room.webp" alt="">
         </span>
         <span class="composerCardCopy">
-          <span class="composerCardTitle">우리 반 작곡방</span>
-          <span class="composerCardDesc">우리 반 친구들이 만든 곡을 만나 봐요.</span>
+          <span class="composerCardTitle">우리 반 창작곡 놀이터</span>
+          <span class="composerCardDesc">우리 반 친구들이 만든 창작곡을 만나 봐요.</span>
         </span>
         <span class="composerArrow" aria-hidden="true">›</span>
       </button>
@@ -17958,12 +18303,12 @@ body.theme-light .readyCardHint {
   </div>
 </section>
 
-<section id="composerLibraryScreen" class="screen hidden" aria-label="내 작곡 보관함">
+<section id="composerLibraryScreen" class="screen hidden" aria-label="내 창작곡 보관함">
   <div class="composer-library-panel">
     <div class="composer-library-header">
       <button id="composerLibraryBackBtn" class="composer-library-back-btn" type="button">‹ 작곡 메뉴</button>
       <div>
-        <h2 class="composer-library-title">내 작곡 보관함</h2>
+        <h2 class="composer-library-title">내 창작곡 보관함</h2>
         <p class="composer-library-subtitle">내가 저장한 곡을 수정하거나 연주할 수 있어요.</p>
       </div>
       <button id="composerLibraryRefreshBtn" class="composer-library-refresh-btn" type="button">새로고침</button>
@@ -17973,18 +18318,22 @@ body.theme-light .readyCardHint {
   </div>
 </section>
 
-<section id="composerClassRoomScreen" class="screen hidden" aria-label="우리 반 작곡방">
+<section id="composerClassRoomScreen" class="screen hidden" aria-label="우리 반 창작곡 놀이터">
   <div class="composer-library-panel">
     <div class="composer-library-header">
       <button id="composerClassRoomBackBtn" class="composer-library-back-btn" type="button">‹ 작곡 메뉴</button>
       <div>
-        <h2 class="composer-library-title">우리 반 작곡방</h2>
-        <p class="composer-library-subtitle">우리 반 친구들이 공유한 곡을 감상하고 연주해요.</p>
+        <h2 class="composer-library-title">우리 반 창작곡 놀이터</h2>
+        <p class="composer-library-subtitle">우리 반 친구들이 공유한 창작곡을 감상하고 연주해요.</p>
       </div>
       <button id="composerClassRoomRefreshBtn" class="composer-library-refresh-btn" type="button">새로고침</button>
     </div>
     <div id="composerClassRoomStatus" class="composer-library-status" aria-live="polite"></div>
-    <div id="composerClassRoomList" class="composer-library-list" aria-label="우리 반 공유 작곡 목록"></div>
+    <div class="composer-class-sort" aria-label="우리 반 창작곡 정렬">
+      <button class="is-selected" type="button" data-composer-class-sort="latest">최신순</button>
+      <button type="button" data-composer-class-sort="likes">멋져요순</button>
+    </div>
+    <div id="composerClassRoomList" class="composer-library-list" aria-label="우리 반 공유 창작곡 목록"></div>
   </div>
 </section>
 
@@ -17992,47 +18341,50 @@ body.theme-light .readyCardHint {
   <div class="composer-editor-panel">
     <div class="composer-editor-topbar">
       <button id="composerEditorMenuBtn" class="composer-editor-menu-btn composer-save-btn" type="button">▣ 곡 저장하기</button>
-      <input id="composerTitleInput" class="composer-title-input" type="text" value="나의 첫 멜로디" aria-label="곡 제목">
-      <div id="composerTimeDropdown" class="composer-dropdown">
-        <button id="composerTimeDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="timeSignature" aria-expanded="false">♩ 박자 선택 ▼</button>
-        <div id="composerTimeDropdownMenu" class="composer-dropdown-menu hidden">
-          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="2/4">2/4박자</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="3/4">3/4박자</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="4/4">4/4박자</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="6/8">6/8박자</button>
+      <div class="composer-title-stack">
+        <input id="composerTitleInput" class="composer-title-input" type="text" value="나의 첫 멜로디" aria-label="곡 제목">
+        <p id="composerEditorStatus" class="composer-editor-status" aria-live="polite"></p>
+        <p id="composerActivationMessage" class="composer-activation-message">박자, 곡의 길이, 곡의 빠르기를 모두 선택해 주세요.</p>
+      </div>
+      <div class="composer-top-controls">
+        <div id="composerTimeDropdown" class="composer-dropdown">
+          <button id="composerTimeDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="timeSignature" aria-expanded="false">♩ 박자 선택 ▼</button>
+          <div id="composerTimeDropdownMenu" class="composer-dropdown-menu hidden">
+            <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="2/4">2/4박자</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="3/4">3/4박자</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="4/4">4/4박자</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="timeSignature" data-value="6/8">6/8박자</button>
+          </div>
+        </div>
+        <div id="composerLengthDropdown" class="composer-dropdown">
+          <button id="composerLengthDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="measureCount" aria-expanded="false">▤ 곡의 길이 선택 ▼</button>
+          <div id="composerLengthDropdownMenu" class="composer-dropdown-menu hidden">
+            <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="8">8마디</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="12">12마디</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="16">16마디</button>
+          </div>
+        </div>
+        <div id="composerTempoDropdown" class="composer-dropdown">
+          <button id="composerTempoDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="tempoKey" aria-expanded="false">▶ 곡의 빠르기 선택 ▼</button>
+          <div id="composerTempoDropdownMenu" class="composer-dropdown-menu hidden">
+            <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="slow">느리게</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleSlow">조금 느리게</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="normal">보통 빠르기로</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleFast">조금 빠르게</button>
+            <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="fast">빠르게</button>
+          </div>
         </div>
       </div>
-      <div id="composerLengthDropdown" class="composer-dropdown">
-        <button id="composerLengthDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="measureCount" aria-expanded="false">▤ 곡의 길이 선택 ▼</button>
-        <div id="composerLengthDropdownMenu" class="composer-dropdown-menu hidden">
-          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="8">8마디</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="12">12마디</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="measureCount" data-value="16">16마디</button>
-        </div>
-      </div>
-      <div id="composerTempoDropdown" class="composer-dropdown">
-        <button id="composerTempoDropdownBtn" class="composer-editor-chip" type="button" data-composer-dropdown="tempoKey" aria-expanded="false">▶ 곡의 빠르기 선택 ▼</button>
-        <div id="composerTempoDropdownMenu" class="composer-dropdown-menu hidden">
-          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="slow">느리게</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleSlow">조금 느리게</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="normal">보통 빠르기로</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="littleFast">조금 빠르게</button>
-          <button class="composer-dropdown-option" type="button" data-composer-setting="tempoKey" data-value="fast">빠르게</button>
-        </div>
-      </div>
-    </div>
-
-    <p id="composerActivationMessage" class="composer-activation-message">박자, 곡의 길이, 곡의 빠르기를 모두 선택해 주세요.</p>
-
-    <div id="composerPreviewZone" class="composer-preview-row composer-disabled-zone">
-      <div class="composer-preview-wrap">
-        <button id="composerPreviewBtn" class="composer-preview-btn" type="button" data-composer-preview="measure">♪ 선택마디 들어보기</button>
-        <button class="composer-preview-btn" type="button" data-composer-preview="all">♫ 전체 들어보기</button>
-      </div>
-      <button id="composerStopBtn" class="composer-stop-btn" type="button" disabled>■ 멈추기</button>
     </div>
 
     <div id="composerScoreArea" class="composer-score-area composer-disabled-zone">
+      <div id="composerPreviewZone" class="composer-preview-row composer-disabled-zone composer-score-preview-tab">
+        <div class="composer-preview-wrap">
+          <button id="composerPreviewBtn" class="composer-preview-btn" type="button" data-composer-preview="measure">♪ 선택마디 들어보기</button>
+          <button class="composer-preview-btn" type="button" data-composer-preview="all">♫ 전체 들어보기</button>
+        </div>
+        <button id="composerStopBtn" class="composer-stop-btn" type="button" disabled>■ 멈추기</button>
+      </div>
       <p id="composerCurrentMeasureLabel" class="composer-current-measure-label">1마디를 작곡하고 있어요.</p>
       <div id="composerMeasureGrid" class="composer-measure-grid" aria-label="작곡 마디 목록"></div>
     </div>
@@ -18080,10 +18432,10 @@ body.theme-light .readyCardHint {
           <button id="composerClearMeasureBtn" class="composer-edit-btn" type="button" disabled>마디 비우기</button>
         </div>
         <button id="composerPlaySongBtn" class="composer-edit-btn composer-play-song-btn" type="button" disabled>▶ 내 곡 연주하기</button>
+        <button id="composerLibraryOpenBtn" class="composer-edit-btn composer-library-open-btn" type="button">▤ 내 창작곡 보관함</button>
       </div>
     </div>
 
-    <p id="composerEditorStatus" class="composer-editor-status" aria-live="polite"></p>
   </div>
 
 </section>
@@ -19682,8 +20034,8 @@ const SCREEN_TITLES = {
   "screen-textbook": "교과서 수록곡",
   "screen-bonus-map": "성장 보너스 연주곡",
   composerHomeScreen: "나도 작곡가!",
-  composerLibraryScreen: "내 작곡 보관함",
-  composerClassRoomScreen: "우리 반 작곡방",
+  composerLibraryScreen: "내 창작곡 보관함",
+  composerClassRoomScreen: "우리 반 창작곡 놀이터",
   composerEditorScreen: "나도 작곡가!",
   "screen-challenge": "도전! 퍼펙트 리코더",
   "screen-challenge-play": "도전! 퍼펙트 리코더"
@@ -32339,6 +32691,8 @@ function startBasicPractice() {
     let composerState = createComposerState();
     let composerLibraryItems = [];
     let composerClassRoomItems = [];
+    let composerClassRoomSortKey = "latest";
+    const composerClassLikePending = new Set();
     let composerEntryIdCounter = 0;
     let composerPreviewTimers = [];
     let composerPreviewPlaying = false;
@@ -33043,7 +33397,7 @@ function startBasicPractice() {
         : " 미완성 마디: " + validation.incompleteMeasureNumbers.join(", ") + "마디";
       setComposerStatus(
         "composerEditorStatus",
-        "내 작곡 보관함에 저장했어요." + incompleteMessage
+        "곡을 저장하였습니다." + incompleteMessage
       );
     }
 
@@ -33084,6 +33438,62 @@ function startBasicPractice() {
       }
     }
 
+    async function ensureComposerNewSaveSlot(data, validation) {
+      const level = getComposerLibraryUserLevel();
+      const unlockedSlots = getComposerLibraryUnlockedSlotCount(level);
+      const items = await getComposerLibraryItemsForLimitCheck();
+      if (items.length < unlockedSlots) return true;
+      setComposerStatus("composerEditorStatus", "현재 Lv." + level + "에서는 " + unlockedSlots + "곡까지 저장할 수 있어요. 덮어쓸 곡을 고르거나 레벨을 올려주세요.");
+      await handleComposerLimitReached(data, validation);
+      return false;
+    }
+
+    function getComposerUniqueNewTitle(title, items = composerLibraryItems) {
+      const baseTitle = String(title || "제목 없는 곡").trim() || "제목 없는 곡";
+      const existingTitles = new Set(
+        (Array.isArray(items) ? items : [])
+          .map((item) => String(item?.title || "").trim())
+          .filter(Boolean)
+      );
+      if (!existingTitles.has(baseTitle)) return baseTitle;
+      let suffix = 2;
+      while (existingTitles.has(baseTitle + " " + suffix)) {
+        suffix += 1;
+      }
+      return baseTitle + " " + suffix;
+    }
+
+    function showComposerSaveModeChoice(title) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "composer-confirm-overlay";
+        overlay.innerHTML = `
+          <div class="composer-confirm-dialog" role="dialog" aria-modal="true" aria-label="곡 저장 방식 선택">
+            <p class="composer-confirm-message">'${composerEscapeHtml(title || "제목 없는 곡")}' 곡을 어떻게 저장할까요?</p>
+            <div class="composer-confirm-actions">
+              <button type="button" data-composer-save-mode="cancel">취소</button>
+              <button type="button" data-composer-save-mode="new">새 곡으로 저장</button>
+              <button class="primary" type="button" data-composer-save-mode="overwrite">덮어쓰기</button>
+            </div>
+          </div>
+        `;
+
+        const finish = (value) => {
+          overlay.remove();
+          resolve(value);
+        };
+
+        overlay.addEventListener("click", (event) => {
+          if (event.target === overlay) finish("cancel");
+          const mode = event.target?.dataset?.composerSaveMode;
+          if (mode) finish(mode);
+        });
+
+        document.body.appendChild(overlay);
+        overlay.querySelector("[data-composer-save-mode='overwrite']")?.focus();
+      });
+    }
+
     async function saveComposerDraft() {
       try {
         const titleInput = document.getElementById("composerTitleInput");
@@ -33097,6 +33507,38 @@ function startBasicPractice() {
           return;
         }
         localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(data));
+        if (data.compositionId) {
+          const saveMode = await showComposerSaveModeChoice(data.title);
+          if (saveMode === "cancel") {
+            setComposerStatus("composerEditorStatus", "저장을 취소했어요. 작곡 내용은 그대로 남아 있어요.");
+            return;
+          }
+          if (saveMode === "new") {
+            const nowIso = new Date().toISOString();
+            const newData = {
+              ...data,
+              compositionId: null,
+              visibility: "private",
+              createdAt: nowIso,
+              updatedAt: nowIso
+            };
+            const canSaveNew = await ensureComposerNewSaveSlot(newData, validation);
+            if (!canSaveNew) return;
+            newData.title = getComposerUniqueNewTitle(newData.title);
+            localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(newData));
+            setComposerStatus("composerEditorStatus", "새 곡으로 저장하고 있어요.");
+            await persistComposerSaveData(newData, validation, { compositionId: null });
+            return;
+          }
+          setComposerStatus("composerEditorStatus", "기존 곡에 덮어쓰고 있어요.");
+          await persistComposerSaveData(data, validation, { compositionId: data.compositionId });
+          return;
+        }
+        const canSaveNew = await ensureComposerNewSaveSlot(data, validation);
+        if (!canSaveNew) {
+          return;
+        }
+        data.title = getComposerUniqueNewTitle(data.title);
         setComposerStatus("composerEditorStatus", "보관함에 저장하고 있어요.");
         await persistComposerSaveData(data, validation);
       } catch (error) {
@@ -33151,16 +33593,49 @@ function startBasicPractice() {
     function getComposerLibraryShareAction(item) {
       const visibility = String(item?.visibility || "private");
       if (visibility === "private") {
-        return `<button class="composer-library-action-btn" type="button" data-composer-library-action="share">학급 공유</button>`;
+        return `<button class="composer-library-action-btn is-share" type="button" data-composer-library-action="share">학급 공유</button>`;
       }
       if (visibility === "class") {
-        return `<button class="composer-library-action-btn" type="button" data-composer-library-action="unshare">공유 해제</button>`;
+        return `<button class="composer-library-action-btn is-unshare" type="button" data-composer-library-action="unshare">공유 해제</button>`;
       }
       return "";
     }
 
     function getComposerLibraryItemById(compositionId) {
       return (composerLibraryItems || []).find((item) => String(item.compositionId || "") === String(compositionId || "")) || null;
+    }
+
+    function getComposerLibraryUserLevel() {
+      const appRef = typeof app !== "undefined" ? app : (typeof window !== "undefined" ? window.app : null);
+      const appStateRef = typeof appState !== "undefined" ? appState : null;
+      const level = Number(appRef?.user?.level ?? appStateRef?.user?.level ?? 0);
+      return Number.isFinite(level) ? Math.max(0, Math.min(50, Math.floor(level))) : 0;
+    }
+
+    function getComposerLibraryUnlockedSlotCount(level = getComposerLibraryUserLevel()) {
+      if (level >= 40) return 5;
+      if (level >= 30) return 4;
+      if (level >= 20) return 3;
+      if (level >= 10) return 2;
+      return 1;
+    }
+
+    function getComposerLibrarySlotRequiredLevel(slotNumber) {
+      return Math.max(0, (Number(slotNumber) - 1) * 10);
+    }
+
+    async function getComposerLibraryItemsForLimitCheck() {
+      try {
+        const result = await app.api("listComposerCompositions", getComposerApiUserPayload());
+        const items = Array.isArray(result?.list) ? result.list : [];
+        composerLibraryItems = items;
+        saveComposerLibraryCache(items);
+        return items;
+      } catch (_) {
+        return Array.isArray(composerLibraryItems) && composerLibraryItems.length
+          ? composerLibraryItems
+          : loadComposerLibraryCache();
+      }
     }
 
     function showComposerOverwriteChoice(items) {
@@ -33170,7 +33645,7 @@ function startBasicPractice() {
         const safeItems = Array.isArray(items) ? items : [];
         overlay.innerHTML = `
           <div class="composer-confirm-dialog composer-overwrite-dialog" role="dialog" aria-modal="true" aria-label="보관함 저장 선택">
-            <p class="composer-confirm-message">내 작곡 보관함에는 최대 5곡까지 저장할 수 있어요.</p>
+            <p class="composer-confirm-message">현재 사용할 수 있는 보관 슬롯이 가득 찼어요.</p>
             <div class="composer-overwrite-list">
               ${safeItems.map((item) => `
                 <button type="button" data-composer-overwrite-id="${composerEscapeHtml(item.compositionId)}">
@@ -33211,11 +33686,35 @@ function startBasicPractice() {
       const list = document.getElementById("composerLibraryList");
       if (!list) return;
       const safeItems = Array.isArray(items) ? items : [];
-      if (!safeItems.length) {
-        list.innerHTML = `<div class="composer-library-empty">아직 저장한 곡이 없어요. 곡 만들기에서 첫 곡을 저장해 보세요.</div>`;
-        return;
-      }
-      list.innerHTML = safeItems.map((item) => {
+      const level = getComposerLibraryUserLevel();
+      const unlockedSlots = getComposerLibraryUnlockedSlotCount(level);
+      const slots = Array.from({ length: 5 }, (_, index) => safeItems[index] || null);
+      list.innerHTML = slots.map((item, index) => {
+        const slotNumber = index + 1;
+        const isUnlocked = slotNumber <= unlockedSlots;
+        const requiredLevel = getComposerLibrarySlotRequiredLevel(slotNumber);
+        if (!isUnlocked && !item) {
+          return `
+            <article class="composer-library-item is-locked">
+              <span class="composer-library-slot-number" aria-label="${slotNumber}번 슬롯">${slotNumber}</span>
+              <div class="composer-library-info-box">
+                <h3 class="composer-library-song-title">잠긴 보관 슬롯</h3>
+                <p class="composer-library-slot-message">Lv.${requiredLevel}부터 사용할 수 있어요. 레벨을 올려주세요.</p>
+              </div>
+            </article>
+          `;
+        }
+        if (!item) {
+          return `
+            <article class="composer-library-item is-empty">
+              <span class="composer-library-slot-number" aria-label="${slotNumber}번 슬롯">${slotNumber}</span>
+              <div class="composer-library-info-box">
+                <h3 class="composer-library-song-title">비어 있는 슬롯</h3>
+                <p class="composer-library-slot-message">곡 만들기에서 저장하면 이 슬롯에 들어와요.</p>
+              </div>
+            </article>
+          `;
+        }
         const completeText = item.isComplete ? "완성" : "미완성";
         const completeClass = item.isComplete ? "" : " is-incomplete";
         const updatedAt = formatComposerLibraryDate(item.updatedAt);
@@ -33223,7 +33722,8 @@ function startBasicPractice() {
         const shareAction = getComposerLibraryShareAction(item);
         return `
           <article class="composer-library-item" data-composer-id="${composerEscapeHtml(item.compositionId)}">
-            <div>
+            <span class="composer-library-slot-number" aria-label="${slotNumber}번 슬롯">${slotNumber}</span>
+            <div class="composer-library-info-box">
               <h3 class="composer-library-song-title">${composerEscapeHtml(item.title || "제목 없는 곡")}</h3>
               <div class="composer-library-meta">
                 <span class="composer-library-pill">${composerEscapeHtml(visibilityLabel)}</span>
@@ -33235,8 +33735,8 @@ function startBasicPractice() {
               </div>
             </div>
             <div class="composer-library-actions">
-              <button class="composer-library-action-btn" type="button" data-composer-library-action="edit">수정하기</button>
-              <button class="composer-library-action-btn" type="button" data-composer-library-action="play">연주하기</button>
+              <button class="composer-library-action-btn is-edit" type="button" data-composer-library-action="edit">수정하기</button>
+              <button class="composer-library-action-btn is-play" type="button" data-composer-library-action="play">연주하기</button>
               ${shareAction}
               <button class="composer-library-action-btn is-delete" type="button" data-composer-library-action="delete">삭제</button>
             </div>
@@ -33253,7 +33753,11 @@ function startBasicPractice() {
         composerLibraryItems = Array.isArray(result?.list) ? result.list : [];
         saveComposerLibraryCache(composerLibraryItems);
         renderComposerLibraryList(composerLibraryItems);
-        if (status) status.textContent = composerLibraryItems.length + "/5곡을 저장했어요.";
+        if (status) {
+          const level = getComposerLibraryUserLevel();
+          const unlockedSlots = getComposerLibraryUnlockedSlotCount(level);
+          status.textContent = "현재 레벨 " + level + ". " + unlockedSlots + "곡을 저장할 수 있어요. (" + composerLibraryItems.length + "/" + unlockedSlots + ")";
+        }
       } catch (error) {
         console.warn("[composer] library list failed", error);
         composerLibraryItems = loadComposerLibraryCache();
@@ -33313,7 +33817,7 @@ function startBasicPractice() {
     }
 
     async function deleteComposerLibraryComposition(compositionId) {
-      const ok = await showComposerConfirm("이 곡을 내 작곡 보관함에서 삭제할까요?");
+      const ok = await showComposerConfirm("이 곡을 내 창작곡 보관함에서 삭제할까요?");
       if (!ok) return;
       const status = document.getElementById("composerLibraryStatus");
       if (status) status.textContent = "곡을 삭제하고 있어요.";
@@ -33352,7 +33856,7 @@ function startBasicPractice() {
           return shareComposerLibraryComposition(compositionId, true);
         }
         await loadComposerLibraryList();
-        if (status) status.textContent = result?.alreadyShared ? "이미 학급 공유 중인 곡이에요." : "우리 반 작곡방에 공유했어요.";
+        if (status) status.textContent = result?.alreadyShared ? "이미 학급 공유 중인 곡이에요." : "우리 반 창작곡 놀이터에 공유했어요.";
       } catch (error) {
         console.warn("[composer] share failed", error);
         if (status) status.textContent = "학급 공유를 하지 못했어요.";
@@ -33405,22 +33909,33 @@ function startBasicPractice() {
       list.innerHTML = safeItems.map((item) => {
         const sharedAt = formatComposerLibraryDate(item.sharedAt);
         const isMine = item.isMine === true || String(item.ownerUserId || "") === String(app?.user?.userId || "");
+        const likeCount = Math.max(0, Number(item.likeCount || 0));
+        const likedByMe = item.likedByMe === true;
+        const completeText = item.isComplete ? "완성곡" : "미완성곡";
+        const completeClass = item.isComplete ? "" : " is-incomplete";
+        const tempoLabel = getComposerTempoLabel(item.tempoKey) || (item.bpm ? "BPM " + Number(item.bpm) : "-");
+        const ownerName = item.ownerName || "친구";
+        const ownerNumber = item.number ? String(item.number) + "번" : "번호 없음";
+        const likeLabel = `${item.title || "제목 없는 곡"} - ${ownerName}의 곡에 멋져요`;
         return `
           <article class="composer-library-item" data-composer-id="${composerEscapeHtml(item.compositionId)}">
             <div>
               <h3 class="composer-library-song-title">${composerEscapeHtml(item.title || "제목 없는 곡")}</h3>
               <div class="composer-library-meta">
-                <span class="composer-library-pill">${composerEscapeHtml(item.ownerName || "친구")}</span>
+                <span class="composer-library-pill">만든 친구: ${composerEscapeHtml(ownerName)}</span>
+                <span class="composer-library-pill">${composerEscapeHtml(ownerNumber)}</span>
                 ${isMine ? `<span class="composer-library-pill">내 곡</span>` : ""}
+                <span class="composer-library-pill${completeClass}">${completeText}</span>
                 <span class="composer-library-pill">${composerEscapeHtml(item.timeSignature || "-")}</span>
                 <span class="composer-library-pill">${Number(item.measureCount) || 0}마디</span>
-                <span class="composer-library-pill">BPM ${Number(item.bpm) || "-"}</span>
+                <span class="composer-library-pill">${composerEscapeHtml(tempoLabel)}</span>
                 ${sharedAt ? `<span class="composer-library-pill">${composerEscapeHtml(sharedAt)} 공유</span>` : ""}
               </div>
             </div>
             <div class="composer-library-actions">
-              <button class="composer-library-action-btn" type="button" data-composer-class-action="play">연주하기</button>
-              ${isMine ? `<button class="composer-library-action-btn" type="button" data-composer-class-action="unshare">공유 해제</button>` : ""}
+              <button class="composer-library-action-btn is-play" type="button" data-composer-class-action="play">연주하기</button>
+              ${isMine ? `<button class="composer-library-action-btn is-unshare" type="button" data-composer-class-action="unshare">공유 해제</button>` : ""}
+              <button class="composer-library-action-btn is-like" type="button" data-composer-class-action="like" aria-pressed="${likedByMe ? "true" : "false"}" aria-label="${composerEscapeHtml(likeLabel)}"><span class="composer-like-icon">👏</span> 멋져요 <span data-composer-like-count>${likeCount}</span></button>
             </div>
           </article>
         `;
@@ -33431,7 +33946,10 @@ function startBasicPractice() {
       const status = document.getElementById("composerClassRoomStatus");
       if (status) status.textContent = "우리 반 공유곡을 불러오고 있어요.";
       try {
-        const result = await app.api("listClassComposerCompositions", getComposerApiUserPayload());
+        const result = await app.api("listClassComposerCompositions", {
+          ...getComposerApiUserPayload(),
+          sortKey: composerClassRoomSortKey
+        });
         composerClassRoomItems = Array.isArray(result?.list) ? result.list : [];
         renderComposerClassRoomList(composerClassRoomItems);
         if (status) status.textContent = composerClassRoomItems.length ? composerClassRoomItems.length + "곡이 공유되어 있어요." : "";
@@ -33443,9 +33961,26 @@ function startBasicPractice() {
       }
     }
 
+    function updateComposerClassRoomSortButtons() {
+      document.querySelectorAll("[data-composer-class-sort]").forEach((btn) => {
+        btn.classList.toggle("is-selected", btn.dataset.composerClassSort === composerClassRoomSortKey);
+      });
+    }
+
+    function handleComposerClassRoomSortClick(event) {
+      const btn = event.target?.closest?.("[data-composer-class-sort]");
+      if (!btn) return;
+      const nextSort = btn.dataset.composerClassSort === "likes" ? "likes" : "latest";
+      if (composerClassRoomSortKey === nextSort) return;
+      composerClassRoomSortKey = nextSort;
+      updateComposerClassRoomSortButtons();
+      loadComposerClassRoomList();
+    }
+
     function openComposerClassRoom() {
       showScreen("composerClassRoomScreen");
       renderComposerClassRoomList([]);
+      updateComposerClassRoomSortButtons();
       loadComposerClassRoomList();
     }
 
@@ -33477,6 +34012,74 @@ function startBasicPractice() {
       }
     }
 
+    function getComposerClassRoomCardElement(compositionId) {
+      const cards = document.querySelectorAll("#composerClassRoomList [data-composer-id]");
+      return Array.from(cards).find((card) => String(card.dataset.composerId || "") === String(compositionId || "")) || null;
+    }
+
+    function updateComposerClassRoomLikeButton(compositionId, likedByMe, likeCount) {
+      const item = composerClassRoomItems.find((entry) => String(entry.compositionId || "") === String(compositionId || ""));
+      if (item) {
+        item.likedByMe = likedByMe === true;
+        item.likeCount = Math.max(0, Number(likeCount || 0));
+      }
+      const card = getComposerClassRoomCardElement(compositionId);
+      const btn = card?.querySelector?.('[data-composer-class-action="like"]');
+      if (!btn) return;
+      const safeCount = Math.max(0, Number(likeCount || 0));
+      btn.setAttribute("aria-pressed", likedByMe ? "true" : "false");
+      const countEl = btn.querySelector("[data-composer-like-count]");
+      if (countEl) countEl.textContent = String(safeCount);
+      btn.classList.remove("is-popping");
+      if (likedByMe && !window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+        void btn.offsetWidth;
+        btn.classList.add("is-popping");
+        window.setTimeout(() => btn.classList.remove("is-popping"), 520);
+      }
+    }
+
+    function getComposerClassRoomLikeErrorMessage(error) {
+      const code = error?.response?.code || error?.code || "";
+      if (code === "STUDENT_NOT_FOUND") return "로그인을 다시 확인해 주세요.";
+      if (code === "CLASS_SCOPE_MISMATCH") return "다른 학급의 곡에는 멋져요를 보낼 수 없어요.";
+      if (code === "COMPOSITION_NOT_FOUND") return "공유곡을 찾지 못했어요.";
+      if (code === "NOT_CLASS_SHARED") return "현재 공유 중인 학급 곡에만 멋져요를 보낼 수 있어요.";
+      return "멋져요를 보내지 못했어요.";
+    }
+
+    async function toggleComposerClassRoomLike(compositionId) {
+      if (composerClassLikePending.has(compositionId)) return;
+      const item = composerClassRoomItems.find((entry) => String(entry.compositionId || "") === String(compositionId || ""));
+      const card = getComposerClassRoomCardElement(compositionId);
+      const btn = card?.querySelector?.('[data-composer-class-action="like"]');
+      const status = document.getElementById("composerClassRoomStatus");
+      composerClassLikePending.add(compositionId);
+      if (btn) btn.disabled = true;
+      try {
+        const result = await app.api("toggleComposerCompositionLike", {
+          ...getComposerApiUserPayload(),
+          compositionId
+        });
+        if (result && result.ok === false) {
+          throw { response: result, message: result.error || "like failed" };
+        }
+        const likedByMe = result?.likedByMe === true;
+        const likeCount = Number(result?.likeCount || 0);
+        updateComposerClassRoomLikeButton(compositionId, likedByMe, likeCount);
+        if (status) {
+          status.textContent = likedByMe
+            ? `${item?.ownerName || "친구"}의 곡에 멋져요를 보냈어요!`
+            : "멋져요를 취소했어요.";
+        }
+      } catch (error) {
+        console.warn("[composer] class room like failed", error);
+        if (status) status.textContent = getComposerClassRoomLikeErrorMessage(error);
+      } finally {
+        composerClassLikePending.delete(compositionId);
+        if (btn) btn.disabled = false;
+      }
+    }
+
     function handleComposerClassRoomClick(event) {
       const actionBtn = event.target?.closest?.("[data-composer-class-action]");
       if (!actionBtn) return;
@@ -33486,6 +34089,7 @@ function startBasicPractice() {
       const action = actionBtn.dataset.composerClassAction;
       if (action === "play") playComposerClassRoomComposition(compositionId);
       if (action === "unshare") unshareComposerLibraryComposition(compositionId, "composerClassRoomStatus");
+      if (action === "like") toggleComposerClassRoomLike(compositionId);
     }
 
     function openComposerEditorFromHome() {
@@ -33562,6 +34166,12 @@ function startBasicPractice() {
       if (classRoomList && classRoomList.dataset.composerBound !== "true") {
         classRoomList.addEventListener("click", handleComposerClassRoomClick);
         classRoomList.dataset.composerBound = "true";
+      }
+
+      const classSort = document.querySelector(".composer-class-sort");
+      if (classSort && classSort.dataset.composerBound !== "true") {
+        classSort.addEventListener("click", handleComposerClassRoomSortClick);
+        classSort.dataset.composerBound = "true";
       }
     }
 
@@ -34136,7 +34746,7 @@ function startBasicPractice() {
       const message = document.getElementById("composerActivationMessage");
       if (message) message.classList.toggle("hidden", enabled);
 
-      ["composerPreviewZone", "composerScoreArea", "composerToolZone"].forEach((id) => {
+      ["composerScoreArea", "composerToolZone"].forEach((id) => {
         const zone = document.getElementById(id);
         if (!zone) return;
         zone.classList.toggle("is-disabled", !enabled);
@@ -34239,7 +34849,8 @@ function startBasicPractice() {
         ["composerUndoBtn", undoComposerEdit],
         ["composerDeleteOneBtn", deleteLastComposerEntry],
         ["composerClearMeasureBtn", clearSelectedComposerMeasure],
-        ["composerPlaySongBtn", startComposerSongPractice]
+        ["composerPlaySongBtn", startComposerSongPractice],
+        ["composerLibraryOpenBtn", openComposerLibrary]
       ].forEach(([id, handler]) => {
         const btn = document.getElementById(id);
         if (!btn || btn.dataset.composerBound === "true") return;
