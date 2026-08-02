@@ -11179,7 +11179,7 @@ body.menu-title-active #screen-menu-title {
   width: 100%;
   min-width: 0;
   min-height: 126px;
-  padding: 12px 10px;
+  padding: 5px 10px 12px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -11290,7 +11290,7 @@ body.menu-title-active #screen-menu-title {
   width: calc(100% + 20px);
   min-width: 0;
   height: 64px;
-  margin: 12px -10px 0;
+  margin: 2px -10px 0;
   padding: 0;
   overflow: visible;
 }
@@ -11457,6 +11457,24 @@ body.menu-title-active #screen-menu-title {
 
 .composer-note-flag-two {
   top: 0;
+}
+
+.composer-note-name {
+  position: absolute;
+  z-index: 6;
+  transform: translateX(-50%);
+  min-width: 48px;
+  bottom: -24px;
+  color: #0B1F4D;
+  font-family: "Pretendard", "Malgun Gothic", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 1000;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92),
+    0 0 6px rgba(255, 255, 255, 0.86);
 }
 
 .composer-score-note.is-stem-down .composer-note-flag {
@@ -11902,8 +11920,35 @@ body.composer-practice-popup .screen-nav-row {
   display: none !important;
 }
 
+body.composer-practice-popup {
+  min-width: 0;
+  overflow: hidden;
+  background: #bfefff;
+}
+
+body.composer-practice-popup::before,
+body.composer-practice-popup::after {
+  display: none;
+}
+
 body.composer-practice-popup .wrap {
-  padding-top: 14px;
+  width: 960px;
+  max-width: none;
+  margin: 0;
+  padding: 8px 10px 10px;
+}
+
+body.composer-practice-popup #appViewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.composer-practice-popup #appViewport #app.wrap {
+  position: absolute;
+  transform-origin: top left;
 }
 
 body.composer-practice-popup .wrap > .topBar,
@@ -11914,6 +11959,44 @@ body.composer-practice-popup .wrap > .heroCard {
 body.composer-practice-popup #step34Section {
   margin-top: 0;
   margin-bottom: 0;
+  padding: 10px 8px 12px;
+  border-radius: 18px;
+}
+
+body.composer-practice-popup #step34Section .songPracticeLegacy > .pill,
+body.composer-practice-popup #step34Section .songPracticeLegacy > .cardTitle {
+  display: none;
+}
+
+body.composer-practice-popup #step34Section .practiceMeta {
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+body.composer-practice-popup #step34Section .metaCard {
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+
+body.composer-practice-popup #step34Section .canvasWrap {
+  border-radius: 16px;
+}
+
+body.composer-practice-popup #step34Section .practiceControlPanel {
+  gap: 6px;
+  margin-top: 8px;
+}
+
+body.composer-practice-popup #step34Section .practice-score-preview-btn .label {
+  display: inline-block;
+  transform: scaleX(0.9);
+  transform-origin: center;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+body.composer-practice-popup #step34Section .practiceStatusStack .status {
+  margin-top: 8px;
 }
 
 @media (max-width: 900px) {
@@ -32461,6 +32544,7 @@ function startBasicPractice() {
       const y = getComposerPitchY(item.pitch);
       const durationClass = "composer-duration-" + item.duration;
       const dotted = item.dotted ? `<span class="composer-score-dot"></span>` : "";
+      const noteNameLabel = composerEscapeHtml(item.pitch || "");
       const stemDown = shouldComposerStemDown(item.pitch);
       const stemClass = stemDown ? " is-stem-down" : "";
       const upFlagPath = "M1 1 C8 2 13 9 10 22 C10 13 6 5 2 1 Z";
@@ -32477,6 +32561,7 @@ function startBasicPractice() {
           ${item.duration === "sixteenth" ? secondFlagSvg : ""}
           ${dotted}
         </span>
+        <span class="composer-note-name" style="left:${leftPercent}%">${noteNameLabel}</span>
       `;
     }
 
@@ -33084,12 +33169,55 @@ function startBasicPractice() {
 
       if (!viewport || !app) return;
 
+      if (document.body.classList.contains("composer-practice-popup")) {
+        const viewportWidth = window.visualViewport?.width || window.innerWidth;
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const safePaddingX = 20;
+        const safePaddingY = 20;
+
+        document.body.style.overflow = "hidden";
+
+        app.style.position = "absolute";
+        app.style.transform = "none";
+        app.style.transformOrigin = "top left";
+        app.style.left = "0px";
+        app.style.top = "0px";
+        app.style.width = "960px";
+
+        requestAnimationFrame(() => {
+          const baseWidth = 960;
+          const practiceSection = document.getElementById("step34Section");
+          const sectionRect = practiceSection?.getBoundingClientRect();
+          const contentHeight = practiceSection
+            ? practiceSection.offsetTop + Math.ceil(sectionRect?.height || practiceSection.offsetHeight)
+            : app.scrollHeight;
+          const baseHeight = contentHeight + 10;
+
+          if (!baseHeight) return;
+
+          const scaleX = (viewportWidth - safePaddingX) / baseWidth;
+          const scaleY = (viewportHeight - safePaddingY) / baseHeight;
+          const scale = Math.max(0.1, Math.min(scaleX, scaleY));
+
+          const scaledWidth = baseWidth * scale;
+          const scaledHeight = baseHeight * scale;
+          const left = Math.max(0, (viewportWidth - scaledWidth) / 2);
+          const top = Math.max(0, (viewportHeight - scaledHeight) / 2);
+
+          app.style.left = `${left}px`;
+          app.style.top = `${top}px`;
+          app.style.transform = `scale(${scale})`;
+        });
+        return;
+      }
+
       if (!isMobileLandscape) {
         app.style.position = "";
         app.style.left = "";
         app.style.top = "";
         app.style.transform = "";
         app.style.transformOrigin = "";
+        app.style.width = "";
         document.body.style.overflow = "";
         return;
       }
@@ -33163,6 +33291,9 @@ function startBasicPractice() {
       resetPractice();
       setStatus("practiceStatus", "내가 만든 곡을 연주해 보세요.", "ok");
       history.replaceState({ screen: "step34Section" }, "", "#composer-practice");
+      setTimeout(applyMobileLandscapeAutoScale, 80);
+      setTimeout(applyMobileLandscapeAutoScale, 240);
+      setTimeout(applyMobileLandscapeAutoScale, 520);
       return true;
     }
 
