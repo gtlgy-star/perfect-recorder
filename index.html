@@ -33325,6 +33325,7 @@ function startBasicPractice() {
         measureCount,
         tempoKey,
         bpm: tempoKey ? COMPOSER_TEMPO_OPTIONS[tempoKey]?.bpm || null : null,
+        visibility: settings.visibility || "private",
         selectedMeasure: isComplete ? Number(settings.selectedMeasure) || 1 : null,
         selectedNoteLength: "quarter",
         dotArmed: !!settings.dotArmed,
@@ -33930,6 +33931,7 @@ function startBasicPractice() {
         timeSignature: rawData.timeSignature,
         measureCount: rawData.measureCount,
         tempoKey: rawData.tempoKey,
+        visibility: rawData.visibility || "private",
         selectedMeasure: 1
       });
       state.bpm = Number(rawData.bpm) || COMPOSER_TEMPO_OPTIONS[state.tempoKey]?.bpm || null;
@@ -33939,6 +33941,27 @@ function startBasicPractice() {
         state.selectedMeasure = 1;
       }
       return state;
+    }
+
+    function getComposerDraftRecord() {
+      try {
+        const raw = localStorage.getItem(getComposerDraftStorageKey());
+        return raw ? JSON.parse(raw) : null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function getComposerLoadedVisibility(compositionId = composerState.compositionId) {
+      const safeId = String(compositionId || "").trim();
+      const stateVisibility = String(composerState.visibility || "").trim();
+      if (stateVisibility) return stateVisibility;
+      const draft = getComposerDraftRecord();
+      if (draft && String(draft.compositionId || "") === safeId) {
+        return String(draft.visibility || "private").trim() || "private";
+      }
+      const libraryItem = getComposerLibraryItemById(safeId);
+      return String(libraryItem?.visibility || "private").trim() || "private";
     }
 
     function getExistingComposerDraftCreatedAt() {
@@ -33996,6 +34019,7 @@ function startBasicPractice() {
       });
       const savedData = result?.composition || data;
       composerState = composerStandardDataToState(savedData) || composerStandardDataToState(data) || composerState;
+      composerState.visibility = savedData.visibility || composerState.visibility || "private";
       const titleInput = document.getElementById("composerTitleInput");
       if (titleInput) {
         titleInput.value = composerState.title;
@@ -34074,17 +34098,23 @@ function startBasicPractice() {
       return baseTitle + " " + suffix;
     }
 
-    function showComposerSaveModeChoice(title) {
+    function showComposerSaveModeChoice(title, options = {}) {
       return new Promise((resolve) => {
         const overlay = document.createElement("div");
         overlay.className = "composer-confirm-overlay";
+        const isShared = options.isShared === true;
+        const message = isShared
+          ? `'${composerEscapeHtml(title || "제목 없는 곡")}' 곡은 지금 우리반 곡 모음에 공유 중이에요. 어떻게 저장할까요?`
+          : `'${composerEscapeHtml(title || "제목 없는 곡")}' 곡을 어떻게 저장할까요?`;
+        const newLabel = isShared ? "비공개 새 곡으로 저장" : "새 곡으로 저장";
+        const overwriteLabel = isShared ? "공유곡 덮어쓰기" : "덮어쓰기";
         overlay.innerHTML = `
           <div class="composer-confirm-dialog" role="dialog" aria-modal="true" aria-label="곡 저장 방식 선택">
-            <p class="composer-confirm-message">'${composerEscapeHtml(title || "제목 없는 곡")}' 곡을 어떻게 저장할까요?</p>
+            <p class="composer-confirm-message">${message}</p>
             <div class="composer-confirm-actions">
               <button type="button" data-composer-save-mode="cancel">취소</button>
-              <button type="button" data-composer-save-mode="new">새 곡으로 저장</button>
-              <button class="primary" type="button" data-composer-save-mode="overwrite">덮어쓰기</button>
+              <button class="${isShared ? "primary" : ""}" type="button" data-composer-save-mode="new">${newLabel}</button>
+              <button class="${isShared ? "" : "primary"}" type="button" data-composer-save-mode="overwrite">${overwriteLabel}</button>
             </div>
           </div>
         `;
@@ -34101,7 +34131,7 @@ function startBasicPractice() {
         });
 
         document.body.appendChild(overlay);
-        overlay.querySelector("[data-composer-save-mode='overwrite']")?.focus();
+        overlay.querySelector(isShared ? "[data-composer-save-mode='new']" : "[data-composer-save-mode='overwrite']")?.focus();
       });
     }
 
@@ -34119,7 +34149,8 @@ function startBasicPractice() {
         }
         localStorage.setItem(getComposerDraftStorageKey(), JSON.stringify(data));
         if (data.compositionId) {
-          const saveMode = await showComposerSaveModeChoice(data.title);
+          const isSharedComposition = getComposerLoadedVisibility(data.compositionId) === "class";
+          const saveMode = await showComposerSaveModeChoice(data.title, { isShared: isSharedComposition });
           if (saveMode === "cancel") {
             setComposerStatus("composerEditorStatus", "저장을 취소했어요. 작곡 내용은 그대로 남아 있어요.");
             return;
@@ -34140,6 +34171,13 @@ function startBasicPractice() {
             setComposerStatus("composerEditorStatus", "새 곡으로 저장하고 있어요.");
             await persistComposerSaveData(newData, validation, { compositionId: null });
             return;
+          }
+          if (isSharedComposition) {
+            const ok = await showComposerConfirm("공유 중인 곡을 덮어쓰면 우리반 곡 모음의 곡도 바로 바뀝니다. 그래도 덮어쓸까요?");
+            if (!ok) {
+              setComposerStatus("composerEditorStatus", "공유곡 덮어쓰기를 취소했어요. 작곡 내용은 그대로 남아 있어요.");
+              return;
+            }
           }
           setComposerStatus("composerEditorStatus", "기존 곡에 덮어쓰고 있어요.");
           await persistComposerSaveData(data, validation, { compositionId: data.compositionId });
@@ -34205,6 +34243,16 @@ function startBasicPractice() {
       if (key === "public") return "모두의 곡";
       if (key === "deleted") return "삭제됨";
       return "비공개";
+    }
+
+    function getComposerApiErrorText(error, fallbackMessage) {
+      const message = String(
+        error?.response?.error ||
+        error?.response?.message ||
+        error?.message ||
+        ""
+      ).trim();
+      return message ? fallbackMessage + " (" + message + ")" : fallbackMessage;
     }
 
     function getComposerLibraryShareAction(item) {
@@ -34476,7 +34524,7 @@ function startBasicPractice() {
         if (status) status.textContent = result?.alreadyShared ? "이미 학급 공유 중인 곡이에요." : "우리 반 창작곡 놀이터에 공유했어요.";
       } catch (error) {
         console.warn("[composer] share failed", error);
-        if (status) status.textContent = "학급 공유를 하지 못했어요.";
+        if (status) status.textContent = getComposerApiErrorText(error, "학급 공유를 하지 못했어요.");
       }
     }
 
@@ -34497,7 +34545,7 @@ function startBasicPractice() {
         if (status) status.textContent = "공유를 해제했어요.";
       } catch (error) {
         console.warn("[composer] unshare failed", error);
-        if (status) status.textContent = "공유를 해제하지 못했어요.";
+        if (status) status.textContent = getComposerApiErrorText(error, "공유를 해제하지 못했어요.");
       }
     }
 
