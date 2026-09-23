@@ -19274,6 +19274,7 @@ body.theme-light .readyCardHint {
     let appCurrentScreen = "step1Section";
     let appHistoryLocked = false;
     let currentTextbookGrade = null;
+    const PENDING_WORKBOOK_PRACTICE_SONG_ID_KEY = "pendingPracticeSongId";
     let practiceTimer = null;
     let songLoadRequestSeq = 0;
     let basicPracticeRunId = 0;
@@ -24755,7 +24756,10 @@ if (app.user && String(app.user.role || "").trim().toUpperCase() === "STUDENT") 
     console.warn("[SHORT SONG MEDAL LOAD ERROR]", error);
   });
 }
-app.refreshSongs().catch(() => {});
+const workbookPracticeOpened = await handlePendingWorkbookPracticeDeepLink();
+if (!workbookPracticeOpened) {
+  app.refreshSongs().catch(() => {});
+}
 preloadChallengeSongs().catch(() => {});
       } catch (e) {
         app.user = null;
@@ -35828,6 +35832,132 @@ function startBasicPractice() {
       return true;
     }
 
+    function normalizeWorkbookPracticeSongId(songId) {
+      return String(songId || "").trim().toUpperCase();
+    }
+
+    function getPendingWorkbookPracticeSongId() {
+      try {
+        return String(sessionStorage.getItem(PENDING_WORKBOOK_PRACTICE_SONG_ID_KEY) || "").trim();
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function setPendingWorkbookPracticeSongId(songId) {
+      const safeSongId = String(songId || "").trim();
+      if (!safeSongId) return false;
+      try {
+        sessionStorage.setItem(PENDING_WORKBOOK_PRACTICE_SONG_ID_KEY, safeSongId);
+      } catch (_) {}
+      return true;
+    }
+
+    function clearPendingWorkbookPracticeSongId(songId = "") {
+      try {
+        const current = getPendingWorkbookPracticeSongId();
+        if (!songId || normalizeWorkbookPracticeSongId(current) === normalizeWorkbookPracticeSongId(songId)) {
+          sessionStorage.removeItem(PENDING_WORKBOOK_PRACTICE_SONG_ID_KEY);
+        }
+      } catch (_) {}
+    }
+
+    function captureWorkbookPracticeDeepLinkFromUrl() {
+      const params = new URLSearchParams(window.location.search || "");
+      const go = String(params.get("go") || "").trim().toLowerCase();
+      const songId = String(params.get("songId") || "").trim();
+      if (go !== "practice" || !songId) return "";
+      setPendingWorkbookPracticeSongId(songId);
+      return songId;
+    }
+
+    function findWorkbookPracticeSong(songId) {
+      const targetId = normalizeWorkbookPracticeSongId(songId);
+      if (!targetId) return null;
+
+      const shortSongs = typeof getLocalShortSongs === "function" ? getLocalShortSongs() : [];
+      const shortSong = shortSongs.find((song) => normalizeWorkbookPracticeSongId(song?.songId) === targetId);
+      if (shortSong) return { type: "short", song: shortSong };
+
+      const textbookGroups = typeof TEXTBOOK_SONGS_BY_GRADE !== "undefined" ? TEXTBOOK_SONGS_BY_GRADE : {};
+      for (const [grade, songs] of Object.entries(textbookGroups || {})) {
+        const textbookSong = (Array.isArray(songs) ? songs : [])
+          .find((song) => normalizeWorkbookPracticeSongId(song?.songId) === targetId);
+        if (textbookSong) return { type: "textbook", grade: String(grade), song: textbookSong };
+      }
+
+      const bonusSongs = typeof getBonusSongList === "function"
+        ? getBonusSongList()
+        : (typeof BONUS_SONGS !== "undefined" && Array.isArray(BONUS_SONGS) ? BONUS_SONGS : []);
+      const bonusSong = (Array.isArray(bonusSongs) ? bonusSongs : [])
+        .find((song) => normalizeWorkbookPracticeSongId(song?.songId) === targetId);
+      if (bonusSong) return { type: "bonus", song: bonusSong };
+
+      return null;
+    }
+
+    async function openWorkbookPracticeSong(songId) {
+      const targetId = String(songId || "").trim();
+      if (!targetId) return false;
+      if (!app?.user) {
+        setPendingWorkbookPracticeSongId(targetId);
+        return false;
+      }
+
+      const match = findWorkbookPracticeSong(targetId);
+      if (!match || !match.song) {
+        console.warn("[workbook QR] song not found:", targetId);
+        clearPendingWorkbookPracticeSongId(targetId);
+        showScreen("screen-menu", { skipHistory: true });
+        alert("워크북 QR의 곡을 찾지 못했어요. 선생님께 QR 정보를 확인해 주세요.");
+        return false;
+      }
+
+      try {
+        if (match.type === "bonus") {
+          prepareBonusSong(match.song.songId);
+        } else if (match.type === "textbook") {
+          currentActivityTitle = SCREEN_TITLES["screen-textbook"];
+          currentActivityType = "TEXTBOOK_SONG";
+          resetSongMenuState("textbook");
+          showStep("step2Section", { skipHistory: true });
+          renderTextbookGradeButtons();
+          openTextbookGrade(match.grade);
+          selectSongById(match.song.songId);
+          goToPractice();
+        } else {
+          currentActivityTitle = SCREEN_TITLES["screen-song"];
+          currentActivityType = "SHORT_SONG";
+          resetSongMenuState("short");
+          showStep("step2Section", { skipHistory: true });
+          const data = await app.loadSongs();
+          renderShortSongList(data?.songs || []);
+          selectSongById(match.song.songId);
+          goToPractice();
+        }
+
+        clearPendingWorkbookPracticeSongId(targetId);
+        history.replaceState({ screen: "step34Section" }, "", `${window.location.pathname}#workbook-practice`);
+        setStatus("practiceStatus", "워크북 QR 곡을 불러왔어요. 연주를 시작하세요.", "ok");
+        setTimeout(applyMobileLandscapeAutoScale, 80);
+        setTimeout(applyMobileLandscapeAutoScale, 240);
+        return true;
+      } catch (error) {
+        console.error("[workbook QR] practice open failed:", error);
+        setPendingWorkbookPracticeSongId(targetId);
+        showScreen("screen-menu", { skipHistory: true });
+        alert("워크북 QR 곡을 여는 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요.");
+        return false;
+      }
+    }
+
+    async function handlePendingWorkbookPracticeDeepLink() {
+      const pendingSongId = getPendingWorkbookPracticeSongId();
+      if (!pendingSongId) return false;
+      if (!app?.user) return false;
+      return openWorkbookPracticeSong(pendingSongId);
+    }
+
     window.addEventListener("resize", applyMobileLandscapeAutoScale);
     window.addEventListener("orientationchange", () => {
       setTimeout(applyMobileLandscapeAutoScale, 120);
@@ -35835,6 +35965,7 @@ function startBasicPractice() {
     document.addEventListener("DOMContentLoaded", applyMobileLandscapeAutoScale);
 
     window.addEventListener("load", () => {
+      const workbookPracticeSongId = captureWorkbookPracticeDeepLinkFromUrl();
       initTheme();
       setSelectedFingeringSystem(selectedFingeringSystem);
       bindChallengeButtons();
@@ -35848,7 +35979,17 @@ function startBasicPractice() {
       setupResultOverlayInteractions();
       drawPracticeBase("4/4");
       if (!tryOpenComposerPracticeFromUrl()) {
-        showStep("step1Section");
+        if (app?.user && getPendingWorkbookPracticeSongId()) {
+          handlePendingWorkbookPracticeDeepLink().catch((error) => {
+            console.error("[workbook QR] pending open failed:", error);
+            showStep("step1Section");
+          });
+        } else {
+          showStep("step1Section");
+          if (workbookPracticeSongId) {
+            setStatus("loginStatus", "로그인하면 워크북 QR 곡으로 바로 이동합니다.", "ok");
+          }
+        }
       }
     });
   </script>

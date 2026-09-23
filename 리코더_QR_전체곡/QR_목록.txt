@@ -1,0 +1,52 @@
+짧-학교종.png	HAKGYOJONG	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=HAKGYOJONG
+짧-똑같아요.png	SAME_SAME	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=SAME_SAME
+짧-환희의 송가.png	ODE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=ODE
+짧-핫 크로스 번.png	HOT_CROSS_BUNS	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=HOT_CROSS_BUNS
+짧-나비야.png	NABIYA	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=NABIYA
+짧-통통통통.png	TONGTONG	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TONGTONG
+짧-잠자리.png	DRAGONFLY	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=DRAGONFLY
+짧-고향의 봄.png	HOMETOWN_SPRING	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=HOMETOWN_SPRING
+교-3-뻐꾸기.png	TB3_CUCKOO	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_CUCKOO
+교-3-아침.png	TB3_MORNING	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_MORNING
+교-3-구슬비.png	TB3_RAIN	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_RAIN
+교-3-비행기.png	TB3_PLANE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_PLANE
+교-3-가을길.png	TB3_AUTUMN	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_AUTUMN
+교-3-거미가 줄을 타고.png	TB3_SPIDER	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_SPIDER
+교-3-꼬마벌.png	TB3_LITTLE_BEE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_LITTLE_BEE
+교-3-작은 별.png	TB3_TWINKLE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB3_TWINKLE
+교-4-생일 축하합니다.png	HAPPY_BIRTHDAY	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=HAPPY_BIRTHDAY
+교-4-음악은 영원히.png	TB4_MUSIC_FOREVER	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_MUSIC_FOREVER
+교-4-언제나 몇 번이라도.png	TB4_ALWAYS_WITH_ME	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_ALWAYS_WITH_ME
+교-4-작은 세상.png	TB4_SMALL_WORLD	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_SMALL_WORLD
+교-4-모차르트 소나타.png	TB4_MOZART_SONATA	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_MOZART_SONATA
+교-4-부릉부릉 부르릉.png	TB4_VROOM_VROOM	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_VROOM_VROOM
+교-4-같이 눈사람 만들래.png	TB4_DO_YOU_WANT_TO_BUILD_A_SNOWMAN	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_DO_YOU_WANT_TO_BUILD_A_SNOWMAN
+교-4-꿈.png	TB4_DREAM	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB4_DREAM
+교-5-바람이 불어오는 곳.png	TB5_WINDY_PLACE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_WINDY_PLACE
+교-5-Try Everything.png	TB5_TRY_EVERYTHING	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_TRY_EVERYTHING
+교-5-You Raise Me Up.png	TB5_YOU_RAISE_ME_UP	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_YOU_RAISE_ME_UP
+교-5-학교 가는 길.png	TB5_ROAD_TO_SCHOOL	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_ROAD_TO_SCHOOL
+교-5-바람의 빛깔.png	TB5_COLORS_OF_THE_WIND_ANIME	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_COLORS_OF_THE_WIND_ANIME
+교-5-피노키오.png	TB5_PINOCCHIO	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_PINOCCHIO
+교-5-즐거운 여행자.png	TB5_HAPPY_TRAVELER	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_HAPPY_TRAVELER
+교-5-Summer.png	TB5_SUMMER	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB5_SUMMER
+교-6-사계 중 봄.png	TB6_SPRING	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_SPRING
+교-6-별 보며 달 보며.png	TB6_STAR_MOON	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_STAR_MOON
+교-6-허시 리틀 베이비.png	TB6_HUSH_LITTLE_BABY	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_HUSH_LITTLE_BABY
+교-6-수고했어, 오늘도.png	TB6_GOOD_JOB_TODAY	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_GOOD_JOB_TODAY
+교-6-할아버지의 시계.png	TB6_GRANDFATHER_CLOCK	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_GRANDFATHER_CLOCK
+교-6-무지개 너머.png	TB6_OVER_THE_RAINBOW	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_OVER_THE_RAINBOW
+교-6-바다가 보이는 마을.png	TB6_SEA_TOWN	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_SEA_TOWN
+교-6-10월의 어느 멋진 날에.png	TB6_OCTOBER_DAY	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=TB6_OCTOBER_DAY
+보-1-젓가락 행진곡.png	BONUS_CHOPSTICKS_MARCH	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_CHOPSTICKS_MARCH
+보-1-바나나 차차.png	BONUS_BANANA_CHA_CHA	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_BANANA_CHA_CHA
+보-2-모두 다 꽃이야.png	BONUS_FLOWERS	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_FLOWERS
+보-2-비비디바비디부.png	BONUS_BIBBIDI_BOBBIDI_BOO	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_BIBBIDI_BOBBIDI_BOO
+보-3-사랑을 했다.png	BONUS_LOVE_SCENARIO	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_LOVE_SCENARIO
+보-3-고양이 버스.png	BONUS_CAT_BUS	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_CAT_BUS
+보-4-문어의 꿈.png	BONUS_OCTOPUS_DREAM	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_OCTOPUS_DREAM
+보-4-위풍당당 행진곡.png	BONUS_POMP_AND_CIRCUMSTANCE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_POMP_AND_CIRCUMSTANCE
+보-5-Over the Rainbow.png	BONUS_OVER_THE_RAINBOW	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_OVER_THE_RAINBOW
+보-5-A Whole New World.png	BONUS_A_WHOLE_NEW_WORLD	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_A_WHOLE_NEW_WORLD
+보-6-회전목마.png	BONUS_CAROUSEL	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_CAROUSEL
+보-6-He's Pirate.png	BONUS_HES_PIRATE	https://gtlgy-star.github.io/perfect-recorder/index.html?go=practice&songId=BONUS_HES_PIRATE
