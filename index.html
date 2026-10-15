@@ -36082,11 +36082,14 @@ function formatChallengeStudentAffiliation(record) {
   if (!record) return "";
 
   const affiliation = String(record.affiliation || "").trim();
-  if (affiliation) return affiliation;
 
   const schoolName = String(record.schoolName || "").trim();
   const grade = String(record.grade || "").trim();
   const className = String(record.className || "").trim();
+
+  if (!schoolName && !grade && !className) {
+    return affiliation.replace(/\?숇뀈/g, "학년");
+  }
 
   return [
     schoolName,
