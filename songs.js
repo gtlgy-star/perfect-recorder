@@ -137,7 +137,7 @@ const BONUS_SONGS = [
 
 const BONUS_GROWTH_SONGS = [];
 
-const PRINT_RESTRICTED_SONG_IDS = new Set([
+const EDUCATIONAL_USE_NOTICE_SONG_IDS = new Set([
   "HAKGYOJONG", "SAME_SAME", "TONGTONG", "DRAGONFLY",
   "TB3_RAIN", "TB3_AUTUMN", "TB3_SPIDER", "TB3_LITTLE_BEE",
   "TB4_MUSIC_FOREVER", "TB4_ALWAYS_WITH_ME", "TB4_SMALL_WORLD",
@@ -152,16 +152,6 @@ const PRINT_RESTRICTED_SONG_IDS = new Set([
   "BONUS_HES_PIRATE"
 ]);
 
-function applySongPrintRestrictions(songs) {
-  (songs || []).forEach((song) => {
-    if (song && PRINT_RESTRICTED_SONG_IDS.has(song.songId)) song.printable = false;
-  });
-}
-
 function canPrintSong(song) {
-  return Boolean(song) && song.printable !== false && !PRINT_RESTRICTED_SONG_IDS.has(song.songId);
+  return Boolean(song) && song.printable !== false;
 }
-
-applySongPrintRestrictions(LOCAL_SHORT_SONGS);
-Object.values(TEXTBOOK_SONGS_BY_GRADE).forEach(applySongPrintRestrictions);
-applySongPrintRestrictions(BONUS_SONGS);

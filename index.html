@@ -4071,6 +4071,23 @@ button:disabled {
       font-weight: 800;
     }
 
+    .songPrintPage.has-educational-use-notice {
+      position: relative;
+      padding-bottom: 10mm;
+    }
+
+    .songPrintEducationalUseNotice {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      font-size: 9px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: left;
+    }
+
     @media print {
       @page {
         size: A4 portrait;
@@ -23291,18 +23308,12 @@ function renderSongButtons() {
       const song = app.currentSong || getSelectedSong();
       const showButton = Boolean(isSongPreviewPracticeAvailable() && song);
       const hasNotation = Boolean(String(song?.notation || "").trim());
-      const isRestricted = Boolean(song?.songId && PRINT_RESTRICTED_SONG_IDS.has(song.songId));
-
       previewBtn.classList.toggle("hidden", !showButton);
-      previewBtn.disabled = !showButton || !hasNotation || isRestricted;
-      previewBtn.title = isRestricted
-        ? "저작권 보호를 위해 연주곡 확인이 제한됩니다"
-        : (showButton && !hasNotation ? "악보 정보 준비 중" : "");
+      previewBtn.disabled = !showButton || !hasNotation;
+      previewBtn.title = showButton && !hasNotation ? "악보 정보 준비 중" : "";
       previewBtn.setAttribute(
         "aria-label",
-        isRestricted
-          ? "연주곡 확인: 저작권 보호를 위해 이용할 수 없음"
-          : (showButton && !hasNotation ? "연주곡 확인: 악보 정보 준비 중" : "연주곡 확인")
+        showButton && !hasNotation ? "연주곡 확인: 악보 정보 준비 중" : "연주곡 확인"
       );
     }
 
@@ -28142,6 +28153,13 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
         });
         pageEl.appendChild(rows);
         pageEl.appendChild(createSongPrintFooter(pageNumber, pages.length, pageNumber === pages.length));
+        if (EDUCATIONAL_USE_NOTICE_SONG_IDS.has(song.songId)) {
+          pageEl.classList.add("has-educational-use-notice");
+          const notice = document.createElement("p");
+          notice.className = "songPrintEducationalUseNotice";
+          notice.textContent = "※ 본 자료의 악보 및 음악 콘텐츠는 교육 목적으로만 이용할 수 있으며, 무단 복제 및 배포를 금지합니다.";
+          pageEl.appendChild(notice);
+        }
         root.appendChild(pageEl);
       });
 
@@ -28396,6 +28414,21 @@ function drawRest(ctx, x, staffTop, duration, options = {}) {
       -webkit-text-fill-color: #506080;
       font-size: 11px;
       font-weight: 800;
+    }
+    .songPrintPage.has-educational-use-notice {
+      position: relative;
+      padding-bottom: 10mm;
+    }
+    .songPrintEducationalUseNotice {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      font-size: 9px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: left;
     }
     #songPrintRoot, #songPrintRoot * {
       visibility: visible !important;
