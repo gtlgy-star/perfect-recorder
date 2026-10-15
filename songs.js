@@ -155,3 +155,24 @@ const EDUCATIONAL_USE_NOTICE_SONG_IDS = new Set([
 function canPrintSong(song) {
   return Boolean(song) && song.printable !== false;
 }
+
+function needsEducationalUseNotice(song) {
+  if (!song) return false;
+  const normalizeId = (value) => String(value || "").trim().toUpperCase()
+    .replace(/^LIB_(?:SHORT|TEXTBOOK|BONUS)_/, "");
+  const ids = [song.songId, song.id, song.sourceSongId, song.librarySongId];
+  if (ids.some((id) => EDUCATIONAL_USE_NOTICE_SONG_IDS.has(normalizeId(id)))) return true;
+
+  const normalizeTitle = (value) => String(value || "").trim().replace(/\s+/g, " ").toUpperCase();
+  const title = normalizeTitle(song.title);
+  if (!title) return false;
+  const builtInSongs = [
+    ...LOCAL_SHORT_SONGS,
+    ...Object.values(TEXTBOOK_SONGS_BY_GRADE).flat(),
+    ...BONUS_SONGS
+  ];
+  return builtInSongs.some((candidate) =>
+    EDUCATIONAL_USE_NOTICE_SONG_IDS.has(normalizeId(candidate.songId)) &&
+    normalizeTitle(candidate.title) === title
+  );
+}
